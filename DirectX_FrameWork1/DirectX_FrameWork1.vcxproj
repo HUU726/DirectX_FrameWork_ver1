@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{a238cba0-2b7c-4319-a45c-3a4af30ac6a7}</ProjectGuid>
+    <RootNamespace>DirectXFrameWork1</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\01-Main\main.cpp" />
+    <ClCompile Include="Source\02-App\Application.cpp" />
+    <ClCompile Include="Source\02-App\FH_Window.cpp" />
+    <ClCompile Include="Source\03-Game\Game.cpp" />
+    <ClCompile Include="Source\04-Object\GameObject.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\sound.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\Texture.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\BoxCollider2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\CircleCollider2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\00-Collider3D\Collider3D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameScene.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\TitleScene.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\02-SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\100-Rand\RandGenerator.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\101-Time\Time.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\01-Main\main.h" />
+    <ClInclude Include="Source\02-App\Application.h" />
+    <ClInclude Include="Source\02-App\FH_Window.h" />
+    <ClInclude Include="Source\03-Game\Game.h" />
+    <ClInclude Include="Source\04-Object\GameObject.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\sound.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\Texture.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\00-Component\Component.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\01-Transform\Transform.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\BoxCollider2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\CircleCollider2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\00-Collider3D\Collider3D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameScene.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\TitleScene.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\02-SceneManager\SceneManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\100-Rand\RandGenerator.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\101-Time\Time.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Mesh.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Sprite2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\PixelShader.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\VertexShader.hlsl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
