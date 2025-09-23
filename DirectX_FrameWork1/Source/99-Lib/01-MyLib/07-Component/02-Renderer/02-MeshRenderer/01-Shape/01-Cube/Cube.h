@@ -1,5 +1,8 @@
 #pragma once
-#include "Mesh.h"
+
+#include "../../../../../998-FH_Types/Mesh.h"
+
+using hft::Mesh;
 
 class Cube : public Mesh
 {

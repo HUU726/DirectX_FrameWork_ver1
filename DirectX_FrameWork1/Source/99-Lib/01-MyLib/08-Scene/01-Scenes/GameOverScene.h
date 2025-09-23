@@ -1,5 +1,7 @@
 #pragma once
-#include "BaseScene.h"
+#include "./00-BaseScene/BaseScene.h"
+
+
 class GameOverScene : public BaseScene
 {
 private:

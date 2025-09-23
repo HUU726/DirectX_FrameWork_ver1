@@ -127,11 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.cpp" />
     <ClCompile Include="Source\01-Main\main.cpp" />
     <ClCompile Include="Source\02-App\Application.cpp" />
     <ClCompile Include="Source\02-App\FH_Window.cpp" />
     <ClCompile Include="Source\03-Game\Game.cpp" />
-    <ClCompile Include="Source\04-Object\GameObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.cpp" />
@@ -139,9 +140,10 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\sound.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\Texture.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\BoxCollider2D.cpp" />
@@ -159,6 +161,8 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.h" />
     <ClInclude Include="Source\01-Main\main.h" />
     <ClInclude Include="Source\02-App\Application.h" />
     <ClInclude Include="Source\02-App\FH_Window.h" />
@@ -171,11 +175,12 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\sound.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\Texture.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\00-Component\Component.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\01-Transform\Transform.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\BoxCollider2D.h" />
@@ -197,8 +202,12 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\PixelShader.hlsl" />
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\VertexShader.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

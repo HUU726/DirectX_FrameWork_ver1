@@ -27,9 +27,6 @@
     <ClCompile Include="Source\03-Game\Game.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\04-Object\GameObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -51,7 +48,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.cpp">
@@ -105,6 +102,15 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -149,7 +155,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\Mesh.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.h">
@@ -215,9 +221,18 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\PixelShader.hlsl" />
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2DShader\VertexShader.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\PixelShader.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\VertexShader.hlsl" />
   </ItemGroup>
 </Project>

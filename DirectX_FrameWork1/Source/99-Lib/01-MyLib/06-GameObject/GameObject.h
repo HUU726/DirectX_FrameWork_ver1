@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "../99-Lib/01-MyLib/97-Component/00-Component/Component.h"
-#include "../99-Lib/01-MyLib/105-TypeSup/TypeSup.h"
+#include "../07-Component/00-Component/Component.h"
+#include "../07-Component/01-Transform/Transform.h"
 #include "Time.h"
 
 
@@ -23,7 +23,6 @@ protected:
 	int id;					//オブジェクトID
 	std::string name;		//オブジェクト名
 	std::string tag;		//タグ
-	Transform* transform;	// トランスフォーム
 	std::vector<std::unique_ptr<Component>> li_comp;		//コンポーネントリスト
 	bool isActive;
 	bool isRender;
@@ -54,8 +53,8 @@ public:
 		return nullptr;
 	}
 
-	Transform& GetTransform() { return *transform; }
-	Transform* GetTransformPtr() { return transform; }
+	Transform& GetTransform() { return *GetComponent<Transform>(); }
+	Transform* GetTransformPtr() { return GetComponent<Transform>(); }
 	std::string GetName() { return name; }
 	std::string GetTag() { return tag; }
 	bool GetIsActive() { return isActive; }

@@ -1,7 +1,7 @@
 #include "MeshRenderer.h"
 #include "GameObject.h"
 
-#include "Sprite2DRenderer.h"
+
 
 MeshRenderer::MeshRenderer()
 {

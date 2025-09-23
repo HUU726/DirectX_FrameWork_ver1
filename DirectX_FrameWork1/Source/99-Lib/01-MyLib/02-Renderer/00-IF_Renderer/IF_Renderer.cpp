@@ -1,5 +1,5 @@
 #include "IF_Renderer.h"
-#include "System.h"
+#include "../../01-System/System.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
@@ -140,9 +140,9 @@ HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const 
 
 void IF_Renderer::Init()
 {
-	System* p_system = &System::GetInstance();
-	this->p_Device = p_system->GetDevice();
-	this->p_DeviceContext = p_system->GetDeviceContext();
+	System* l_p_system = &System::GetInstance();
+	this->p_Device = l_p_system->GetDevice();
+	this->p_DeviceContext = l_p_system->GetDeviceContext();
 
 	InitShader();
 	InitState();

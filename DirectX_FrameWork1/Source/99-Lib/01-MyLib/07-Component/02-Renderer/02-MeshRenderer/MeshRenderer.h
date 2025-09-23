@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Model3DRenderer.h"
-#include "Mesh.h"
-#include "Component.h"
+#include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
+#include "./MeshFilter.h"
 
 class MeshRenderer : public Component
 {
@@ -11,9 +10,6 @@ private:
 	bool isCreate = false;		// Mesh‚ğì‚Á‚½‚©‚Ç‚¤‚©
 	const char* filePath;		// •`‰æ‚·‚é‰æ‘œ‚ÌƒpƒX
 	bool isRender = true;		// •`‰æˆ—‚ğ‚·‚é‚©‚Ç‚¤‚©
-
-
-	GEN_COMPONENT_ID(MeshRenderer)
 
 public:
 

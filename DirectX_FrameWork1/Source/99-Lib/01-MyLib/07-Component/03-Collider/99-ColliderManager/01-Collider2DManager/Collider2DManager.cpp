@@ -1,6 +1,6 @@
 #include "Collider2DManager.h"
-#include "Collider2D.h"
-#include "GameObject.h"
+#include "../../01-Collider2D/00-Collider2D/Collider2D.h"
+#include "../../../../06-GameObject/GameObject.h"
 
 #include <iostream>
 

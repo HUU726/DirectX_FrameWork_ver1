@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../../../02-Renderer/01-Sprite2DRenderer/"
-#include "Sprite2D.h"
-#include "Component.h"
+#include "../../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
+#include "../../../998-FH_Types/Sprite2D.h"
+#include "../../00-Component/Component.h"
 
+using hft::Sprite2D;
 
 class SpriteRenderer : public Component
 {

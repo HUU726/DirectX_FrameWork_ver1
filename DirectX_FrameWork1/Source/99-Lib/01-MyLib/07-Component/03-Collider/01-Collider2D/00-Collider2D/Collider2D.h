@@ -1,8 +1,7 @@
 #pragma once
-#include "Component.h"
-#include "glm/glm.hpp"
-#include "Transform.h"
+#include "../../../00-Component/Component.h"
 #include <functional>
+#include <DirectXMath.h>
 
 enum class SHAPE_2D
 {
@@ -29,10 +28,9 @@ class Collider2D : public Component
 {
 protected:
 	SHAPE_2D shape;			// 形の種類
-	Transform* transform;	// gameObjectのTransform
-	glm::vec3 offset;		// gameObjectのTransformとのずれ
-	glm::vec3 position;		// 現在のワールド座標
-	glm::vec3 size;			// 四角形：ｘ＝横、ｙ＝縦	円：ｘ＝半径	線分：ｘ＝長さ
+	DirectX::XMFLOAT3 offset;		// gameObjectのTransformとのずれ
+	DirectX::XMFLOAT3 position;		// 現在のワールド座標
+	DirectX::XMFLOAT3 size;			// 四角形：ｘ＝横、ｙ＝縦	円：ｘ＝半径	線分：ｘ＝長さ
 	
 	bool isTrigger = false;	// トリガー
 	COLLISION_STAT state;				// 当たっているかどうか
@@ -42,18 +40,16 @@ protected:
 
 public:
 	SHAPE_2D GetShape() { return shape; }
-	Transform* GetTransform() { return transform; }
-	glm::vec3 GetPosition() { return transform->position; }
-	glm::vec3 GetSize() { return size; }
-	glm::vec3 GetOffset() { return offset; }
+	DirectX::XMFLOAT3 GetSize() { return size; }
+	DirectX::XMFLOAT3 GetOffset() { return offset; }
 	bool GetIsTrigger() { return isTrigger; }
 	COLLISION_STAT GetState() { return state; }
 	bool GetIsActive() { return isActive; }
 	CallbackOnCollisionEnter2D GetFuncCollisionEnter() { return funcOnCollisionEnter; }
 
 
-	void SetSize(glm::vec3 _size) { size = _size; }
-	void SetOffset(glm::vec3 _offset) { offset = _offset; }
+	void SetSize(DirectX::XMFLOAT3 _size) { size = _size; }
+	void SetOffset(DirectX::XMFLOAT3 _offset) { offset = _offset; }
 	void SetState(COLLISION_STAT _state) { state = _state; }
 	void SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func);
 

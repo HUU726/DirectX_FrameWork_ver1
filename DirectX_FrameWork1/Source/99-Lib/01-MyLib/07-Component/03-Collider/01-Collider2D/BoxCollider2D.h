@@ -1,9 +1,11 @@
 #pragma once
-#include "Collider2D.h"
+#include "./00-Collider2D/Collider2D.h"
+
+
 class BoxCollider2D : public Collider2D
 {
 private:
-	GEN_COMPONENT_ID(BoxCollider2D)
+
 public:
 	bool CollideWith(Collider2D* _collider) override;
 	bool CollideWithBox(Collider2D* _box) override;
