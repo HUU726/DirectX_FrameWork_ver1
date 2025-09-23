@@ -4,7 +4,7 @@
 #include "../../998-FH_Types/Sprite2D.h"
 
 
-struct ConstBuffer2D
+struct Sprite2DConstBuffer
 {
 	DirectX::XMFLOAT4 color;
 	DirectX::XMMATRIX matrixTex;

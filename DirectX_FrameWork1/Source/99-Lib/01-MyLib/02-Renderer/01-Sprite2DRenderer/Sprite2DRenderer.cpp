@@ -52,7 +52,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// 定数バッファ作成
 	D3D11_BUFFER_DESC cdDesc;
-	cdDesc.ByteWidth = sizeof(ConstBuffer);
+	cdDesc.ByteWidth = sizeof(Sprite2DConstBuffer);
 	cdDesc.Usage = D3D11_USAGE_DEFAULT;
 	cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cdDesc.CPUAccessFlags = 0;
@@ -173,7 +173,7 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	mtrxTf.ConversionRotation(_sprite->p_transform->rotation);
 	mtrxTf.ConversionScale(_sprite->p_transform->scale);
 
-	ConstBuffer cb;	// 定数バッファを更新
+	Sprite2DConstBuffer cb;	// 定数バッファを更新
 	// ワールド変換行列の作成
 	// →オブジェクトの位置・大きさ・向きを指定
 	cb.matrixProj = DirectX::XMMatrixTranspose(matrixProj);		//プロジェクション変換行列
