@@ -23,7 +23,7 @@ public:
 	virtual ~Component() = default;
 
 	void SetGameObject(GameObject* _p_gameObject) { this->gameObject = _p_gameObject; }
-	GameObject* getGameObject() { return this->gameObject; }
+	GameObject* GetGameObject() { return this->gameObject; }
 
 
 	virtual void Init() = 0;

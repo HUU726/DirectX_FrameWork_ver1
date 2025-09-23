@@ -7,14 +7,29 @@
 class Camera : public Component
 {
 private:
-	float fov;				// 視野角
-	float aspectRatio;		// アスペクト比
-	float nearClip;			// ニアクリップ距離
-	float farClip;			// ファークリップ距離
-	DirectX::XMMATRIX matrixView; // ビュー行列
+	float fov;
+	float aspectRatio;
+	float nearClip;
+	float farClip;
 
-	public:
+	DirectX::XMVECTOR forward;
+	DirectX::XMVECTOR right;
+	DirectX::XMVECTOR up;
+	
+	DirectX::XMMATRIX matrixView;
+
+	void UpdateViewMatrix();
+
+public:
+	Camera();
+	Camera(float _fov, float _aspectRatio, float _newarClip, float forClip);
+	~Camera();
+
 	void Init() override;
 	void Update() override;
-};
+	DirectX::XMMATRIX GetMatrixView() { return matrixView; }
+	DirectX::XMVECTOR GetForward() {return forward; }
+	DirectX::XMVECTOR GetRight() { return right; }
+	DirectX::XMVECTOR GetUp() { return up; }
 
+};

@@ -5,15 +5,12 @@
 #include <typeinfo>
 
 
-#include "Camera.h"
 
 
 class BaseScene
 {
 protected:
 	std::unique_ptr<BaseScene> nextScene;
-
-	Camera camera;
 
 public:
 	BaseScene() : nextScene(nullptr) {}

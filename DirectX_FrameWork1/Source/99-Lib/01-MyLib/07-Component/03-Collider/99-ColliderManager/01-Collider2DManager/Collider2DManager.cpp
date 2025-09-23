@@ -25,7 +25,7 @@ void Collider2DManager::SelectCollider()
 	li_enableCol.clear();
 	for (auto collider : li_collider)
 	{
-		if (collider->getGameObject()->GetIsActive())
+		if (collider->GetGameObject()->GetIsActive())
 			li_enableCol.push_back(collider);
 	}
 }
