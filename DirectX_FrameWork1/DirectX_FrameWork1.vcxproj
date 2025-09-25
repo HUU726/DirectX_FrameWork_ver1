@@ -127,7 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.cpp" />
     <ClCompile Include="Source\01-Main\main.cpp" />
     <ClCompile Include="Source\02-App\Application.cpp" />
     <ClCompile Include="Source\02-App\FH_Window.cpp" />
@@ -151,7 +154,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameScene.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\TitleScene.cpp" />
@@ -161,7 +164,10 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.h" />
     <ClInclude Include="Source\01-Main\main.h" />
     <ClInclude Include="Source\02-App\Application.h" />
     <ClInclude Include="Source\02-App\FH_Window.h" />
@@ -188,7 +194,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameScene.h" />

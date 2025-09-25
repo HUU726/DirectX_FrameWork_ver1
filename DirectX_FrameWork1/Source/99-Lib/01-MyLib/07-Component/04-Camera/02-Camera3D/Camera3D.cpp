@@ -1,44 +1,50 @@
-#include "Camera.h"
+#include "Camera3D.h"
 
-#include "../../06-GameObject/GameObject.h"
+#include "../../../06-GameObject/GameObject.h"
 
-
-enum VIEW_ELEMENT
-{
-	CAMERA_POS = 0,
-	TARGET_POS,
-	UP_DIRECT,
-	ALL_ELEMENT,
-};
-
-std::vector<DirectX::XMVECTOR> Camera::DeriveTargetToForward()
+std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;
 	ansVector.resize(ALL_ELEMENT);
 
-	Transform* l_transform = GetGameObject()->GetTransformPtr();
-	auto pos = l_transform->position;
-	auto rot = l_transform->rotation;
+	Transform l_transform = GetGameObject()->GetTransform();
+	auto pos = l_transform.position;
+	auto rot = l_transform.rotation;
 	DirectX::XMVECTOR cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);		//カメラの位置
 
 	DirectX::XMVECTOR targetPos = DirectX::XMVectorSet(p_targetPos->x, p_targetPos->y, p_targetPos->z, 0.f);	//ターゲットの位置
 
+	DirectX::XMVECTOR defaultUp = DirectX::XMVectorSet(0.f,1.f,0.f,0.f);	//ワールドの上方向
+	
+
 	auto forwardDirect = DirectX::XMVectorSubtract(targetPos, cameraPos);	//前方向
 	forwardDirect = DirectX::XMVector3Normalize(forwardDirect);	//正規化
 
+	auto rightDirect = DirectX::XMVector3Cross(defaultUp, forwardDirect);	//右方向
+	rightDirect = DirectX::XMVector3Normalize(rightDirect);	//正規化
 
+	auto upDirect = DirectX::XMVector3Cross(forwardDirect, rightDirect);	//上方向
+	upDirect = DirectX::XMVector3Normalize(upDirect);	//正規化
 
-	return std::vector<DirectX::XMVECTOR>();
+	DirectX::XMStoreFloat3(&forward, forwardDirect);
+	DirectX::XMStoreFloat3(&up, upDirect);
+	DirectX::XMStoreFloat3(&right, rightDirect);
+
+	ansVector.at(CAMERA_POS) = cameraPos;
+	ansVector.at(TARGET_POS) = targetPos;
+	ansVector.at(UP_DIRECT) = upDirect;
+
+	return ansVector;
 }
 
-std::vector<DirectX::XMVECTOR> Camera::DeriveForwardToTarget()
+std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;
 	ansVector.resize(ALL_ELEMENT);
 
-	Transform* l_transform = GetGameObject()->GetTransformPtr();
-	auto pos = l_transform->position;
-	auto rot = l_transform->rotation;
+	Transform l_transform = GetGameObject()->GetTransform();
+	auto pos = l_transform.position;
+	auto rot = l_transform.rotation;
 	DirectX::XMVECTOR cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.0f);		//カメラの位置
 
 	DirectX::XMVECTOR defaultForward = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);	//初期前方向
@@ -67,55 +73,40 @@ std::vector<DirectX::XMVECTOR> Camera::DeriveForwardToTarget()
 	return ansVector;
 }
 
-void Camera::UpdateViewMatrix()
-{
-	std::vector<DirectX::XMVECTOR> viewElement;
-	DirectX::XMVECTOR cameraPos, targetPos, upDirect;
-
-	if (p_targetPos == nullptr)
-	{
-		viewElement = DeriveForwardToTarget();
-	}
-	else
-	{
-		viewElement = DeriveTargetToForward();
-	}
-
-	cameraPos = viewElement.at(CAMERA_POS);
-	targetPos = viewElement.at(TARGET_POS);
-	upDirect = viewElement.at(UP_DIRECT);
-
-	matrixView = DirectX::XMMatrixLookAtLH(cameraPos, targetPos, upDirect);	//ビュー行列作成
-}
-
-Camera::Camera()
+Camera3D::Camera3D()
 {
 	p_targetPos = nullptr;
 	fov = 60.0f;
-	aspectRatio = 16.0f / 9.0f;
+	aspect = 16.0f / 9.0f;
 	nearClip = 0.1f;
 	farClip = 1000.0f;
+	forward = { 0.f,0.f,1.f };
+	right = { 1.f,0.f,0.f };
+	up = { 0.f,1.f,0.f };
 }
 
-Camera::Camera(float _fov, float _aspectRatio, float _nearClip, float _farClip)
+Camera3D::Camera3D(float _fov, float _aspectRatio, float _nearClip, float _farClip)
 {
 	p_targetPos = nullptr;
 	fov = _fov;
-	aspectRatio = _aspectRatio;
+	aspect = _aspectRatio;
 	nearClip = _nearClip;
 	farClip = _farClip;
+	forward = { 0.f,0.f,1.f };
+	right = { 1.f,0.f,0.f };
+	up = { 0.f,1.f,0.f };
 }
 
-Camera::~Camera()
+Camera3D::~Camera3D()
 {}
 
-void Camera::Init()
+void Camera3D::Init()
 {
+	matrixProj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), aspect, nearClip, farClip);	//プロジェクション行列作成
+	UpdateViewMatrix();	//ビュー行列更新
 }
 
-void Camera::Update()
+void Camera3D::Update()
 {
 	UpdateViewMatrix();
-
-
 }
