@@ -16,7 +16,6 @@ private:
 
 	std::vector<DirectX::XMVECTOR> DeriveTargetToForward() override;
 	std::vector<DirectX::XMVECTOR> DeriveForwardToTarget() override;
-	void UpdateViewMatrix();
 
 public:
 	Camera3D();
