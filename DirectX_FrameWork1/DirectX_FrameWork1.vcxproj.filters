@@ -105,10 +105,19 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,10 +233,19 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\CameraObject.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\Camera.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
