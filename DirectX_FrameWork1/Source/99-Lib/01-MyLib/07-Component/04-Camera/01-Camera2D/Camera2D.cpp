@@ -1,5 +1,7 @@
 #include "Camera2D.h"
+
 #include "../../../06-GameObject/GameObject.h"
+#include "../../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
 
 
 std::vector<DirectX::XMVECTOR> Camera2D::DeriveTargetToForward()
@@ -100,6 +102,7 @@ Camera2D::~Camera2D()
 
 void Camera2D::Init()
 {
+	Sprite2DRenderer::GetInstance().SetCamera(this);
 	matrixProj = DirectX::XMMatrixOrthographicLH(width, height, nearClip, farClip);
 	UpdateViewMatrix();
 }

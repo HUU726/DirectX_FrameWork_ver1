@@ -7,6 +7,8 @@
 #include "../../998-FH_Types/Sprite2D.h"
 #include "../../998-FH_Types/TransformMatrix.h"
 
+#include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
+
 #define VERTEX_NUM_2D (4)
 
 using hft::Vertex;
@@ -165,6 +167,10 @@ void Sprite2DRenderer::RenderPipeline()
 
 void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 {
+
+	if (p_camera == nullptr)
+		return;
+
 	RenderPipeline();
 
 
@@ -174,10 +180,11 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	mtrxTf.ConversionScale(_sprite->p_transform->scale);
 
 	Sprite2DConstBuffer cb;	// 定数バッファを更新
-	// ワールド変換行列の作成
-	// →オブジェクトの位置・大きさ・向きを指定
-	cb.matrixProj = DirectX::XMMatrixTranspose(matrixProj);		//プロジェクション変換行列
+
 	cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
+	cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
+	cb.matrixView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());	//ビュー変換行列
+
 	//cb.matrixTex = DirectX::XMMatrixTranspose();
 	cb.color = _sprite->vertices[0].color;
 	cb.matrixTex = DirectX::XMMatrixIdentity();

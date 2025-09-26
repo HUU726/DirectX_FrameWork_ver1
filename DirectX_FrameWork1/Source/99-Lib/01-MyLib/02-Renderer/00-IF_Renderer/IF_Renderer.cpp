@@ -153,4 +153,5 @@ IF_Renderer::IF_Renderer()
 	System& l_p_system = System::GetInstance();
 	p_Device = l_p_system.GetDevice();
 	p_DeviceContext = l_p_system.GetDeviceContext();
+	p_camera = nullptr;
 }

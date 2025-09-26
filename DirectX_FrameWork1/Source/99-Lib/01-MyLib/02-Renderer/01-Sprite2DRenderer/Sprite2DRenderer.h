@@ -4,6 +4,7 @@
 #include "../../998-FH_Types/Sprite2D.h"
 
 
+
 struct Sprite2DConstBuffer
 {
 	DirectX::XMFLOAT4 color;
@@ -18,6 +19,7 @@ struct Sprite2DConstBuffer
 class Sprite2DRenderer : public IF_Renderer
 {
 private:
+
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;
@@ -33,7 +35,9 @@ public:
 		return instance;
 	}
 
-	void Draw(const Sprite2D* _sprite);
+	void SetCamera(Camera2D* _p_camera) { p_camera = _p_camera; }
+
+	void Draw(const hft::Sprite2D* _sprite);
 
 };
 

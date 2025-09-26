@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 //#include "TypeSup.h"
 
+class IF_Camera;
 
 
 class IF_Renderer
@@ -21,6 +22,8 @@ protected:
 	ID3D11SamplerState* p_Sampler;		// サンプラー用変数
 	ID3D11BlendState* p_BlendState;		// ブレンドステート用変数(αブレンディング)
 	ID3D11DepthStencilState* p_DSState;	// Z軸に対して同描画するかなどなど
+
+	IF_Camera* p_camera;
 
 	DirectX::XMMATRIX matrixProj;		//プロジェクション変換行列
 	DirectX::XMMATRIX matrixWarld;		//ワールド変換行列

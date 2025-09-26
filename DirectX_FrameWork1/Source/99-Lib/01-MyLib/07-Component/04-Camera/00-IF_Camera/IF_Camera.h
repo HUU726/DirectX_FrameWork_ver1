@@ -37,6 +37,7 @@ protected:
 public:
 	/*** ÉQÉbÉ^Å[ ***/
 	DirectX::XMMATRIX GetMatrixView() { return matrixView; }
+	DirectX::XMMATRIX GetMatrixProj() { return matrixProj; }
 	DirectX::XMFLOAT3 GetForward() { return forward; }
 	DirectX::XMFLOAT3 GetRight() { return right; }
 	DirectX::XMFLOAT3 GetUp() { return up; }
