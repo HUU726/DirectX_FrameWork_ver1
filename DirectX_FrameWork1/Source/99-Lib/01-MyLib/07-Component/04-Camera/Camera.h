@@ -19,7 +19,8 @@ private:
 	DirectX::XMFLOAT3 right;
 	DirectX::XMFLOAT3 up;
 	
-	DirectX::XMMATRIX matrixView;
+	DirectX::XMMATRIX matrixView;	//ビュー行列
+	DirectX::XMMATRIX matrixProj;	//プロジェクション行列
 
 	std::vector<DirectX::XMVECTOR> DeriveTargetToForward();
 	std::vector<DirectX::XMVECTOR> DeriveForwardToTarget();
