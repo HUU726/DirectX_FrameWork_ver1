@@ -1,5 +1,5 @@
 #include "SpriteRenderer.h"
-#include "GameObject.h"
+#include "../../../06-GameObject/GameObject.h"
 
 SpriteRenderer::SpriteRenderer()
 {
@@ -12,7 +12,7 @@ SpriteRenderer::SpriteRenderer(const char* _filePath)
 		p_sprite = new Sprite2D;
 		isCreate = true;
 		filePath = _filePath;
-		p_sprite->LoadTexture(_filePath);
+		texture.LoadTexture(_filePath);
 }
 
 SpriteRenderer::SpriteRenderer(Sprite2D& _sprite, const char* _filePath)
@@ -20,7 +20,7 @@ SpriteRenderer::SpriteRenderer(Sprite2D& _sprite, const char* _filePath)
 	p_sprite = &_sprite;
 
 	if (_filePath != nullptr)
-		p_sprite->LoadTexture(_filePath);
+		texture.LoadTexture(_filePath);
 }
 
 SpriteRenderer::~SpriteRenderer()
@@ -34,19 +34,19 @@ SpriteRenderer::~SpriteRenderer()
 
 void SpriteRenderer::Init()
 {
-	p_sprite->setTransform(&gameObject->GetTransform());
+	p_sprite->p_transform = gameObject->GetTransformPtr();
 }
 
 void SpriteRenderer::Draw()
 {
 	if (isRender)
-		Sprite2DRenderer::GetInstance().Draw(*p_sprite);
+		Sprite2DRenderer::GetInstance().Draw(p_sprite);
 }
 
 void SpriteRenderer::Draw(Sprite2D& _sprite)
 {
 	if (isRender)
 	{
-		Sprite2DRenderer::GetInstance().Draw(_sprite);
+		Sprite2DRenderer::GetInstance().Draw(&_sprite);
 	}
 }

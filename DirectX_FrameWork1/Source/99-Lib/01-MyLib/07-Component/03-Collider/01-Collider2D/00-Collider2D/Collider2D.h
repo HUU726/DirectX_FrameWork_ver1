@@ -2,6 +2,7 @@
 #include "../../../00-Component/Component.h"
 #include <functional>
 #include <DirectXMath.h>
+#include "../../../../998-FH_Types/HF_FLOAT.h"
 
 enum class SHAPE_2D
 {
@@ -21,16 +22,16 @@ enum COLLISION_STAT
 };
 
 class Collider2D;
-//引数と戻り値が同じ八の関数名がSceneInitという名前
+
 typedef std::function<void(Collider2D*)> CallbackOnCollisionEnter2D;
 
 class Collider2D : public Component
 {
 protected:
 	SHAPE_2D shape;			// 形の種類
-	DirectX::XMFLOAT3 offset;		// gameObjectのTransformとのずれ
-	DirectX::XMFLOAT3 position;		// 現在のワールド座標
-	DirectX::XMFLOAT3 size;			// 四角形：ｘ＝横、ｙ＝縦	円：ｘ＝半径	線分：ｘ＝長さ
+	hft::HFFLOAT3 offset;		// gameObjectのTransformとのずれ
+	hft::HFFLOAT3 position;		// 現在のワールド座標
+	hft::HFFLOAT3 size;			// 四角形：ｘ＝横、ｙ＝縦	円：ｘ＝半径	線分：ｘ＝長さ
 	
 	bool isTrigger = false;	// トリガー
 	COLLISION_STAT state;				// 当たっているかどうか
@@ -40,16 +41,16 @@ protected:
 
 public:
 	SHAPE_2D GetShape() { return shape; }
-	DirectX::XMFLOAT3 GetSize() { return size; }
-	DirectX::XMFLOAT3 GetOffset() { return offset; }
+	hft::HFFLOAT3 GetSize() { return size; }
+	hft::HFFLOAT3 GetOffset() { return offset; }
 	bool GetIsTrigger() { return isTrigger; }
 	COLLISION_STAT GetState() { return state; }
 	bool GetIsActive() { return isActive; }
 	CallbackOnCollisionEnter2D GetFuncCollisionEnter() { return funcOnCollisionEnter; }
 
 
-	void SetSize(DirectX::XMFLOAT3 _size) { size = _size; }
-	void SetOffset(DirectX::XMFLOAT3 _offset) { offset = _offset; }
+	void SetSize(hft::HFFLOAT3 _size) { size = _size; }
+	void SetOffset(hft::HFFLOAT3 _offset) { offset = _offset; }
 	void SetState(COLLISION_STAT _state) { state = _state; }
 	void SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func);
 

@@ -1,10 +1,9 @@
 #include "SceneManager.h"
 
-#include "Collider2DManager.h"
-#include "system.h"
-#include "Sprite2DRenderer.h"
-#include "TitleScene.h"
-#include "controller.h"
+#include "../../07-Component/03-Collider/99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
+#include "../../01-System/System.h"
+#include "../01-Scenes/TitleScene.h"
+//#include "controller.h"
 
 
 void SceneManager::Init()
@@ -32,10 +31,6 @@ void SceneManager::ChangeScene()
 
 void SceneManager::SetUpScene()
 {
-#if !defined(WIN64)
-	SetControllerRightAngleBase();
-	SetControllerLeftAngleBase();
-#endif
 	curScene->Init();
 }
 
@@ -57,10 +52,8 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-	System* system = &System::GetInstance();
-	system->ScreenClear();
+	static System& system = System::GetInstance();
+	system.ClearScreen();
 	curScene->Draw();
-	system->SwapBuffers();
-
-	system->PollEvents();	//‰¼’u‚«
+	system.SwapChain();
 }

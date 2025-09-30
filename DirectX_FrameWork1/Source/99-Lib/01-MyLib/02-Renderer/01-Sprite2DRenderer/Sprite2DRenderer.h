@@ -5,6 +5,10 @@
 
 
 
+class Camera2D;
+class SpriteRenderer;
+
+
 struct Sprite2DConstBuffer
 {
 	DirectX::XMFLOAT4 color;
@@ -12,6 +16,11 @@ struct Sprite2DConstBuffer
 	DirectX::XMMATRIX matrixWorld;
 	DirectX::XMMATRIX matrixProj;
 	DirectX::XMMATRIX matrixView;
+};
+
+struct Sprite2DTextureCB
+{
+	bool isTexture;
 };
 
 
@@ -23,7 +32,6 @@ private:
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;
-	void Init();
 	void RenderPipeline() override;
 
 	Sprite2DRenderer();
@@ -35,9 +43,10 @@ public:
 		return instance;
 	}
 
-	void SetCamera(Camera2D* _p_camera) { p_camera = _p_camera; }
+	void SetCamera(Camera2D* _p_camera);
 
 	void Draw(const hft::Sprite2D* _sprite);
+	void Draw(const SpriteRenderer* _renderer);
 
 };
 

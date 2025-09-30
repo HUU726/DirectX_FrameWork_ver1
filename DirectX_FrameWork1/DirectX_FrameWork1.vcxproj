@@ -127,10 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.cpp" />
     <ClCompile Include="Source\01-Main\main.cpp" />
     <ClCompile Include="Source\02-App\Application.cpp" />
     <ClCompile Include="Source\02-App\FH_Window.cpp" />
@@ -162,12 +162,13 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\100-Rand\RandGenerator.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\101-Time\Time.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.h" />
     <ClInclude Include="Source\01-Main\main.h" />
     <ClInclude Include="Source\02-App\Application.h" />
     <ClInclude Include="Source\02-App\FH_Window.h" />
@@ -205,14 +206,27 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Mesh.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Sprite2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\PixelShader.hlsl">
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\VertexShader.hlsl">
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\VS_Sprite2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\PS_Mesh3D.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\VS_Mesh3D.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,6 @@
 #include "MeshRenderer.h"
-#include "GameObject.h"
+#include "../../../06-GameObject/GameObject.h"
+#include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 
 
 
@@ -41,11 +42,11 @@ void MeshRenderer::Init()
 
 	if (p_mesh != nullptr)
 	{
-		p_mesh->setTransform(gameObject->GetTransform());
+		p_mesh->p_transform =  gameObject->GetTransformPtr();
 	}
 	else if (p_sprite != nullptr)
 	{
-		p_sprite->setTransform(gameObject->GetTransform());
+		p_sprite->p_transform = gameObject->GetTransformPtr();;
 	}
 }
 
@@ -54,20 +55,20 @@ void MeshRenderer::Draw()
 	if (isRender)
 	{
 		if (p_meshFilter->GetMesh())
-			Model3DRenderer::GetInstance().Draw(*p_meshFilter);
+			Mesh3DRenderer::GetInstance().Draw(p_meshFilter);
 		else if (p_meshFilter->GetSprite())
-			Model3DRenderer::GetInstance().Draw(*p_meshFilter->GetSprite());
+			Mesh3DRenderer::GetInstance().Draw(p_meshFilter->GetSprite());
 	}
 }
 
 void MeshRenderer::Draw(MeshFilter& _meshFilter)
 {
 	if (isRender)
-		Model3DRenderer::GetInstance().Draw(_meshFilter);
+		Mesh3DRenderer::GetInstance().Draw(_meshFilter);
 }
 
 void MeshRenderer::Draw(Sprite2D& _sprite)
 {
 	if (isRender)
-		Model3DRenderer::GetInstance().Draw(_sprite);
+		Mesh3DRenderer::GetInstance().Draw(_sprite);
 }

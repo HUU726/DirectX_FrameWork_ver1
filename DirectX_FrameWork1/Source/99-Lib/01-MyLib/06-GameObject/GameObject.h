@@ -65,8 +65,8 @@ public:
 
 	void InitComponent();
 	void UpdateComponent();
-	virtual void Draw();
 
 	virtual void Init() = 0;
 	virtual void Update() = 0;
+	virtual void Draw() = 0;
 };

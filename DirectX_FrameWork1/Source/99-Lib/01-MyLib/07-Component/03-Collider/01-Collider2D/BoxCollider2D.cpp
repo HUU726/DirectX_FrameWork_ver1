@@ -1,6 +1,6 @@
 #include "BoxCollider2D.h"
-#include "GameObject.h"
-#include "Collider2DManager.h"
+#include "../../../06-GameObject/GameObject.h"
+#include "../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
 bool BoxCollider2D::CollideWith(Collider2D* _p_collider)
 {
@@ -25,9 +25,9 @@ bool BoxCollider2D::CollideWithLine(Collider2D* _line)
 void BoxCollider2D::Init()
 {
 	Collider2DManager::GetInstance().AddCollider(this);
-	transform = gameObject->GetTransformPtr();
-	position = transform->position;
-	size = transform->scale;
+	Transform transform = gameObject->GetTransform();
+	position = transform.position;
+	size = transform.scale;
 }
 
 void BoxCollider2D::Update()

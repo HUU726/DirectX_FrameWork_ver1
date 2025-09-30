@@ -9,7 +9,6 @@ struct PS_IN
     float4 pos : SV_POSITION; // ピクセルの画面上の座標
     float4 col : COLOR0;
     float2 tex : TEXCOORD;
-    
 };
 // グローバル変数の宣言
 // ※C言語側からデータを渡されたときにセットされる変数
@@ -20,13 +19,10 @@ SamplerState mySampler : register(s0); //サンプラー
 // ピクセルシェーダーのエントリポイント
 float4 main(PS_IN input) : SV_Target
 {
-    // Sampler関数 → テクスチャから該当のUV位置のピクセルの色をとってくる
-    float4 color = myTexture.Sample(mySampler, input.tex);
+    float color = input.col;
     
-    color = color * input.col;
+    color = color * myTexture.Sample(mySampler, input.tex);
+    
     // 決定した色をreturnする
     return color;
-    
-    //return input.col;
-    //return float4(1, 1, 1, 1);
 }

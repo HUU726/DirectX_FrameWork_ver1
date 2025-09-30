@@ -1,6 +1,14 @@
 #include "Texture.h"
 #include "stb_image.h"
+#include "../01-System/System.h"
 
+#include <iostream>
+
+
+
+/***************************************************************************************************
+* グローバル関数
+***************************************************************************************************/
 // テクスチャをロード
 HRESULT LoadTexture(ID3D11Device* device, const char* filename, ID3D11ShaderResourceView** srv)
 {
@@ -54,4 +62,60 @@ HRESULT LoadTexture(ID3D11Device* device, const char* filename, ID3D11ShaderReso
 	stbi_image_free(pixels);
 
 	return S_OK;
+}
+
+
+
+
+/***************************************************************************************************
+* Textureクラス
+***************************************************************************************************/
+void Texture::LoadTexture(std::string _filePath)
+{
+	static TextureTable& table = TextureTable::GetInstance();
+
+	filePath = _filePath;
+	wp_textureView = table.LoadTexture(_filePath);
+}
+
+
+
+
+/***************************************************************************************************
+* TextureTableクラス
+***************************************************************************************************/
+TextureTable::TextureTable()
+{
+
+}
+
+TextureTable::~TextureTable()
+{
+	table.clear();
+}
+
+std::weak_ptr<ID3D11ShaderResourceView> TextureTable::GetTexture(std::string _filePath)
+{
+	if (table.count(_filePath))
+		return table[_filePath];
+
+	
+	std::cout << _filePath << "はテーブルに存在しないためロードします。" << std::endl;
+	return this->LoadTexture(_filePath);
+}
+
+std::weak_ptr<ID3D11ShaderResourceView> TextureTable::LoadTexture(std::string _filePath)
+{
+	static System& system = System::GetInstance();
+
+	auto sp_srv = std::shared_ptr<ID3D11ShaderResourceView>();
+	ID3D11ShaderResourceView* p_srv = sp_srv.get();
+	::LoadTexture(system.GetDevice(), _filePath.c_str(), &p_srv);
+	table[_filePath] = sp_srv;
+	return sp_srv;
+}
+
+void TextureTable::ReleaseTable()
+{
+	table.clear();
 }

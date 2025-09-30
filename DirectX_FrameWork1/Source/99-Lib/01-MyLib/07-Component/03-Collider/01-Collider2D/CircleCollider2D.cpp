@@ -1,6 +1,6 @@
 #include "CircleCollider2D.h"
-#include "GameObject.h"
-#include "Collider2DManager.h"
+#include "../../../06-GameObject/GameObject.h"
+#include "../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
 bool CircleCollider2D::CollideWith(Collider2D* _collider)
 {
@@ -25,7 +25,7 @@ bool CircleCollider2D::CollideWithLine(Collider2D* _line)
 void CircleCollider2D::Init()
 {
     Collider2DManager::GetInstance().AddCollider(this);
-    transform = gameObject->GetTransformPtr();
-    position = transform->position;
-    size = transform->scale;
+    Transform transform = gameObject->GetTransform();
+    position = transform.position;
+    size = transform.scale;
 }

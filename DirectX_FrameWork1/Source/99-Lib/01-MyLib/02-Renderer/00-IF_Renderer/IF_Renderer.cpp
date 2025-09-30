@@ -145,6 +145,7 @@ void IF_Renderer::Init()
 	this->p_DeviceContext = l_p_system->GetDeviceContext();
 
 	InitShader();
+	InitBuffer();
 	InitState();
 }
 

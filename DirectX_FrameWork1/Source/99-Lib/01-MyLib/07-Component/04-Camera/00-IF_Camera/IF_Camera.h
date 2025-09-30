@@ -2,8 +2,8 @@
 
 
 #include "../../00-Component/Component.h"
+#include "../../../998-FH_Types/HF_FLOAT.h"
 #include <vector>
-#include <DirectXMath.h>
 
 
 class IF_Camera : public Component
@@ -13,7 +13,7 @@ protected:
 	float farClip;	//最遠クリップ距離
 	int priority;	//描画優先度(昇順)
 
-	DirectX::XMFLOAT3* p_targetPos;
+	hft::HFFLOAT3* p_targetPos;
 
 	enum VIEW_ELEMENT
 	{
@@ -23,9 +23,9 @@ protected:
 		ALL_ELEMENT,
 	};
 
-	DirectX::XMFLOAT3 forward;
-	DirectX::XMFLOAT3 right;
-	DirectX::XMFLOAT3 up;
+	hft::HFFLOAT3 forward;
+	hft::HFFLOAT3 right;
+	hft::HFFLOAT3 up;
 
 	DirectX::XMMATRIX matrixView;
 	DirectX::XMMATRIX matrixProj;
@@ -38,11 +38,11 @@ public:
 	/*** ゲッター ***/
 	DirectX::XMMATRIX GetMatrixView() { return matrixView; }
 	DirectX::XMMATRIX GetMatrixProj() { return matrixProj; }
-	DirectX::XMFLOAT3 GetForward() { return forward; }
-	DirectX::XMFLOAT3 GetRight() { return right; }
-	DirectX::XMFLOAT3 GetUp() { return up; }
+	hft::HFFLOAT3 GetForward() { return forward; }
+	hft::HFFLOAT3 GetRight() { return right; }
+	hft::HFFLOAT3 GetUp() { return up; }
 
 	/*** セッター ***/
-	void SetTargetPos(DirectX::XMFLOAT3* _p_pos) { p_targetPos = _p_pos; }
+	void SetTargetPos(hft::HFFLOAT3* _p_pos) { p_targetPos = _p_pos; }
 };
 

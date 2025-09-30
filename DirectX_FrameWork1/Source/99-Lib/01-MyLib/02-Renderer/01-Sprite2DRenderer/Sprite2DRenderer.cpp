@@ -8,6 +8,7 @@
 #include "../../998-FH_Types/TransformMatrix.h"
 
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
+#include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
 #define VERTEX_NUM_2D (4)
 
@@ -134,12 +135,6 @@ HRESULT Sprite2DRenderer::InitState()
 	return S_OK;
 }
 
-void Sprite2DRenderer::Init()
-{
-	InitShader();
-	InitBuffer();
-	InitState();
-}
 
 void Sprite2DRenderer::RenderPipeline()
 {
@@ -164,6 +159,13 @@ void Sprite2DRenderer::RenderPipeline()
 
 
 
+
+
+
+
+void Sprite2DRenderer::SetCamera(Camera2D* _p_camera)
+{
+}
 
 void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 {
@@ -203,4 +205,8 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	//p_DeviceContext->PSSetShaderResources(0, 1, &(_sprite->p_texture.p_textureView));
 
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // •`‰æ–½—ß
+}
+
+void Sprite2DRenderer::Draw(const SpriteRenderer* _renderer)
+{
 }
