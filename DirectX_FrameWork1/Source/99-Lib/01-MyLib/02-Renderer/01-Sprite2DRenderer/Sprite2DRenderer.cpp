@@ -40,14 +40,16 @@ HRESULT Sprite2DRenderer::InitShader()
 	unsigned int numElements = ARRAYSIZE(layout);
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, "VertexShader.hlsl");
+	const char* vsPath = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
+	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, vsPath);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
 	}
 
 	// ピクセルシェーダーオブジェクトを生成
-	hr = CreatePixelShader(&this->p_PixelShader, "PixelShader.hlsl");
+	const char* psPath = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl";
+	hr = CreatePixelShader(&this->p_PixelShader, psPath);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreatePixelShader error", "error", MB_OK);
 		return hr;

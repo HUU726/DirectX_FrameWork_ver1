@@ -1,12 +1,14 @@
 #pragma once
 
 #include "../00-IF_Renderer/IF_Renderer.h"
+#include "../../998-FH_Types/Vertex.h"
+#include "../../998-FH_Types/Sprite2D.h"
+#include "../../998-FH_Types/Mesh.h"
 
 
 
 class Camera3D;
-class Sprite2D;
-class Mesh;
+class MeshFilter;
 class SpriteRenderer;
 class MeshRenderer;
 
@@ -44,8 +46,9 @@ public:
 
 	void SetCamera(Camera3D* _p_camera);
 
-	void Draw(const Sprite2D* _sprite);
-	void Draw(const Mesh* _mesh);
+	void Draw(const hft::Sprite2D* _sprite);
+	void Draw(const hft::Mesh* _mesh);
+	void Draw(const MeshFilter* _p_meshFilter);
 	void Draw(const SpriteRenderer* _renderer);
 	void Draw(const MeshRenderer* _renderer);
 

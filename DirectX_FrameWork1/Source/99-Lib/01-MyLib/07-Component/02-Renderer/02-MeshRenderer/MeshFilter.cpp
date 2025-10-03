@@ -14,16 +14,16 @@ MeshFilter::MeshFilter()
 	sprite = nullptr;
 }
 
-MeshFilter::MeshFilter(Mesh& _mesh)
+MeshFilter::MeshFilter(hft::Mesh& _mesh)
 {
-	mesh = new Mesh;
+	mesh = new hft::Mesh;
 	*mesh = _mesh;
 	sprite = nullptr;
 }
 
-MeshFilter::MeshFilter(Sprite2D& _sprite)
+MeshFilter::MeshFilter(hft::Sprite2D& _sprite)
 {
-	sprite = new Sprite2D;
+	sprite = new hft::Sprite2D;
 	
 	mesh = nullptr;
 	*sprite = _sprite;
@@ -41,6 +41,10 @@ MeshFilter::~MeshFilter()
 		delete sprite;
 		sprite = nullptr;
 	}
+}
+
+void MeshFilter::Init()
+{
 }
 
 //void MeshFilter::Init()

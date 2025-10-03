@@ -15,15 +15,15 @@ MeshRenderer::MeshRenderer(const char* _filePath)
 		p_meshFilter = new	MeshFilter;
 		isCreate = true;
 		filePath = _filePath;
-		p_meshFilter->LoadTexture(_filePath);
+		//p_meshFilter->LoadTexture(_filePath);
 	}
 }
 
 MeshRenderer::MeshRenderer(MeshFilter& _meshFilter, const char* _filePath)
 {
 	p_meshFilter = &_meshFilter;
-	if (_filePath != nullptr)
-		p_meshFilter->LoadTexture(_filePath);
+	//if (_filePath != nullptr)
+	//	p_meshFilter->LoadTexture(_filePath);
 }
 
 MeshRenderer::~MeshRenderer()
@@ -37,8 +37,8 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::Init()
 {
-	Mesh* p_mesh = p_meshFilter->GetMesh();
-	Sprite2D* p_sprite = p_meshFilter->GetSprite();
+	hft::Mesh* p_mesh = p_meshFilter->GetMesh();
+	hft::Sprite2D* p_sprite = p_meshFilter->GetSprite();
 
 	if (p_mesh != nullptr)
 	{
@@ -61,14 +61,14 @@ void MeshRenderer::Draw()
 	}
 }
 
-void MeshRenderer::Draw(MeshFilter& _meshFilter)
+void MeshRenderer::Draw(MeshFilter* _p_meshFilter)
 {
 	if (isRender)
-		Mesh3DRenderer::GetInstance().Draw(_meshFilter);
+		Mesh3DRenderer::GetInstance().Draw(_p_meshFilter);
 }
 
-void MeshRenderer::Draw(Sprite2D& _sprite)
+void MeshRenderer::Draw(hft::Sprite2D* _p_sprite)
 {
 	if (isRender)
-		Mesh3DRenderer::GetInstance().Draw(_sprite);
+		Mesh3DRenderer::GetInstance().Draw(_p_sprite);
 }

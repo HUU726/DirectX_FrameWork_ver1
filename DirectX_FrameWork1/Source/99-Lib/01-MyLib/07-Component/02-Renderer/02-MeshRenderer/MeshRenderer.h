@@ -19,7 +19,7 @@ public:
 	~MeshRenderer();
 	void Init() override;
 	void Draw() override;
-	void Draw(MeshFilter& _meshFilter);
-	void Draw(Sprite2D& _sprite);
+	void Draw(MeshFilter* _p_meshFilter);
+	void Draw(hft::Sprite2D* _p_sprite);
 };
 
