@@ -7,3 +7,8 @@ void ShapeTable2D::SetShape(Shape2D& _shape)
 
 	table[_shape.name] = std::make_shared<Shape2D>(_shape);
 }
+
+void ShapeTable2D::ClearTable()
+{
+	table.clear();
+}

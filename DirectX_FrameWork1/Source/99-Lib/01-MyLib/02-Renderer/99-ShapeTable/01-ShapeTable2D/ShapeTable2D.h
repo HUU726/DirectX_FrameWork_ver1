@@ -18,7 +18,6 @@ private:
 	std::unordered_map<std::string, std::shared_ptr<Shape2D>> table;
 
 
-
 	ShapeTable2D();
 
 public:
@@ -29,6 +28,7 @@ public:
 	}
 	void SetShape(Shape2D& _shape);
 	std::shared_ptr<Shape2D> GetShape(std::string _name) { return table[_name]; }
+	void ClearTable();
 
 };
 
