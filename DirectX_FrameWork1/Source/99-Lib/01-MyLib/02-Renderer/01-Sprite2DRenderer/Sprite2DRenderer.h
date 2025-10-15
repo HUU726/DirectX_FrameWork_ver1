@@ -7,6 +7,7 @@
 
 class Camera2D;
 class SpriteRenderer;
+struct Shape2D;
 
 
 struct Sprite2DConstBuffer
@@ -28,6 +29,7 @@ struct Sprite2DTextureCB
 class Sprite2DRenderer : public IF_Renderer
 {
 private:
+	ID3D11Buffer* p_PSConstantBuffer;		// ピクセルシェーダー用定数バッファ用変数
 
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
@@ -46,7 +48,8 @@ public:
 	void SetCamera(Camera2D* _p_camera);
 
 	void Draw(const hft::Sprite2D* _sprite);
-	void Draw(const SpriteRenderer* _renderer);
+	void Draw(SpriteRenderer* _renderer);
+	void Draw(const Shape2D* _shape, hft::HFFLOAT2 _pos = { 0.f,0.f }, hft::HFFLOAT2 _scl = { 100.f,100.f }, hft::HFFLOAT3 _rot = { 0.f,0.f,0.f });
 
 };
 

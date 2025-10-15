@@ -7,8 +7,11 @@
 #include "../../998-FH_Types/Sprite2D.h"
 #include "../../998-FH_Types/TransformMatrix.h"
 
+#include "../99-Shape/Shape.h"
+
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+#include "../../06-GameObject/GameObject.h"
 
 #define VERTEX_NUM_2D (4)
 
@@ -64,6 +67,17 @@ HRESULT Sprite2DRenderer::InitShader()
 	cdDesc.MiscFlags = 0;
 	cdDesc.StructureByteStride = 0;
 	hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantBuffer);
+	if (FAILED(hr)) return hr;
+
+	// 定数バッファ作成
+	D3D11_BUFFER_DESC cdDesc;
+	cdDesc.ByteWidth = sizeof(Sprite2DTextureCB);
+	cdDesc.Usage = D3D11_USAGE_DEFAULT;
+	cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cdDesc.CPUAccessFlags = 0;
+	cdDesc.MiscFlags = 0;
+	cdDesc.StructureByteStride = 0;
+	hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_PSConstantBuffer);
 	if (FAILED(hr)) return hr;
 
 	topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
@@ -151,6 +165,7 @@ void Sprite2DRenderer::RenderPipeline()
 
 	// 定数バッファを頂点シェーダーにセットする
 	this->p_DeviceContext->VSSetConstantBuffers(0, 1, &this->p_constantBuffer);
+	this->p_DeviceContext->PSSetConstantBuffers(0, 1, &this->p_PSConstantBuffer);
 
 	// ブレンドステートをセットする
 	this->p_DeviceContext->OMSetBlendState(this->p_BlendState, NULL, 0xffffffff);
@@ -209,6 +224,68 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // 描画命令
 }
 
-void Sprite2DRenderer::Draw(const SpriteRenderer* _renderer)
+void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
+{
+
+	if (p_camera == nullptr)
+		return;
+
+	RenderPipeline();
+
+	std::shared_ptr<Shape2D> shape = _renderer->GetShape();
+	Transform* transform = _renderer->GetGameObject()->GetComponent<Transform>();
+
+	TransformMatrix mtrxTf;
+	mtrxTf.ConversionPosition(transform->position);
+	mtrxTf.ConversionRotation(transform->rotation);
+	mtrxTf.ConversionScale(transform->scale);
+
+	{
+		Sprite2DConstBuffer cb;	// 定数バッファを更新
+
+		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
+		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
+		cb.matrixView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());	//ビュー変換行列
+
+		//cb.matrixTex = DirectX::XMMatrixTranspose();
+		cb.color = shape->vertices[0].color;
+		cb.matrixTex = DirectX::XMMatrixIdentity();
+
+		// 行列をシェーダーに渡す
+		p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);
+	}
+
+	{
+		Sprite2DTextureCB cb;
+		Texture* p_texture = _renderer->GetTexture();
+		if (p_texture->wp_textureView.expired())
+		{
+			cb.isTexture = false;
+		}
+		else
+		{
+			cb.isTexture = true;
+			//テクスチャをピクセルシェーダーに渡す
+			ID3D11ShaderResourceView* textureView;
+			if (p_texture->wp_textureView.lock().get() != nullptr)
+				textureView = p_texture->wp_textureView.lock().get();
+			p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
+		}
+
+		p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
+
+	}
+
+	UINT strides = sizeof(Vertex);
+	UINT offsets = 0;
+
+	p_DeviceContext->IASetVertexBuffers(0, 1, &(shape->p_vertexBuffer), &strides, &offsets);
+	p_DeviceContext->IASetIndexBuffer(shape->p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	p_DeviceContext->IASetPrimitiveTopology(topology);
+
+	p_DeviceContext->DrawIndexed(shape->indices.size(), 0, 0); // 描画命令
+}
+
+void Sprite2DRenderer::Draw(const Shape2D* _shape, hft::HFFLOAT2 _pos, hft::HFFLOAT2 _scl, hft::HFFLOAT3 _rot)
 {
 }

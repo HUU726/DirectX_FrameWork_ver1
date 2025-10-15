@@ -50,3 +50,13 @@ void SpriteRenderer::Draw(Sprite2D& _sprite)
 		Sprite2DRenderer::GetInstance().Draw(&_sprite);
 	}
 }
+
+void SpriteRenderer::Draw(SpriteRenderer* _renderer)
+{
+	if (isRender)
+	{
+		Sprite2DRenderer::GetInstance().Draw(this);
+	}
+}
+
+

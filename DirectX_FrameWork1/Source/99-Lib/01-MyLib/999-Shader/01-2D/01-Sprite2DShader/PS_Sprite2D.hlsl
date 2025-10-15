@@ -14,14 +14,22 @@ struct PS_IN
 // ※C言語側からデータを渡されたときにセットされる変数
 Texture2D myTexture : register(t0); //テクスチャー
 SamplerState mySampler : register(s0); //サンプラー
-
+// 定数バッファ受け取り用
+cbuffer ConstBuffer : register(b0)
+{
+    bool isTexture;
+}
 
 // ピクセルシェーダーのエントリポイント
 float4 main(PS_IN input) : SV_Target
 {
     float color = input.col;
     
-    color = color * myTexture.Sample(mySampler, input.tex);
+    if (isTexture == true)
+    {
+        color = color * myTexture.Sample(mySampler, input.tex);
+    }
+
     
     // 決定した色をreturnする
     return color;
