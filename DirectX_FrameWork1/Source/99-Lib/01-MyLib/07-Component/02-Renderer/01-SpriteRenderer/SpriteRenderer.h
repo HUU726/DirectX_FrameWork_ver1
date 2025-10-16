@@ -13,7 +13,6 @@ class SpriteRenderer : public Component
 private:
 	std::shared_ptr<Shape2D> sp_shape;
 	Texture texture;		// ポリゴンにはるテクスチャー
-	bool isCreate = false;	// Sprite2Dを作ったかどうか
 	const char* filePath;	// 描画する画像のパス
 	bool isRender = true;	// 描画処理をするかどうか
 

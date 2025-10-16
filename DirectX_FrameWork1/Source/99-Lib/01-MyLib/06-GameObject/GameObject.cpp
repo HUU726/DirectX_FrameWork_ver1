@@ -3,6 +3,7 @@
 
 GameObject::GameObject()
 {
+	AddComponent<Transform>();
 	isActive = true;
 	isRender = true;
 }

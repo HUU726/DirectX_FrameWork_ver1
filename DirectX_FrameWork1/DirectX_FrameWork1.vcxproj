@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.h" />

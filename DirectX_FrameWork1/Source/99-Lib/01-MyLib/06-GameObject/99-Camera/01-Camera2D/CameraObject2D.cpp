@@ -17,4 +17,9 @@ void CameraObject2D::Init()
 
 void CameraObject2D::Update()
 {
+	GetComponent<Camera2D>()->Update();
+}
+
+void CameraObject2D::Draw()
+{
 }

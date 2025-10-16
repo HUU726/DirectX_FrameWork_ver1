@@ -11,5 +11,6 @@ public:
 	~CameraObject2D();
 	void Init() override;
 	void Update() override;
+	void Draw() override;
 };
 

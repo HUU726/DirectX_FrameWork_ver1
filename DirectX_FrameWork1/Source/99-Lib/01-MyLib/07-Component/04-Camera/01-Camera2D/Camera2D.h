@@ -17,7 +17,6 @@ public:
 	Camera2D(float _width, float _height, float _newarClip, float forClip);
 	~Camera2D();
 
-
 	void Init() override;
 	void Update() override;
 

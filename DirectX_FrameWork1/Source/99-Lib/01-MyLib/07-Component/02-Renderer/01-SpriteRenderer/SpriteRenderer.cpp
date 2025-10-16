@@ -3,7 +3,9 @@
 #include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 
 SpriteRenderer::SpriteRenderer()
-{}
+{
+	sp_shape = ShapeTable2D::GetInstance().GetShape("sprite");
+}
 
 SpriteRenderer::SpriteRenderer(const char* _filePath)
 {

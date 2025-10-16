@@ -72,7 +72,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// 定数バッファ作成
 	D3D11_BUFFER_DESC PS_cdDesc;
-	PS_cdDesc.ByteWidth = sizeof(Sprite2DTextureCB);
+	PS_cdDesc.ByteWidth = (sizeof(Sprite2DTextureCB) + 15) & ~15;
 	PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
 	PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	PS_cdDesc.CPUAccessFlags = 0;
@@ -81,7 +81,7 @@ HRESULT Sprite2DRenderer::InitShader()
 	hr = this->p_Device->CreateBuffer(&PS_cdDesc, NULL, &this->p_PSConstantBuffer);
 	if (FAILED(hr)) return hr;
 
-	topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+	topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	return S_OK;
 }
@@ -183,6 +183,7 @@ void Sprite2DRenderer::RenderPipeline()
 
 void Sprite2DRenderer::SetCamera(Camera2D* _p_camera)
 {
+	p_camera = _p_camera;
 }
 
 void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
@@ -234,7 +235,10 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	RenderPipeline();
 
 	std::shared_ptr<Shape2D> shape = _renderer->GetShape();
-	Transform* transform = _renderer->GetGameObject()->GetComponent<Transform>();
+	if (!shape)
+		return;
+
+	Transform* transform = _renderer->GetGameObject()->GetTransformPtr();
 
 	TransformMatrix mtrxTf;
 	mtrxTf.ConversionPosition(transform->position);
@@ -267,7 +271,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 		{
 			cb.isTexture = true;
 			//テクスチャをピクセルシェーダーに渡す
-			ID3D11ShaderResourceView* textureView;
+			ID3D11ShaderResourceView* textureView = nullptr;
 			if (p_texture->wp_textureView.lock().get() != nullptr)
 				textureView = p_texture->wp_textureView.lock().get();
 			p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
@@ -277,12 +281,11 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 
 	}
 
-	UINT strides = sizeof(Vertex);
+	UINT strides = sizeof(hft::Vertex);
 	UINT offsets = 0;
 
 	p_DeviceContext->IASetVertexBuffers(0, 1, &(shape->p_vertexBuffer), &strides, &offsets);
 	p_DeviceContext->IASetIndexBuffer(shape->p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	p_DeviceContext->IASetPrimitiveTopology(topology);
 
 	p_DeviceContext->DrawIndexed(shape->indices.size(), 0, 0); // 描画命令
 }
