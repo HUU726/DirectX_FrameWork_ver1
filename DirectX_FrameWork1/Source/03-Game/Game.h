@@ -13,8 +13,6 @@ class Game
 {
 private:
 
-	void Update();				//XV
-	void Draw();				//•`‰æ
 	Game();
 
 public:

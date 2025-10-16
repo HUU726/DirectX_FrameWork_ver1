@@ -29,30 +29,31 @@ HRESULT Sprite2DRenderer::InitShader()
 {
 
 	HRESULT hr;
-
+	
 	// インプットレイアウト作成
-	D3D11_INPUT_ELEMENT_DESC layout[]
+	std::vector<D3D11_INPUT_ELEMENT_DESC> l_layout
 	{
 		// 位置座標があるということを伝える
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		(D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }),
 		// 色情報があるということを伝える
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		// UV座標( uv )
 		{ "TEX", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
-	unsigned int numElements = ARRAYSIZE(layout);
+
+	l_layout.swap(this->layouts);
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
-	const char* vsPath = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, vsPath);
+	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
+	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layouts.data(), layouts.size(), VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
 	}
 
 	// ピクセルシェーダーオブジェクトを生成
-	const char* psPath = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl";
-	hr = CreatePixelShader(&this->p_PixelShader, psPath);
+	PS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl";
+	hr = CreatePixelShader(&this->p_PixelShader, PS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreatePixelShader error", "error", MB_OK);
 		return hr;
@@ -70,14 +71,14 @@ HRESULT Sprite2DRenderer::InitShader()
 	if (FAILED(hr)) return hr;
 
 	// 定数バッファ作成
-	D3D11_BUFFER_DESC cdDesc;
-	cdDesc.ByteWidth = sizeof(Sprite2DTextureCB);
-	cdDesc.Usage = D3D11_USAGE_DEFAULT;
-	cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cdDesc.CPUAccessFlags = 0;
-	cdDesc.MiscFlags = 0;
-	cdDesc.StructureByteStride = 0;
-	hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_PSConstantBuffer);
+	D3D11_BUFFER_DESC PS_cdDesc;
+	PS_cdDesc.ByteWidth = sizeof(Sprite2DTextureCB);
+	PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
+	PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	PS_cdDesc.CPUAccessFlags = 0;
+	PS_cdDesc.MiscFlags = 0;
+	PS_cdDesc.StructureByteStride = 0;
+	hr = this->p_Device->CreateBuffer(&PS_cdDesc, NULL, &this->p_PSConstantBuffer);
 	if (FAILED(hr)) return hr;
 
 	topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
@@ -286,6 +287,45 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	p_DeviceContext->DrawIndexed(shape->indices.size(), 0, 0); // 描画命令
 }
 
-void Sprite2DRenderer::Draw(const Shape2D* _shape, hft::HFFLOAT2 _pos, hft::HFFLOAT2 _scl, hft::HFFLOAT3 _rot)
+void Sprite2DRenderer::Draw(const Shape2D& _shape, hft::HFFLOAT4 _pos, hft::HFFLOAT3 _scl, hft::HFFLOAT3 _rot)
 {
+	if (p_camera == nullptr)
+		return;
+
+	RenderPipeline();
+
+	TransformMatrix mtrxTf;
+	mtrxTf.ConversionPosition(_pos);
+	mtrxTf.ConversionRotation(_rot);
+	mtrxTf.ConversionScale(_scl);
+
+	{
+		Sprite2DConstBuffer cb;	// 定数バッファを更新
+
+		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
+		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
+		cb.matrixView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());	//ビュー変換行列
+
+		//cb.matrixTex = DirectX::XMMatrixTranspose();
+		cb.color = _shape.vertices[0].color;
+		cb.matrixTex = DirectX::XMMatrixIdentity();
+
+		// 行列をシェーダーに渡す
+		p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);
+	}
+
+	{
+		Sprite2DTextureCB cb;
+		cb.isTexture = false;
+		p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
+	}
+
+	UINT strides = sizeof(Vertex);
+	UINT offsets = 0;
+
+	p_DeviceContext->IASetVertexBuffers(0, 1, &(_shape.p_vertexBuffer), &strides, &offsets);
+	p_DeviceContext->IASetIndexBuffer(_shape.p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	p_DeviceContext->IASetPrimitiveTopology(topology);
+
+	p_DeviceContext->DrawIndexed(_shape.indices.size(), 0, 0); // 描画命令
 }

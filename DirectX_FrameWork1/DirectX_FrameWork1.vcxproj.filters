@@ -105,9 +105,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -117,7 +114,22 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -233,9 +245,6 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\02-Camera3D\CameraObject3D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -245,12 +254,29 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-Camera\01-Camera2D\CameraObject2D.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\PixelShader.hlsl" />
-    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-Sprite2DShader\VertexShader.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\VS_Sprite2D.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\PS_Mesh3D.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\VS_Mesh3D.hlsl" />
   </ItemGroup>
 </Project>

@@ -2,22 +2,8 @@
 
 #include "../99-Lib/01-MyLib/01-System/System.h"
 
+#include "../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
-
-void Game::Update()
-{
-
-}
-
-void Game::Draw()
-{
-	static System& system = System::GetInstance();
-	system.ClearScreen();
-
-
-
-	system.SwapChain();
-}
 
 
 Game::Game()
@@ -32,15 +18,19 @@ Game::~Game()
 
 void Game::Init()
 {
+	SceneManager& sceneMng = SceneManager::GetInstance();
+	sceneMng.Init();
 }
 
 void Game::Run()
 {
-	Update();
-	Draw();
+	static SceneManager& sceneMng = SceneManager::GetInstance();
+
+	sceneMng.RunScene();
 }
 
 void Game::Uninit()
 {
-	
+	SceneManager& sceneMng = SceneManager::GetInstance();
+	sceneMng.UnInit();
 }

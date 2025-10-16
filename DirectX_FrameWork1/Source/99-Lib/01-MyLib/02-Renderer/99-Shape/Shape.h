@@ -4,7 +4,9 @@
 #include <string>
 
 #include <vector>
+#include <memory>
 #include "../../998-FH_Types/Vertex.h"
+
 
 struct Shape2D
 {
@@ -14,3 +16,6 @@ struct Shape2D
 	ID3D11Buffer* p_vertexBuffer;		//頂点バッファー
 	ID3D11Buffer* p_indexBuffer;		//インデックスバッファー
 };
+
+
+void CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape);

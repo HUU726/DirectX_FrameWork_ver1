@@ -25,6 +25,9 @@
 #include <assert.h>
 
 
+System::System()
+{
+}
 
 
 /**

@@ -49,7 +49,7 @@ public:
 
 	void Draw(const hft::Sprite2D* _sprite);
 	void Draw(SpriteRenderer* _renderer);
-	void Draw(const Shape2D* _shape, hft::HFFLOAT2 _pos = { 0.f,0.f }, hft::HFFLOAT2 _scl = { 100.f,100.f }, hft::HFFLOAT3 _rot = { 0.f,0.f,0.f });
+	void Draw(const Shape2D& _shape, hft::HFFLOAT4 _pos = { 0.f,0.f,0.f,0.f }, hft::HFFLOAT3 _scl = { 100.f,100.f,0.f }, hft::HFFLOAT3 _rot = { 0.f,0.f,0.f });
 
 };
 

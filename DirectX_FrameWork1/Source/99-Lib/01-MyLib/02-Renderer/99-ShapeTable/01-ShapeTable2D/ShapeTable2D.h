@@ -26,7 +26,7 @@ public:
 		static ShapeTable2D instance;
 		return instance;
 	}
-	void SetShape(Shape2D& _shape);
+	void AddShape(Shape2D& _shape);
 	std::shared_ptr<Shape2D> GetShape(std::string _name) { return table[_name]; }
 	void ClearTable();
 

@@ -9,6 +9,10 @@ private:
 	SceneManager() = default;
 	~SceneManager() = default;
 
+	void Input();
+	void Update();
+	void Draw();
+
 public:
 	static SceneManager& GetInstance()
 	{
@@ -21,10 +25,8 @@ public:
 
 	void ChangeScene();	// シーン変更
 	void SetUpScene();	// シーンのセットアップ
+	void RunScene();
 	void UnloadScene();	// シーンの後片付け
 
-	void Input();
-	void Update();
-	void Draw();
 };
 

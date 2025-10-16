@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <vector>
 
 class IF_Camera;
 
@@ -10,6 +11,7 @@ class IF_Renderer
 {
 protected:
 	ID3D11InputLayout* p_InputLayout;	// インプットレイアウト
+	std::vector<D3D11_INPUT_ELEMENT_DESC> layouts;
 	ID3D11VertexShader* p_VertexShader;	// 頂点シェーダーオブジェクト
 	ID3D11PixelShader* p_PixelShader;	// ピクセルシェーダーオブジェクト
 	ID3D11Buffer* p_constantBuffer;		// 定数バッファ用変数
@@ -27,6 +29,9 @@ protected:
 	DirectX::XMMATRIX matrixProj;		//プロジェクション変換行列
 	DirectX::XMMATRIX matrixWarld;		//ワールド変換行列
 	DirectX::XMMATRIX matrixView;		//ビュー変換行列
+	
+	const char* VS_Path;	//頂点シェーダーのファイルパス
+	const char* PS_Path;	//ピクセルシェーダーのファイルパス
 
 	/************************  Systemクラスからポインタをもらう  ****************************************************************/
 	ID3D11Device* p_Device;						// デバイス＝DirectXの各種機能を作る
@@ -50,6 +55,9 @@ protected:
 	IF_Renderer();
 
 public:
+	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
+	const char* GetVSPaht() const { return VS_Path; }
+	const char* GetPSPath() const { return PS_Path; }
 
 };
 

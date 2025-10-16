@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include "HF_FLOAT.h"
 
 #include <vector>
 
@@ -10,9 +10,9 @@ namespace hft
 {
 	struct Vertex
 	{
-		DirectX::XMFLOAT4 position;
-		DirectX::XMFLOAT4 color;
-		DirectX::XMFLOAT2 uv;
+		hft::HFFLOAT4 position;
+		hft::HFFLOAT4 color;
+		hft::HFFLOAT2 uv;
 	};
 
 }

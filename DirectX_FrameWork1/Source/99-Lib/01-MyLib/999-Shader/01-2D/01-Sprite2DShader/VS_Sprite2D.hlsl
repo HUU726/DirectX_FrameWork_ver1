@@ -36,7 +36,7 @@ VS_OUT main(VS_IN input)
  
     // ワールド変換行列を頂点座標に掛けて、移動、回転、拡大縮小する
     output.pos = mul(input.pos, matrixWorld);
-    // びゅ変換行列をかけて、カメラの位置を反映させる
+    // ビュー変換行列をかけて、カメラの位置を反映させる
     output.pos = mul(output.pos, matrixView);
     // 頂点座標に投影行列をかけて、平面上の座標にする
     output.pos = mul(output.pos, matrixProj);

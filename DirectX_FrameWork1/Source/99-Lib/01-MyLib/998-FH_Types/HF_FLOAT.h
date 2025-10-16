@@ -13,7 +13,6 @@ namespace hft
 		HFFLOAT2() { x = 0, y = 0; }
 		HFFLOAT2(float _x, float _y) { x = _x, y = _y; }
 
-		void operator=(const HFFLOAT2& _value);
 		void operator=(const HFFLOAT3& _value);
 		void operator=(const HFFLOAT4& _value);
 		HFFLOAT2 operator+(const HFFLOAT2& _value);
@@ -63,48 +62,3 @@ namespace hft
 }
 
 
-
-void operator==(DirectX::XMFLOAT3& _value1, const DirectX::XMFLOAT4& _value2)
-{
-	_value1 = { _value2.x,_value2.y,_value2.y };
-}
-
-
-
-DirectX::XMFLOAT2 operator+(const DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	return { _value1.x + _value2.x,_value1.y + _value2.y };
-}
-DirectX::XMFLOAT2 operator-(const DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	return { _value1.x - _value2.x,_value1.y - _value2.y };
-}
-DirectX::XMFLOAT2 operator*(const DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	return { _value1.x * _value2.x,_value1.y * _value2.y };
-}
-DirectX::XMFLOAT2 operator/(const DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	return { _value1.x / _value2.x,_value1.y / _value2.y };
-}
-
-void operator+=(DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	_value1.x += _value2.x;
-	_value1.y += _value2.y;
-}
-void operator-=(DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	_value1.x -= _value2.x;
-	_value1.y -= _value2.y;
-}
-void operator*=(DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	_value1.x *= _value2.x;
-	_value1.y *= _value2.y;
-}
-void operator/=(DirectX::XMFLOAT2& _value1, const DirectX::XMFLOAT2& _value2)
-{
-	_value1.x /= _value2.x;
-	_value1.y /= _value2.y;
-}

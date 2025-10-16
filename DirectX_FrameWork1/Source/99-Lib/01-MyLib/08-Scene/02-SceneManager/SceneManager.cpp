@@ -3,7 +3,28 @@
 #include "../../07-Component/03-Collider/99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 #include "../../01-System/System.h"
 #include "../01-Scenes/TitleScene.h"
-//#include "controller.h"
+
+
+void SceneManager::Input()
+{
+	curScene->Input();
+}
+
+void SceneManager::Update()
+{
+	ChangeScene();
+	curScene->Update();
+	Collider2DManager::GetInstance().Update();
+}
+
+void SceneManager::Draw()
+{
+	static System& system = System::GetInstance();
+	system.ClearScreen();
+	curScene->Draw();
+	system.SwapChain();
+}
+
 
 
 void SceneManager::Init()
@@ -34,26 +55,14 @@ void SceneManager::SetUpScene()
 	curScene->Init();
 }
 
+void SceneManager::RunScene()
+{
+	Input();
+	Update();
+	Draw();
+}
+
 void SceneManager::UnloadScene()
 {
 	curScene->UnInit();
-}
-
-void SceneManager::Input()
-{
-	curScene->Input();
-}
-
-void SceneManager::Update()
-{
-	curScene->Update();
-	Collider2DManager::GetInstance().Update();
-}
-
-void SceneManager::Draw()
-{
-	static System& system = System::GetInstance();
-	system.ClearScreen();
-	curScene->Draw();
-	system.SwapChain();
 }
