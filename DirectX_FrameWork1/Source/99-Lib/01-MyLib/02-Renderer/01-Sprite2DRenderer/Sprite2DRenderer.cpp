@@ -175,12 +175,6 @@ void Sprite2DRenderer::RenderPipeline()
 }
 
 
-
-
-
-
-
-
 void Sprite2DRenderer::SetCamera(Camera2D* _p_camera)
 {
 	p_camera = _p_camera;
@@ -218,10 +212,6 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 
 	p_DeviceContext->IASetVertexBuffers(0, 1, &(this->p_vertexBuffer), &strides, &offsets);
 	p_DeviceContext->IASetIndexBuffer(this->p_indexBuffer,DXGI_FORMAT_R32_UINT,0);
-	p_DeviceContext->IASetPrimitiveTopology(topology);
-
-	// テクスチャをピクセルシェーダーに渡す
-	//p_DeviceContext->PSSetShaderResources(0, 1, &(_sprite->p_texture.p_textureView));
 
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // 描画命令
 }
@@ -245,8 +235,8 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	mtrxTf.ConversionRotation(transform->rotation);
 	mtrxTf.ConversionScale(transform->scale);
 
-	{
-		Sprite2DConstBuffer cb;	// 定数バッファを更新
+	{	//VS用定数バッファ更新
+		Sprite2DConstBuffer cb;
 
 		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
 		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
@@ -260,7 +250,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 		p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);
 	}
 
-	{
+	{	//PS用定数バッファ更新
 		Sprite2DTextureCB cb;
 		Texture* p_texture = _renderer->GetTexture();
 		if (p_texture->wp_textureView.expired())
@@ -287,7 +277,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	p_DeviceContext->IASetVertexBuffers(0, 1, &(shape->p_vertexBuffer), &strides, &offsets);
 	p_DeviceContext->IASetIndexBuffer(shape->p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	p_DeviceContext->DrawIndexed(shape->indices.size(), 0, 0); // 描画命令
+	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // 描画命令
 }
 
 void Sprite2DRenderer::Draw(const Shape2D& _shape, hft::HFFLOAT4 _pos, hft::HFFLOAT3 _scl, hft::HFFLOAT3 _rot)
@@ -328,7 +318,6 @@ void Sprite2DRenderer::Draw(const Shape2D& _shape, hft::HFFLOAT4 _pos, hft::HFFL
 
 	p_DeviceContext->IASetVertexBuffers(0, 1, &(_shape.p_vertexBuffer), &strides, &offsets);
 	p_DeviceContext->IASetIndexBuffer(_shape.p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	p_DeviceContext->IASetPrimitiveTopology(topology);
 
 	p_DeviceContext->DrawIndexed(_shape.indices.size(), 0, 0); // 描画命令
 }

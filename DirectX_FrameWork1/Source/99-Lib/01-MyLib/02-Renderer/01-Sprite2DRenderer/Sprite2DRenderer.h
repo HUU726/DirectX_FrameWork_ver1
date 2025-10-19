@@ -14,8 +14,8 @@ struct Sprite2DConstBuffer
 {
 	DirectX::XMFLOAT4 color;
 	DirectX::XMMATRIX matrixTex;
-	DirectX::XMMATRIX matrixWorld;
 	DirectX::XMMATRIX matrixProj;
+	DirectX::XMMATRIX matrixWorld;
 	DirectX::XMMATRIX matrixView;
 };
 

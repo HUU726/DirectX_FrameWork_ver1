@@ -10,7 +10,7 @@ void TitleScene::Init()
 {
 	{	//ƒJƒƒ‰‰Šú‰»
 		Transform* p_trf = camera2D.GetTransformPtr();
-		p_trf->position = { 0.f,0.f,0.f };
+		p_trf->position = { 0.f,0.f,-1.f };
 
 		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
 	}

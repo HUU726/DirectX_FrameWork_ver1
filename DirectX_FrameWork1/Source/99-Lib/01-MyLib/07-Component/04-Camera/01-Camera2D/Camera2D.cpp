@@ -10,11 +10,13 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveTargetToForward()
 	ansVector.resize(ALL_ELEMENT);
 
 	Transform transform = GetGameObject()->GetTransform();
-	auto rot = transform.rotation;
+	hft::HFFLOAT3 rot = transform.rotation;
+	float roll = DirectX::XMConvertToRadians(rot.z);
 	auto defaultUp = DirectX::XMVECTOR{ 0.f,1.f,0.f,0.f };
-	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f,0.f, rot.z);
 
-	auto pos = p_targetPos;
+	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f,0.f, roll);
+
+	hft::HFFLOAT3* pos = p_targetPos;
 	auto cameraPos = DirectX::XMVectorSet(pos->x, pos->y, pos->z - 1.f, 0.f);
 	auto targetPos = DirectX::XMVectorSet(pos->x, pos->y, pos->z, 0.f);
 
@@ -43,11 +45,12 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveForwardToTarget()
 	ansVector.resize(ALL_ELEMENT);
 
 	Transform transform = GetGameObject()->GetTransform();
-	auto pos = transform.position;
-	auto rot = transform.rotation;
+	hft::HFFLOAT4 pos = transform.position;
+	hft::HFFLOAT3 rot = transform.rotation;
+	float roll = DirectX::XMConvertToRadians(rot.z);
 
 	auto defaultUp = DirectX::XMVECTOR{ 0.f,1.f,0.f,0.f };
-	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f, 0.f, rot.z);
+	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f, 0.f, roll);
 
 	auto cameraPos = DirectX::XMVectorSet(pos.x,pos.y,pos.z,0.f);
 	auto targetPos = DirectX::XMVectorSet(pos.x,pos.y,pos.z+1,0.f);
