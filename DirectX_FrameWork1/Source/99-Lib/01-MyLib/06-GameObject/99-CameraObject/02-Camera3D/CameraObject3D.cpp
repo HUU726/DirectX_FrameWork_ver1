@@ -19,3 +19,7 @@ void CameraObject3D::Init()
 void CameraObject3D::Update()
 {
 }
+
+void CameraObject3D::Draw()
+{
+}

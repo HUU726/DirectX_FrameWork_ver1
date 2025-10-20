@@ -87,7 +87,7 @@ Camera2D::Camera2D()
 	width = SCREEN_WIDTH;
 	height = SCREEN_HEIGHT;
 	nearClip = 0.1f;
-	farClip = 10000.0f;
+	farClip = 100.0f;
 	p_target = nullptr;
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };

@@ -5,6 +5,7 @@
 
 void GameObject2D::Init()
 {
+	
 }
 
 void GameObject2D::Update()
@@ -13,6 +14,6 @@ void GameObject2D::Update()
 
 void GameObject2D::Draw()
 {
-	if (auto comp = GetComponent<SpriteRenderer>())
+	if (const auto& comp = GetComponent<SpriteRenderer>())
 		comp->Draw();
 }

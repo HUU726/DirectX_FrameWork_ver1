@@ -8,7 +8,10 @@ private:
 	int	flameCnt;	// フレームカウント
 	CameraObject2D camera2D;
 	CameraObject3D camera3D;
-	GameObject2D gameObject;
+
+	GameObject2D gameObject2D;
+	GameObject3D gameObject3D;
+
 
 public:
 

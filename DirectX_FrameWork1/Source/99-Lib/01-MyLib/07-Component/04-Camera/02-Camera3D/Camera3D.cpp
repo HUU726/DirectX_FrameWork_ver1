@@ -86,7 +86,7 @@ Camera3D::Camera3D()
 	fov = 60.0f;
 	aspect = 16.0f / 9.0f;
 	nearClip = 0.1f;
-	farClip = 1000.0f;
+	farClip = 100000.0f;
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
