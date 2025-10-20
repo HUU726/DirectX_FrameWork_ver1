@@ -4,7 +4,10 @@
 #include <memory>
 #include <typeinfo>
 #include "../../../06-GameObject/01-2DGameObject/GameObject2D.h"
-#include "../../../06-GameObject/99-Camera/01-Camera2D/CameraObject2D.h"
+#include "../../../06-GameObject/"
+
+#include "../../../06-GameObject/99-CameraObject/01-Camera2D/CameraObject2D.h"
+#include "../../../06-GameObject/99-CameraObject/02-Camera3D/CameraObject3D.h"
 
 
 

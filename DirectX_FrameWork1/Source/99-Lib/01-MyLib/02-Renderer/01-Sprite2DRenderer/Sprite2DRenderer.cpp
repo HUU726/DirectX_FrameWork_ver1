@@ -35,6 +35,8 @@ HRESULT Sprite2DRenderer::InitShader()
 	{
 		// 位置座標があるということを伝える
 		(D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }),
+		// 法線情報があるということを伝える
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		// 色情報があるということを伝える
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		// UV座標( uv )
@@ -108,23 +110,36 @@ HRESULT Sprite2DRenderer::InitState()
 	// ブレンドステート作成　→　透過処理や加算合成を可能にする色の合成方法
 	D3D11_BLEND_DESC blendDesc{};
 	ZeroMemory(&blendDesc, sizeof(D3D11_BLEND_DESC));
-	blendDesc.AlphaToCoverageEnable = FALSE;
-	blendDesc.IndependentBlendEnable = FALSE;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	blendDesc.AlphaToCoverageEnable = FALSE;						 // アルファ・トゥ・カバレッジを無効化（透明度をカバレッジとして利用しない）
+	blendDesc.IndependentBlendEnable = FALSE;						 // 各レンダーターゲットに対して個別のブレンド設定を有効化
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;					 // ブレンドを無効に設定（不透明な描画）
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;		// ソース（描画するピクセル）のアルファ値を使用
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;	// デスティネーション（既存のピクセル）の逆アルファ値を使用
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;			// ソースとデスティネーションを加算する操作
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;		// ソースのアルファ値をそのまま使用
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;	// デスティネーションのアルファ値を無視
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;	// アルファ値に対して加算操作を行う
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;	// レンダーターゲットのカラーチャンネル書き込みマスク
 	hr = this->p_Device->CreateBlendState(&blendDesc, &this->p_BlendState);
 	if (FAILED(hr)) return hr;
+
+	// ラスターライザステート作成
+	D3D11_RASTERIZER_DESC rasterizerDesc{};
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID; //ソリッド
+	//rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME; //ワイヤーフレーム
+	//rasterizerDesc.CullMode = D3D11_CULL_BACK; //ポリゴン裏をカリング
+	//rasterizerDesc.CullMode = D3D11_CULL_FRONT; //ポリゴン表をカリング
+	rasterizerDesc.CullMode = D3D11_CULL_NONE; //カリングしない(裏も表も表示される)
+	rasterizerDesc.DepthClipEnable = TRUE;
+	rasterizerDesc.MultisampleEnable = FALSE;
+	hr = p_Device->CreateRasterizerState(&rasterizerDesc, &p_RRState);
+	if (FAILED(hr)) return hr;
+	p_DeviceContext->RSSetState(p_RRState);
 
 	// 震度テストを無効にする
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	ZeroMemory(&dsDesc, sizeof(dsDesc));
-	dsDesc.DepthEnable = FALSE;	//震度テストを無効にする
+	dsDesc.DepthEnable = TRUE;	//震度テストを無効にする
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	hr = this->p_Device->CreateDepthStencilState(&dsDesc, &this->p_DSState);
@@ -140,10 +155,6 @@ void Sprite2DRenderer::RenderPipeline()
 
 	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
 
-	if (this->p_VertexShader == nullptr)
-		return;
-	if (this->p_PixelShader == nullptr)
-		return;
 	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
 	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
@@ -156,6 +167,9 @@ void Sprite2DRenderer::RenderPipeline()
 
 	// ブレンドステートをセットする
 	this->p_DeviceContext->OMSetBlendState(this->p_BlendState, NULL, 0xffffffff);
+	// ラスターライザステートをセットする
+	this->p_DeviceContext->RSSetState(this->p_RRState);
+
 	// デプスステンシルステートをセットする
 	this->p_DeviceContext->OMSetDepthStencilState(this->p_DSState, 1);
 }

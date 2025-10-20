@@ -10,7 +10,8 @@ namespace hft
 {
 	struct Vertex
 	{
-		hft::HFFLOAT4 position;
+		hft::HFFLOAT3 position;
+		hft::HFFLOAT3 normal;
 		hft::HFFLOAT4 color;
 		hft::HFFLOAT2 uv;
 	};

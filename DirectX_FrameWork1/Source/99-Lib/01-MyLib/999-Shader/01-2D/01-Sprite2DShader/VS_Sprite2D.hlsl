@@ -6,6 +6,7 @@
 struct VS_IN
 {
     float4 pos : POSITION;
+    float4 nrm : NORMAL0;
     float4 col : COLOR0;
     float2 tex : TEX;
 };
@@ -50,6 +51,6 @@ VS_OUT main(VS_IN input)
     output.tex = uv.xy;
   
     output.col = input.col * vertexColor;
-
+    
     return output;
 }

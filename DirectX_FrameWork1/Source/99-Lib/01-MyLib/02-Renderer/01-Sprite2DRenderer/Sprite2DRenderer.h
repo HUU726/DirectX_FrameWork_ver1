@@ -21,7 +21,7 @@ struct Sprite2DConstBuffer
 
 struct Sprite2DTextureCB
 {
-	bool isTexture;
+	int isTexture;
 };
 
 

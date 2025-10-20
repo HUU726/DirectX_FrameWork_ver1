@@ -6,6 +6,9 @@ using hft::Mesh;
 
 class Cube : public Mesh
 {
+private:
+    void CreateVerticesAndIndex();
+
 public:
 	Cube();
 	Cube(const Transform& _transform);

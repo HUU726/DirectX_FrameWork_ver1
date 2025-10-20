@@ -13,5 +13,6 @@ public:
 	~CameraObject3D();
 	void Init() override;
 	void Update() override;
+	void Draw() override;
 };
 

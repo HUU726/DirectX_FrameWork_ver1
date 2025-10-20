@@ -35,11 +35,11 @@ ShapeTable2D::ShapeTable2D()
 		auto sprite = std::make_shared<Shape2D>();
 		sprite->name = "sprite";
 		sprite->vertices.resize(SPRITE_VERTEX_NUM);
-		sprite->vertices[0].position = { -0.5f,0.5f,0.f,0.f };
+		sprite->vertices[0].position = { -0.5f,0.5f,0.f,1.f };
 		sprite->vertices[0].color = { 1.f,1.f,1.f,1.f };
 		sprite->vertices[0].uv = { 0.f,0.f };
 
-		sprite->vertices[1].position = { 0.5f,0.5f,0.f,0.f };
+		sprite->vertices[1].position = { 0.5f,0.5f,0.f,1.f };
 		sprite->vertices[1].color = { 1.f,1.f,1.f,1.f };
 		sprite->vertices[1].uv = { 1.f,0.f };
 

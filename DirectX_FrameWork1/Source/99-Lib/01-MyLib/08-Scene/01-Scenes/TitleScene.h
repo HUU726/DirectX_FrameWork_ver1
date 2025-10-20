@@ -7,6 +7,7 @@ class TitleScene : public BaseScene
 private:
 	int	flameCnt;	// フレームカウント
 	CameraObject2D camera2D;
+	CameraObject3D camera3D;
 	GameObject2D gameObject;
 
 public:

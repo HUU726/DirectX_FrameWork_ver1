@@ -77,8 +77,8 @@ HRESULT RendererManager::Init(HWND _hwnd)
 	// ※（デプスバッファ = 深度バッファ = Zバッファ）→奥行を判定して前後関係を正しく描画できる
 	ID3D11Texture2D* depthStencil{};
 	D3D11_TEXTURE2D_DESC textureDesc{};
-	textureDesc.Width = swapChainDesc.BufferDesc.Width;   // バッファの幅をスワップチェーンに合わせる
-	textureDesc.Height = swapChainDesc.BufferDesc.Height; // バッファの高さをスワップチェーンに合わせる
+	textureDesc.Width = SCREEN_WIDTH;   // バッファの幅をスワップチェーンに合わせる
+	textureDesc.Height = SCREEN_HEIGHT; // バッファの高さをスワップチェーンに合わせる
 	textureDesc.MipLevels = 1;                            // ミップレベルは1（ミップマップは使用しない）
 	textureDesc.ArraySize = 1;                            // テクスチャの配列サイズ（通常1）
 	textureDesc.Format = DXGI_FORMAT_D16_UNORM;           // フォーマットは16ビットの深度バッファを使用

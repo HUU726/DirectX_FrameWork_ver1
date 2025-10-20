@@ -8,7 +8,7 @@
 
 void TitleScene::Init()
 {
-	{	//カメラ初期化
+	{	//2Dカメラ初期化
 		Transform* p_trf = camera2D.GetTransformPtr();
 		p_trf->position = { 0.f,0.f,0.f,0.f };
 
@@ -16,6 +16,13 @@ void TitleScene::Init()
 	
 		std::cout << "Camera InitPosition：" << p_trf->position.x << "," << p_trf->position.y << "," << p_trf->position.z << std::endl;
 		std::cout << "Camera InitRotation：" << p_trf->rotation.x << "," << p_trf->rotation.y << "," << p_trf->rotation.z << std::endl;
+	}
+
+	{	//3Dカメラ初期化
+		Transform* p_trf = camera3D.GetTransformPtr();
+		p_trf->position = {0.f,0.f,0.f,0.f};
+
+		Mesh3DRenderer::
 	}
 
 	{	//オブジェクト初期化
@@ -29,9 +36,7 @@ void TitleScene::Init()
 		}
 	}
 
-	camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject);
-
-	Sleep(5000);
+	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject);
 }
 
 void TitleScene::Input()
@@ -42,9 +47,9 @@ void TitleScene::Input()
 void TitleScene::Update()
 {
 	camera2D.Update();
-	//camera2D.GetTransformPtr()->position.z -= 0.02f;
-
-	std::cout << camera2D.GetTransform().position.z << std::endl;
+	//camera2D.GetTransformPtr()->position.x -= 0.002f;
+	gameObject.GetTransformPtr()->rotation.z += 0.005f;
+	gameObject.GetTransformPtr()->position.x += 0.005f;
 
 	flameCnt++;
 	if (flameCnt > 10000000000000)

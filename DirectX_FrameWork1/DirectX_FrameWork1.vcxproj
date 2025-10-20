@@ -127,14 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\01-Camera2D\CameraObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\02-Camera3D\CameraObject3D.cpp" />
     <ClCompile Include="Source\01-Main\main.cpp" />
     <ClCompile Include="Source\02-App\Application.cpp" />
     <ClCompile Include="Source\02-App\FH_Window.cpp" />
@@ -169,14 +170,15 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-Shape\Shape.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\01-Camera2D\CameraObject2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\01-Camera2D\CameraObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\00-IF_Camera\IF_Camera.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-Camera\02-Camera3D\CameraObject3D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\02-Camera3D\CameraObject3D.h" />
     <ClInclude Include="Source\01-Main\main.h" />
     <ClInclude Include="Source\02-App\Application.h" />
     <ClInclude Include="Source\02-App\FH_Window.h" />
