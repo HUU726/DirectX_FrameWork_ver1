@@ -88,25 +88,6 @@ HRESULT Sprite2DRenderer::InitShader()
 
 HRESULT Sprite2DRenderer::InitBuffer()
 {
-	HRESULT hr;
-
-	D3D11_BUFFER_DESC vbDesc = {};
-	vbDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vbDesc.ByteWidth = sizeof(Vertex) * VERTEX_NUM_2D;
-	vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	hr = this->p_Device->CreateBuffer(&vbDesc, nullptr, &this->p_vertexBuffer); // 初期データなし
-	if (FAILED(hr)) return hr;
-
-	D3D11_BUFFER_DESC ibDesc = {};
-	ibDesc.Usage = D3D11_USAGE_DYNAMIC;
-	ibDesc.ByteWidth = sizeof(unsigned int) * VERTEX_NUM_2D;
-	ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibDesc.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
-
-	hr = this->p_Device->CreateBuffer(&ibDesc, nullptr, &this->p_indexBuffer);
-
 	return S_OK;
 }
 
@@ -125,28 +106,28 @@ HRESULT Sprite2DRenderer::InitState()
 	if (FAILED(hr)) return hr;
 
 	// ブレンドステート作成　→　透過処理や加算合成を可能にする色の合成方法
-	D3D11_BLEND_DESC BlendDesc{};
-	ZeroMemory(&BlendDesc, sizeof(D3D11_BLEND_DESC));
-	BlendDesc.AlphaToCoverageEnable = FALSE;
-	BlendDesc.IndependentBlendEnable = FALSE;
-	BlendDesc.RenderTarget[0].BlendEnable = TRUE;
-	BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	hr = this->p_Device->CreateBlendState(&BlendDesc, &this->p_BlendState);
+	D3D11_BLEND_DESC blendDesc{};
+	ZeroMemory(&blendDesc, sizeof(D3D11_BLEND_DESC));
+	blendDesc.AlphaToCoverageEnable = FALSE;
+	blendDesc.IndependentBlendEnable = FALSE;
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	hr = this->p_Device->CreateBlendState(&blendDesc, &this->p_BlendState);
 	if (FAILED(hr)) return hr;
 
 	// 震度テストを無効にする
-	D3D11_DEPTH_STENCIL_DESC l_dsDesc;
-	ZeroMemory(&l_dsDesc, sizeof(l_dsDesc));
-	l_dsDesc.DepthEnable = FALSE;	//震度テストを無効にする
-	l_dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	l_dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	hr = this->p_Device->CreateDepthStencilState(&l_dsDesc, &this->p_DSState);
+	D3D11_DEPTH_STENCIL_DESC dsDesc;
+	ZeroMemory(&dsDesc, sizeof(dsDesc));
+	dsDesc.DepthEnable = FALSE;	//震度テストを無効にする
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	hr = this->p_Device->CreateDepthStencilState(&dsDesc, &this->p_DSState);
 	if (FAILED(hr)) return hr;
 
 	return S_OK;
@@ -158,6 +139,11 @@ void Sprite2DRenderer::RenderPipeline()
 	this->p_DeviceContext->IASetInputLayout(this->p_InputLayout);
 
 	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
+
+	if (this->p_VertexShader == nullptr)
+		return;
+	if (this->p_PixelShader == nullptr)
+		return;
 	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
 	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
@@ -210,9 +196,6 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	UINT strides = sizeof(Vertex);
 	UINT offsets = 0;
 
-	p_DeviceContext->IASetVertexBuffers(0, 1, &(this->p_vertexBuffer), &strides, &offsets);
-	p_DeviceContext->IASetIndexBuffer(this->p_indexBuffer,DXGI_FORMAT_R32_UINT,0);
-
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // 描画命令
 }
 
@@ -238,13 +221,14 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	{	//VS用定数バッファ更新
 		Sprite2DConstBuffer cb;
 
+		cb.color = shape->vertices[0].color;
+
+		DirectX::XMMATRIX matrixTex = DirectX::XMMatrixTranslation(0.f, 0.f, 0.0f);
+		cb.matrixTex = DirectX::XMMatrixTranspose(matrixTex);
+
 		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
 		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
 		cb.matrixView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());	//ビュー変換行列
-
-		//cb.matrixTex = DirectX::XMMatrixTranspose();
-		cb.color = shape->vertices[0].color;
-		cb.matrixTex = DirectX::XMMatrixIdentity();
 
 		// 行列をシェーダーに渡す
 		p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);

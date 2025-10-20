@@ -17,11 +17,11 @@ ShapeTable2D::ShapeTable2D()
 		triangle->vertices[0].color = { 1.f,1.f,1.f,1.f };
 		triangle->vertices[0].uv = { 0.5f,0.f };
 
-		triangle->vertices[1].position = { -0.5f,-0.5f,0.f,0.f };
+		triangle->vertices[1].position = { 0.5f,-0.5f,0.f,0.f };
 		triangle->vertices[1].color = { 1.f,1.f,1.f,1.f };
 		triangle->vertices[1].uv = { 0.f,1.f };
 
-		triangle->vertices[2].position = { 0.5f,-0.5f,0.f,0.f };
+		triangle->vertices[2].position = { -0.5f,-0.5f,0.f,0.f };
 		triangle->vertices[2].color = { 1.f,1.f,1.f,1.f };
 		triangle->vertices[2].uv = { 1.f,1.f };
 
@@ -47,7 +47,7 @@ ShapeTable2D::ShapeTable2D()
 		sprite->vertices[2].color = { 1.f,1.f,1.f,1.f };
 		sprite->vertices[2].uv = { 0.f,1.f };
 
-		sprite->vertices[3].position = { -0.5f,-0.5f,0.f,0.f };
+		sprite->vertices[3].position = { 0.5f,-0.5f,0.f,0.f };
 		sprite->vertices[3].color = { 1.f,1.f,1.f,1.f };
 		sprite->vertices[3].uv = { 1.f,1.f };
 
@@ -56,6 +56,8 @@ ShapeTable2D::ShapeTable2D()
 		CreateVertexIndexBuffer(sprite);
 		table.insert({ sprite->name,sprite });
 	}
+
+	return;
 
 	{	//‰~
 		auto circle = std::make_shared<Shape2D>();

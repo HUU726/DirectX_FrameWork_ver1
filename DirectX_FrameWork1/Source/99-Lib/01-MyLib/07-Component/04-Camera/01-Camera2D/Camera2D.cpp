@@ -2,23 +2,26 @@
 
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
+#include "../../../../../02-App/FH_Window.h"
 
-
+/**
+* @brief	目標から前・上・右を割り出す
+* @date		2025/09/20
+*/
 std::vector<DirectX::XMVECTOR> Camera2D::DeriveTargetToForward()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;
 	ansVector.resize(ALL_ELEMENT);
 
-	Transform transform = GetGameObject()->GetTransform();
-	hft::HFFLOAT3 rot = transform.rotation;
+	hft::HFFLOAT3 rot = gameObject->GetTransform().rotation;
 	float roll = DirectX::XMConvertToRadians(rot.z);
 	auto defaultUp = DirectX::XMVECTOR{ 0.f,1.f,0.f,0.f };
 
 	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f,0.f, roll);
 
-	hft::HFFLOAT3* pos = p_targetPos;
-	auto cameraPos = DirectX::XMVectorSet(pos->x, pos->y, pos->z - 1.f, 0.f);
-	auto targetPos = DirectX::XMVectorSet(pos->x, pos->y, pos->z, 0.f);
+	const hft::HFFLOAT3& pos = p_target->GetTransform().position;
+	auto cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z - 1.f, 0.f);
+	auto targetPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);
 
 	auto forwardDirect = DirectX::XMVectorSet(0.f,0.f,1.f,0.f);
 
@@ -39,24 +42,28 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveTargetToForward()
 	return ansVector;
 }
 
+/**
+* @brief	向いている方向から目標を割り出す
+* @date		2025/09/20
+*/
 std::vector<DirectX::XMVECTOR> Camera2D::DeriveForwardToTarget()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;
 	ansVector.resize(ALL_ELEMENT);
 
-	Transform transform = GetGameObject()->GetTransform();
+	Transform transform = gameObject->GetTransform();
 	hft::HFFLOAT4 pos = transform.position;
 	hft::HFFLOAT3 rot = transform.rotation;
 	float roll = DirectX::XMConvertToRadians(rot.z);
 
-	auto defaultUp = DirectX::XMVECTOR{ 0.f,1.f,0.f,0.f };
 	auto matrixRot = DirectX::XMMatrixRotationRollPitchYaw(0.f, 0.f, roll);
 
-	auto cameraPos = DirectX::XMVectorSet(pos.x,pos.y,pos.z,0.f);
-	auto targetPos = DirectX::XMVectorSet(pos.x,pos.y,pos.z+1,0.f);
+	auto cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);
+	auto targetPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z + 1, 0.f);
 
 	auto forwardDirect = DirectX::XMVectorSet(0.f,0.f,1.f,0.f);
 
+	auto defaultUp = DirectX::XMVECTOR{ 0.f,1.f,0.f,0.f };
 	auto upDirect = DirectX::XMVector3TransformNormal(defaultUp, matrixRot);
 	upDirect = DirectX::XMVector3Normalize(upDirect);
 
@@ -77,11 +84,11 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveForwardToTarget()
 
 Camera2D::Camera2D()
 {
-	width = 800.f;
-	height = 600.f;
+	width = SCREEN_WIDTH;
+	height = SCREEN_HEIGHT;
 	nearClip = 0.1f;
-	farClip = 1000.0f;
-	p_targetPos = nullptr;
+	farClip = 10000.0f;
+	p_target = nullptr;
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
@@ -93,7 +100,7 @@ Camera2D::Camera2D(float _width, float _height, float _newarClip, float forClip)
 	height = _height;
 	nearClip = _newarClip;
 	farClip = forClip;
-	p_targetPos = nullptr;
+	p_target = nullptr;
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };

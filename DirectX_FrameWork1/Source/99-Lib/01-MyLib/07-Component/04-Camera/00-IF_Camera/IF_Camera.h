@@ -13,7 +13,7 @@ protected:
 	float farClip;	//最遠クリップ距離
 	int priority;	//描画優先度(昇順)
 
-	hft::HFFLOAT3* p_targetPos;
+	GameObject* p_target;
 
 	enum VIEW_ELEMENT
 	{
@@ -43,6 +43,10 @@ public:
 	hft::HFFLOAT3 GetUp() { return up; }
 
 	/*** セッター ***/
-	void SetTargetPos(hft::HFFLOAT3* _p_pos) { p_targetPos = _p_pos; }
+	void SetTarget(GameObject* _p_pos) { p_target = _p_pos; }
+
+
+	void RemoveTarget() { p_target = nullptr; }
+
 };
 

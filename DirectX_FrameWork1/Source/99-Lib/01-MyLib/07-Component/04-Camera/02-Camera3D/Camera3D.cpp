@@ -7,12 +7,19 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 	std::vector<DirectX::XMVECTOR> ansVector;
 	ansVector.resize(ALL_ELEMENT);
 
-	Transform l_transform = GetGameObject()->GetTransform();
-	auto pos = l_transform.position;
-	auto rot = l_transform.rotation;
-	DirectX::XMVECTOR cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);		//カメラの位置
+	DirectX::XMVECTOR cameraPos, targetPos;
 
-	DirectX::XMVECTOR targetPos = DirectX::XMVectorSet(p_targetPos->x, p_targetPos->y, p_targetPos->z, 0.f);	//ターゲットの位置
+	{
+		Transform l_transform = GetGameObject()->GetTransform();
+		auto pos = l_transform.position;
+		//auto rot = l_transform.rotation;
+		cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);		//カメラの位置
+	}
+
+	{
+		auto pos = p_target->GetTransform().position;
+		targetPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);	//ターゲットの位置
+	}
 
 	DirectX::XMVECTOR defaultUp = DirectX::XMVectorSet(0.f,1.f,0.f,0.f);	//ワールドの上方向
 	
@@ -75,7 +82,7 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 
 Camera3D::Camera3D()
 {
-	p_targetPos = nullptr;
+	p_target = nullptr;
 	fov = 60.0f;
 	aspect = 16.0f / 9.0f;
 	nearClip = 0.1f;
@@ -87,7 +94,7 @@ Camera3D::Camera3D()
 
 Camera3D::Camera3D(float _fov, float _aspectRatio, float _nearClip, float _farClip)
 {
-	p_targetPos = nullptr;
+	p_target = nullptr;
 	fov = _fov;
 	aspect = _aspectRatio;
 	nearClip = _nearClip;

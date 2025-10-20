@@ -15,6 +15,7 @@ void TitleScene::Init()
 		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
 	
 		std::cout << "Camera InitPosition：" << p_trf->position.x << "," << p_trf->position.y << "," << p_trf->position.z << std::endl;
+		std::cout << "Camera InitRotation：" << p_trf->rotation.x << "," << p_trf->rotation.y << "," << p_trf->rotation.z << std::endl;
 	}
 
 	{	//オブジェクト初期化
@@ -28,6 +29,8 @@ void TitleScene::Init()
 		}
 	}
 
+	camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject);
+
 	Sleep(5000);
 }
 
@@ -39,7 +42,7 @@ void TitleScene::Input()
 void TitleScene::Update()
 {
 	camera2D.Update();
-	camera2D.GetTransformPtr()->position.z -= 0.02f;
+	//camera2D.GetTransformPtr()->position.z -= 0.02f;
 
 	std::cout << camera2D.GetTransform().position.z << std::endl;
 

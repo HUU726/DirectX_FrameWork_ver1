@@ -119,7 +119,7 @@ void RendererManager::UnInit()
 void RendererManager::ClearScreen()
 {
 	// 画面塗りつぶし色
-	float clearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
 	// 描画先のキャンバスと使用する深度バッファを指定する
 	this->p_DeviceContext->OMSetRenderTargets(1, &this->p_RenderTargetView, this->p_DepthStencilView);
 	// 描画先キャンバスを塗りつぶす
@@ -128,8 +128,10 @@ void RendererManager::ClearScreen()
 	this->p_DeviceContext->ClearDepthStencilView(this->p_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
+
+#include <iostream>
 void RendererManager::SwapChain()
 {
 	// ダブルバッファの切り替えを行い画面を更新する
-	this->p_SwapChain->Present(0, 0);
+	 HRESULT hr = this->p_SwapChain->Present(0, 0);
 }

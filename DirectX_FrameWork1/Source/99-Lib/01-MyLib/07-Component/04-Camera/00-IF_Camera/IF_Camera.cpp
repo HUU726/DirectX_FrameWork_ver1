@@ -7,7 +7,7 @@ void IF_Camera::UpdateViewMatrix()
 	std::vector<DirectX::XMVECTOR> viewElement;
 	DirectX::XMVECTOR cameraPos, targetPos, upDirect;
 
-	if (p_targetPos == nullptr)
+	if (p_target == nullptr)
 	{
 		viewElement = DeriveForwardToTarget();
 	}

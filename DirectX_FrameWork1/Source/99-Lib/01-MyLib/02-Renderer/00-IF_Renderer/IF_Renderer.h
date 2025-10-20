@@ -17,9 +17,6 @@ protected:
 	ID3D11Buffer* p_constantBuffer;		// 定数バッファ用変数
 	D3D_PRIMITIVE_TOPOLOGY topology;	// 頂点の結び方(とらえ方)
 
-	ID3D11Buffer* p_vertexBuffer;		//頂点バッファー
-	ID3D11Buffer* p_indexBuffer;		//インデックスバッファー
-
 	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数
 	ID3D11BlendState* p_BlendState;		// ブレンドステート用変数(αブレンディング)
 	ID3D11RasterizerState* p_RRState;	// ラスタライザーステート用変数(カリングなどなど)

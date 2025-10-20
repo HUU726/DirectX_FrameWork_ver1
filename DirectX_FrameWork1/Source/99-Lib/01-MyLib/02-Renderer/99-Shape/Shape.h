@@ -18,4 +18,4 @@ struct Shape2D
 };
 
 
-void CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape);
+HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape);

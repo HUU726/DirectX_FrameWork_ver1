@@ -68,24 +68,6 @@ HRESULT Mesh3DRenderer::InitShader()
 
 HRESULT Mesh3DRenderer::InitBuffer()
 {
-	HRESULT hr;
-
-	D3D11_BUFFER_DESC vbDesc = {};
-	vbDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vbDesc.ByteWidth = sizeof(Vertex);// * VERTEX_NUM_2D;
-	vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	hr = this->p_Device->CreateBuffer(&vbDesc, nullptr, &this->p_vertexBuffer); // ‰Šúƒf[ƒ^‚È‚µ
-	if (FAILED(hr)) return hr;
-
-	D3D11_BUFFER_DESC ibDesc = {};
-	ibDesc.Usage = D3D11_USAGE_DYNAMIC;
-	ibDesc.ByteWidth = sizeof(unsigned int);// * VERTEX_NUM_2D;
-	ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibDesc.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
-
-	hr = this->p_Device->CreateBuffer(&ibDesc, nullptr, &this->p_indexBuffer);
 
 	return S_OK;
 }
