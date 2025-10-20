@@ -10,9 +10,11 @@ void TitleScene::Init()
 {
 	{	//カメラ初期化
 		Transform* p_trf = camera2D.GetTransformPtr();
-		p_trf->position = { 0.f,0.f,-1.f };
+		p_trf->position = { 0.f,0.f,0.f,0.f };
 
 		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
+	
+		std::cout << "Camera InitPosition：" << p_trf->position.x << "," << p_trf->position.y << "," << p_trf->position.z << std::endl;
 	}
 
 	{	//オブジェクト初期化
@@ -21,8 +23,12 @@ void TitleScene::Init()
 		{
 			p_trf->position = hft::HFFLOAT4{ 0.f, 0.f, 5.f, 0.f };
 			p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
+
+			std::cout << "Object InitPosition：" << p_trf->position.x << "," << p_trf->position.y << "," << p_trf->position.z << std::endl;
 		}
 	}
+
+	Sleep(5000);
 }
 
 void TitleScene::Input()
@@ -33,9 +39,12 @@ void TitleScene::Input()
 void TitleScene::Update()
 {
 	camera2D.Update();
+	camera2D.GetTransformPtr()->position.z -= 0.02f;
+
+	std::cout << camera2D.GetTransform().position.z << std::endl;
 
 	flameCnt++;
-	if (flameCnt > 1000)
+	if (flameCnt > 10000000000000)
 		nextScene = std::make_unique<GameScene>();
 }
 

@@ -11,9 +11,15 @@ namespace hft
 	class TransformMatrix
 	{
 	public:
-		DirectX::XMMATRIX position;
-		DirectX::XMMATRIX rotation;
-		DirectX::XMMATRIX scale;
+		DirectX::XMMATRIX matPosition;
+		DirectX::XMMATRIX matRotation;
+		DirectX::XMMATRIX matScale;
+
+		TransformMatrix() : 
+			matPosition(DirectX::XMMatrixIdentity()),
+			matRotation(DirectX::XMMatrixIdentity()),
+			matScale(DirectX::XMMatrixIdentity())
+		{}
 
 		DirectX::XMMATRIX ConversionPosition(hft::HFFLOAT4 _pos);
 		DirectX::XMMATRIX ConversionRotation(hft::HFFLOAT3 _rot);

@@ -24,7 +24,7 @@ private:
 	HINSTANCE hInstance;	//アプリケーションID
 	int nCmdShow;
 	FH_Window* p_window;	//ウィンドウ
-	System& system = System::GetInstance();
+	RendererManager& system = RendererManager::GetInstance();
 
 
 	void InitWindow();

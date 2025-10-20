@@ -140,7 +140,7 @@ HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const 
 
 void IF_Renderer::Init()
 {
-	System* l_p_system = &System::GetInstance();
+	RendererManager* l_p_system = &RendererManager::GetInstance();
 	this->p_Device = l_p_system->GetDevice();
 	this->p_DeviceContext = l_p_system->GetDeviceContext();
 
@@ -151,7 +151,7 @@ void IF_Renderer::Init()
 
 IF_Renderer::IF_Renderer()
 {
-	System& l_p_system = System::GetInstance();
+	RendererManager& l_p_system = RendererManager::GetInstance();
 	p_Device = l_p_system.GetDevice();
 	p_DeviceContext = l_p_system.GetDeviceContext();
 	p_camera = nullptr;

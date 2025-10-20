@@ -6,7 +6,7 @@
 void CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape)
 {
 	Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
-	System& system = System::GetInstance();
+	RendererManager& system = RendererManager::GetInstance();
 	HRESULT hr;
 
 	D3D11_BUFFER_DESC vbDesc = {};

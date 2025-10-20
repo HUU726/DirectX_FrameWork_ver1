@@ -19,7 +19,7 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-	static System& system = System::GetInstance();
+	static RendererManager& system = RendererManager::GetInstance();
 	system.ClearScreen();
 	curScene->Draw();
 	system.SwapChain();
@@ -29,7 +29,7 @@ void SceneManager::Draw()
 
 void SceneManager::Init()
 {
-	System::GetInstance();
+	RendererManager::GetInstance();
 	curScene = std::make_unique<TitleScene>();
 	SetUpScene();
 }

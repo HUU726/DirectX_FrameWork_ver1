@@ -3,7 +3,7 @@
 #include <d3d11.h>
 
 
-class System
+class RendererManager
 {
 private:
 	D3D_FEATURE_LEVEL featureLevel;	//Direct3Dバージョン
@@ -15,12 +15,12 @@ private:
 	ID3D11DepthStencilView* p_DepthStencilView;	// デプスバッファ
 
 
-	System();
+	RendererManager();
 
 public:
-	static System& GetInstance()
+	static RendererManager& GetInstance()
 	{
-		static System instance;
+		static RendererManager instance;
 		return instance;
 	}
 

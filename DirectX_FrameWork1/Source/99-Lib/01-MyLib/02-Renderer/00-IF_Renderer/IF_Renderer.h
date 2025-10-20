@@ -20,8 +20,9 @@ protected:
 	ID3D11Buffer* p_vertexBuffer;		//頂点バッファー
 	ID3D11Buffer* p_indexBuffer;		//インデックスバッファー
 
-	ID3D11SamplerState* p_Sampler;		// サンプラー用変数
+	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数
 	ID3D11BlendState* p_BlendState;		// ブレンドステート用変数(αブレンディング)
+	ID3D11RasterizerState* p_RRState;	// ラスタライザーステート用変数(カリングなどなど)
 	ID3D11DepthStencilState* p_DSState;	// Z軸に対して同描画するかなどなど
 
 	IF_Camera* p_camera;
@@ -38,7 +39,7 @@ protected:
 	ID3D11DeviceContext* p_DeviceContext;		// コンテキスト＝描画関連を司る機能
 	IDXGISwapChain* p_SwapChain;				// スワップチェイン＝ダブルバッファ機能
 	ID3D11RenderTargetView* p_RenderTargetView;	// レンダーターゲット＝描画先を表す機能
-	ID3D11DepthStencilView* p_DepthStencilView;	// デプスステンシルビュー(もらはなくてもいい)
+	ID3D11DepthStencilView* p_DepthStencilView;	// デプスステンシルビュー
 	/****************************************************************************************************************************/
 
 

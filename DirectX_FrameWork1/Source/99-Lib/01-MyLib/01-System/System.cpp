@@ -6,14 +6,11 @@
 // Direct3D解放の簡略化マクロ
 #define SAFE_RELEASE(p) { if( NULL != p ) { p->Release(); p = NULL; } }
 
-#define SCREEN_WIDTH_TEST (640)	// ウインドウの幅
-#define SCREEN_HEIGHT_TEST (480)	// ウインドウの高さ
-
 /***************************************************************************************************************************
 *												インクルード
 ***************************************************************************************************************************/
 #include "System.h"
-
+#include "../../../02-App/FH_Window.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
@@ -25,7 +22,7 @@
 #include <assert.h>
 
 
-System::System()
+RendererManager::RendererManager()
 {
 }
 
@@ -35,15 +32,15 @@ System::System()
 * @date		2025/09/04
 * @memo		初期化処理全般、授業のやつ流用質問あったら才野先生に聞きにいく
 */
-HRESULT System::Init(HWND _hwnd)
+HRESULT RendererManager::Init(HWND _hwnd)
 {
 	HRESULT hr = S_OK; // HRESULT型→Windowsプログラムで関数実行の成功/失敗を受け取る
 
 	// デバイス、スワップチェーン作成
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferCount = 1;                       // バックバッファの数（ダブルバッファ）
-	swapChainDesc.BufferDesc.Width = SCREEN_WIDTH_TEST;       // バッファの幅をウィンドウサイズに合わせる
-	swapChainDesc.BufferDesc.Height = SCREEN_HEIGHT_TEST;     // バッファの高さをウィンドウサイズに合わせる
+	swapChainDesc.BufferDesc.Width = SCREEN_WIDTH;       // バッファの幅をウィンドウサイズに合わせる
+	swapChainDesc.BufferDesc.Height = SCREEN_HEIGHT;     // バッファの高さをウィンドウサイズに合わせる
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // バッファのピクセルフォーマット
 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60; // リフレッシュレートを設定(Hz)
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -78,7 +75,7 @@ HRESULT System::Init(HWND _hwnd)
 
 	// デプスステンシルバッファ作成
 	// ※（デプスバッファ = 深度バッファ = Zバッファ）→奥行を判定して前後関係を正しく描画できる
-	ID3D11Texture2D* depthStencile{};
+	ID3D11Texture2D* depthStencil{};
 	D3D11_TEXTURE2D_DESC textureDesc{};
 	textureDesc.Width = swapChainDesc.BufferDesc.Width;   // バッファの幅をスワップチェーンに合わせる
 	textureDesc.Height = swapChainDesc.BufferDesc.Height; // バッファの高さをスワップチェーンに合わせる
@@ -90,7 +87,7 @@ HRESULT System::Init(HWND _hwnd)
 	textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;     // 深度ステンシルバッファとして使用
 	textureDesc.CPUAccessFlags = 0;                       // CPUからのアクセスは不要
 	textureDesc.MiscFlags = 0;                            // その他のフラグは設定なし
-	hr = this->p_Device->CreateTexture2D(&textureDesc, NULL, &depthStencile);
+	hr = this->p_Device->CreateTexture2D(&textureDesc, NULL, &depthStencil);
 	if (FAILED(hr)) return hr;
 
 	// デプスステンシルビュー作成
@@ -98,9 +95,9 @@ HRESULT System::Init(HWND _hwnd)
 	depthStencilViewDesc.Format = textureDesc.Format; // デプスステンシルバッファのフォーマットを設定
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D; // ビューの次元を2Dテクスチャとして設定（2Dテクスチャ用のデプスステンシルビュー）
 	depthStencilViewDesc.Flags = 0; // 特別なフラグは設定しない（デフォルトの動作）
-	hr = this->p_Device->CreateDepthStencilView(depthStencile, &depthStencilViewDesc, &this->p_DepthStencilView);
+	hr = this->p_Device->CreateDepthStencilView(depthStencil, &depthStencilViewDesc, &this->p_DepthStencilView);
 	if (FAILED(hr)) return hr;
-	depthStencile->Release();
+	depthStencil->Release();
 
 	// ビューポートを作成（→画面分割などに使う、描画領域の指定のこと）
 	CRect rect;
@@ -111,18 +108,18 @@ HRESULT System::Init(HWND _hwnd)
 	viewport.MinDepth = 0.0f;               // 深度範囲の最小値
 	viewport.MaxDepth = 1.0f;               // 深度範囲の最大値
 	viewport.TopLeftX = 0;                  // ビューポートの左上隅のX座標
-	viewport.TopLeftY = 0;                  // ビューポートの左上隅のY座標）
+	viewport.TopLeftY = 0;                  // ビューポートの左上隅のY座標
 	this->p_DeviceContext->RSSetViewports(1, &viewport);
 }
 
-void System::UnInit()
+void RendererManager::UnInit()
 {
 }
 
-void System::ClearScreen()
+void RendererManager::ClearScreen()
 {
 	// 画面塗りつぶし色
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
 	// 描画先のキャンバスと使用する深度バッファを指定する
 	this->p_DeviceContext->OMSetRenderTargets(1, &this->p_RenderTargetView, this->p_DepthStencilView);
 	// 描画先キャンバスを塗りつぶす
@@ -131,7 +128,7 @@ void System::ClearScreen()
 	this->p_DeviceContext->ClearDepthStencilView(this->p_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-void System::SwapChain()
+void RendererManager::SwapChain()
 {
 	// ダブルバッファの切り替えを行い画面を更新する
 	this->p_SwapChain->Present(0, 0);

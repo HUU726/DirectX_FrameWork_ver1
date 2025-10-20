@@ -106,7 +106,7 @@ std::weak_ptr<ID3D11ShaderResourceView> TextureTable::GetTexture(std::string _fi
 
 std::weak_ptr<ID3D11ShaderResourceView> TextureTable::LoadTexture(std::string _filePath)
 {
-	static System& system = System::GetInstance();
+	static RendererManager& system = RendererManager::GetInstance();
 
 	auto sp_srv = std::shared_ptr<ID3D11ShaderResourceView>();
 	ID3D11ShaderResourceView* p_srv = sp_srv.get();

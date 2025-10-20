@@ -121,26 +121,26 @@ HRESULT Sprite2DRenderer::InitState()
 	smpDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	smpDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	smpDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	hr = this->p_Device->CreateSamplerState(&smpDesc, &this->p_Sampler);
+	hr = this->p_Device->CreateSamplerState(&smpDesc, &this->p_SamplerState);
 	if (FAILED(hr)) return hr;
 
 	// ブレンドステート作成　→　透過処理や加算合成を可能にする色の合成方法
-	D3D11_BLEND_DESC BlendState{};
-	ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
-	BlendState.AlphaToCoverageEnable = FALSE;
-	BlendState.IndependentBlendEnable = FALSE;
-	BlendState.RenderTarget[0].BlendEnable = TRUE;
-	BlendState.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	BlendState.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	BlendState.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	BlendState.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	BlendState.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	hr = this->p_Device->CreateBlendState(&BlendState, &this->p_BlendState);
+	D3D11_BLEND_DESC BlendDesc{};
+	ZeroMemory(&BlendDesc, sizeof(D3D11_BLEND_DESC));
+	BlendDesc.AlphaToCoverageEnable = FALSE;
+	BlendDesc.IndependentBlendEnable = FALSE;
+	BlendDesc.RenderTarget[0].BlendEnable = TRUE;
+	BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	hr = this->p_Device->CreateBlendState(&BlendDesc, &this->p_BlendState);
 	if (FAILED(hr)) return hr;
 
-	// 震度テストを無効にする)
+	// 震度テストを無効にする
 	D3D11_DEPTH_STENCIL_DESC l_dsDesc;
 	ZeroMemory(&l_dsDesc, sizeof(l_dsDesc));
 	l_dsDesc.DepthEnable = FALSE;	//震度テストを無効にする
@@ -162,7 +162,7 @@ void Sprite2DRenderer::RenderPipeline()
 	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
 	// サンプラーをピクセルシェーダーに渡す
-	this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_Sampler);
+	this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
 
 	// 定数バッファを頂点シェーダーにセットする
 	this->p_DeviceContext->VSSetConstantBuffers(0, 1, &this->p_constantBuffer);
