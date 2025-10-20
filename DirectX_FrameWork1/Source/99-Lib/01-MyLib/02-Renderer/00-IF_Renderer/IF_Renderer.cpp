@@ -1,5 +1,5 @@
 #include "IF_Renderer.h"
-#include "../../01-System/System.h"
+#include "../98-RendererManager/RendererManager.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")

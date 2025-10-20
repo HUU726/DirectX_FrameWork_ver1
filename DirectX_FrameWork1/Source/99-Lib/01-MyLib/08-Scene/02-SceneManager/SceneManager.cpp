@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 
 #include "../../07-Component/03-Collider/99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
-#include "../../01-System/System.h"
+#include "../../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../01-Scenes/TitleScene.h"
 
 

@@ -1,6 +1,6 @@
 #include "Sprite2DRenderer.h"
 
-#include "../../01-System/System.h"
+#include "../98-RendererManager/RendererManager.h"
 
 #include "../../07-Component/01-Transform/Transform.h"
 #include "../../998-FH_Types/Vertex.h"

@@ -27,7 +27,7 @@
     <ClCompile Include="Source\03-Game\Game.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp">
@@ -152,7 +152,7 @@
     <ClInclude Include="Source\04-Object\GameObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.h">

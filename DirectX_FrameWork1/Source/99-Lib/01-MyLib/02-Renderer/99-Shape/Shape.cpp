@@ -1,6 +1,6 @@
 #include "Shape.h"
 #include "../01-Sprite2DRenderer/Sprite2DRenderer.h"
-#include "../../01-System/System.h"
+#include "../98-RendererManager/RendererManager.h"
 
 
 void CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape)

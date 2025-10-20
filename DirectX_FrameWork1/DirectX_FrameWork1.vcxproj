@@ -139,7 +139,7 @@
     <ClCompile Include="Source\02-App\Application.cpp" />
     <ClCompile Include="Source\02-App\FH_Window.cpp" />
     <ClCompile Include="Source\03-Game\Game.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.cpp" />
@@ -182,7 +182,7 @@
     <ClInclude Include="Source\02-App\FH_Window.h" />
     <ClInclude Include="Source\03-Game\Game.h" />
     <ClInclude Include="Source\04-Object\GameObject.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.h" />
