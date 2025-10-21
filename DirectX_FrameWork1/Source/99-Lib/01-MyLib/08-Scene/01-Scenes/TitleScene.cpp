@@ -54,6 +54,7 @@ void TitleScene::Input()
 void TitleScene::Update()
 {
 	camera2D.Update();
+	camera3D.Update();
 	//camera2D.GetTransformPtr()->position.x -= 0.002f;
 	gameObject2D.GetTransformPtr()->rotation.z += 0.005f;
 	gameObject2D.GetTransformPtr()->position.x += 0.005f;
@@ -65,6 +66,7 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
+	//gameObject3D.Draw();
 	gameObject2D.Draw();
 }
 

@@ -4,7 +4,7 @@
 
 CameraObject2D::CameraObject2D()
 {
-	AddComponent<Camera2D>();
+	p_comp_camera = AddComponent<Camera2D>();
 }
 
 CameraObject2D::~CameraObject2D()
@@ -17,7 +17,7 @@ void CameraObject2D::Init()
 
 void CameraObject2D::Update()
 {
-	GetComponent<Camera2D>()->Update();
+	p_comp_camera->Update();
 }
 
 void CameraObject2D::Draw()

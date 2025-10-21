@@ -6,6 +6,8 @@
 
 MeshRenderer::MeshRenderer()
 {
+	p_meshFilter = new	MeshFilter;
+	isCreate = true;
 }
 
 MeshRenderer::MeshRenderer(const char* _filePath)

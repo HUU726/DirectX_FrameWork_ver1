@@ -5,7 +5,7 @@
 
 CameraObject3D::CameraObject3D()
 {
-	AddComponent<Camera3D>();
+	p_comp_camera = AddComponent<Camera3D>();
 }
 
 CameraObject3D::~CameraObject3D()
@@ -18,6 +18,7 @@ void CameraObject3D::Init()
 
 void CameraObject3D::Update()
 {
+	p_comp_camera->Update();
 }
 
 void CameraObject3D::Draw()
