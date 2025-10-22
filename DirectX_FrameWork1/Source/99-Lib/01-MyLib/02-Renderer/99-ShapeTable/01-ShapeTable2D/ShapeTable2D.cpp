@@ -12,7 +12,7 @@
 ShapeTable2D::ShapeTable2D()
 {
 	{	//éOäpå`
-		auto triangle = std::make_shared<Shape>();
+		auto triangle = std::make_shared<hft::Polygon>();
 		triangle->name = "triangle";
 		triangle->vertices.resize(TRIANGLE_VERTEX_NUM);
 
@@ -34,7 +34,7 @@ ShapeTable2D::ShapeTable2D()
 	}
 
 	{	//éläpå`
-		auto sprite = std::make_shared<Shape>();
+		auto sprite = std::make_shared<hft::Polygon>();
 		sprite->name = "sprite";
 		sprite->vertices.resize(SPRITE_VERTEX_NUM);
 		sprite->vertices[0].position = { -0.5f,0.5f,0.f,1.f };
@@ -62,7 +62,7 @@ ShapeTable2D::ShapeTable2D()
 	return;
 
 	{	//â~
-		auto circle = std::make_shared<Shape>();
+		auto circle = std::make_shared<hft::Polygon>();
 		circle->name = "circle";
 		circle->vertices.resize(CIRCLE_VERTEX_NUM);
 
@@ -96,9 +96,9 @@ ShapeTable2D::ShapeTable2D()
 
 }
 
-void ShapeTable2D::AddShape(Shape& _shape)
+void ShapeTable2D::AddShape(hft::Polygon& _polygon)
 {
-	table[_shape.name] = std::make_shared<Shape>(_shape);
+	table[_polygon.name] = std::make_shared<hft::Polygon>(_polygon);
 }
 
 void ShapeTable2D::ClearTable()
