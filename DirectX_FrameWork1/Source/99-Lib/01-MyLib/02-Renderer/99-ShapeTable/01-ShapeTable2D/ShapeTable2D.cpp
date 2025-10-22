@@ -96,9 +96,9 @@ ShapeTable2D::ShapeTable2D()
 
 }
 
-void ShapeTable2D::AddShape(hft::Polygon& _polygon)
+void ShapeTable2D::AddShape(hft::Polygon& _shape)
 {
-	table[_polygon.name] = std::make_shared<hft::Polygon>(_polygon);
+	table[_shape.name] = std::make_shared<hft::Polygon>(_shape);
 }
 
 void ShapeTable2D::ClearTable()

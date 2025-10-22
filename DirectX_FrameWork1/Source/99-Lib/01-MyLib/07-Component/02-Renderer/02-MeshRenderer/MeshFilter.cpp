@@ -1,6 +1,7 @@
 #include "./01-Shape/01-Cube/Cube.h"
 #include "MeshFilter.h"
 
+#include "../../../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
 
 
 /********************************************************
@@ -10,37 +11,34 @@
 
 MeshFilter::MeshFilter()
 {
-	mesh = new Cube;
-	sprite = nullptr;
+
 }
 
 MeshFilter::MeshFilter(hft::Mesh& _mesh)
 {
-	mesh = new hft::Mesh;
-	*mesh = _mesh;
-	sprite = nullptr;
+
 }
 
 MeshFilter::MeshFilter(hft::Sprite2D& _sprite)
 {
-	sprite = new hft::Sprite2D;
-	
-	mesh = nullptr;
-	*sprite = _sprite;
+
 }
 
 MeshFilter::~MeshFilter()
 {
-	if (mesh != nullptr)
-	{
-		delete mesh;
-		mesh = nullptr;
-	}
-	if (sprite != nullptr)
-	{
-		delete sprite;
-		sprite = nullptr;
-	}
+
+}
+
+std::shared_ptr<hft::Mesh> MeshFilter::SetMesh(std::string _name)
+{
+	sp_mesh = ShapeTable3D::GetInstance().GetShape(_name);
+	return sp_mesh;
+}
+
+std::shared_ptr<hft::Mesh> MeshFilter::SetMesh(std::shared_ptr<hft::Mesh> _sp_mesh)
+{
+	sp_mesh = ShapeTable3D::GetInstance().GetShape(_sp_mesh->name);
+	return sp_mesh;
 }
 
 void MeshFilter::Init()

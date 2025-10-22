@@ -2,6 +2,7 @@
 
 #include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 #include "./MeshFilter.h"
+#include "../../../998-FH_Types/Mesh.h"
 
 class MeshRenderer : public Component
 {
@@ -17,9 +18,9 @@ public:
 	MeshRenderer(const char* _filePath);
 	MeshRenderer(MeshFilter& _meshFilter, const char* _filePath = nullptr);
 	~MeshRenderer();
-	std::shared_ptr<Shape> SetShape(std::string _name);
-	std::shared_ptr<Shape> SetShape(std::shared_ptr<Shape> _shape);
-	std::shared_ptr<Shape> GetShape() { return p_meshFilter.}
+	std::shared_ptr<hft::Mesh> SetShape(std::string _name);
+	std::shared_ptr<hft::Mesh> SetShape(std::shared_ptr<hft::Mesh> _shape);
+	std::shared_ptr<hft::Mesh> GetShape() { return p_meshFilter->GetMesh(); }
 	void Init() override;
 	void Draw() override;
 	void Draw(MeshFilter* _p_meshFilter);

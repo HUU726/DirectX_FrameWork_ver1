@@ -37,19 +37,18 @@ MeshRenderer::~MeshRenderer()
 	}
 }
 
+std::shared_ptr<hft::Mesh> MeshRenderer::SetShape(std::string _name)
+{
+	return p_meshFilter->SetMesh(_name);
+}
+std::shared_ptr<hft::Mesh> MeshRenderer::SetShape(std::shared_ptr<hft::Mesh> _shape)
+{
+	return p_meshFilter->SetMesh(_shape);
+}
+
 void MeshRenderer::Init()
 {
-	hft::Mesh* p_mesh = p_meshFilter->GetMesh();
-	hft::Sprite2D* p_sprite = p_meshFilter->GetSprite();
 
-	if (p_mesh != nullptr)
-	{
-		p_mesh->p_transform =  gameObject->GetTransformPtr();
-	}
-	else if (p_sprite != nullptr)
-	{
-		p_sprite->p_transform = gameObject->GetTransformPtr();;
-	}
 }
 
 void MeshRenderer::Draw()
@@ -58,8 +57,7 @@ void MeshRenderer::Draw()
 	{
 		if (p_meshFilter->GetMesh())
 			Mesh3DRenderer::GetInstance().Draw(p_meshFilter);
-		else if (p_meshFilter->GetSprite())
-			Mesh3DRenderer::GetInstance().Draw(p_meshFilter->GetSprite());
+
 	}
 }
 

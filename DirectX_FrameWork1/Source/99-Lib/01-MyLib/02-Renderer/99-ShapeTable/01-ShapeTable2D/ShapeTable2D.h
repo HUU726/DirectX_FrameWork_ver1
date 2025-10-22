@@ -25,7 +25,7 @@ public:
 		static ShapeTable2D instance;
 		return instance;
 	}
-	void AddShape(hft::Polygon& _polygon);
+	void AddShape(hft::Polygon& _shape);
 	std::shared_ptr<hft::Polygon> GetShape(std::string _name) { return table[_name]; }
 	void ClearTable();
 

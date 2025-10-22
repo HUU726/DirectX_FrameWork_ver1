@@ -25,7 +25,7 @@ public:
 		static ShapeTable3D instance;
 		return instance;
 	}
-	void AddShape(hft::Mesh& _mesh);
+	void AddShape(hft::Mesh& _shape);
 	std::shared_ptr<hft::Mesh> GetShape(std::string _name) { return table[_name]; }
 	void ClearTable();
 

@@ -7,7 +7,7 @@
 #include "../../998-FH_Types/Sprite2D.h"
 #include "../../998-FH_Types/TransformMatrix.h"
 
-#include "../99-Shape/Shape.h"
+#include "../../998-FH_Types/Polygon.h"
 
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
@@ -221,7 +221,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 
 	RenderPipeline();
 
-	std::shared_ptr<Shape> shape = _renderer->GetShape();
+	std::shared_ptr<hft::Polygon> shape = _renderer->GetShape();
 	if (!shape)
 		return;
 
@@ -278,7 +278,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }
 
-void Sprite2DRenderer::Draw(const Shape& _shape, hft::HFFLOAT4 _pos, hft::HFFLOAT3 _scl, hft::HFFLOAT3 _rot)
+void Sprite2DRenderer::Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos, hft::HFFLOAT3 _scl, hft::HFFLOAT3 _rot)
 {
 	if (p_camera == nullptr)
 		return;

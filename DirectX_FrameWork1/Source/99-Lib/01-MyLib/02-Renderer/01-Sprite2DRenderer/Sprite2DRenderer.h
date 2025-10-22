@@ -2,12 +2,12 @@
 #include "../00-IF_Renderer/IF_Renderer.h"
 
 #include "../../998-FH_Types/Sprite2D.h"
+#include "../../998-FH_Types/Polygon.h"
 
 
 
 class Camera2D;
 class SpriteRenderer;
-struct Shape;
 
 
 struct Sprite2DConstBuffer
@@ -49,7 +49,7 @@ public:
 
 	void Draw(const hft::Sprite2D* _sprite);
 	void Draw(SpriteRenderer* _renderer);
-	void Draw(const Shape& _shape, hft::HFFLOAT4 _pos = { 0.f,0.f,0.f,0.f }, hft::HFFLOAT3 _scl = { 100.f,100.f,0.f }, hft::HFFLOAT3 _rot = { 0.f,0.f,0.f });
+	void Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos = { 0.f,0.f,0.f,0.f }, hft::HFFLOAT3 _scl = { 100.f,100.f,0.f }, hft::HFFLOAT3 _rot = { 0.f,0.f,0.f });
 
 };
 

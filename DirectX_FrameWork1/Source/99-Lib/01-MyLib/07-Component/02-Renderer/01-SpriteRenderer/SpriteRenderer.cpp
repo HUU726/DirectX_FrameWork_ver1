@@ -13,7 +13,7 @@ SpriteRenderer::SpriteRenderer(const char* _filePath)
 		texture.LoadTexture(_filePath);
 }
 
-SpriteRenderer::SpriteRenderer(Shape& _shape, const char* _filePath)
+SpriteRenderer::SpriteRenderer(hft::Polygon& _shape, const char* _filePath)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape.name);
 
@@ -25,13 +25,13 @@ SpriteRenderer::~SpriteRenderer()
 {
 }
 
-std::shared_ptr<Shape> SpriteRenderer::SetShape(std::string _name)
+std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::string _name)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_name);
-	return std::shared_ptr<Shape>();
+	return std::shared_ptr<hft::Polygon>();
 }
 
-std::shared_ptr<Shape> SpriteRenderer::SetShape(std::shared_ptr<Shape> _shape)
+std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::shared_ptr<hft::Polygon> _shape)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape->name);
     return sp_shape;

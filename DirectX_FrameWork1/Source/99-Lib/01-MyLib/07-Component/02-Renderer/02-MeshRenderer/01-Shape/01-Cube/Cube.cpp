@@ -95,14 +95,14 @@ Cube::Cube()
 
 Cube::Cube(const Transform& _transform)
 {
-	p_transform = new	Transform(_transform);
+	//p_transform = new	Transform(_transform);
 
 	CreateVerticesAndIndex();
 }
 
 Cube::Cube(Transform* _p_transform)
 {
-	p_transform = _p_transform;
+	//p_transform = _p_transform;
 
 	CreateVerticesAndIndex();
 }

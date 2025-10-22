@@ -11,27 +11,16 @@
 class MeshFilter : public Component
 {
 private:
-	hft::Mesh* mesh;
-	hft::Sprite2D* sprite;
-
+	std::shared_ptr<hft::Mesh> sp_mesh;
 
 public:
 	MeshFilter();
 	MeshFilter(hft::Mesh& _mesh);
 	MeshFilter(hft::Sprite2D& _sprite);
 	~MeshFilter();
-	void SetMesh(hft::Mesh* _p_mesh)
-	{
-		delete mesh;
-		mesh = _p_mesh;
-	}
-	void SetSprite(hft::Sprite2D* _p_sprite)
-	{
-		delete sprite;
-		sprite = _p_sprite;
-	}
-	hft::Mesh* GetMesh() { return mesh; }
-	hft::Sprite2D* GetSprite() { return sprite; }
+	std::shared_ptr<hft::Mesh> SetMesh(std::string _name);
+	std::shared_ptr<hft::Mesh> SetMesh(std::shared_ptr<hft::Mesh> _sp_mesh);
+	std::shared_ptr<hft::Mesh> GetMesh() { return sp_mesh; }
 	//void LoadTexture(const char* _filePath) { mesh->LoadTexture(_filePath); }
 
 	void Init() override;

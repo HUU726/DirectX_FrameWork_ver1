@@ -131,9 +131,9 @@ ShapeTable3D::ShapeTable3D()
 	}
 }
 
-void ShapeTable3D::AddShape(hft::Mesh& _mesh)
+void ShapeTable3D::AddShape(hft::Mesh& _shape)
 {
-	table[_mesh.name] = std::make_shared<hft::Mesh>(_mesh);
+	table[_shape.name] = std::make_shared<hft::Mesh>(_shape);
 }
 
 void ShapeTable3D::ClearTable()
