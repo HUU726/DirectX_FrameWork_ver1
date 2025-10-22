@@ -102,13 +102,13 @@ std::shared_ptr<hft::Mesh> CreateCubeShape()
 	cube->indices.resize(CUBE_INDEX_NUM);
 	for (int i = 0; i < CUBE_FASE_NUM; i++)
 	{
-		int baseVertexNum = i * CUBE_FASE_VERTEX_NUM;
-		cube->indices[baseVertexNum] = baseVertexNum;
-		cube->indices[baseVertexNum + 1] = baseVertexNum + 1;
-		cube->indices[baseVertexNum + 2] = baseVertexNum + 2;
-		cube->indices[baseVertexNum + 3] = baseVertexNum + 1;
-		cube->indices[baseVertexNum + 4] = baseVertexNum + 3;
-		cube->indices[baseVertexNum + 5] = baseVertexNum + 2;
+		int baseIndexNum = i * CUBE_FASE_VERTEX_NUM;
+		cube->indices[baseIndexNum] = baseIndexNum;
+		cube->indices[baseIndexNum + 1] = baseIndexNum + 1;
+		cube->indices[baseIndexNum + 2] = baseIndexNum + 2;
+		cube->indices[baseIndexNum + 3] = baseIndexNum + 1;
+		cube->indices[baseIndexNum + 4] = baseIndexNum + 3;
+		cube->indices[baseIndexNum + 5] = baseIndexNum + 2;
 	}
 	
 	return cube;

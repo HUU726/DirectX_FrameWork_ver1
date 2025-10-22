@@ -7,6 +7,10 @@
 #define SPRITE_INDEX_NUM (6)
 
 #define CIRCLE_VERTEX_NUM (33)
+#define CIRCLE_FASE_NUM (CIRCLE_VERTEX_NUM - 1)
+#define CIRCLE_FASE_VERTEX_NUM (3)
+#define CIRCLE_INDEX_NUM (CIRCLE_FASE_NUM * CIRCLE_FASE_VERTEX_NUM)
+
 
 
 ShapeTable2D::ShapeTable2D()
@@ -59,8 +63,6 @@ ShapeTable2D::ShapeTable2D()
 		table.insert({ sprite->name,sprite });
 	}
 
-	return;
-
 	{	//‰~
 		auto circle = std::make_shared<hft::Polygon>();
 		circle->name = "circle";
@@ -71,7 +73,7 @@ ShapeTable2D::ShapeTable2D()
 
 		for (int i = 1; i < CIRCLE_VERTEX_NUM; i++)
 		{
-			float theta = DirectX::XM_2PI * i / (CIRCLE_VERTEX_NUM - 1);
+			float theta = DirectX::XM_2PI / (CIRCLE_VERTEX_NUM - 1) * i;
 			float x = cos(theta);
 			float y = sin(theta);
 			circle->vertices[i].position = { x,y,0.f };
@@ -89,6 +91,17 @@ ShapeTable2D::ShapeTable2D()
 
 			circle->vertices[i].uv = { x,y };
 		}
+
+		circle->indices.resize(CIRCLE_INDEX_NUM);
+		for (int i = 0, biggerVertexNum = 2; i < CIRCLE_FASE_NUM; i++, biggerVertexNum++)
+		{
+			int baseIndexNum = i * CIRCLE_FASE_VERTEX_NUM;
+			 circle->indices[baseIndexNum] = 0;
+			 circle->indices[baseIndexNum+1] = biggerVertexNum;
+			 circle->indices[baseIndexNum+2] = biggerVertexNum - 1;
+		}
+		if (circle->indices[CIRCLE_INDEX_NUM - 2] == CIRCLE_VERTEX_NUM)
+			circle->indices[CIRCLE_INDEX_NUM - 2] = 1;
 		
 		CreateVertexIndexBuffer(circle);
 		table.insert({ circle->name,circle });

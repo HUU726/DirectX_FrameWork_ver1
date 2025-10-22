@@ -127,9 +127,9 @@ HRESULT Sprite2DRenderer::InitState()
 	D3D11_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D11_FILL_SOLID; //ソリッド
 	//rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME; //ワイヤーフレーム
-	//rasterizerDesc.CullMode = D3D11_CULL_BACK; //ポリゴン裏をカリング
+	rasterizerDesc.CullMode = D3D11_CULL_BACK; //ポリゴン裏をカリング
 	//rasterizerDesc.CullMode = D3D11_CULL_FRONT; //ポリゴン表をカリング
-	rasterizerDesc.CullMode = D3D11_CULL_NONE; //カリングしない(裏も表も表示される)
+	//rasterizerDesc.CullMode = D3D11_CULL_NONE; //カリングしない(裏も表も表示される)
 	rasterizerDesc.DepthClipEnable = TRUE;
 	rasterizerDesc.MultisampleEnable = FALSE;
 	hr = p_Device->CreateRasterizerState(&rasterizerDesc, &p_RRState);
