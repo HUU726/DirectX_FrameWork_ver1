@@ -17,6 +17,9 @@ public:
 	MeshRenderer(const char* _filePath);
 	MeshRenderer(MeshFilter& _meshFilter, const char* _filePath = nullptr);
 	~MeshRenderer();
+	std::shared_ptr<Shape> SetShape(std::string _name);
+	std::shared_ptr<Shape> SetShape(std::shared_ptr<Shape> _shape);
+	std::shared_ptr<Shape> GetShape() { return p_meshFilter.}
 	void Init() override;
 	void Draw() override;
 	void Draw(MeshFilter* _p_meshFilter);

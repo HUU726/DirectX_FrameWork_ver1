@@ -1,19 +1,15 @@
 #pragma once
 
 
-#include "Vertex.h"
+#include "Shape.h"
 
 
 
 namespace hft
 {
 
-	struct Mesh
+	struct Mesh : public hft::Shape
 	{
-		Transform* p_transform;
-
-		std::vector<hft::Vertex> vertices;
-		std::vector<unsigned int> indices;
 	};
 
 }

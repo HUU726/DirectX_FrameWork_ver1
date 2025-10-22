@@ -1,11 +1,9 @@
 #include "Shape.h"
-#include "../01-Sprite2DRenderer/Sprite2DRenderer.h"
-#include "../98-RendererManager/RendererManager.h"
+#include "../02-Renderer/98-RendererManager/RendererManager.h"
 
 
-HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
+HRESULT hft::CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
 {
-	Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
 	RendererManager& system = RendererManager::GetInstance();
 	HRESULT hr;
 

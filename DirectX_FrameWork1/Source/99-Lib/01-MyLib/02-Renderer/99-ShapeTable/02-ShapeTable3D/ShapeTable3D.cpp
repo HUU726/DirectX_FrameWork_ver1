@@ -14,9 +14,9 @@
 * @brief	‚RD‚ÌlŠpŒ`Œ`ó‚ğì¬‚·‚é
 * @date		2025/10/22
 */
-std::shared_ptr<Shape> CreatePlaneShape()
+std::shared_ptr<hft::Mesh> CreatePlaneShape()
 {
-	auto plane = std::make_shared<Shape>();
+	auto plane = std::make_shared<hft::Mesh>();
 	plane->name = "plane";
 
 	plane->vertices.resize(PLANE_VERTEX_NUM);
@@ -42,9 +42,9 @@ std::shared_ptr<Shape> CreatePlaneShape()
 /**
 * @brief	‚RD‚Ì—§•û‘Ì‚ğì¬‚·‚é
 */
-std::shared_ptr<Shape> CreateCubeShape()
+std::shared_ptr<hft::Mesh> CreateCubeShape()
 {
-	auto cube = std::make_shared<Shape>();
+	auto cube = std::make_shared<hft::Mesh>();
 	cube->name = "cube";
 
 	cube->vertices.resize(CUBE_VERTEX_NUM);
@@ -119,21 +119,21 @@ ShapeTable3D::ShapeTable3D()
 	{	//Plane
 		auto plane = CreatePlaneShape();
 
-		CreateVertexIndexBuffer(plane);
+		hft::CreateVertexIndexBuffer(plane);
 		table.insert({plane->name,plane});
 	}
 
 	{	//Cube
 		auto cube = CreateCubeShape();
 
-		CreateVertexIndexBuffer(cube);
+		hft::CreateVertexIndexBuffer(cube);
 		table.insert({cube->name,cube});
 	}
 }
 
-void ShapeTable3D::AddShape(Shape& _shape)
+void ShapeTable3D::AddShape(hft::Mesh& _mesh)
 {
-	table[_shape.name] = std::make_shared<Shape>(_shape);
+	table[_mesh.name] = std::make_shared<hft::Mesh>(_mesh);
 }
 
 void ShapeTable3D::ClearTable()
