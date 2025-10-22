@@ -26,7 +26,7 @@ void TitleScene::Init()
 	}
 
 	{	//オブジェクト初期化
-		gameObject2D.AddComponent<SpriteRenderer>();
+		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("triangle");
 		Transform* p_trf = gameObject2D.GetTransformPtr();
 		{
 			p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };

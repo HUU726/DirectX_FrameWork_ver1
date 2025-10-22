@@ -15,8 +15,7 @@
 class ShapeTable2D
 {
 private:
-	std::unordered_map<std::string, std::shared_ptr<Shape2D>> table;
-
+	std::unordered_map<std::string, std::shared_ptr<Shape>> table;
 
 	ShapeTable2D();
 
@@ -26,8 +25,8 @@ public:
 		static ShapeTable2D instance;
 		return instance;
 	}
-	void AddShape(Shape2D& _shape);
-	std::shared_ptr<Shape2D> GetShape(std::string _name) { return table[_name]; }
+	void AddShape(Shape& _shape);
+	std::shared_ptr<Shape> GetShape(std::string _name) { return table[_name]; }
 	void ClearTable();
 
 };

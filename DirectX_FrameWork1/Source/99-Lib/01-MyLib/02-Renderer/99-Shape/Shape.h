@@ -8,7 +8,7 @@
 #include "../../998-FH_Types/Vertex.h"
 
 
-struct Shape2D
+struct Shape
 {
 	std::string name;					//å`èÛñº
 	std::vector<hft::Vertex> vertices;	//í∏ì_îzóÒ
@@ -18,4 +18,4 @@ struct Shape2D
 };
 
 
-HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape);
+HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape);

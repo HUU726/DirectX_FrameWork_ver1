@@ -3,7 +3,7 @@
 #include "../98-RendererManager/RendererManager.h"
 
 
-HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape2D> _sp_shape)
+HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
 {
 	Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
 	RendererManager& system = RendererManager::GetInstance();

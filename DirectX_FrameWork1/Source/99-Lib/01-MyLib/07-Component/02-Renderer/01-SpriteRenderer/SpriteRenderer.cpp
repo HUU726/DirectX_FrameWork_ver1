@@ -13,7 +13,7 @@ SpriteRenderer::SpriteRenderer(const char* _filePath)
 		texture.LoadTexture(_filePath);
 }
 
-SpriteRenderer::SpriteRenderer(Shape2D& _shape, const char* _filePath)
+SpriteRenderer::SpriteRenderer(Shape& _shape, const char* _filePath)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape.name);
 
@@ -23,6 +23,18 @@ SpriteRenderer::SpriteRenderer(Shape2D& _shape, const char* _filePath)
 
 SpriteRenderer::~SpriteRenderer()
 {
+}
+
+std::shared_ptr<Shape> SpriteRenderer::SetShape(std::string _name)
+{
+	sp_shape = ShapeTable2D::GetInstance().GetShape(_name);
+	return std::shared_ptr<Shape>();
+}
+
+std::shared_ptr<Shape> SpriteRenderer::SetShape(std::shared_ptr<Shape> _shape)
+{
+	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape->name);
+    return sp_shape;
 }
 
 void SpriteRenderer::Init()
