@@ -136,7 +136,7 @@ HRESULT Sprite2DRenderer::InitState()
 	// 震度テストを無効にする
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	ZeroMemory(&dsDesc, sizeof(dsDesc));
-	dsDesc.DepthEnable = TRUE;	//震度テストを無効にする
+	dsDesc.DepthEnable = TRUE;	//震度テストを有効にする
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	hr = this->p_Device->CreateDepthStencilState(&dsDesc, &this->p_DSState);

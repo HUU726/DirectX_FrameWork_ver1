@@ -21,10 +21,10 @@ HRESULT Mesh3DRenderer::InitShader()
 	HRESULT hr;
 
 	// インプットレイアウト作成
-	D3D11_INPUT_ELEMENT_DESC layout[]
+	std::vector<D3D11_INPUT_ELEMENT_DESC> l_layout
 	{
 		// 位置座標があるということを伝える
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		(D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }),
 		// 法線情報があるということを伝える
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		// 色情報があるということを伝える
@@ -32,11 +32,10 @@ HRESULT Mesh3DRenderer::InitShader()
 		// UV座標( uv )
 		{ "TEX", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
-	unsigned int numElements = ARRAYSIZE(layout);
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
 	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
+	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, l_layout.data(), l_layout.size(), VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
@@ -130,7 +129,7 @@ HRESULT Mesh3DRenderer::InitState()
 	//デプスステンシルステート作成
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	ZeroMemory(&dsDesc, sizeof(dsDesc));
-	dsDesc.DepthEnable = TRUE;	//震度テストを無効にする
+	dsDesc.DepthEnable = TRUE;	//震度テストを有効にする
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	hr = this->p_Device->CreateDepthStencilState(&dsDesc, &this->p_DSState);
@@ -198,7 +197,7 @@ void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 	mtrxTf.ConversionScale(transform->scale);
 
 	{	//VS用定数バッファ更新
-		VS_CB_Sprite2D cb;
+		VS_CB_Mesh3D cb;
 
 		cb.color = shape->vertices[0].color;
 
@@ -214,7 +213,7 @@ void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 	}
 
 	{	//PS用定数バッファ更新
-		PS_CB_Sprite2D cb;
+		PS_CB_Mesh3D cb;
 		Texture* p_texture = _p_renderer->GetTexture();
 		if (p_texture->wp_textureView.expired())
 		{

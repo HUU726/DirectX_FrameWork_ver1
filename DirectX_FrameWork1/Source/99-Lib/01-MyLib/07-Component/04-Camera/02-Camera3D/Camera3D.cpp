@@ -57,6 +57,10 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 
 	DirectX::XMVECTOR defaultForward = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);	//‰Šú‘O•ûŒü
 	DirectX::XMVECTOR defaultUp = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);			//‰Šúã•ûŒü
+	
+	rot.x = DirectX::XMConvertToRadians(rot.x);
+	rot.y = DirectX::XMConvertToRadians(rot.y);
+	rot.z = DirectX::XMConvertToRadians(rot.z);
 	DirectX::XMMATRIX matrixRot = DirectX::XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z);	//ƒJƒƒ‰‚Ì‰ñ“]î•ñ
 
 
@@ -65,7 +69,7 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 
 	DirectX::XMVECTOR upDirect = DirectX::XMVector3TransformNormal(defaultUp, matrixRot);	//ã•ûŒü
 	upDirect = DirectX::XMVector3Normalize(upDirect);	//³‹K‰»
-
+	
 	DirectX::XMVECTOR rightDirect = DirectX::XMVector3Cross(upDirect, forwardDirect);	//‰E•ûŒü
 	rightDirect = DirectX::XMVector3Normalize(rightDirect);	//³‹K‰»
 

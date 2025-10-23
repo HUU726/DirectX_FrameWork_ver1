@@ -38,13 +38,13 @@ void TitleScene::Init()
 		gameObject3D.AddComponent<MeshRenderer>()->SetShape("cube");
 		Transform* p_trf = gameObject3D.GetTransformPtr();
 		{
-			p_trf->position = hft::HFFLOAT3{0.f,0.f,30.f};
+			p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
 			p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
 		}
 	}
 
-	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
-	//camera3D.GetComponent<Camera3D>()->SetTarget(&gameObject3D);
+	camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
+	camera3D.GetComponent<Camera3D>()->SetTarget(&gameObject3D);
 }
 
 void TitleScene::Input()
@@ -59,12 +59,22 @@ void TitleScene::Update()
 	
 	{
 		Transform* p_trf = camera3D.GetTransformPtr();
-		p_trf->rotation.y += 0.01f;
-		p_trf->rotation.x += 0.01f;
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+			p_trf->position.x += 0.001f;
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+			p_trf->position.x -= 0.001f;
+
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+			p_trf->position.z += 0.001f;
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			p_trf->position.z -= 0.001f;
+
+		std::cout << "Camera3DPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
 	}
 	{
 		Transform* p_trf = gameObject3D.GetTransformPtr();
 		p_trf->rotation.y += 0.000;
+		std::cout << "2DObjectPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
 	}
 
 
@@ -76,7 +86,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {	
 	gameObject3D.Draw();
-	//gameObject2D.Draw();
+	gameObject2D.Draw();
 }
 
 void TitleScene::UnInit()

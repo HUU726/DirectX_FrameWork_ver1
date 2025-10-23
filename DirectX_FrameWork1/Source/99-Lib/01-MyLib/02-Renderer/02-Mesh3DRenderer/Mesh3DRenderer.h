@@ -16,8 +16,8 @@ struct VS_CB_Mesh3D
 {
 	DirectX::XMFLOAT4 color;
 	DirectX::XMMATRIX matrixTex;
-	DirectX::XMMATRIX matrixWorld;
 	DirectX::XMMATRIX matrixProj;
+	DirectX::XMMATRIX matrixWorld;
 	DirectX::XMMATRIX matrixView;
 };
 struct PS_CB_Mesh3D
