@@ -10,16 +10,16 @@ class Camera2D;
 class SpriteRenderer;
 
 
-struct Sprite2DConstBuffer
+struct VS_CB_Sprite2D
 {
 	DirectX::XMFLOAT4 color;
 	DirectX::XMMATRIX matrixTex;
-	DirectX::XMMATRIX matrixProj;
 	DirectX::XMMATRIX matrixWorld;
+	DirectX::XMMATRIX matrixProj;
 	DirectX::XMMATRIX matrixView;
 };
 
-struct Sprite2DTextureCB
+struct PS_CB_Sprite2D
 {
 	int isTexture;
 };

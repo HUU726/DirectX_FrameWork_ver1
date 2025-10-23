@@ -1,6 +1,7 @@
 #include "Camera3D.h"
 
 #include "../../../06-GameObject/GameObject.h"
+#include "../../../../../02-App/FH_Window.h"
 
 std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 {
@@ -52,7 +53,7 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 	Transform l_transform = GetGameObject()->GetTransform();
 	auto pos = l_transform.position;
 	auto rot = l_transform.rotation;
-	DirectX::XMVECTOR cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.0f);		//カメラの位置
+	DirectX::XMVECTOR cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 1.0f);		//カメラの位置
 
 	DirectX::XMVECTOR defaultForward = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);	//初期前方向
 	DirectX::XMVECTOR defaultUp = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);			//初期上方向
@@ -84,7 +85,7 @@ Camera3D::Camera3D()
 {
 	p_target = nullptr;
 	fov = 60.0f;
-	aspect = 16.0f / 9.0f;
+	aspect = static_cast<float>SCREEN_WIDTH / static_cast<float>SCREEN_HEIGHT;
 	nearClip = 0.1f;
 	farClip = 100000.0f;
 	forward = { 0.f,0.f,1.f };

@@ -20,7 +20,7 @@ void TitleScene::Init()
 
 	{	//3DƒJƒƒ‰‰Šú‰»
 		Transform* p_trf = camera3D.GetTransformPtr();
-		p_trf->position = {0.f,0.f,0.f,0.f};
+		p_trf->position = {0.f,0.f,-500.f,0.f};
 
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
@@ -35,7 +35,7 @@ void TitleScene::Init()
 	}
 
 	{
-		gameObject2D.AddComponent<MeshRenderer>();
+		gameObject3D.AddComponent<MeshRenderer>()->SetShape("cube");
 		Transform* p_trf = gameObject3D.GetTransformPtr();
 		{
 			p_trf->position = hft::HFFLOAT3{0.f,0.f,30.f};
@@ -43,7 +43,8 @@ void TitleScene::Init()
 		}
 	}
 
-	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject);
+	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
+	//camera3D.GetComponent<Camera3D>()->SetTarget(&gameObject3D);
 }
 
 void TitleScene::Input()
@@ -55,9 +56,17 @@ void TitleScene::Update()
 {
 	camera2D.Update();
 	camera3D.Update();
-	//camera2D.GetTransformPtr()->position.x -= 0.002f;
-	gameObject2D.GetTransformPtr()->rotation.z += 0.005f;
-	gameObject2D.GetTransformPtr()->position.x += 0.005f;
+	
+	{
+		Transform* p_trf = camera3D.GetTransformPtr();
+		p_trf->rotation.y += 0.01f;
+		p_trf->rotation.x += 0.01f;
+	}
+	{
+		Transform* p_trf = gameObject3D.GetTransformPtr();
+		p_trf->rotation.y += 0.000;
+	}
+
 
 	flameCnt++;
 	if (flameCnt > 10000000000000)
@@ -66,8 +75,8 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
-	//gameObject3D.Draw();
-	gameObject2D.Draw();
+	gameObject3D.Draw();
+	//gameObject2D.Draw();
 }
 
 void TitleScene::UnInit()

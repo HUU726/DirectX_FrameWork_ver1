@@ -15,9 +15,6 @@
 
 #define VERTEX_NUM_2D (4)
 
-using hft::Vertex;
-using hft::Sprite2D;
-using hft::TransformMatrix;
 
 
 Sprite2DRenderer::Sprite2DRenderer()
@@ -63,7 +60,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// 定数バッファ作成
 	D3D11_BUFFER_DESC cdDesc;
-	cdDesc.ByteWidth = sizeof(Sprite2DConstBuffer);
+	cdDesc.ByteWidth = sizeof(VS_CB_Sprite2D);
 	cdDesc.Usage = D3D11_USAGE_DEFAULT;
 	cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cdDesc.CPUAccessFlags = 0;
@@ -74,7 +71,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// 定数バッファ作成
 	D3D11_BUFFER_DESC PS_cdDesc;
-	PS_cdDesc.ByteWidth = (sizeof(Sprite2DTextureCB) + 15) & ~15;
+	PS_cdDesc.ByteWidth = (sizeof(PS_CB_Sprite2D) + 15) & ~15;
 	PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
 	PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	PS_cdDesc.CPUAccessFlags = 0;
@@ -189,12 +186,12 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	RenderPipeline();
 
 
-	TransformMatrix mtrxTf;
+	hft::TransformMatrix mtrxTf;
 	mtrxTf.ConversionPosition(_sprite->p_transform->position);
 	mtrxTf.ConversionRotation(_sprite->p_transform->rotation);
 	mtrxTf.ConversionScale(_sprite->p_transform->scale);
 
-	Sprite2DConstBuffer cb;	// 定数バッファを更新
+	VS_CB_Sprite2D cb;	// 定数バッファを更新
 
 	cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
 	cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
@@ -207,7 +204,7 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 	// 行列をシェーダーに渡す
 	p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);
 
-	UINT strides = sizeof(Vertex);
+	UINT strides = sizeof(hft::Vertex);
 	UINT offsets = 0;
 
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // 描画命令
@@ -227,13 +224,13 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 
 	Transform* transform = _renderer->GetGameObject()->GetTransformPtr();
 
-	TransformMatrix mtrxTf;
+	hft::TransformMatrix mtrxTf;
 	mtrxTf.ConversionPosition(transform->position);
 	mtrxTf.ConversionRotation(transform->rotation);
 	mtrxTf.ConversionScale(transform->scale);
 
 	{	//VS用定数バッファ更新
-		Sprite2DConstBuffer cb;
+		VS_CB_Sprite2D cb;
 
 		cb.color = shape->vertices[0].color;
 
@@ -249,7 +246,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
 	}
 
 	{	//PS用定数バッファ更新
-		Sprite2DTextureCB cb;
+		PS_CB_Sprite2D cb;
 		Texture* p_texture = _renderer->GetTexture();
 		if (p_texture->wp_textureView.expired())
 		{
@@ -285,13 +282,13 @@ void Sprite2DRenderer::Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos, hft:
 
 	RenderPipeline();
 
-	TransformMatrix mtrxTf;
+	hft::TransformMatrix mtrxTf;
 	mtrxTf.ConversionPosition(_pos);
 	mtrxTf.ConversionRotation(_rot);
 	mtrxTf.ConversionScale(_scl);
 
 	{
-		Sprite2DConstBuffer cb;	// 定数バッファを更新
+		VS_CB_Sprite2D cb;	// 定数バッファを更新
 
 		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
 		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
@@ -306,12 +303,12 @@ void Sprite2DRenderer::Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos, hft:
 	}
 
 	{
-		Sprite2DTextureCB cb;
+		PS_CB_Sprite2D cb;
 		cb.isTexture = false;
 		p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
 	}
 
-	UINT strides = sizeof(Vertex);
+	UINT strides = sizeof(hft::Vertex);
 	UINT offsets = 0;
 
 	p_DeviceContext->IASetVertexBuffers(0, 1, &(_shape.p_vertexBuffer), &strides, &offsets);

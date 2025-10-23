@@ -11,15 +11,10 @@
 
 MeshFilter::MeshFilter()
 {
-
+	sp_mesh = ShapeTable3D::GetInstance().GetShape("cube");
 }
 
 MeshFilter::MeshFilter(hft::Mesh& _mesh)
-{
-
-}
-
-MeshFilter::MeshFilter(hft::Sprite2D& _sprite)
 {
 
 }
@@ -39,6 +34,11 @@ std::shared_ptr<hft::Mesh> MeshFilter::SetMesh(std::shared_ptr<hft::Mesh> _sp_me
 {
 	sp_mesh = ShapeTable3D::GetInstance().GetShape(_sp_mesh->name);
 	return sp_mesh;
+}
+
+std::shared_ptr<hft::Mesh> MeshFilter::LoadModel(const char* _filePath)
+{
+	return std::make_shared<hft::Mesh>();
 }
 
 void MeshFilter::Init()

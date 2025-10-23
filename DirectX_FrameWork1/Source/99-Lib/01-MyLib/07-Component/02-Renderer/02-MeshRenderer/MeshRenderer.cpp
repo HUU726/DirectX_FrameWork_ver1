@@ -46,6 +46,11 @@ std::shared_ptr<hft::Mesh> MeshRenderer::SetShape(std::shared_ptr<hft::Mesh> _sh
 	return p_meshFilter->SetMesh(_shape);
 }
 
+std::shared_ptr<hft::Mesh> MeshRenderer::LoadModel(const char* _filePath)
+{
+	return p_meshFilter->LoadModel(_filePath);
+}
+
 void MeshRenderer::Init()
 {
 
@@ -55,20 +60,6 @@ void MeshRenderer::Draw()
 {
 	if (isRender)
 	{
-		if (p_meshFilter->GetMesh())
-			Mesh3DRenderer::GetInstance().Draw(p_meshFilter);
-
+		Mesh3DRenderer::GetInstance().Draw(this);
 	}
-}
-
-void MeshRenderer::Draw(MeshFilter* _p_meshFilter)
-{
-	if (isRender)
-		Mesh3DRenderer::GetInstance().Draw(_p_meshFilter);
-}
-
-void MeshRenderer::Draw(hft::Sprite2D* _p_sprite)
-{
-	if (isRender)
-		Mesh3DRenderer::GetInstance().Draw(_p_sprite);
 }

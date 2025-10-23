@@ -43,7 +43,7 @@ public:
 	hft::HFFLOAT3 GetUp() { return up; }
 
 	/*** セッター ***/
-	void SetTarget(GameObject* _p_pos) { p_target = _p_pos; }
+	void SetTarget(GameObject* _p_target) { p_target = _p_target; }
 
 
 	void RemoveTarget() { p_target = nullptr; }
