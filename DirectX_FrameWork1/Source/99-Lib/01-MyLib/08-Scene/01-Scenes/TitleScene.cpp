@@ -58,33 +58,39 @@ void TitleScene::Update()
 	camera3D.Update();
 	
 	{
+		float spd = 0.06f;
+
 		Transform* p_trf = camera3D.GetTransformPtr();
+
+		if ( GetAsyncKeyState('Q') & 0x8000 )
+			p_trf->rotation.y -= 0.03f;
+		if ( GetAsyncKeyState('E') & 0x8000 )
+			p_trf->rotation.y += 0.03f;
+	
+		hft::HFFLOAT3 moveVec;
 		if (GetAsyncKeyState('D') & 0x8000)
-			p_trf->position.x += 0.04f;
+			moveVec += camera3D.GetRight();
 		if (GetAsyncKeyState('A') & 0x8000)
-			p_trf->position.x -= 0.04f;
+			moveVec -= camera3D.GetRight();
 
 		if (GetAsyncKeyState('W') & 0x8000)
-			p_trf->position.z += 0.04f;
+			moveVec += camera3D.GetForward();
 		if (GetAsyncKeyState('S') & 0x8000)
-			p_trf->position.z -= 0.04f;
+			moveVec -= camera3D.GetForward();
 
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-			p_trf->position.y += 0.04f;
+			moveVec.y += 1;
 		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-			p_trf->position.y -= 0.04f;
+			moveVec.y -= 1;
+		
+		p_trf->position += moveVec * spd;
 
-		if (GetAsyncKeyState('Q') & 0x8000)
-			p_trf->rotation.y -= 0.03f;
-		if (GetAsyncKeyState('E') & 0x8000)
-			p_trf->rotation.y += 0.03f;
 
-		std::cout << "Camera3DPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
+		std::cout << "Camera3DVec : " << moveVec.x << " , " << moveVec.y << " , " << moveVec.z << std::endl;
 	}
 	{
 		Transform* p_trf = gameObject3D.GetTransformPtr();
 		p_trf->rotation.y += 0.000;
-		std::cout << "3DObjectPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
 	}
 
 
