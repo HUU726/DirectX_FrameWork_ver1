@@ -13,6 +13,9 @@ private:
 	const char* filePath;		// •`‰æ‚·‚é‰æ‘œ‚ÌƒpƒX
 	bool isRender = true;		// •`‰æˆ—‚ğ‚·‚é‚©‚Ç‚¤‚©
 
+	void SetWorldMatrix();
+	void SetTexture();
+
 public:
 
 	MeshRenderer();
@@ -24,6 +27,7 @@ public:
 	std::shared_ptr<hft::Mesh> GetShape() { return p_meshFilter->GetMesh(); }
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);
 	Texture* GetTexture() { return &texture; }
+	void SetBuffer();
 	void Init() override;
 	void Draw() override;
 };

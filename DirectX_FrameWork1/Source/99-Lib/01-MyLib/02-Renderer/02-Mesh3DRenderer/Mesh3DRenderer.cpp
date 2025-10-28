@@ -34,7 +34,7 @@ HRESULT Mesh3DRenderer::InitShader()
 	};
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
-	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
+	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/VS_Mesh3D.hlsl";
 	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, l_layout.data(), l_layout.size(), VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
@@ -42,35 +42,12 @@ HRESULT Mesh3DRenderer::InitShader()
 	}
 
 	// ピクセルシェーダーオブジェクトを生成
-	PS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl";
+	PS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl";
 	hr = CreatePixelShader(&this->p_PixelShader, PS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreatePixelShader error", "error", MB_OK);
 		return hr;
 	}
-
-	//VS定数バッファ作成
-	D3D11_BUFFER_DESC cdDesc;
-	cdDesc.ByteWidth = sizeof(VS_CB_Mesh3D);
-	cdDesc.Usage = D3D11_USAGE_DEFAULT;
-	cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cdDesc.CPUAccessFlags = 0;
-	cdDesc.MiscFlags = 0;
-	cdDesc.StructureByteStride = 0;
-	hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantBuffer);
-	if (FAILED(hr)) return hr;
-
-	//PS定数バッファ作成
-	D3D11_BUFFER_DESC PS_cdDesc;
-	PS_cdDesc.ByteWidth = (sizeof(PS_CB_Mesh3D) + 15) & ~15;
-	PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
-	PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	PS_cdDesc.CPUAccessFlags = 0;
-	PS_cdDesc.MiscFlags = 0;
-	PS_cdDesc.StructureByteStride = 0;
-	hr = this->p_Device->CreateBuffer(&PS_cdDesc, NULL, &this->p_PSConstantBuffer);
-	if (FAILED(hr)) return hr;
-
 
 	topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
@@ -138,31 +115,6 @@ HRESULT Mesh3DRenderer::InitState()
 	return S_OK;
 }
 
-void Mesh3DRenderer::RenderPipeline()
-{
-	this->p_DeviceContext->IASetInputLayout(this->p_InputLayout);
-
-	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
-
-	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
-	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
-
-	// サンプラーをピクセルシェーダーに渡す
-	this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
-
-	// 定数バッファを頂点シェーダーにセットする
-	this->p_DeviceContext->VSSetConstantBuffers(0, 1, &this->p_constantBuffer);
-	this->p_DeviceContext->PSSetConstantBuffers(0, 1, &this->p_PSConstantBuffer);
-
-	// ブレンドステートをセットする
-	this->p_DeviceContext->OMSetBlendState(this->p_BlendState, NULL, 0xffffffff);
-	// ラスターライザステートをセットする
-	this->p_DeviceContext->RSSetState(this->p_RRState);
-
-	// デプスステンシルステートをセットする
-	this->p_DeviceContext->OMSetDepthStencilState(this->p_DSState, 1);
-}
-
 void Mesh3DRenderer::SetCamera(Camera3D* _p_camera)
 {
 	p_camera = _p_camera;
@@ -179,65 +131,16 @@ void Mesh3DRenderer::Draw(const hft::Polygon* _polygon)
 
 void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 {
-
+	//カメラが存在しなかったら描画中止
 	if (p_camera == nullptr)
 		return;
 
-	RenderPipeline();
-
+	//描画対象が存在しなかったら描画中止
 	std::shared_ptr<hft::Mesh> shape = _p_renderer->GetShape();
-	if (!shape)
-		return;
+	if (!shape)	return;
 
-	Transform* transform = _p_renderer->GetGameObject()->GetTransformPtr();
-
-	hft::TransformMatrix mtrxTf;
-	mtrxTf.ConversionPosition(transform->position);
-	mtrxTf.ConversionRotation(transform->rotation);
-	mtrxTf.ConversionScale(transform->scale);
-
-	{	//VS用定数バッファ更新
-		VS_CB_Mesh3D cb;
-
-		cb.color = shape->vertices[0].color;
-
-		DirectX::XMMATRIX matrixTex = DirectX::XMMatrixTranslation(0.f, 0.f, 0.0f);
-		cb.matrixTex = DirectX::XMMatrixTranspose(matrixTex);
-
-		cb.matrixWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());	//ワールド変換行列
-		cb.matrixProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());	//プロジェクション変換行列
-		cb.matrixView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());	//ビュー変換行列
-
-		// 行列をシェーダーに渡す
-		p_DeviceContext->UpdateSubresource(p_constantBuffer, 0, NULL, &cb, 0, 0);
-	}
-
-	{	//PS用定数バッファ更新
-		PS_CB_Mesh3D cb;
-		Texture* p_texture = _p_renderer->GetTexture();
-		if (p_texture->wp_textureView.expired())
-		{
-			cb.isTexture = false;
-		}
-		else
-		{
-			cb.isTexture = true;
-			//テクスチャをピクセルシェーダーに渡す
-			ID3D11ShaderResourceView* textureView = nullptr;
-			if (p_texture->wp_textureView.lock().get() != nullptr)
-				textureView = p_texture->wp_textureView.lock().get();
-			p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
-		}
-
-		p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
-
-	}
-
-	UINT strides = sizeof(hft::Vertex);
-	UINT offsets = 0;
-
-	p_DeviceContext->IASetVertexBuffers(0, 1, &(shape->p_vertexBuffer), &strides, &offsets);
-	p_DeviceContext->IASetIndexBuffer(shape->p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	RenderPipeline();
+	_p_renderer->SetBuffer();
 
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // 描画命令
 

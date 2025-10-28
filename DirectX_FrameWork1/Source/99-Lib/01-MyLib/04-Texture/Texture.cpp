@@ -99,20 +99,28 @@ std::weak_ptr<ID3D11ShaderResourceView> TextureTable::GetTexture(std::string _fi
 	if (table.count(_filePath))
 		return table[_filePath];
 
-	
-	std::cout << _filePath << "はテーブルに存在しないためロードします。" << std::endl;
 	return this->LoadTexture(_filePath);
 }
 
 std::weak_ptr<ID3D11ShaderResourceView> TextureTable::LoadTexture(std::string _filePath)
 {
-	static RendererManager& system = RendererManager::GetInstance();
+	if (table.count(_filePath) == 0 )
+	{
+		static RendererManager& rendererMng = RendererManager::GetInstance();
 
-	auto sp_srv = std::shared_ptr<ID3D11ShaderResourceView>();
-	ID3D11ShaderResourceView* p_srv = sp_srv.get();
-	::LoadTexture(system.GetDevice(), _filePath.c_str(), &p_srv);
-	table[_filePath] = sp_srv;
-	return sp_srv;
+		auto sp_srv = std::shared_ptr<ID3D11ShaderResourceView>();
+		ID3D11ShaderResourceView* p_srv = sp_srv.get();
+		::LoadTexture(rendererMng.GetDevice(), _filePath.c_str(), &p_srv);
+
+		std::cout << _filePath << "はテーブルに存在しないためロードします。" << std::endl;
+		table[_filePath] = sp_srv;
+		return sp_srv;
+	}
+	else
+	{
+		std::cout << _filePath << "は既にロードされているためポインタを渡します。" << std::endl;
+		return GetTexture(_filePath);
+	}
 }
 
 void TextureTable::ReleaseTable()

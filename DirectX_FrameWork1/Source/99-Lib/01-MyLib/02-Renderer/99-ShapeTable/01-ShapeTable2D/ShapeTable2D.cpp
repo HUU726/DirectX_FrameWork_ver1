@@ -111,10 +111,20 @@ ShapeTable2D::ShapeTable2D()
 
 void ShapeTable2D::AddShape(hft::Polygon& _shape)
 {
-	table[_shape.name] = std::make_shared<hft::Polygon>(_shape);
+	if (table.count(_shape.name) == 0 )
+	{
+		auto shape = std::make_shared<hft::Polygon>(_shape);
+		CreateVertexIndexBuffer(shape);
+		table[shape->name] = shape;
+	}
 }
 
 void ShapeTable2D::ClearTable()
 {
+	for ( auto& it : table )
+	{
+		it.second->p_vertexBuffer->Release();
+		it.second->p_indexBuffer->Release();
+	}
 	table.clear();
 }
