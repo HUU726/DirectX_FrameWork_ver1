@@ -10,31 +10,13 @@ class Camera2D;
 class SpriteRenderer;
 
 
-struct VS_CB_Sprite2D
-{
-	DirectX::XMFLOAT4 color;
-	DirectX::XMMATRIX matrixTex;
-	DirectX::XMMATRIX matrixWorld;
-	DirectX::XMMATRIX matrixProj;
-	DirectX::XMMATRIX matrixView;
-};
-
-struct PS_CB_Sprite2D
-{
-	int isTexture;
-};
-
-
-
 class Sprite2DRenderer : public IF_Renderer
 {
 private:
-	ID3D11Buffer* p_PSConstantBuffer;		// ピクセルシェーダー用定数バッファ用変数
 
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;
-	void RenderPipeline() override;
 
 	Sprite2DRenderer();
 

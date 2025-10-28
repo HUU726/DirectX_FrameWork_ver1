@@ -294,4 +294,7 @@
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\PS_Mesh3D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\VS_Mesh3D.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\99-Lib\01-MyLib\999-Shader\10-ShaderTypes\ShaderTypes.hlsli" />
+  </ItemGroup>
 </Project>

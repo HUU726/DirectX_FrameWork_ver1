@@ -77,7 +77,7 @@ ShapeTable2D::ShapeTable2D()
 			float x = cos(theta);
 			float y = sin(theta);
 			circle->vertices[i].position = { x,y,0.f };
-			circle->vertices[i].color = { 1.f,1.f,1.f,1.f };
+			circle->vertices[i].color = { 1.f,0.f,0.f,1.f };
 			circle->vertices[i].uv = { 0.5f,0.5f };
 
 			if (x >= 0)

@@ -45,7 +45,16 @@ void SpriteRenderer::Draw()
 {
 	if (isRender)
 	{
-		Sprite2DRenderer::GetInstance().Draw(this);
+		Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
+		
+		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
+		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
+		renderer.SetTexture(&texture);
+
+		renderer.SetWorldMatrix(gameObject->GetTransform());
+		renderer.SetVPMatrix();
+
+		renderer.Draw(this);
 	}
 }
 

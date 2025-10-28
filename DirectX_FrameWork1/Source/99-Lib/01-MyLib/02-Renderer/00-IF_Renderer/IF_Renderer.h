@@ -4,7 +4,22 @@
 #include <DirectXMath.h>
 #include <vector>
 
+#include "../../04-Texture/Texture.h"
+#include "../../07-Component/01-Transform/Transform.h"
+
 class IF_Camera;
+
+
+struct VS_CB_VP
+{
+	DirectX::XMMATRIX matView;
+	DirectX::XMMATRIX matProj;
+};
+
+struct PS_CB_Texture
+{
+	bool isTexture;
+};
 
 
 class IF_Renderer
@@ -14,7 +29,6 @@ protected:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layouts;
 	ID3D11VertexShader* p_VertexShader;	// 頂点シェーダーオブジェクト
 	ID3D11PixelShader* p_PixelShader;	// ピクセルシェーダーオブジェクト
-	ID3D11Buffer* p_constantBuffer;		// 定数バッファ用変数
 	D3D_PRIMITIVE_TOPOLOGY topology;	// 頂点の結び方(とらえ方)
 
 	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数
@@ -23,6 +37,11 @@ protected:
 	ID3D11DepthStencilState* p_DSState;	// Z軸に対して同描画するかなどなど
 
 	IF_Camera* p_camera;
+
+	ID3D11Buffer* p_PSConstantBuffer;
+	ID3D11Buffer* p_constantWorld;
+	ID3D11Buffer* p_constantVP;
+
 
 	DirectX::XMMATRIX matrixProj;		//プロジェクション変換行列
 	DirectX::XMMATRIX matrixWarld;		//ワールド変換行列
@@ -46,8 +65,9 @@ protected:
 
 	virtual HRESULT InitShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
 	virtual HRESULT InitBuffer() = 0;		//頂点バッファを初期化
+	void CreateCommonBuffer();
 	virtual HRESULT InitState() = 0;	//サンプラー・ブレンドステート・深度の初期化
-	virtual void RenderPipeline() = 0;
+	void RenderPipeline();
 	void Init();
 
 	IF_Renderer();
@@ -56,6 +76,13 @@ public:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
 	const char* GetVSPaht() const { return VS_Path; }
 	const char* GetPSPath() const { return PS_Path; }
+
+	void SetWorldMatrix(Transform& _transform);
+	void SetVPMatrix();
+
+	void SetVertexBuffer(ID3D11Buffer* _vertexBuffer);
+	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
+	void SetTexture(Texture* _p_texture = nullptr);
 
 };
 

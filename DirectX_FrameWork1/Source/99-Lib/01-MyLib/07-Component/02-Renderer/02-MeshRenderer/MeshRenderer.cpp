@@ -60,6 +60,15 @@ void MeshRenderer::Draw()
 {
 	if (isRender)
 	{
-		Mesh3DRenderer::GetInstance().Draw(this);
+		Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
+		auto sp_mesh = p_meshFilter->GetMesh();
+		renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);
+		renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);
+		renderer.SetTexture(&texture);
+
+		renderer.SetWorldMatrix(gameObject->GetTransform());
+		renderer.SetVPMatrix();
+
+		renderer.Draw(this);
 	}
 }
