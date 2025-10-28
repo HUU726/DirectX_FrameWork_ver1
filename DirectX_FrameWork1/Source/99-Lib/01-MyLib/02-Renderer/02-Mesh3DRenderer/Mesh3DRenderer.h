@@ -12,19 +12,6 @@ class MeshFilter;
 class SpriteRenderer;
 class MeshRenderer;
 
-struct VS_CB_Mesh3D
-{
-	DirectX::XMFLOAT4 color;
-	DirectX::XMMATRIX matrixTex;
-	DirectX::XMMATRIX matrixProj;
-	DirectX::XMMATRIX matrixWorld;
-	DirectX::XMMATRIX matrixView;
-};
-struct PS_CB_Mesh3D
-{
-	bool isTexture;
-};
-
 
 class Mesh3DRenderer : public IF_Renderer
 {
@@ -34,7 +21,6 @@ private:
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;
-	void RenderPipeline() override;
 
 	Mesh3DRenderer();
 

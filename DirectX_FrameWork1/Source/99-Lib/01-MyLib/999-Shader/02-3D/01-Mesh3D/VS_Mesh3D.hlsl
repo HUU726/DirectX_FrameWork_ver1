@@ -1,4 +1,17 @@
-float4 main( float4 pos : POSITION ) : SV_POSITION
+#include "../../10-ShaderTypes/ShaderTypes.hlsl"
+
+
+PS_IN main(in VS_IN input)
 {
-	return pos;
+    PS_IN output;
+    
+    matrix wvp;
+    wvp = mul(matrixWorld, matrixView);
+    wvp = mul(wvp, matrixProjction);
+    
+    output.pos = mul(input.pos, wvp);
+    output.tex = input.tex;
+    output.col = input.col;
+    
+	return output;
 }

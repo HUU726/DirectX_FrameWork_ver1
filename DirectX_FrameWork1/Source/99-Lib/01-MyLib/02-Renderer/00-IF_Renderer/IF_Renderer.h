@@ -4,8 +4,21 @@
 #include <DirectXMath.h>
 #include <vector>
 
+#include "../../04-Texture/Texture.h"
+
 class IF_Camera;
 
+struct VS_CB_MatrixVP
+{
+	DirectX::XMMATRIX view;
+	DirectX::XMMATRIX projection;
+
+	VS_CB_MatrixVP TransPose();
+};
+struct PS_CB_Texture
+{
+	int isTexture;
+};
 
 class IF_Renderer
 {
@@ -24,9 +37,9 @@ protected:
 
 	IF_Camera* p_camera;
 
-	DirectX::XMMATRIX matrixProj;		//プロジェクション変換行列
-	DirectX::XMMATRIX matrixWarld;		//ワールド変換行列
-	DirectX::XMMATRIX matrixView;		//ビュー変換行列
+	ID3D11Buffer* matrixWorld;		//ワールド行列
+	ID3D11Buffer* matrixVP;			//VP行列
+	ID3D11Buffer* enableTexture;	//テクスチャを使うかどうか
 	
 	const char* VS_Path;	//頂点シェーダーのファイルパス
 	const char* PS_Path;	//ピクセルシェーダーのファイルパス
@@ -47,15 +60,24 @@ protected:
 	virtual HRESULT InitShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
 	virtual HRESULT InitBuffer() = 0;		//頂点バッファを初期化
 	virtual HRESULT InitState() = 0;	//サンプラー・ブレンドステート・深度の初期化
-	virtual void RenderPipeline() = 0;
+	void RenderPipeline();
+
+	void InitCommonBuffer();
 	void Init();
+	void SetVPMatrix();
 
 	IF_Renderer();
 
 public:
+	/*** ゲッター ***/
 	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
 	const char* GetVSPaht() const { return VS_Path; }
 	const char* GetPSPath() const { return PS_Path; }
+	/*** セッター ***/
+	void SetVertexBuffer(ID3D11Buffer* _p_vertexBuffer);
+	void SetIndexBuffer(ID3D11Buffer* _p_indexBuffer);
+	void SetWorldMatrix(const DirectX::XMMATRIX& _world);
+	void SetTexture(const Texture& _texture);
 
 };
 

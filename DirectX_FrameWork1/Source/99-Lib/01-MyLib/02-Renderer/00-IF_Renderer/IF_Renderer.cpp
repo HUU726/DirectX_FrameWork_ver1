@@ -1,5 +1,7 @@
 #include "IF_Renderer.h"
 #include "../98-RendererManager/RendererManager.h"
+#include "../../07-Component/04-Camera/00-IF_Camera/IF_Camera.h"
+#include "../../998-FH_Types/Vertex.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
@@ -11,6 +13,15 @@
 #include <assert.h>
 
 
+
+VS_CB_MatrixVP VS_CB_MatrixVP::TransPose()
+{
+	VS_CB_MatrixVP vp;
+	vp.view = DirectX::XMMatrixTranspose(view);
+	vp.projection = DirectX::XMMatrixTranspose(projection);
+
+	return vp;
+}
 
 
 
@@ -138,6 +149,76 @@ HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const 
 	return S_OK;
 }
 
+
+void IF_Renderer::RenderPipeline()
+{
+	//レイアウトをセットする
+	p_DeviceContext->IASetInputLayout(this->p_InputLayout);
+
+	//トポロジーをセットする
+	p_DeviceContext->IASetPrimitiveTopology(this->topology);
+
+	//シェーダーをセットする
+	p_DeviceContext->VSSetShader(p_VertexShader, NULL, 0);
+	p_DeviceContext->PSSetShader(p_PixelShader, NULL, 0);
+
+	//サンプラーをピクセルシェーダーに渡す
+	p_DeviceContext->PSSetSamplers(0, 1, &p_SamplerState);
+
+	//ブレンドステートをセットする
+	p_DeviceContext->OMSetBlendState(p_BlendState, NULL, 0xffffffff);
+	//ラスターライザステートをセットする
+	p_DeviceContext->RSSetState(p_RRState);
+	//デプスステンシルステートをセットする
+	p_DeviceContext->OMSetDepthStencilState(p_DSState, 1);
+
+	//VP行列をセットする
+	SetVPMatrix();
+}
+
+void IF_Renderer::InitCommonBuffer()
+{
+	HRESULT hr;
+	//ワールド行列用定数バッファを作成
+	{
+		D3D11_BUFFER_DESC cbDesc;
+		cbDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
+		cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cbDesc.CPUAccessFlags = 0;
+		cbDesc.MiscFlags = 0;
+		cbDesc.StructureByteStride = 0;
+		hr = p_Device->CreateBuffer(&cbDesc, NULL, &matrixWorld);
+		if (FAILED(hr)) return;
+	}
+
+	//VP行列用定数バッファを作成
+	{
+		D3D11_BUFFER_DESC cbDesc;
+		cbDesc.ByteWidth = sizeof(VS_CB_MatrixVP);
+		cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cbDesc.CPUAccessFlags = 0;
+		cbDesc.MiscFlags = 0;
+		cbDesc.StructureByteStride = 0;
+		hr = p_Device->CreateBuffer(&cbDesc, NULL, &matrixVP);
+		if ( FAILED(hr) ) return;
+	}
+
+	//Texture使用するか否かの定数バッファ作成
+	{
+		D3D11_BUFFER_DESC cbDesc;
+		cbDesc.ByteWidth = (sizeof(PS_CB_Texture) + 15) & ~15;
+		cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cbDesc.CPUAccessFlags = 0;
+		cbDesc.MiscFlags = 0;
+		cbDesc.StructureByteStride = 0;
+		hr = p_Device->CreateBuffer(&cbDesc, NULL, &enableTexture);
+		if ( FAILED(hr) ) return;
+	}
+}
+
 void IF_Renderer::Init()
 {
 	RendererManager* l_p_system = &RendererManager::GetInstance();
@@ -145,7 +226,7 @@ void IF_Renderer::Init()
 	this->p_DeviceContext = l_p_system->GetDeviceContext();
 
 	InitShader();
-	//InitBuffer();
+	InitBuffer();
 	InitState();
 }
 
@@ -155,4 +236,57 @@ IF_Renderer::IF_Renderer()
 	p_Device = l_p_system.GetDevice();
 	p_DeviceContext = l_p_system.GetDeviceContext();
 	p_camera = nullptr;
+	InitCommonBuffer();
+}
+
+void IF_Renderer::SetVertexBuffer(ID3D11Buffer* _p_vertexBuffer)
+{
+	UINT strides = sizeof(hft::Vertex);
+	UINT offsets = 0;
+	p_DeviceContext->IASetVertexBuffers(0,1,&_p_vertexBuffer,&strides,&offsets);
+}
+
+void IF_Renderer::SetIndexBuffer(ID3D11Buffer * _p_indexBuffer)
+{
+	p_DeviceContext->IASetIndexBuffer(_p_indexBuffer,DXGI_FORMAT_R32_UINT,0);
+}
+
+void IF_Renderer::SetWorldMatrix(const DirectX::XMMATRIX& _world)
+{
+	DirectX::XMMATRIX world = DirectX::XMMatrixTranspose(_world);
+
+	p_DeviceContext->UpdateSubresource(matrixWorld, 0, NULL, &world, 0, 0);
+	p_DeviceContext->VSSetConstantBuffers(0, 1, &matrixWorld);
+}
+
+void IF_Renderer::SetVPMatrix()
+{
+	VS_CB_MatrixVP vp;
+	vp.view = p_camera->GetMatrixView();
+	vp.projection = p_camera->GetMatrixProj();
+
+	vp.TransPose();
+
+	p_DeviceContext->UpdateSubresource(matrixVP, 0, NULL, &vp, 0, 0);
+	p_DeviceContext->VSSetConstantBuffers(1, 1, &matrixVP);
+}
+
+void IF_Renderer::SetTexture(const Texture& _texture)
+{
+	PS_CB_Texture cb;
+	if ( _texture.wp_textureView.expired() )
+	{
+		cb.isTexture = false;
+	}
+	else
+	{
+		cb.isTexture = true;
+		//テクスチャをピクセルシェーダーに渡す
+		ID3D11ShaderResourceView* textureView = nullptr;
+		if ( _texture.wp_textureView.lock().get() != nullptr )
+			textureView = _texture.wp_textureView.lock().get();
+		p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
+	}
+	p_DeviceContext->UpdateSubresource(enableTexture, 0, NULL, &cb, 0, 0);
+	p_DeviceContext->PSSetConstantBuffers(2, 1, &enableTexture);
 }
