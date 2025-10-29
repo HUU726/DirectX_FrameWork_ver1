@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //--------------------------------------------------------------------------------------
 // 頂点シェーダー
 //--------------------------------------------------------------------------------------
@@ -22,22 +21,4 @@ PS_IN main(VS_IN input)
     output.col = input.col;
     
     return output;
-=======
-#include "../../10-ShaderTypes/ShaderTypes.hlsl"
-
-
-PS_IN main(in VS_IN input)
-{
-    PS_IN output;
-    
-    matrix wvp;
-    wvp = mul(matrixWorld, matrixView);
-    wvp = mul(wvp, matrixProjction);
-    
-    output.pos = mul(input.pos, wvp);
-    output.tex = input.tex;
-    output.col = input.col;
-    
-	return output;
->>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
 }
