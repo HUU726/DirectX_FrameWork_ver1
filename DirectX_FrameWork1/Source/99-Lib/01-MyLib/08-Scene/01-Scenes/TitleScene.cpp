@@ -11,12 +11,12 @@
 
 void TitleScene::Init()
 {
-	//{	//2Dカメラ初期化
-	//	Transform* p_trf = camera2D.GetTransformPtr();
-	//	p_trf->position = { 0.f,0.f,0.f,0.f };
+	{	//2Dカメラ初期化
+		Transform* p_trf = camera2D.GetTransformPtr();
+		p_trf->position = { 0.f,0.f,0.f,0.f };
 
-	//	Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
-	//}
+		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
+	}
 
 	{	//3Dカメラ初期化
 		Transform* p_trf = camera3D.GetTransformPtr();
@@ -25,14 +25,14 @@ void TitleScene::Init()
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
 
-	//{	//オブジェクト初期化
-	//	gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
-	//	Transform* p_trf = gameObject2D.GetTransformPtr();
-	//	{
-	//		p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };
-	//		p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
-	//	}
-	//}
+	{	//オブジェクト初期化
+		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
+		Transform* p_trf = gameObject2D.GetTransformPtr();
+		{
+			p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };
+			p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
+		}
+	}
 
 	{
 		gameObject3D.AddComponent<MeshRenderer>()->SetShape("cube");
@@ -54,7 +54,7 @@ void TitleScene::Input()
 
 void TitleScene::Update()
 {
-	//camera2D.Update();
+	camera2D.Update();
 	camera3D.Update();
 	
 	{
@@ -102,7 +102,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {	
 	gameObject3D.Draw();
-	//gameObject2D.Draw();
+	gameObject2D.Draw();
 }
 
 void TitleScene::UnInit()

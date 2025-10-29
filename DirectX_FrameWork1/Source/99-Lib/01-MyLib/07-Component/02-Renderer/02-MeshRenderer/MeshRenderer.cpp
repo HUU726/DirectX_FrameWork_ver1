@@ -4,34 +4,6 @@
 #include "../../../998-FH_Types/TransformMatrix.h"
 
 
-void MeshRenderer::SetWorldMatrix()
-{
-
-	Transform& transform = gameObject->GetTransform();
-	hft::TransformMatrix matrixTf;
-	matrixTf.ConversionPosition(transform.position);
-	matrixTf.ConversionRotation(transform.rotation);
-	matrixTf.ConversionScale(transform.scale);
-
-	Mesh3DRenderer::GetInstance().SetWorldMatrix(matrixTf.GetMatrixWorld());
-}
-
-void MeshRenderer::SetBuffer()
-{
-	Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
-
-	auto sp_mesh = p_meshFilter->GetMesh();
-	renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);
-	renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);
-	SetWorldMatrix();
-	SetTexture();
-}
-
-void MeshRenderer::SetTexture()
-{
-	Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
-	renderer.SetTexture(texture);
-}
 
 MeshRenderer::MeshRenderer()
 {

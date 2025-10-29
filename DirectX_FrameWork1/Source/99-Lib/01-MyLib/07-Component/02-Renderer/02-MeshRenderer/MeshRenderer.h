@@ -13,9 +13,6 @@ private:
 	const char* filePath;		// •`‰æ‚·‚é‰æ‘œ‚ÌƒpƒX
 	bool isRender = true;		// •`‰æˆ—‚ğ‚·‚é‚©‚Ç‚¤‚©
 
-	void SetWorldMatrix();
-	void SetTexture();
-
 public:
 
 	MeshRenderer();
