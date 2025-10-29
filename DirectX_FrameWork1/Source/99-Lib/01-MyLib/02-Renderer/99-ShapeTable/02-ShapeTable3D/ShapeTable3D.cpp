@@ -1,14 +1,24 @@
 #include "ShapeTable3D.h"
 
-
+//板
 #define PLANE_VERTEX_NUM (4)
 #define PLANE_INDEX_NUM (6)
 
+
+//直方体
 #define CUBE_VERTEX_NUM (24)
 #define CUBE_INDEX_NUM (36)
 #define CUBE_FASE_NUM (6)
 #define CUBE_FASE_VERTEX_NUM (4)
 #define CUBE_FASE_INDEX_NUM (6)
+
+
+//球体
+#define SQHERE_RADIUS (1.0f)
+#define SQHERE_STACK_NUM (18)
+#define SQHERE_SLICE_NUM (36)
+
+
 
 
 /**
@@ -122,6 +132,66 @@ std::shared_ptr<hft::Mesh> CreateCubeShape()
 	return cube;
 }
 
+std::shared_ptr<hft::Mesh> CreateSqhereShape()
+{
+	auto sqhere = std::make_shared<hft::Mesh>();
+	sqhere->name = "sqhere";
+
+	//頂点作成＆格納
+	for ( int i = 0; i <= SQHERE_STACK_NUM; i++ )
+	{
+		float phi = DirectX::XM_PI * i / SQHERE_STACK_NUM; //緯度 ( 0~π )
+
+		for ( int j = 0; j <= SQHERE_SLICE_NUM; j++ )
+		{
+			float theta = DirectX::XM_2PI * j / SQHERE_SLICE_NUM; //経度 ( 0~2π )
+
+			float x = SQHERE_RADIUS * sinf(phi) * cosf(theta);
+			float y = SQHERE_RADIUS * cosf(phi);
+			float z = SQHERE_RADIUS * sinf(phi) * sinf(theta);
+
+			hft::HFFLOAT3 position(x,y,z);
+			hft::HFFLOAT3 normal = position; //球の中心からの方向 = 法線
+			DirectX::XMVECTOR nrmVec = DirectX::XMLoadFloat3(&normal);
+			nrmVec = DirectX::XMVector3Normalize(nrmVec);	//法線ベクトル作成
+			DirectX::XMStoreFloat3(&normal, nrmVec);
+
+			float u = theta / DirectX::XM_2PI;
+			float v = phi / DirectX::XM_PI;
+
+			hft::Vertex vertex;
+			vertex.position = position;
+			vertex.normal = normal;
+			vertex.color = { 1.f,1.f,1.f,1.f };
+			vertex.uv = { u,v };
+
+			sqhere->vertices.push_back(vertex);
+		}
+	}
+
+	//インデックス作成＆格納
+	for ( int i = 0; i < SQHERE_STACK_NUM; i++ )
+	{
+		for ( int j = 0; j < SQHERE_SLICE_NUM; j++ )
+		{
+			int first = i * (SQHERE_SLICE_NUM + 1) + j;
+			int second = first + SQHERE_SLICE_NUM + 1;
+
+			sqhere->indices.push_back(first);
+			sqhere->indices.push_back(second);
+			sqhere->indices.push_back(first + 1);
+
+			sqhere->indices.push_back(second);
+			sqhere->indices.push_back(second + 1);
+			sqhere->indices.push_back(first + 1);
+		}
+	}
+
+
+
+	return sqhere;
+}
+
 ShapeTable3D::ShapeTable3D()
 {
 	{	//Plane
@@ -136,6 +206,13 @@ ShapeTable3D::ShapeTable3D()
 
 		hft::CreateVertexIndexBuffer(cube);
 		table.insert({cube->name,cube});
+	}
+
+	{	//Sqhere
+		auto sqhere = CreateSqhereShape();
+		
+		hft::CreateVertexIndexBuffer(sqhere);
+		table.insert({sqhere->name,sqhere});
 	}
 }
 

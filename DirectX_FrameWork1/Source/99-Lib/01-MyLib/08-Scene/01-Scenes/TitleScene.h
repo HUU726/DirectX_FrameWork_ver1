@@ -12,7 +12,9 @@ private:
 	LightObject lightObject;
 
 	GameObject2D gameObject2D;
-	GameObject3D gameObject3D;
+	GameObject3D sqhereObject;
+	GameObject3D planeObject;
+	GameObject3D cubeObject;
 
 
 public:

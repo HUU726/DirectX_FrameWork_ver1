@@ -25,7 +25,7 @@ void Light::Update()
 	);
 
 	DirectX::XMMATRIX rotMat = DirectX::XMMatrixRotationRollPitchYawFromVector(eulerRad);
-	DirectX::XMVECTOR defaultDir = DirectX::XMVectorSet(0,0,1,0);
+	DirectX::XMVECTOR defaultDir = DirectX::XMVectorSet(0,0,-1,0);
 	DirectX::XMVECTOR lightDir = DirectX::XMVector3TransformNormal(defaultDir, rotMat);
 
 	data.direction = DirectX::XMVector4Normalize(lightDir);

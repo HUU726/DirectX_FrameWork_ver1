@@ -28,19 +28,27 @@ void TitleScene::Init()
 	{	//オブジェクト初期化
 		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
 		Transform* p_trf = gameObject2D.GetTransformPtr();
-		{
-			p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
-			p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
-		}
+		p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
+		p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
 	}
 
-	{
-		gameObject3D.AddComponent<MeshRenderer>()->SetShape("cube");
-		Transform* p_trf = gameObject3D.GetTransformPtr();
-		{
-			p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
-			p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
-		}
+	{	//球体
+		sqhereObject.AddComponent<MeshRenderer>()->SetShape("sqhere");
+		Transform* p_trf = sqhereObject.GetTransformPtr();
+		p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
+		p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
+	}
+	{	//板
+		planeObject.AddComponent<MeshRenderer>()->SetShape("plane");
+		Transform* p_trf = planeObject.GetTransformPtr();
+		p_trf->position = hft::HFFLOAT3{ 0.f,-400.f,0.f };
+		p_trf->scale = hft::HFFLOAT3{ 400.f,0.f,400.f };
+	}
+	{	//立方体
+		cubeObject.AddComponent<MeshRenderer>()->SetShape("cube");
+		Transform* p_trf = cubeObject.GetTransformPtr();
+		p_trf->position = hft::HFFLOAT3{ 700.f,0.f,0.f };
+		p_trf->scale = hft::HFFLOAT3{ 400.f,40.f,400.f };
 	}
 
 	{
@@ -103,10 +111,10 @@ void TitleScene::Update()
 
 	}
 	{
-		Transform* p_trf = gameObject3D.GetTransformPtr();
-		p_trf->rotation.x += 0.003f;
-		p_trf->rotation.y += 0.003f;
-		p_trf->rotation.z += 0.003f;
+		Transform* p_trf = sqhereObject.GetTransformPtr();
+		//p_trf->rotation.x += 0.003f;
+		//p_trf->rotation.y += 0.003f;
+		//p_trf->rotation.z += 0.003f;
 	}
 
 
@@ -117,7 +125,9 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
-	gameObject3D.Draw();
+	sqhereObject.Draw();
+	planeObject.Draw();
+	cubeObject.Draw();
 	gameObject2D.Draw();
 }
 
