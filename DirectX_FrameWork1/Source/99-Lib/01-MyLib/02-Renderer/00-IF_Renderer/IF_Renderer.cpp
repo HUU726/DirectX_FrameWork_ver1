@@ -288,7 +288,7 @@ void IF_Renderer::SetTexture(Texture* _p_texture)
 			ID3D11ShaderResourceView* textureView = nullptr;
 			if (_p_texture->wp_textureView.lock().get() != nullptr)
 				textureView = _p_texture->wp_textureView.lock().get();
-			p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
+			p_DeviceContext->PSSetShaderResources(2, 1, &textureView);
 		}
 	}
 	p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);

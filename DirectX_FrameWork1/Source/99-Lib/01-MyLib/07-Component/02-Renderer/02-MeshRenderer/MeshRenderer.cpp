@@ -62,12 +62,12 @@ void MeshRenderer::Draw()
 	{
 		Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
 		auto sp_mesh = p_meshFilter->GetMesh();
-		renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);
-		renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);
-		renderer.SetTexture(&texture);
+		renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);	//頂点バッファをセット
+		renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);	//インデックスバッファをセット
+		renderer.SetTexture(&texture);						//テクスチャをセット
 
-		renderer.SetWorldMatrix(gameObject->GetTransform());
-		renderer.SetVPMatrix();
+		renderer.SetWorldMatrix(gameObject->GetTransform());	//ワールド行列セット
+
 
 		renderer.Draw(this);
 	}

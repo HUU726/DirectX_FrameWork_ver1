@@ -148,12 +148,11 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _p_renderer)
 	if (p_camera == nullptr)
 		return;
 
-	RenderPipeline();
-
 	std::shared_ptr<hft::Polygon> shape = _p_renderer->GetShape();
 	if (!shape)
 		return;
 
+	RenderPipeline();
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }
 

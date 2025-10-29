@@ -10,7 +10,7 @@ SamplerState mySampler : register(s0); //サンプラー
 // 定数バッファ受け取り用
 cbuffer ConstBuffer : register(b2)
 {
-    int isTexture;
+    bool isTexture;
 }
 
 // ピクセルシェーダーのエントリポイント
@@ -18,7 +18,7 @@ float4 main(PS_IN input) : SV_Target
 {
     float4 color = input.col;
     
-    if (isTexture > 0)
+    if (isTexture == true)
     {
         color = color * myTexture.Sample(mySampler, input.tex);
     }
