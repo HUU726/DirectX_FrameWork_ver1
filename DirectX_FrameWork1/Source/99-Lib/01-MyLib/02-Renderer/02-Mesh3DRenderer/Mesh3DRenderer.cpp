@@ -129,16 +129,14 @@ void Mesh3DRenderer::Draw(const hft::Polygon* _polygon)
 
 void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 {
-
 	if (p_camera == nullptr)
 		return;
-
-	RenderPipeline();
 
 	std::shared_ptr<hft::Mesh> shape = _p_renderer->GetShape();
 	if (!shape)
 		return;
 
+	RenderPipeline();
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }
 

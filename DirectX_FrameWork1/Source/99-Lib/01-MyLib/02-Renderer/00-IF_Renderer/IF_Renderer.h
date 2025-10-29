@@ -42,10 +42,6 @@ protected:
 	ID3D11Buffer* p_constantWorld;
 	ID3D11Buffer* p_constantVP;
 
-
-	DirectX::XMMATRIX matrixProj;		//プロジェクション変換行列
-	DirectX::XMMATRIX matrixWarld;		//ワールド変換行列
-	DirectX::XMMATRIX matrixView;		//ビュー変換行列
 	
 	const char* VS_Path;	//頂点シェーダーのファイルパス
 	const char* PS_Path;	//ピクセルシェーダーのファイルパス
