@@ -5,20 +5,22 @@
 #include <vector>
 
 #include "../../04-Texture/Texture.h"
+#include "../../07-Component/01-Transform/Transform.h"
 
 class IF_Camera;
 
-struct VS_CB_MatrixVP
-{
-	DirectX::XMMATRIX view;
-	DirectX::XMMATRIX projection;
 
-	VS_CB_MatrixVP TransPose();
+struct VS_CB_VP
+{
+	DirectX::XMMATRIX matView;
+	DirectX::XMMATRIX matProj;
 };
+
 struct PS_CB_Texture
 {
-	int isTexture;
+	bool isTexture;
 };
+
 
 class IF_Renderer
 {
@@ -27,7 +29,6 @@ protected:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layouts;
 	ID3D11VertexShader* p_VertexShader;	// 頂点シェーダーオブジェクト
 	ID3D11PixelShader* p_PixelShader;	// ピクセルシェーダーオブジェクト
-	ID3D11Buffer* p_constantBuffer;		// 定数バッファ用変数
 	D3D_PRIMITIVE_TOPOLOGY topology;	// 頂点の結び方(とらえ方)
 
 	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数
@@ -37,14 +38,15 @@ protected:
 
 	IF_Camera* p_camera;
 
-	ID3D11Buffer* matrixWorld;		//ワールド行列
-	ID3D11Buffer* matrixVP;			//VP行列
-	ID3D11Buffer* enableTexture;	//テクスチャを使うかどうか
+	ID3D11Buffer* p_PSConstantBuffer;
+	ID3D11Buffer* p_constantWorld;
+	ID3D11Buffer* p_constantVP;
+
 	
 	const char* VS_Path;	//頂点シェーダーのファイルパス
 	const char* PS_Path;	//ピクセルシェーダーのファイルパス
 
-	/************************  Systemクラスからポインタをもらう  ****************************************************************/
+	/************************  RendererManagerクラスからポインタをもらう  ****************************************************************/
 	ID3D11Device* p_Device;						// デバイス＝DirectXの各種機能を作る
 	ID3D11DeviceContext* p_DeviceContext;		// コンテキスト＝描画関連を司る機能
 	IDXGISwapChain* p_SwapChain;				// スワップチェイン＝ダブルバッファ機能
@@ -59,25 +61,24 @@ protected:
 
 	virtual HRESULT InitShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
 	virtual HRESULT InitBuffer() = 0;		//頂点バッファを初期化
+	void CreateCommonBuffer();
 	virtual HRESULT InitState() = 0;	//サンプラー・ブレンドステート・深度の初期化
 	void RenderPipeline();
-
-	void InitCommonBuffer();
 	void Init();
-	void SetVPMatrix();
 
 	IF_Renderer();
 
 public:
-	/*** ゲッター ***/
 	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
 	const char* GetVSPaht() const { return VS_Path; }
 	const char* GetPSPath() const { return PS_Path; }
-	/*** セッター ***/
-	void SetVertexBuffer(ID3D11Buffer* _p_vertexBuffer);
-	void SetIndexBuffer(ID3D11Buffer* _p_indexBuffer);
-	void SetWorldMatrix(const DirectX::XMMATRIX& _world);
-	void SetTexture(const Texture& _texture);
+
+	void SetWorldMatrix(Transform& _transform);
+	void SetVPMatrix();
+
+	void SetVertexBuffer(ID3D11Buffer* _vertexBuffer);
+	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
+	void SetTexture(Texture* _p_texture = nullptr);
 
 };
 

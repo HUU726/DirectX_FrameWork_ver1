@@ -1,7 +1,8 @@
 #include "IF_Renderer.h"
 #include "../98-RendererManager/RendererManager.h"
-#include "../../07-Component/04-Camera/00-IF_Camera/IF_Camera.h"
 #include "../../998-FH_Types/Vertex.h"
+#include "../../998-FH_Types/TransformMatrix.h"
+#include "../../07-Component/04-Camera/00-IF_Camera/IF_Camera.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
@@ -12,16 +13,6 @@
 #include <string.h>
 #include <assert.h>
 
-
-
-VS_CB_MatrixVP VS_CB_MatrixVP::TransPose()
-{
-	VS_CB_MatrixVP vp;
-	vp.view = DirectX::XMMatrixTranspose(view);
-	vp.projection = DirectX::XMMatrixTranspose(projection);
-
-	return vp;
-}
 
 
 
@@ -150,73 +141,73 @@ HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const 
 }
 
 
-void IF_Renderer::RenderPipeline()
-{
-	//レイアウトをセットする
-	p_DeviceContext->IASetInputLayout(this->p_InputLayout);
-
-	//トポロジーをセットする
-	p_DeviceContext->IASetPrimitiveTopology(this->topology);
-
-	//シェーダーをセットする
-	p_DeviceContext->VSSetShader(p_VertexShader, NULL, 0);
-	p_DeviceContext->PSSetShader(p_PixelShader, NULL, 0);
-
-	//サンプラーをピクセルシェーダーに渡す
-	p_DeviceContext->PSSetSamplers(0, 1, &p_SamplerState);
-
-	//ブレンドステートをセットする
-	p_DeviceContext->OMSetBlendState(p_BlendState, NULL, 0xffffffff);
-	//ラスターライザステートをセットする
-	p_DeviceContext->RSSetState(p_RRState);
-	//デプスステンシルステートをセットする
-	p_DeviceContext->OMSetDepthStencilState(p_DSState, 1);
-
-	//VP行列をセットする
-	SetVPMatrix();
-}
-
-void IF_Renderer::InitCommonBuffer()
+void IF_Renderer::CreateCommonBuffer()
 {
 	HRESULT hr;
-	//ワールド行列用定数バッファを作成
+
 	{
-		D3D11_BUFFER_DESC cbDesc;
-		cbDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
-		cbDesc.Usage = D3D11_USAGE_DEFAULT;
-		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbDesc.CPUAccessFlags = 0;
-		cbDesc.MiscFlags = 0;
-		cbDesc.StructureByteStride = 0;
-		hr = p_Device->CreateBuffer(&cbDesc, NULL, &matrixWorld);
+		//PS定数バッファ作成
+		D3D11_BUFFER_DESC PS_cdDesc;
+		PS_cdDesc.ByteWidth = (sizeof(PS_CB_Texture) + 15) & ~15;
+		PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
+		PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		PS_cdDesc.CPUAccessFlags = 0;
+		PS_cdDesc.MiscFlags = 0;
+		PS_cdDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&PS_cdDesc, NULL, &this->p_PSConstantBuffer);
 		if (FAILED(hr)) return;
 	}
 
-	//VP行列用定数バッファを作成
 	{
-		D3D11_BUFFER_DESC cbDesc;
-		cbDesc.ByteWidth = sizeof(VS_CB_MatrixVP);
-		cbDesc.Usage = D3D11_USAGE_DEFAULT;
-		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbDesc.CPUAccessFlags = 0;
-		cbDesc.MiscFlags = 0;
-		cbDesc.StructureByteStride = 0;
-		hr = p_Device->CreateBuffer(&cbDesc, NULL, &matrixVP);
-		if ( FAILED(hr) ) return;
+		//VS定数バッファ作成
+		D3D11_BUFFER_DESC cdDesc;
+		cdDesc.ByteWidth = (sizeof(DirectX::XMMATRIX) + 15) & ~15;
+		cdDesc.Usage = D3D11_USAGE_DEFAULT;
+		cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cdDesc.CPUAccessFlags = 0;
+		cdDesc.MiscFlags = 0;
+		cdDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantWorld);
+		if (FAILED(hr)) return;
 	}
+	{
+		//VS定数バッファ作成
+		D3D11_BUFFER_DESC cdDesc;
+		cdDesc.ByteWidth = sizeof(VS_CB_VP);
+		cdDesc.Usage = D3D11_USAGE_DEFAULT;
+		cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cdDesc.CPUAccessFlags = 0;
+		cdDesc.MiscFlags = 0;
+		cdDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantVP);
+		if (FAILED(hr)) return;
+	}
+}
 
-	//Texture使用するか否かの定数バッファ作成
-	{
-		D3D11_BUFFER_DESC cbDesc;
-		cbDesc.ByteWidth = (sizeof(PS_CB_Texture) + 15) & ~15;
-		cbDesc.Usage = D3D11_USAGE_DEFAULT;
-		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbDesc.CPUAccessFlags = 0;
-		cbDesc.MiscFlags = 0;
-		cbDesc.StructureByteStride = 0;
-		hr = p_Device->CreateBuffer(&cbDesc, NULL, &enableTexture);
-		if ( FAILED(hr) ) return;
-	}
+void IF_Renderer::RenderPipeline()
+{
+	this->p_DeviceContext->IASetInputLayout(this->p_InputLayout);
+
+	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
+
+	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
+	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
+
+	// サンプラーをピクセルシェーダーに渡す
+	this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
+
+	// 定数バッファを頂点シェーダーにセットする
+	this->p_DeviceContext->PSSetConstantBuffers(0, 1, &this->p_PSConstantBuffer);
+	this->p_DeviceContext->VSSetConstantBuffers(0, 1, &p_constantWorld);
+	this->p_DeviceContext->VSSetConstantBuffers(1, 1, &p_constantVP);
+
+	// ブレンドステートをセットする
+	this->p_DeviceContext->OMSetBlendState(this->p_BlendState, NULL, 0xffffffff);
+	// ラスターライザステートをセットする
+	this->p_DeviceContext->RSSetState(this->p_RRState);
+
+	// デプスステンシルステートをセットする
+	this->p_DeviceContext->OMSetDepthStencilState(this->p_DSState, 1);
 }
 
 void IF_Renderer::Init()
@@ -227,6 +218,7 @@ void IF_Renderer::Init()
 
 	InitShader();
 	InitBuffer();
+	CreateCommonBuffer();
 	InitState();
 }
 
@@ -236,57 +228,69 @@ IF_Renderer::IF_Renderer()
 	p_Device = l_p_system.GetDevice();
 	p_DeviceContext = l_p_system.GetDeviceContext();
 	p_camera = nullptr;
-	InitCommonBuffer();
 }
 
-void IF_Renderer::SetVertexBuffer(ID3D11Buffer* _p_vertexBuffer)
-{
-	UINT strides = sizeof(hft::Vertex);
-	UINT offsets = 0;
-	p_DeviceContext->IASetVertexBuffers(0,1,&_p_vertexBuffer,&strides,&offsets);
-}
 
-void IF_Renderer::SetIndexBuffer(ID3D11Buffer * _p_indexBuffer)
-{
-	p_DeviceContext->IASetIndexBuffer(_p_indexBuffer,DXGI_FORMAT_R32_UINT,0);
-}
 
-void IF_Renderer::SetWorldMatrix(const DirectX::XMMATRIX& _world)
+void IF_Renderer::SetWorldMatrix(Transform& _transform)
 {
-	DirectX::XMMATRIX world = DirectX::XMMatrixTranspose(_world);
+	hft::TransformMatrix mtrxTf;
+	mtrxTf.ConversionPosition(_transform.position);
+	mtrxTf.ConversionRotation(_transform.rotation);
+	mtrxTf.ConversionScale(_transform.scale);
 
-	p_DeviceContext->UpdateSubresource(matrixWorld, 0, NULL, &world, 0, 0);
-	p_DeviceContext->VSSetConstantBuffers(0, 1, &matrixWorld);
+	DirectX::XMMATRIX matWorld = DirectX::XMMatrixTranspose(mtrxTf.GetMatrixWorld());
+	p_DeviceContext->UpdateSubresource(p_constantWorld, 0, NULL, &matWorld, 0, 0);
 }
 
 void IF_Renderer::SetVPMatrix()
 {
-	VS_CB_MatrixVP vp;
-	vp.view = p_camera->GetMatrixView();
-	vp.projection = p_camera->GetMatrixProj();
+	{
+		VS_CB_VP cb;
+		cb.matProj = DirectX::XMMatrixTranspose(p_camera->GetMatrixProj());
+		cb.matView = DirectX::XMMatrixTranspose(p_camera->GetMatrixView());
 
-	vp.TransPose();
-
-	p_DeviceContext->UpdateSubresource(matrixVP, 0, NULL, &vp, 0, 0);
-	p_DeviceContext->VSSetConstantBuffers(1, 1, &matrixVP);
+		p_DeviceContext->UpdateSubresource(p_constantVP, 0, NULL, &cb, 0, 0);
+	}
 }
 
-void IF_Renderer::SetTexture(const Texture& _texture)
+void IF_Renderer::SetVertexBuffer(ID3D11Buffer* _vertexBuffer)
+{
+	UINT strides = sizeof(hft::Vertex);
+	UINT offsets = 0;
+	p_DeviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &strides, &offsets);
+}
+
+void IF_Renderer::SetIndexBuffer(ID3D11Buffer* _indexBuffer)
+{
+	p_DeviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+}
+
+void IF_Renderer::SetTexture(Texture* _p_texture)
 {
 	PS_CB_Texture cb;
-	if ( _texture.wp_textureView.expired() )
+
+	if (_p_texture == nullptr)
 	{
 		cb.isTexture = false;
 	}
 	else
 	{
-		cb.isTexture = true;
-		//テクスチャをピクセルシェーダーに渡す
-		ID3D11ShaderResourceView* textureView = nullptr;
-		if ( _texture.wp_textureView.lock().get() != nullptr )
-			textureView = _texture.wp_textureView.lock().get();
-		p_DeviceContext->PSSetShaderResources(0, 1, &textureView);
+		if (_p_texture->wp_textureView.expired())
+		{
+			cb.isTexture = false;
+		}
+		else
+		{
+			cb.isTexture = true;
+			//テクスチャをピクセルシェーダーに渡す
+			ID3D11ShaderResourceView* textureView = nullptr;
+			if (_p_texture->wp_textureView.lock().get() != nullptr)
+				textureView = _p_texture->wp_textureView.lock().get();
+			p_DeviceContext->PSSetShaderResources(2, 1, &textureView);
+		}
 	}
-	p_DeviceContext->UpdateSubresource(enableTexture, 0, NULL, &cb, 0, 0);
-	p_DeviceContext->PSSetConstantBuffers(2, 1, &enableTexture);
+	p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
 }
+
+

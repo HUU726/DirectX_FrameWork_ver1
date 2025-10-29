@@ -1,8 +1,8 @@
 //--------------------------------------------------------------------------------------
 // 頂点シェーダー
 //--------------------------------------------------------------------------------------
+#include "../../10-ShaderTypes/ShaderTypes.hlsli"
 
-#include "../../10-ShaderTypes/ShaderTypes.hlsl"
  
 // 頂点シェーダーのエントリポイント 
 PS_IN main(in VS_IN input)
@@ -10,8 +10,8 @@ PS_IN main(in VS_IN input)
     PS_IN output;
     
     matrix wvp;
-    wvp = mul(matrixWorld, matrixView);
-    wvp = mul(wvp, matrixProjction);
+    wvp = mul(matWorld, matView);
+    wvp = mul(wvp, matProj);
     
     output.pos = mul(input.pos, wvp);
     output.tex = input.tex;

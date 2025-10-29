@@ -1,5 +1,6 @@
 #include "Camera3D.h"
 
+#include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../../../02-App/FH_Window.h"
 
@@ -120,5 +121,6 @@ void Camera3D::Init()
 
 void Camera3D::Update()
 {
+	Mesh3DRenderer::GetInstance().SetVPMatrix();
 	UpdateViewMatrix();
 }

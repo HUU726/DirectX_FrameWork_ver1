@@ -123,7 +123,6 @@ HRESULT Sprite2DRenderer::InitState()
 	return S_OK;
 }
 
-
 void Sprite2DRenderer::SetCamera(Camera2D* _p_camera)
 {
 	p_camera = _p_camera;
@@ -137,30 +136,23 @@ void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
 
 	RenderPipeline();
 
-
-	hft::TransformMatrix mtrxTf;
-	mtrxTf.ConversionPosition(_sprite->p_transform->position);
-	mtrxTf.ConversionRotation(_sprite->p_transform->rotation);
-	mtrxTf.ConversionScale(_sprite->p_transform->scale);
-
 	UINT strides = sizeof(hft::Vertex);
 	UINT offsets = 0;
 
 	p_DeviceContext->DrawIndexed(_sprite->indices.size(),0 , 0); // •`‰æ–½—ß
 }
 
-void Sprite2DRenderer::Draw(SpriteRenderer* _renderer)
+void Sprite2DRenderer::Draw(SpriteRenderer* _p_renderer)
 {
 
 	if (p_camera == nullptr)
 		return;
 
-	std::shared_ptr<hft::Polygon> shape = _renderer->GetShape();
+	std::shared_ptr<hft::Polygon> shape = _p_renderer->GetShape();
 	if (!shape)
 		return;
 
 	RenderPipeline();
-
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }
 
@@ -171,11 +163,11 @@ void Sprite2DRenderer::Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos, hft:
 
 	RenderPipeline();
 
-	UINT strides = sizeof(hft::Vertex);
-	UINT offsets = 0;
+	hft::TransformMatrix mtrxTf;
+	mtrxTf.ConversionPosition(_pos);
+	mtrxTf.ConversionRotation(_rot);
+	mtrxTf.ConversionScale(_scl);
 
-	p_DeviceContext->IASetVertexBuffers(0, 1, &(_shape.p_vertexBuffer), &strides, &offsets);
-	p_DeviceContext->IASetIndexBuffer(_shape.p_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	p_DeviceContext->DrawIndexed(_shape.indices.size(), 0, 0); // •`‰æ–½—ß
 }

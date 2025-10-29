@@ -13,7 +13,6 @@ class SpriteRenderer;
 class Sprite2DRenderer : public IF_Renderer
 {
 private:
-	ID3D11Buffer* p_PSConstantBuffer;		// ピクセルシェーダー用定数バッファ用変数
 
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;

@@ -16,8 +16,6 @@ class MeshRenderer;
 class Mesh3DRenderer : public IF_Renderer
 {
 private:
-	ID3D11Buffer* p_PSConstantBuffer;
-
 	HRESULT InitShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;

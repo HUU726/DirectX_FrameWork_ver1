@@ -11,6 +11,7 @@
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../06-GameObject/GameObject.h"
 
+
 Mesh3DRenderer::Mesh3DRenderer()
 {
 	Init();
@@ -21,21 +22,18 @@ HRESULT Mesh3DRenderer::InitShader()
 	HRESULT hr;
 
 	// インプットレイアウト作成
-	std::vector<D3D11_INPUT_ELEMENT_DESC> l_layout
+	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
-		// 位置座標があるということを伝える
-		(D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }),
-		// 法線情報があるということを伝える
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		// 色情報があるということを伝える
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		// UV座標( uv )
-		{ "TEX", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
+	UINT numElements = ARRAYSIZE(layout);
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
 	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/VS_Mesh3D.hlsl";
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, l_layout.data(), l_layout.size(), VS_Path);
+	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
@@ -131,19 +129,15 @@ void Mesh3DRenderer::Draw(const hft::Polygon* _polygon)
 
 void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 {
-	//カメラが存在しなかったら描画中止
 	if (p_camera == nullptr)
 		return;
 
-	//描画対象が存在しなかったら描画中止
 	std::shared_ptr<hft::Mesh> shape = _p_renderer->GetShape();
-	if (!shape)	return;
+	if (!shape)
+		return;
 
 	RenderPipeline();
-	_p_renderer->SetBuffer();
-
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // 描画命令
-
 }
 
 void Mesh3DRenderer::Draw(const MeshFilter* _p_meshFilter)
