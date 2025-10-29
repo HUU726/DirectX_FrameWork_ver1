@@ -11,12 +11,12 @@
 
 void TitleScene::Init()
 {
-	{	//2Dカメラ初期化
-		Transform* p_trf = camera2D.GetTransformPtr();
-		p_trf->position = { 0.f,0.f,0.f,0.f };
+	//{	//2Dカメラ初期化
+	//	Transform* p_trf = camera2D.GetTransformPtr();
+	//	p_trf->position = { 0.f,0.f,0.f,0.f };
 
-		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
-	}
+	//	Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
+	//}
 
 	{	//3Dカメラ初期化
 		Transform* p_trf = camera3D.GetTransformPtr();
@@ -25,14 +25,14 @@ void TitleScene::Init()
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
 
-	{	//オブジェクト初期化
-		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
-		Transform* p_trf = gameObject2D.GetTransformPtr();
-		{
-			p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };
-			p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
-		}
-	}
+	//{	//オブジェクト初期化
+	//	gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
+	//	Transform* p_trf = gameObject2D.GetTransformPtr();
+	//	{
+	//		p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };
+	//		p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
+	//	}
+	//}
 
 	{
 		gameObject3D.AddComponent<MeshRenderer>()->SetShape("cube");
@@ -54,37 +54,43 @@ void TitleScene::Input()
 
 void TitleScene::Update()
 {
-	camera2D.Update();
+	//camera2D.Update();
 	camera3D.Update();
 	
 	{
+		float spd = 0.06f;
+
 		Transform* p_trf = camera3D.GetTransformPtr();
+
+		if ( GetAsyncKeyState('Q') & 0x8000 )
+			p_trf->rotation.y -= 0.03f;
+		if ( GetAsyncKeyState('E') & 0x8000 )
+			p_trf->rotation.y += 0.03f;
+	
+		hft::HFFLOAT3 moveVec;
 		if (GetAsyncKeyState('D') & 0x8000)
-			p_trf->position.x += 0.04f;
+			moveVec += camera3D.GetRight();
 		if (GetAsyncKeyState('A') & 0x8000)
-			p_trf->position.x -= 0.04f;
+			moveVec -= camera3D.GetRight();
 
 		if (GetAsyncKeyState('W') & 0x8000)
-			p_trf->position.z += 0.04f;
+			moveVec += camera3D.GetForward();
 		if (GetAsyncKeyState('S') & 0x8000)
-			p_trf->position.z -= 0.04f;
+			moveVec -= camera3D.GetForward();
 
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-			p_trf->position.y += 0.04f;
+			moveVec.y += 1;
 		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-			p_trf->position.y -= 0.04f;
+			moveVec.y -= 1;
+		
+		p_trf->position += moveVec * spd;
 
-		if (GetAsyncKeyState('Q') & 0x8000)
-			p_trf->rotation.y -= 0.03f;
-		if (GetAsyncKeyState('E') & 0x8000)
-			p_trf->rotation.y += 0.03f;
 
-		std::cout << "Camera3DPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
+		std::cout << "Camera3DVec : " << moveVec.x << " , " << moveVec.y << " , " << moveVec.z << std::endl;
 	}
 	{
 		Transform* p_trf = gameObject3D.GetTransformPtr();
 		p_trf->rotation.y += 0.000;
-		std::cout << "3DObjectPos : " << p_trf->position.x << " , " << p_trf->position.y << " , " << p_trf->position.z << std::endl;
 	}
 
 
@@ -96,7 +102,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {	
 	gameObject3D.Draw();
-	gameObject2D.Draw();
+	//gameObject2D.Draw();
 }
 
 void TitleScene::UnInit()

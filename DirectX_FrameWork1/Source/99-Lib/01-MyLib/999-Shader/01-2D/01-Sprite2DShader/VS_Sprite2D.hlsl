@@ -3,6 +3,7 @@
 //--------------------------------------------------------------------------------------
 #include "../../10-ShaderTypes/ShaderTypes.hlsli"
 
+<<<<<<< HEAD
  
 // 頂点シェーダーのエントリポイント 
 PS_IN main(VS_IN input)
@@ -18,6 +19,21 @@ PS_IN main(VS_IN input)
     
     output.tex = input.tex;
   
+=======
+#include "../../10-ShaderTypes/ShaderTypes.hlsl"
+ 
+// 頂点シェーダーのエントリポイント 
+PS_IN main(in VS_IN input)
+{
+    PS_IN output;
+    
+    matrix wvp;
+    wvp = mul(matrixWorld, matrixView);
+    wvp = mul(wvp, matrixProjction);
+    
+    output.pos = mul(input.pos, wvp);
+    output.tex = input.tex;
+>>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
     output.col = input.col;
     
     return output;

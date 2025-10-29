@@ -124,6 +124,11 @@ void hft::HFFLOAT3::operator/=(const HFFLOAT3& _value)
 	z /= _value.z;
 }
 
+hft::HFFLOAT3 hft::HFFLOAT3::operator*(const float& _value)
+{
+    return { x * _value, y * _value, z * _value };
+}
+
 
 
 /********************************************************************************************
@@ -188,3 +193,9 @@ void hft::HFFLOAT4::operator/=(const HFFLOAT4& _value)
 	w /= _value.w;
 }
 
+void hft::HFFLOAT4::operator+=(const hft::HFFLOAT3& _value)
+{
+	x += _value.x;
+	y += _value.y;
+	z += _value.z;
+}

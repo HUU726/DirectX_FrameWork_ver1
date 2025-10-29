@@ -7,6 +7,8 @@
 #include <memory>
 #include "./Vertex.h"
 
+#define SAFE_RELEASE(p) { if( NULL != p ) { p->Release(); p = NULL; } }
+
 namespace hft
 {
 	struct Shape
