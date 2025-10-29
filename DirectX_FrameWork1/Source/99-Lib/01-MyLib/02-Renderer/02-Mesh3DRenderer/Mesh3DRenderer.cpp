@@ -32,7 +32,7 @@ HRESULT Mesh3DRenderer::InitShader()
 	UINT numElements = ARRAYSIZE(layout);
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
-	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/VS_Mesh3D.hlsl";
+	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/02-LightMesh3D/VS_LightMesh3D.hlsl";
 	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
@@ -92,9 +92,9 @@ HRESULT Mesh3DRenderer::InitState()
 	D3D11_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D11_FILL_SOLID; //ソリッド
 	//rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME; //ワイヤーフレーム
-	//rasterizerDesc.CullMode = D3D11_CULL_BACK; //ポリゴン裏をカリング
+	rasterizerDesc.CullMode = D3D11_CULL_BACK; //ポリゴン裏をカリング
 	//rasterizerDesc.CullMode = D3D11_CULL_FRONT; //ポリゴン表をカリング
-	rasterizerDesc.CullMode = D3D11_CULL_NONE; //カリングしない(裏も表も表示される)
+	//rasterizerDesc.CullMode = D3D11_CULL_NONE; //カリングしない(裏も表も表示される)
 	rasterizerDesc.DepthClipEnable = TRUE;
 	rasterizerDesc.MultisampleEnable = FALSE;
 	hr = p_Device->CreateRasterizerState(&rasterizerDesc, &p_RRState);

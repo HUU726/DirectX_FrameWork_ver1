@@ -55,40 +55,40 @@ std::shared_ptr<hft::Mesh> CreateCubeShape()
 
 	vertices.resize(CUBE_VERTEX_NUM);
 	{	//POSITIVE_X
-		vertices[0].position = { 0.5f,  0.5f, -0.5f };	vertices[0].normal = { 1.f,0.f,0.f };
-		vertices[1].position = { 0.5f,  0.5f,  0.5f };	vertices[1].normal = { 1.f,0.f,0.f };
-		vertices[2].position = { 0.5f, -0.5f, -0.5f };	vertices[2].normal = { 1.f,0.f,0.f };
-		vertices[3].position = { 0.5f, -0.5f,  0.5f };	vertices[3].normal = { 1.f,0.f,0.f };
+		vertices[0].position = { 0.5f,  0.5f, -0.5f };		vertices[0].normal = { 1.f,0.f,0.f };
+		vertices[1].position = { 0.5f,  0.5f,  0.5f };		vertices[1].normal = { 1.f,0.f,0.f };
+		vertices[2].position = { 0.5f, -0.5f, -0.5f };		vertices[2].normal = { 1.f,0.f,0.f };
+		vertices[3].position = { 0.5f, -0.5f,  0.5f };		vertices[3].normal = { 1.f,0.f,0.f };
 	}
 	{	//NEGATIVE_X
-		vertices[4].position = { -0.5f,  0.5f,  0.5f };	vertices[0].normal = { -1.f,0.f,0.f };
-		vertices[5].position = { -0.5f,  0.5f, -0.5f };	vertices[1].normal = { -1.f,0.f,0.f };
-		vertices[6].position = { -0.5f, -0.5f,  0.5f };	vertices[2].normal = { -1.f,0.f,0.f };
-		vertices[7].position = { -0.5f, -0.5f, -0.5f };	vertices[3].normal = { -1.f,0.f,0.f };
+		vertices[4].position = { -0.5f,  0.5f,  0.5f };		vertices[4].normal = { -1.f,0.f,0.f };
+		vertices[5].position = { -0.5f,  0.5f, -0.5f };		vertices[5].normal = { -1.f,0.f,0.f };
+		vertices[6].position = { -0.5f, -0.5f,  0.5f };		vertices[6].normal = { -1.f,0.f,0.f };
+		vertices[7].position = { -0.5f, -0.5f, -0.5f };		vertices[7].normal = { -1.f,0.f,0.f };
 	}
 	{	//POSITIVE_Y
-		vertices[8].position  = {  0.5f,  0.5f, -0.5f };	vertices[0].normal = { 0.f,1.f,0.f };
-		vertices[9].position  = { -0.5f,  0.5f, -0.5f };	vertices[1].normal = { 0.f,1.f,0.f };
-		vertices[10].position = {  0.5f,  0.5f,  0.5f };	vertices[2].normal = { 0.f,1.f,0.f };
-		vertices[11].position = { -0.5f,  0.5f,  0.5f };	vertices[3].normal = { 0.f,1.f,0.f };
+		vertices[8].position  = {  0.5f,  0.5f, -0.5f };	vertices[8].normal = { 0.f,1.f,0.f };
+		vertices[9].position  = { -0.5f,  0.5f, -0.5f };	vertices[9].normal = { 0.f,1.f,0.f };
+		vertices[10].position = {  0.5f,  0.5f,  0.5f };	vertices[10].normal = { 0.f,1.f,0.f };
+		vertices[11].position = { -0.5f,  0.5f,  0.5f };	vertices[11].normal = { 0.f,1.f,0.f };
 	}
 	{	//NEGATIVE_Y
-		vertices[12].position = { -0.5f, -0.5f,  0.5f };	vertices[0].normal = { 0.f,-1.f,0.f };
-		vertices[13].position = {  0.5f, -0.5f,  0.5f };	vertices[1].normal = { 0.f,-1.f,0.f };
-		vertices[14].position = { -0.5f, -0.5f, -0.5f };	vertices[2].normal = { 0.f,-1.f,0.f };
-		vertices[15].position = {  0.5f, -0.5f, -0.5f };	vertices[3].normal = { 0.f,-1.f,0.f };
+		vertices[12].position = {  0.5f, -0.5f,  0.5f };	vertices[12].normal = { 0.f,-1.f,0.f };
+		vertices[13].position = { -0.5f, -0.5f,  0.5f };	vertices[13].normal = { 0.f,-1.f,0.f };
+		vertices[14].position = {  0.5f, -0.5f, -0.5f };	vertices[14].normal = { 0.f,-1.f,0.f };
+		vertices[15].position = { -0.5f, -0.5f, -0.5f };	vertices[15].normal = { 0.f,-1.f,0.f };
 	}
 	{	//POSITIVE_Z
-		vertices[16].position = {  0.5f,  0.5f, 0.5f };	vertices[0].normal = { 0.f,0.f,1.f };
-		vertices[17].position = { -0.5f,  0.5f, 0.5f };	vertices[1].normal = { 0.f,0.f,1.f };
-		vertices[18].position = {  0.5f, -0.5f, 0.5f };	vertices[2].normal = { 0.f,0.f,1.f };
-		vertices[19].position = { -0.5f, -0.5f, 0.5f };	vertices[3].normal = { 0.f,0.f,1.f };
+		vertices[16].position = {  0.5f,  0.5f, 0.5f };		vertices[16].normal = { 0.f,0.f,1.f };
+		vertices[17].position = { -0.5f,  0.5f, 0.5f };		vertices[17].normal = { 0.f,0.f,1.f };
+		vertices[18].position = {  0.5f, -0.5f, 0.5f };		vertices[18].normal = { 0.f,0.f,1.f };
+		vertices[19].position = { -0.5f, -0.5f, 0.5f };		vertices[19].normal = { 0.f,0.f,1.f };
 	}
 	{	//NEGATIVE_Z
-		vertices[20].position = { -0.5f,  0.5f, -0.5f };	vertices[0].normal = { 0.f,0.f,-1.f };
-		vertices[21].position = {  0.5f,  0.5f, -0.5f };	vertices[1].normal = { 0.f,0.f,-1.f };
-		vertices[22].position = { -0.5f, -0.5f, -0.5f };	vertices[2].normal = { 0.f,0.f,-1.f };
-		vertices[23].position = {  0.5f, -0.5f, -0.5f };	vertices[3].normal = { 0.f,0.f,-1.f };
+		vertices[20].position = { -0.5f,  0.5f, -0.5f };	vertices[20].normal = { 0.f,0.f,-1.f };
+		vertices[21].position = {  0.5f,  0.5f, -0.5f };	vertices[21].normal = { 0.f,0.f,-1.f };
+		vertices[22].position = { -0.5f, -0.5f, -0.5f };	vertices[22].normal = { 0.f,0.f,-1.f };
+		vertices[23].position = {  0.5f, -0.5f, -0.5f };	vertices[23].normal = { 0.f,0.f,-1.f };
 	}
 
 

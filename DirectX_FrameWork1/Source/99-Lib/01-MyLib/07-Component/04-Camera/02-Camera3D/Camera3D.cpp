@@ -14,7 +14,6 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 	{
 		Transform l_transform = GetGameObject()->GetTransform();
 		auto pos = l_transform.position;
-		//auto rot = l_transform.rotation;
 		cameraPos = DirectX::XMVectorSet(pos.x, pos.y, pos.z, 0.f);		//ƒJƒƒ‰‚ÌˆÊ’u
 	}
 

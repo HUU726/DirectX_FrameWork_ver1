@@ -4,6 +4,7 @@
 #include "../../998-FH_Types/TransformMatrix.h"
 #include "../../07-Component/04-Camera/00-IF_Camera/IF_Camera.h"
 
+
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -182,6 +183,18 @@ void IF_Renderer::CreateCommonBuffer()
 		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantVP);
 		if (FAILED(hr)) return;
 	}
+	{
+		//VS定数バッファ作成
+		D3D11_BUFFER_DESC cdDesc;
+		cdDesc.ByteWidth = sizeof(LightData);
+		cdDesc.Usage = D3D11_USAGE_DEFAULT;
+		cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cdDesc.CPUAccessFlags = 0;
+		cdDesc.MiscFlags = 0;
+		cdDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantLight);
+		if ( FAILED(hr) ) return;
+	}
 }
 
 void IF_Renderer::RenderPipeline()
@@ -193,13 +206,18 @@ void IF_Renderer::RenderPipeline()
 	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
 	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
-	// サンプラーをピクセルシェーダーに渡す
-	this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
-
-	// 定数バッファを頂点シェーダーにセットする
-	this->p_DeviceContext->PSSetConstantBuffers(0, 1, &this->p_PSConstantBuffer);
-	this->p_DeviceContext->VSSetConstantBuffers(0, 1, &p_constantWorld);
-	this->p_DeviceContext->VSSetConstantBuffers(1, 1, &p_constantVP);
+	{
+		// サンプラーをピクセルシェーダーにセットする
+		this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
+		//定数バッファをピクセルシェーダーにセットする
+		this->p_DeviceContext->PSSetConstantBuffers(0, 1, &p_PSConstantBuffer);
+	}
+	{
+		// 定数バッファを頂点シェーダーにセットする
+		this->p_DeviceContext->VSSetConstantBuffers(0, 1, &p_constantWorld);
+		this->p_DeviceContext->VSSetConstantBuffers(1, 1, &p_constantVP);
+		this->p_DeviceContext->VSSetConstantBuffers(3, 1, &p_constantLight);
+	}
 
 	// ブレンドステートをセットする
 	this->p_DeviceContext->OMSetBlendState(this->p_BlendState, NULL, 0xffffffff);
@@ -230,6 +248,14 @@ IF_Renderer::IF_Renderer()
 	p_camera = nullptr;
 }
 
+IF_Renderer::~IF_Renderer()
+{
+	p_PSConstantBuffer->Release();
+	p_constantWorld->Release();
+	p_constantVP->Release();
+	p_constantLight->Release();
+}
+
 
 
 void IF_Renderer::SetWorldMatrix(Transform& _transform)
@@ -252,6 +278,11 @@ void IF_Renderer::SetVPMatrix()
 
 		p_DeviceContext->UpdateSubresource(p_constantVP, 0, NULL, &cb, 0, 0);
 	}
+}
+
+void IF_Renderer::SetLight(const LightData& _data)
+{
+	p_DeviceContext->UpdateSubresource(p_constantLight, 0, NULL, &_data, 0, 0);
 }
 
 void IF_Renderer::SetVertexBuffer(ID3D11Buffer* _vertexBuffer)

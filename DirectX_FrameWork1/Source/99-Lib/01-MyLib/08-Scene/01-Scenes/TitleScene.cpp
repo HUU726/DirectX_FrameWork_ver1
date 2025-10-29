@@ -29,8 +29,8 @@ void TitleScene::Init()
 		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
 		Transform* p_trf = gameObject2D.GetTransformPtr();
 		{
-			p_trf->position = hft::HFFLOAT3{ 0.f, 0.f, 5.f };
-			p_trf->scale = hft::HFFLOAT3{ 300.f,300.f,1.f };
+			p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
+			p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
 		}
 	}
 
@@ -41,6 +41,12 @@ void TitleScene::Init()
 			p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
 			p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
 		}
+	}
+
+	{
+		Transform* p_trf = lightObject.GetTransformPtr();
+		p_trf->position = { 0.f,0.f,0.f };
+		p_trf->rotation = { 0,0,0 };
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
@@ -56,6 +62,16 @@ void TitleScene::Update()
 {
 	camera2D.Update();
 	camera3D.Update();
+	lightObject.Update();
+
+	{	//ƒ‰ƒCƒg‚Ì‰ñ“]
+		//Transform* p_trf = lightObject.GetTransformPtr();
+		//p_trf->rotation.x += 0.01f;
+		//p_trf->rotation.y += 0.01f;
+		//p_trf->rotation.z += 0.01f;
+
+		//std::cout << "Camera Rtation : " << p_trf->rotation.x << "," << p_trf->rotation.y << "," << p_trf->rotation.z << std::endl;
+	}
 	
 	{
 		float spd = 0.06f;
@@ -85,12 +101,12 @@ void TitleScene::Update()
 		
 		p_trf->position += moveVec * spd;
 
-
-		std::cout << "Camera3DVec : " << moveVec.x << " , " << moveVec.y << " , " << moveVec.z << std::endl;
 	}
 	{
 		Transform* p_trf = gameObject3D.GetTransformPtr();
-		p_trf->rotation.y += 0.000;
+		p_trf->rotation.x += 0.003f;
+		p_trf->rotation.y += 0.003f;
+		p_trf->rotation.z += 0.003f;
 	}
 
 

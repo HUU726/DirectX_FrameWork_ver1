@@ -6,6 +6,7 @@
 
 #include "../../04-Texture/Texture.h"
 #include "../../07-Component/01-Transform/Transform.h"
+#include "../../07-Component/05-Light/Light.h"
 
 class IF_Camera;
 
@@ -36,11 +37,12 @@ protected:
 	ID3D11RasterizerState* p_RRState;	// ラスタライザーステート用変数(カリングなどなど)
 	ID3D11DepthStencilState* p_DSState;	// Z軸に対して同描画するかなどなど
 
-	IF_Camera* p_camera;
+	IF_Camera* p_camera;	//カメラコンポーネントポインタ
 
-	ID3D11Buffer* p_PSConstantBuffer;
-	ID3D11Buffer* p_constantWorld;
-	ID3D11Buffer* p_constantVP;
+	ID3D11Buffer* p_PSConstantBuffer;	//ピクセルシェーダー用定数バッファ
+	ID3D11Buffer* p_constantWorld;		//ワールド行列定数バッファ
+	ID3D11Buffer* p_constantVP;			//View・Projection行列定数バッファ
+	ID3D11Buffer* p_constantLight;		//ライト定数バッファ
 
 	
 	const char* VS_Path;	//頂点シェーダーのファイルパス
@@ -67,6 +69,7 @@ protected:
 	void Init();
 
 	IF_Renderer();
+	~IF_Renderer();
 
 public:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
@@ -75,6 +78,7 @@ public:
 
 	void SetWorldMatrix(Transform& _transform);
 	void SetVPMatrix();
+	void SetLight(const LightData& _data);
 
 	void SetVertexBuffer(ID3D11Buffer* _vertexBuffer);
 	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
