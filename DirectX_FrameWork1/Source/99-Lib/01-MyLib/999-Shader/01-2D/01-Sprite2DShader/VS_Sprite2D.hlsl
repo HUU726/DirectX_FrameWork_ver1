@@ -8,7 +8,6 @@
 PS_IN main(VS_IN input)
 {
     PS_IN output;
- 
     // ワールド変換行列を頂点座標に掛けて、移動、回転、拡大縮小する
     output.pos = mul(input.pos, matWorld);
     // ビュー変換行列をかけて、カメラの位置を反映させる

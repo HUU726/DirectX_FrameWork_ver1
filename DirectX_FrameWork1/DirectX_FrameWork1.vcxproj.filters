@@ -141,6 +141,9 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -293,12 +296,17 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\VS_Sprite2D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\PS_Mesh3D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\VS_Mesh3D.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\02-LightMesh3D\PS_LightMesh3D.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\02-LightMesh3D\VS_LightMesh3D.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\99-Lib\01-MyLib\999-Shader\10-ShaderTypes\ShaderTypes.hlsli" />

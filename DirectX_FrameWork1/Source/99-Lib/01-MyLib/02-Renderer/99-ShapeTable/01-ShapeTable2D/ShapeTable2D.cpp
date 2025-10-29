@@ -92,6 +92,7 @@ ShapeTable2D::ShapeTable2D()
 			circle->vertices[i].uv = { x,y };
 		}
 
+		//インデックス設定
 		circle->indices.resize(CIRCLE_INDEX_NUM);
 		for (int i = 0, biggerVertexNum = 2; i < CIRCLE_FASE_NUM; i++, biggerVertexNum++)
 		{

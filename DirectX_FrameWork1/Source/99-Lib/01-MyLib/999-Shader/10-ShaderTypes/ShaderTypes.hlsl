@@ -27,11 +27,12 @@ cbuffer VPBuffer : register(b1)
 cbuffer TextureBuffer : register(b2)
 {
     int isTexture;
-};
+}
 
 struct LIGHT
 {
-    int enable;         //使用するか否か
+    bool enable;        //使用するか否か
+    bool fake[3];       //余白
     float4 direction;   //平行光源の方向
     float4 diffuse;     //拡散反射用の光の強さ
     float4 ambient;     //環境光用の光の強さ

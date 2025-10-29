@@ -26,3 +26,18 @@ cbuffer VPBuffer : register(b1)
     matrix matView;
     matrix matProj;
 }
+
+
+struct LIGHT
+{
+    bool enable;        //使用するか否か
+    bool3 fake;         //余白
+    float4 direction;   //平行光源の方向
+    float4 diffuse;     //拡散反射用の光の強さ
+    float4 ambient;     //環境光用の光の強さ
+};
+
+cbuffer LightBuffer : register(b3)
+{
+    LIGHT light;
+}
