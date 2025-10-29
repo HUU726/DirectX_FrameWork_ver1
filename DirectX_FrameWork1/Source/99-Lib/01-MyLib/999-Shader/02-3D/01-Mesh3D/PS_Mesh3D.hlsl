@@ -13,8 +13,8 @@ cbuffer ConstBuffer : register(b2)
     int isTexture;
 }
 
-
-float4 main(in PS_IN input) : SV_TARGET
+// ピクセルシェーダーのエントリポイント
+float4 main(PS_IN input) : SV_Target
 {
     float4 color = input.col;
     

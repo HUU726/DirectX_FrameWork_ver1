@@ -33,11 +33,7 @@ HRESULT Mesh3DRenderer::InitShader()
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
 	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/VS_Mesh3D.hlsl";
-<<<<<<< HEAD
 	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
-=======
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, l_layout.data(), l_layout.size(), VS_Path);
->>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
@@ -133,26 +129,14 @@ void Mesh3DRenderer::Draw(const hft::Polygon* _polygon)
 
 void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 {
-<<<<<<< HEAD
 	if (p_camera == nullptr)
 		return;
 
-=======
-	//カメラが存在しなかったら描画中止
-	if (p_camera == nullptr)
-		return;
-
-	//描画対象が存在しなかったら描画中止
->>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
 	std::shared_ptr<hft::Mesh> shape = _p_renderer->GetShape();
-	if (!shape)	return;
+	if (!shape)
+		return;
 
 	RenderPipeline();
-<<<<<<< HEAD
-=======
-	_p_renderer->SetBuffer();
-
->>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // 描画命令
 }
 

@@ -1,37 +1,8 @@
 #include "MeshRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
-#include "../../../998-FH_Types/TransformMatrix.h"
 
 
-void MeshRenderer::SetWorldMatrix()
-{
-
-	Transform& transform = gameObject->GetTransform();
-	hft::TransformMatrix matrixTf;
-	matrixTf.ConversionPosition(transform.position);
-	matrixTf.ConversionRotation(transform.rotation);
-	matrixTf.ConversionScale(transform.scale);
-
-	Mesh3DRenderer::GetInstance().SetWorldMatrix(matrixTf.GetMatrixWorld());
-}
-
-void MeshRenderer::SetBuffer()
-{
-	Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
-
-	auto sp_mesh = p_meshFilter->GetMesh();
-	renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);
-	renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);
-	SetWorldMatrix();
-	SetTexture();
-}
-
-void MeshRenderer::SetTexture()
-{
-	Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
-	renderer.SetTexture(texture);
-}
 
 MeshRenderer::MeshRenderer()
 {
@@ -90,7 +61,6 @@ void MeshRenderer::Draw()
 	if (isRender)
 	{
 		Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
-<<<<<<< HEAD
 		auto sp_mesh = p_meshFilter->GetMesh();
 		renderer.SetVertexBuffer(sp_mesh->p_vertexBuffer);
 		renderer.SetIndexBuffer(sp_mesh->p_indexBuffer);
@@ -99,8 +69,6 @@ void MeshRenderer::Draw()
 		renderer.SetWorldMatrix(gameObject->GetTransform());
 		renderer.SetVPMatrix();
 
-=======
->>>>>>> 4e40d2ad3e76ecdcf30e95654a22433b59b29bb2
 		renderer.Draw(this);
 	}
 }
