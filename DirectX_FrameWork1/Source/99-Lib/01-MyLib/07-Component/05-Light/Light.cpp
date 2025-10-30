@@ -10,7 +10,7 @@ void Light::Init()
 	data.enable = true;
 	data.direction = { 1,1,1,0 };
 	data.diffuse = { 1.5f,1.5f,1.5f,1.f };
-	data.ambent = { 0.2f,0.2f,0.2f,1.f };
+	data.ambent = { 0.35f,0.35f,0.35f,1.f };
 }
 
 void Light::Update()
@@ -25,7 +25,7 @@ void Light::Update()
 	);
 
 	DirectX::XMMATRIX rotMat = DirectX::XMMatrixRotationRollPitchYawFromVector(eulerRad);
-	DirectX::XMVECTOR defaultDir = DirectX::XMVectorSet(0,0,-1,0);
+	DirectX::XMVECTOR defaultDir = DirectX::XMVectorSet(0,0,1,0);
 	DirectX::XMVECTOR lightDir = DirectX::XMVector3TransformNormal(defaultDir, rotMat);
 
 	data.direction = DirectX::XMVector4Normalize(lightDir);

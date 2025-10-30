@@ -9,16 +9,11 @@ SpriteRenderer::SpriteRenderer()
 
 SpriteRenderer::SpriteRenderer(const char* _filePath)
 {
-		filePath = _filePath;
-		texture.LoadTexture(_filePath);
 }
 
 SpriteRenderer::SpriteRenderer(hft::Polygon& _shape, const char* _filePath)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape.name);
-
-	if (_filePath)
-		texture.LoadTexture(_filePath);
 }
 
 SpriteRenderer::~SpriteRenderer()
@@ -49,7 +44,7 @@ void SpriteRenderer::Draw()
 		
 		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
 		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
-		renderer.SetTexture(&texture);
+		renderer.SetTexture(sp_texture);
 
 		renderer.SetWorldMatrix(gameObject->GetTransform());
 		renderer.SetVPMatrix();

@@ -11,15 +11,13 @@ HRESULT LoadTexture(ID3D11Device* device, const char* filename, ID3D11ShaderReso
 struct Texture
 {
 	std::string filePath;	//ファイルパス
-	std::weak_ptr<ID3D11ShaderResourceView> wp_textureView;
-
-	void LoadTexture(std::string _filePath);
+	ID3D11ShaderResourceView* p_textureView;
 };
 
 class TextureTable
 {
 private:
-	std::unordered_map<std::string, std::shared_ptr<ID3D11ShaderResourceView>> table;
+	std::unordered_map<std::string, std::shared_ptr<Texture>> table;
 
 	TextureTable();
 	~TextureTable();
@@ -31,8 +29,8 @@ public:
 		return instance;
 	}
 
-	std::weak_ptr<ID3D11ShaderResourceView> GetTexture(std::string _filePath);
-	std::weak_ptr<ID3D11ShaderResourceView> LoadTexture(std::string _filePath);
+	std::shared_ptr<Texture> GetTexture(std::string _filePath);
+	std::shared_ptr<Texture> LoadTexture(std::string _filePath);
 	void ReleaseTable();
 
 };

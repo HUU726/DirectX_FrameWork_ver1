@@ -8,13 +8,11 @@ class MeshRenderer : public Component
 {
 private:
 	MeshFilter* p_meshFilter;	// メッシュフィルター
-	Texture texture;
+	std::shared_ptr<Texture> sp_texture;
 	bool isCreate = false;		// Meshを作ったかどうか
-	const char* filePath;		// 描画する画像のパス
 	bool isRender = true;		// 描画処理をするかどうか
 
 public:
-
 	MeshRenderer();
 	MeshRenderer(const char* _filePath);
 	MeshRenderer(MeshFilter& _meshFilter, const char* _filePath = nullptr);
@@ -22,9 +20,11 @@ public:
 	std::shared_ptr<hft::Mesh> SetShape(std::string _name);
 	std::shared_ptr<hft::Mesh> SetShape(std::shared_ptr<hft::Mesh> _shape);
 	std::shared_ptr<hft::Mesh> GetShape() { return p_meshFilter->GetMesh(); }
+	std::shared_ptr<Texture> GetTexture() { return sp_texture; }
+
+	std::shared_ptr<Texture> LoadTexture(const char* _filePath);
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);
-	Texture* GetTexture() { return &texture; }
-	void SetBuffer();
+
 	void Init() override;
 	void Draw() override;
 };

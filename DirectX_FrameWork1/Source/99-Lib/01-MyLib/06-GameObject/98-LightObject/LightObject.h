@@ -1,5 +1,5 @@
 #pragma once
-#include "../GameObject.h"
+#include "../02-3DGameObject/GameObject3D.h"
 #include "../../07-Component/05-Light/Light.h"
 
 enum class LIGHT_TYPE
@@ -10,7 +10,7 @@ enum class LIGHT_TYPE
 	AMBI,
 };
 
-class LightObject : public GameObject
+class LightObject : public GameObject3D
 {
 protected:
 	LIGHT_TYPE type;

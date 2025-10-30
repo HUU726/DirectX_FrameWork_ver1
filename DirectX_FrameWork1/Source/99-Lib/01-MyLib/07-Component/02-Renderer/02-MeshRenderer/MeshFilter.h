@@ -21,7 +21,6 @@ public:
 	std::shared_ptr<hft::Mesh> SetMesh(std::shared_ptr<hft::Mesh> _sp_mesh);
 	std::shared_ptr<hft::Mesh> GetMesh() { return sp_mesh; }
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);
-	//void LoadTexture(const char* _filePath) { mesh->LoadTexture(_filePath); }
 
 	void Init() override;
 };

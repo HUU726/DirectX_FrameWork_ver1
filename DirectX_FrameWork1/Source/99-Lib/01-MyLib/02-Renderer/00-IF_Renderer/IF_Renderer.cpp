@@ -174,7 +174,7 @@ void IF_Renderer::CreateCommonBuffer()
 	{
 		//VS定数バッファ作成
 		D3D11_BUFFER_DESC cdDesc;
-		cdDesc.ByteWidth = sizeof(VS_CB_VP);
+		cdDesc.ByteWidth = (sizeof(VS_CB_VP) + 15) & ~15;
 		cdDesc.Usage = D3D11_USAGE_DEFAULT;
 		cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		cdDesc.CPUAccessFlags = 0;
@@ -186,7 +186,7 @@ void IF_Renderer::CreateCommonBuffer()
 	{
 		//VS定数バッファ作成
 		D3D11_BUFFER_DESC cdDesc;
-		cdDesc.ByteWidth = sizeof(LightData);
+		cdDesc.ByteWidth = (sizeof(LightData) + 15) & ~15;
 		cdDesc.Usage = D3D11_USAGE_DEFAULT;
 		cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		cdDesc.CPUAccessFlags = 0;
@@ -207,16 +207,16 @@ void IF_Renderer::RenderPipeline()
 	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
 	{
-		// サンプラーをピクセルシェーダーにセットする
-		this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
-		//定数バッファをピクセルシェーダーにセットする
-		this->p_DeviceContext->PSSetConstantBuffers(0, 1, &p_PSConstantBuffer);
-	}
-	{
 		// 定数バッファを頂点シェーダーにセットする
 		this->p_DeviceContext->VSSetConstantBuffers(0, 1, &p_constantWorld);
 		this->p_DeviceContext->VSSetConstantBuffers(1, 1, &p_constantVP);
 		this->p_DeviceContext->VSSetConstantBuffers(3, 1, &p_constantLight);
+	}
+	{
+		// サンプラーをピクセルシェーダーにセットする
+		this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
+		//定数バッファをピクセルシェーダーにセットする
+		this->p_DeviceContext->PSSetConstantBuffers(2, 1, &p_PSConstantBuffer);
 	}
 
 	// ブレンドステートをセットする
@@ -297,30 +297,29 @@ void IF_Renderer::SetIndexBuffer(ID3D11Buffer* _indexBuffer)
 	p_DeviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
-void IF_Renderer::SetTexture(Texture* _p_texture)
+void IF_Renderer::SetTexture(std::shared_ptr<Texture> _sp_texture)
 {
 	PS_CB_Texture cb;
 
-	if (_p_texture == nullptr)
+	if (!_sp_texture)
 	{
-		cb.isTexture = false;
+		cb.isTexture = 0;
 	}
 	else
 	{
-		if (_p_texture->wp_textureView.expired())
+		if (!_sp_texture->p_textureView)
 		{
-			cb.isTexture = false;
+			cb.isTexture = 0;
 		}
 		else
 		{
-			cb.isTexture = true;
+			cb.isTexture = 1;
 			//テクスチャをピクセルシェーダーに渡す
-			ID3D11ShaderResourceView* textureView = nullptr;
-			if (_p_texture->wp_textureView.lock().get() != nullptr)
-				textureView = _p_texture->wp_textureView.lock().get();
-			p_DeviceContext->PSSetShaderResources(2, 1, &textureView);
+			p_DeviceContext->PSSetShaderResources(0, 1, &_sp_texture->p_textureView);
+
 		}
 	}
+
 	p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
 }
 

@@ -120,6 +120,6 @@ void Camera3D::Init()
 
 void Camera3D::Update()
 {
-	Mesh3DRenderer::GetInstance().SetVPMatrix();
 	UpdateViewMatrix();
+	Mesh3DRenderer::GetInstance().SetVPMatrix();
 }

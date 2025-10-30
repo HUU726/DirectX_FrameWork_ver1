@@ -19,7 +19,7 @@ struct VS_CB_VP
 
 struct PS_CB_Texture
 {
-	bool isTexture;
+	int isTexture;
 };
 
 
@@ -82,7 +82,7 @@ public:
 
 	void SetVertexBuffer(ID3D11Buffer* _vertexBuffer);
 	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
-	void SetTexture(Texture* _p_texture = nullptr);
+	void SetTexture(std::shared_ptr<Texture> _p_texture = nullptr);
 
 };
 

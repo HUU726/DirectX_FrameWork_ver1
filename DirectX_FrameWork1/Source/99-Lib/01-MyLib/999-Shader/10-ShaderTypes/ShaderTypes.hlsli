@@ -26,6 +26,10 @@ cbuffer VPBuffer : register(b1)
     matrix matView;
     matrix matProj;
 }
+cbuffer ConstBuffer : register(b2)
+{
+    int isTexture;
+}
 
 
 struct LIGHT

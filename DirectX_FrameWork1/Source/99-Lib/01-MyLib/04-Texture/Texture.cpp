@@ -68,20 +68,6 @@ HRESULT LoadTexture(ID3D11Device* device, const char* filename, ID3D11ShaderReso
 
 
 /***************************************************************************************************
-* Textureクラス
-***************************************************************************************************/
-void Texture::LoadTexture(std::string _filePath)
-{
-	static TextureTable& table = TextureTable::GetInstance();
-
-	filePath = _filePath;
-	wp_textureView = table.LoadTexture(_filePath);
-}
-
-
-
-
-/***************************************************************************************************
 * TextureTableクラス
 ***************************************************************************************************/
 TextureTable::TextureTable()
@@ -94,27 +80,27 @@ TextureTable::~TextureTable()
 	table.clear();
 }
 
-std::weak_ptr<ID3D11ShaderResourceView> TextureTable::GetTexture(std::string _filePath)
+std::shared_ptr<Texture> TextureTable::GetTexture(std::string _filePath)
 {
 	if (table.count(_filePath))
 		return table[_filePath];
 
-	return this->LoadTexture(_filePath);
+	return nullptr;
 }
 
-std::weak_ptr<ID3D11ShaderResourceView> TextureTable::LoadTexture(std::string _filePath)
+std::shared_ptr<Texture> TextureTable::LoadTexture(std::string _filePath)
 {
 	if (table.count(_filePath) == 0 )
 	{
-		static RendererManager& rendererMng = RendererManager::GetInstance();
+		RendererManager& rendererMng = RendererManager::GetInstance();
 
-		auto sp_srv = std::shared_ptr<ID3D11ShaderResourceView>();
-		ID3D11ShaderResourceView* p_srv = sp_srv.get();
-		::LoadTexture(rendererMng.GetDevice(), _filePath.c_str(), &p_srv);
+		auto sp_texture = std::make_shared<Texture>();
+		ID3D11ShaderResourceView* p_srv = sp_texture->p_textureView;
+		::LoadTexture(rendererMng.GetDevice(), _filePath.c_str(), &sp_texture->p_textureView);
 
 		std::cout << _filePath << "はテーブルに存在しないためロードします。" << std::endl;
-		table[_filePath] = sp_srv;
-		return sp_srv;
+		table[_filePath] = sp_texture;
+		return sp_texture;
 	}
 	else
 	{
