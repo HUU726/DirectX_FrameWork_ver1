@@ -70,6 +70,7 @@ ShapeTable2D::ShapeTable2D()
 
 		circle->vertices[0].position = { 0,0,0.f,0.f };
 		circle->vertices[0].color = { 1.f,1.f,1.f,1.f };
+		circle->vertices[0].uv = { 0.5f,0.5f };
 
 		for (int i = 1; i < CIRCLE_VERTEX_NUM; i++)
 		{
@@ -77,15 +78,14 @@ ShapeTable2D::ShapeTable2D()
 			float x = cos(theta);
 			float y = sin(theta);
 			circle->vertices[i].position = { x,y,0.f };
-			circle->vertices[i].color = { 1.f,0.f,0.f,1.f };
-			circle->vertices[i].uv = { 0.5f,0.5f };
+			circle->vertices[i].color = { 1.f,1.f,1.f,1.f };
 
 			if (x >= 0)
-				x = (x - 1.f) * -1.f;
+				x = (x + 1.f) / 2.f;
 			else
-				x = (-x + 1.f) / 2.f;
+				x = (1.f + x) / 2.f;
 			if (y >= 0)
-				y = (y - 1.f) * -1.f;
+				y = (y - 1.f) * -1.f / 2.f;
 			else
 				y = (-y + 1.f) / 2.f;
 

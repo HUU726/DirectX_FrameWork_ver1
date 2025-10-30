@@ -27,6 +27,7 @@ void TitleScene::Init()
 
 	{	//オブジェクト初期化
 		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
+		gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = gameObject2D.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
 		p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
@@ -57,7 +58,7 @@ void TitleScene::Init()
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
-	camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
+	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 }
 
 void TitleScene::Input()

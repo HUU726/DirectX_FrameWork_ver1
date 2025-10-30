@@ -32,6 +32,20 @@ std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::shared_ptr<hft::Poly
     return sp_shape;
 }
 
+std::shared_ptr<Texture> SpriteRenderer::LoadTexture(const char* _filePath)
+{
+	TextureTable& tTable = TextureTable::GetInstance();
+	auto textureSource = tTable.LoadTexture(_filePath);
+
+	if (textureSource)
+	{
+		sp_texture = textureSource;
+		return sp_texture;
+	}
+
+	return nullptr;
+}
+
 void SpriteRenderer::Init()
 {
 }

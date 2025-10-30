@@ -24,6 +24,9 @@ public:
 	std::shared_ptr<hft::Polygon> SetShape(std::shared_ptr<hft::Polygon> _shape);
 	std::shared_ptr<hft::Polygon> GetShape() { return sp_shape; }
 	std::shared_ptr<Texture> GetTexture() { return sp_texture; }
+
+	std::shared_ptr<Texture> LoadTexture(const char* _filePath);
+
 	void Init() override;
 	void Draw() override;
 };
