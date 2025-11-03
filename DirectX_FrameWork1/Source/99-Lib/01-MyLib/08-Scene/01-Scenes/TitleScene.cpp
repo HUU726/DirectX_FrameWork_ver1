@@ -58,7 +58,7 @@ void TitleScene::Init()
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
-	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
+	camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 }
 
 void TitleScene::Input()
@@ -110,12 +110,10 @@ void TitleScene::Update()
 		p_trf->position += moveVec * spd;
 
 	}
-	auto vertices = cubeObject.GetComponent<MeshRenderer>()->GetShape()->vertices;
-	{
+	{	//デバッグ用
 		bool isDraw = false;
 		if (GetAsyncKeyState('M') & 0x0001)
 			isDraw = true;
-
 
 		if (isDraw)
 		{
