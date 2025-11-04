@@ -71,15 +71,6 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
-
-	{	//ƒ‰ƒCƒg‚Ì‰ñ“]
-		//Transform* p_trf = lightObject.GetTransformPtr();
-		//p_trf->rotation.x += 0.01f;
-		//p_trf->rotation.y += 0.01f;
-		//p_trf->rotation.z += 0.01f;
-
-		//std::cout << "Camera Rtation : " << p_trf->rotation.x << "," << p_trf->rotation.y << "," << p_trf->rotation.z << std::endl;
-	}
 	
 	{
 		float spd = 0.06f;
@@ -90,6 +81,10 @@ void TitleScene::Update()
 			p_trf->rotation.y -= 0.02f;
 		if ( GetAsyncKeyState('E') & 0x8000 )
 			p_trf->rotation.y += 0.02f;
+		if ( GetAsyncKeyState('R') & 0x8000 )
+			p_trf->rotation.x -= 0.02f;
+		if ( GetAsyncKeyState('F') & 0x8000 )
+			p_trf->rotation.x += 0.02f;
 	
 		hft::HFFLOAT3 moveVec;
 		if (GetAsyncKeyState('D') & 0x8000)
@@ -132,7 +127,7 @@ void TitleScene::Update()
 	}
 
 	{
-		Transform* p_trf = lightObject.GetTransformPtr();
+		Transform* p_trf = sqhereObject.GetTransformPtr();
 		p_trf->rotation.x += 0.003f;
 		p_trf->rotation.y += 0.003f;
 		p_trf->rotation.z += 0.003f;
