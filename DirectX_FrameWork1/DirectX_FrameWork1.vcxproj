@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\Animator.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\Animator.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.h" />

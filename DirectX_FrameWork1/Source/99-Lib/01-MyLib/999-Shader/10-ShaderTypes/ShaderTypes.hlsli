@@ -45,3 +45,8 @@ cbuffer LightBuffer : register(b3)
 {
     LIGHT light;
 }
+
+cbuffer TexBuffer : register(b6)
+{
+    matrix matTex;
+}

@@ -1,6 +1,7 @@
 #include "SpriteRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
+#include "../../06-Animator/Animator.h"
 
 SpriteRenderer::SpriteRenderer()
 {
@@ -59,6 +60,16 @@ void SpriteRenderer::Draw()
 		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
 		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
 		renderer.SetTexture(sp_texture);
+
+		
+		if (const auto& comp = gameObject->GetComponent<Animator>())
+		{
+			comp->SendTex();
+		}
+		else
+		{
+			renderer.SetTex();
+		}
 
 		renderer.SetWorldMatrix(gameObject->GetTransform());
 		renderer.SetVPMatrix();

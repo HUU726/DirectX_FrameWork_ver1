@@ -17,9 +17,13 @@ struct VS_CB_VP
 	DirectX::XMMATRIX matProj;
 };
 
-struct PS_CB_Texture
+struct PS_CB_IsTexture
 {
 	int isTexture;
+};
+struct PS_CB_TexCoord
+{
+	DirectX::XMMATRIX matTex;
 };
 
 
@@ -39,7 +43,9 @@ protected:
 
 	IF_Camera* p_camera;	//カメラコンポーネントポインタ
 
-	ID3D11Buffer* p_PSConstantBuffer;	//ピクセルシェーダー用定数バッファ
+	ID3D11Buffer* p_PSConstantIsTexture;	//ピクセルシェーダー用定数バッファ
+	ID3D11Buffer* p_PSConstantTexCoord;	//アニメーション用定数バッファ
+
 	ID3D11Buffer* p_constantWorld;		//ワールド行列定数バッファ
 	ID3D11Buffer* p_constantVP;			//View・Projection行列定数バッファ
 	ID3D11Buffer* p_constantLight;		//ライト定数バッファ
@@ -83,6 +89,7 @@ public:
 	void SetVertexBuffer(ID3D11Buffer* _vertexBuffer);
 	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
 	void SetTexture(std::shared_ptr<Texture> _p_texture = nullptr);
+	void SetTex(hft::HFFLOAT2 _uv = { 0,0 });
 
 };
 

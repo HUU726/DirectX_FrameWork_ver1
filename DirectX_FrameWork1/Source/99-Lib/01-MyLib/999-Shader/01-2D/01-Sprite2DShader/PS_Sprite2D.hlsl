@@ -15,6 +15,12 @@ float4 main(in PS_IN input) : SV_Target
     
     if (isTexture > 0)
     {
+        float4 uv;
+        uv.xy = input.tex;
+        uv.z = 0.0f;
+        uv.w = 1.0f;
+        input.tex = mul(uv, matTex);
+        
         color = color * myTexture.Sample(mySampler, input.tex);
     }
     

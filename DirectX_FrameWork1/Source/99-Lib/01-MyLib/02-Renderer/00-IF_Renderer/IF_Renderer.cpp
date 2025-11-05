@@ -146,21 +146,30 @@ void IF_Renderer::CreateCommonBuffer()
 {
 	HRESULT hr;
 
-	{
-		//PS定数バッファ作成
-		D3D11_BUFFER_DESC PS_cdDesc;
-		PS_cdDesc.ByteWidth = (sizeof(PS_CB_Texture) + 15) & ~15;
-		PS_cdDesc.Usage = D3D11_USAGE_DEFAULT;
-		PS_cdDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		PS_cdDesc.CPUAccessFlags = 0;
-		PS_cdDesc.MiscFlags = 0;
-		PS_cdDesc.StructureByteStride = 0;
-		hr = this->p_Device->CreateBuffer(&PS_cdDesc, NULL, &this->p_PSConstantBuffer);
+	{	//PS定数バッファ作成
+		D3D11_BUFFER_DESC PS_cbDesc;
+		PS_cbDesc.ByteWidth = (sizeof(PS_CB_IsTexture) + 15) & ~15;
+		PS_cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		PS_cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		PS_cbDesc.CPUAccessFlags = 0;
+		PS_cbDesc.MiscFlags = 0;
+		PS_cbDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&PS_cbDesc, NULL, &this->p_PSConstantIsTexture);
+		if (FAILED(hr)) return;
+	}
+	{	//PS定数バッファ作成
+		D3D11_BUFFER_DESC PS_cbDesc;
+		PS_cbDesc.ByteWidth = (sizeof(PS_CB_TexCoord) + 15) & ~15;
+		PS_cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		PS_cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		PS_cbDesc.CPUAccessFlags = 0;
+		PS_cbDesc.MiscFlags = 0;
+		PS_cbDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&PS_cbDesc, NULL, &this->p_PSConstantTexCoord);
 		if (FAILED(hr)) return;
 	}
 
-	{
-		//VS定数バッファ作成
+	{	//VS定数バッファ作成
 		D3D11_BUFFER_DESC cdDesc;
 		cdDesc.ByteWidth = (sizeof(DirectX::XMMATRIX) + 15) & ~15;
 		cdDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -171,8 +180,7 @@ void IF_Renderer::CreateCommonBuffer()
 		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantWorld);
 		if (FAILED(hr)) return;
 	}
-	{
-		//VS定数バッファ作成
+	{	//VS定数バッファ作成
 		D3D11_BUFFER_DESC cdDesc;
 		cdDesc.ByteWidth = (sizeof(VS_CB_VP) + 15) & ~15;
 		cdDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -216,7 +224,7 @@ void IF_Renderer::RenderPipeline()
 		// サンプラーをピクセルシェーダーにセットする
 		this->p_DeviceContext->PSSetSamplers(0, 1, &this->p_SamplerState);
 		//定数バッファをピクセルシェーダーにセットする
-		this->p_DeviceContext->PSSetConstantBuffers(2, 1, &p_PSConstantBuffer);
+		this->p_DeviceContext->PSSetConstantBuffers(2, 1, &p_PSConstantIsTexture);
 	}
 
 	// ブレンドステートをセットする
@@ -250,7 +258,8 @@ IF_Renderer::IF_Renderer()
 
 IF_Renderer::~IF_Renderer()
 {
-	p_PSConstantBuffer->Release();
+	p_PSConstantIsTexture->Release();
+	p_PSConstantTexCoord->Release();
 	p_constantWorld->Release();
 	p_constantVP->Release();
 	p_constantLight->Release();
@@ -299,7 +308,7 @@ void IF_Renderer::SetIndexBuffer(ID3D11Buffer* _indexBuffer)
 
 void IF_Renderer::SetTexture(std::shared_ptr<Texture> _sp_texture)
 {
-	PS_CB_Texture cb;
+	PS_CB_IsTexture cb;
 
 	if (!_sp_texture)
 	{
@@ -320,7 +329,17 @@ void IF_Renderer::SetTexture(std::shared_ptr<Texture> _sp_texture)
 		}
 	}
 
-	p_DeviceContext->UpdateSubresource(p_PSConstantBuffer, 0, NULL, &cb, 0, 0);
+	p_DeviceContext->UpdateSubresource(p_PSConstantIsTexture, 0, NULL, &cb, 0, 0);
+}
+
+void IF_Renderer::SetTex(hft::HFFLOAT2 _uv)
+{
+	DirectX::XMMATRIX l_matTex = DirectX::XMMatrixTranslation(_uv.x, _uv.y, 0.f);
+	PS_CB_TexCoord cb;
+	cb.matTex = DirectX::XMMatrixTranspose(l_matTex);
+
+	p_DeviceContext->UpdateSubresource(p_PSConstantTexCoord, 0, NULL, &cb, 0, 0);
+	p_DeviceContext->PSSetConstantBuffers(6, 1, &p_PSConstantTexCoord);
 }
 
 
