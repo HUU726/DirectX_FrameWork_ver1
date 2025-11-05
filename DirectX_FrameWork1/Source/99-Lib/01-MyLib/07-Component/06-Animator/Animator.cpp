@@ -4,9 +4,18 @@
 #include "../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
 
 
+Animation::Animation()
+{
+	type = ANIM_TYPE::NORMAL;
+}
+
 void Animation::AddCell(const AnimationCell& _cell)
 {
 	cells.push_back(AnimationCell(_cell));
+}
+void Animation::AddCells(const std::vector<AnimationCell> _cells)
+{
+	cells = _cells;
 }
 
 void Animation::SendTex()
@@ -19,10 +28,6 @@ void Animation::Update()
 {
 	static float nowFlame = 0;
 
-	hft::HFFLOAT2 l_uv = cells.at(cellIndex).uv;
-	Sprite2DRenderer::GetInstance().SetTex(l_uv);
-
-
 	nowFlame++;
 
 	if (cells.at(cellIndex).flame <= nowFlame)
@@ -30,8 +35,23 @@ void Animation::Update()
 		nowFlame = 0;
 		cellIndex++;
 	}
-	if (cellIndex > cells.size())
-		cellIndex = 0;
+	if ( cellIndex >= cells.size() )
+	{
+		switch ( type )
+		{
+		case ANIM_TYPE::NORMAL:
+			cellIndex = 0;
+			isActive = false;
+			break;
+		case ANIM_TYPE::LOOP:
+			cellIndex = 0;
+			break;
+		case ANIM_TYPE::BOOMERANG:
+			break;
+		default:
+			break;
+		}
+	}
 
 }
 

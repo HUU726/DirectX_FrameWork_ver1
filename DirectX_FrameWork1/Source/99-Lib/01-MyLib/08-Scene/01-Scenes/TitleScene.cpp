@@ -9,6 +9,8 @@
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
 
+#include "../../07-Component/06-Animator/Animator.h"
+
 void TitleScene::Init()
 {
 	{	//2Dカメラ初期化
@@ -28,6 +30,44 @@ void TitleScene::Init()
 	{	//オブジェクト初期化
 		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
 		gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
+
+		{
+			Animation anim;
+			std::vector<AnimationCell> cells;
+			{
+				AnimationCell cell;
+				cell.flame = 20;
+				cell.uv = { 0,0 };
+				cell.range = { 0.25f,0.25f };
+				cells.push_back(AnimationCell(cell));
+			}
+			{
+				AnimationCell cell;
+				cell.flame = 20;
+				cell.uv = {0.25f,0.25f};
+				cell.range = {0.25f,0.25f};
+				cells.push_back(AnimationCell(cell));
+			}
+			{
+				AnimationCell cell;
+				cell.flame = 20;
+				cell.uv = {0.5f,0.5f};
+				cell.range = {0.25f,0.25f};
+				cells.push_back(AnimationCell(cell));
+			}
+			{
+				AnimationCell cell;
+				cell.flame = 20;
+				cell.uv = {0.75f,0.75f};
+				cell.range = {0.25f,0.25f};
+				cells.push_back(AnimationCell(cell));
+			}
+			anim.AddCells(cells);
+			anim.Active();
+			anim.SetType(ANIM_TYPE::LOOP);
+			gameObject2D.AddComponent<Animator>()->AddAnimation(anim);
+		}
+
 		Transform* p_trf = gameObject2D.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
 		p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
@@ -71,6 +111,7 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
+	gameObject2D.GetComponent<Animator>()->Update();
 	
 	{
 		float spd = 0.06f;
