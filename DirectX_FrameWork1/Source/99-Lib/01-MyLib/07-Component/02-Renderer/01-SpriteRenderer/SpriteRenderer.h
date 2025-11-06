@@ -11,9 +11,9 @@ using hft::Sprite2D;
 class SpriteRenderer : public Component
 {
 private:
-	std::shared_ptr<hft::Polygon> sp_shape;
-	std::shared_ptr<Texture> sp_texture;		// ポリゴンにはるテクスチャー
-	bool isRender = true;	// 描画処理をするかどうか
+	std::shared_ptr<hft::Polygon> sp_shape;		//ポリゴン(基本三角形２枚の矩形)
+	std::shared_ptr<Texture> sp_texture;		//ポリゴンにはるテクスチャー
+	bool isRender = true;	//描画処理をするかどうか
 
 public:
 	SpriteRenderer();

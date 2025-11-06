@@ -13,7 +13,7 @@
 
 
 
-class FH_Window
+class HF_Window
 {
 private:
 	float width;

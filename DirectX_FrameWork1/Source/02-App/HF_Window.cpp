@@ -1,4 +1,4 @@
-#include "FH_Window.h"
+#include "HF_Window.h"
 
 #include "Application.h"
 
@@ -8,7 +8,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
 
-void FH_Window::InitClass()
+void HF_Window::InitClass()
 {
 	// ウィンドウクラス情報をまとめる
 	WNDCLASSEX wc;
@@ -27,7 +27,7 @@ void FH_Window::InitClass()
 	RegisterClassEx(&wc);
 }
 
-void FH_Window::InitWindow()
+void HF_Window::InitWindow()
 {
 	// ウィンドウの情報をまとめる
 	hWnd = CreateWindowEx(0,	// 拡張ウィンドウスタイル
@@ -59,23 +59,23 @@ void FH_Window::InitWindow()
 	UpdateWindow(hWnd);
 }
 
-HWND FH_Window::GetHWND()
+HWND HF_Window::GetHWND()
 {
 	return hWnd;
 }
 
-MSG FH_Window::GetMsg()
+MSG HF_Window::GetMsg()
 {
 	return message;
 }
 
-void FH_Window::Init()
+void HF_Window::Init()
 {
 	InitClass();
 	InitWindow();
 }
 
-bool FH_Window::Update()
+bool HF_Window::Update()
 {
 	// 新たにメッセージがあれば
 	if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
@@ -92,12 +92,12 @@ bool FH_Window::Update()
 	return true;
 }
 
-void FH_Window::UnInit()
+void HF_Window::UnInit()
 {
 	UnregisterClass(CLASS_NAME, Application::GetInstance().GetHInstance());
 }
 
-void FH_Window::EditWindowName()
+void HF_Window::EditWindowName()
 {
 }
 

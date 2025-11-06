@@ -21,7 +21,7 @@
     <ClCompile Include="Source\02-App\Application.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\02-App\FH_Window.cpp">
+    <ClCompile Include="Source\02-App\HF_Window.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\03-Game\Game.cpp">
@@ -43,9 +43,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.cpp">
@@ -144,6 +141,12 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -152,7 +155,7 @@
     <ClInclude Include="Source\02-App\Application.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\02-App\FH_Window.h">
+    <ClInclude Include="Source\02-App\HF_Window.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\03-Game\Game.h">
@@ -183,9 +186,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.h">
@@ -299,6 +299,9 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl" />
@@ -310,5 +313,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\99-Lib\01-MyLib\999-Shader\10-ShaderTypes\ShaderTypes.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\01-Texture\99-Test\char01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\AnimationTest.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

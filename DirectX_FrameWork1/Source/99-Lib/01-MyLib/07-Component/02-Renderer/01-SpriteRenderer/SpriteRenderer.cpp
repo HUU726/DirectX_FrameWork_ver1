@@ -1,7 +1,7 @@
 #include "SpriteRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
-#include "../../06-Animator/Animator.h"
+#include "../../06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
 SpriteRenderer::SpriteRenderer()
 {
@@ -62,7 +62,7 @@ void SpriteRenderer::Draw()
 		renderer.SetTexture(sp_texture);
 
 		
-		if (const auto& comp = gameObject->GetComponent<Animator>())
+		if (const auto& comp = gameObject->GetComponent<SpriteAnimator>())
 		{
 			comp->SendTex();
 		}

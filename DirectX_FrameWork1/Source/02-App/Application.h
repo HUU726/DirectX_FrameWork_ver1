@@ -16,14 +16,14 @@
 
 
 
-class FH_Window;
+class HF_Window;
 
 class Application
 {
 private:
 	HINSTANCE hInstance;	//アプリケーションID
 	int nCmdShow;
-	FH_Window* p_window;	//ウィンドウ
+	HF_Window* p_window;	//ウィンドウ
 	RendererManager& system = RendererManager::GetInstance();
 
 

@@ -9,7 +9,10 @@
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
 
-#include "../../07-Component/06-Animator/Animator.h"
+#include "../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
+#include "../../07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+
+#include "../../101-Time/Time.h"
 
 void TitleScene::Init()
 {
@@ -28,44 +31,35 @@ void TitleScene::Init()
 	}
 
 	{	//オブジェクト初期化
-		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
-		gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
-
 		{
-			Animation anim;
-			std::vector<AnimationCell> cells;
+			gameObject2D.AddComponent<SpriteRenderer>();
+			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTest.png");
+			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(4,4));
+			hft::HFFLOAT2 div = animator->GetDivision();
 			{
-				AnimationCell cell;
-				cell.flame = 20;
-				cell.uv = { 0,0 };
-				cell.range = { 0.25f,0.25f };
-				cells.push_back(AnimationCell(cell));
+				SpriteAnimation anim(div, { 0,0 }, 5);
+				anim.SetID(0);
+				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
+				anim.SetPriority(0);
+				float flame = 20;
+
+				for (int i = 0; i < 5; i++)
+					anim.GetCell(i).flame = flame;
+
+				animator->AddAnimation(anim);
 			}
 			{
-				AnimationCell cell;
-				cell.flame = 20;
-				cell.uv = {0.25f,0.25f};
-				cell.range = {0.25f,0.25f};
-				cells.push_back(AnimationCell(cell));
+				SpriteAnimation anim(div, { 1,1 }, 4);
+				anim.SetID(1);
+				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+				anim.SetPriority(1);
+				float flame(40);
+				for (int i = 0; i < 4; i++)
+					anim.GetCell(i).flame = flame;
+
+				animator->AddAnimation(anim);
 			}
-			{
-				AnimationCell cell;
-				cell.flame = 20;
-				cell.uv = {0.5f,0.5f};
-				cell.range = {0.25f,0.25f};
-				cells.push_back(AnimationCell(cell));
-			}
-			{
-				AnimationCell cell;
-				cell.flame = 20;
-				cell.uv = {0.75f,0.75f};
-				cell.range = {0.25f,0.25f};
-				cells.push_back(AnimationCell(cell));
-			}
-			anim.AddCells(cells);
-			anim.Active();
-			anim.SetType(ANIM_TYPE::LOOP);
-			gameObject2D.AddComponent<Animator>()->AddAnimation(anim);
+
 		}
 
 		Transform* p_trf = gameObject2D.GetTransformPtr();
@@ -111,21 +105,32 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
-	gameObject2D.GetComponent<Animator>()->Update();
+	SpriteAnimator* animator = gameObject2D.GetComponent<SpriteAnimator>();
 	
+	animator->Stop(0);
+	animator->Stop(1);
+
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		animator->Play(0);
+	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		animator->Play(1);
+
+	animator->Update();
+
 	{
-		float spd = 0.06f;
+		float spd = 100.f;
+		float deltaTime = Time::GetInstance().DeltaTime();
 
 		Transform* p_trf = camera3D.GetTransformPtr();
 
-		if ( GetAsyncKeyState('Q') & 0x8000 )
-			p_trf->rotation.y -= 0.02f;
+		if (GetAsyncKeyState('Q') & 0x8000)
+			p_trf->rotation.y -= spd * deltaTime;
 		if ( GetAsyncKeyState('E') & 0x8000 )
-			p_trf->rotation.y += 0.02f;
+			p_trf->rotation.y += spd * deltaTime;
 		if ( GetAsyncKeyState('R') & 0x8000 )
-			p_trf->rotation.x -= 0.02f;
+			p_trf->rotation.x -= spd * deltaTime;
 		if ( GetAsyncKeyState('F') & 0x8000 )
-			p_trf->rotation.x += 0.02f;
+			p_trf->rotation.x += spd * deltaTime;
 	
 		hft::HFFLOAT3 moveVec;
 		if (GetAsyncKeyState('D') & 0x8000)
@@ -143,7 +148,7 @@ void TitleScene::Update()
 		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 			moveVec.y -= 1;
 		
-		p_trf->position += moveVec * spd;
+		p_trf->position += moveVec * spd * deltaTime;
 
 	}
 	{	//デバッグ用
