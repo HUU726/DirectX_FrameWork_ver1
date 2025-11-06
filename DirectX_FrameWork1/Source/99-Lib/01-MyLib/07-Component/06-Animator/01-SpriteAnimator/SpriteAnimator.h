@@ -26,6 +26,7 @@ enum class SPRITE_ANIM_TYPE
 class SpriteAnimation
 {
 private:
+	int id;	//アニメーションID(各アニメーターごとに連番)
 	std::vector<SpriteAnimationCell> cells;	//アニメーションセル
 	int cellIndex;	//現在選択中のセル番号  ０～
 	int curFlame;
@@ -39,6 +40,7 @@ public:
 	SpriteAnimation();
 	SpriteAnimation(hft::HFFLOAT2 _spriteDiv, hft::HFFLOAT2 _startIndex, float _cellNum);
 	/*** ゲッター ***/
+	int GetID() const { return id; }
 	bool GetActive() const { return isActive; }
 	int GetPriority() const { return priority; }
 	SpriteAnimationCell& GetCell(int _index) { return cells.at(_index); }
@@ -47,6 +49,7 @@ public:
 	/*** セッター ***/
 	void Active() { isActive = true; }
 	void InActive() { isActive = false; }
+	void SetID(int _id) { id = _id; }
 	void SetPriority(int _priority) { priority = _priority; }
 	void AddCell(const SpriteAnimationCell& _cell);
 	void AddCells(const std::vector<SpriteAnimationCell>& _cells);
@@ -75,7 +78,12 @@ public:
 	void AddAnimation(const SpriteAnimation& _anim);
 	void SetDivisions(hft::HFFLOAT2 _div);
 
+	/*** ゲッター ***/
+	hft::HFFLOAT2 GetDivision() { return division; }
+
 	void SendTex();
+	void Play(int _id);
+	void Stop(int _id);
 
 	void Init() override;
 	void Update() override;

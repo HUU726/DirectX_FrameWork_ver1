@@ -32,19 +32,33 @@ void TitleScene::Init()
 
 	{	//オブジェクト初期化
 		{
-			SpriteAnimation anim({ 3,4 }, { 0,0 }, 3);
-			anim.Active();
-			anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
-			float cellScl = 0.25;
-			float flame = 12;
-			anim.GetCell(0).flame = flame;
-			anim.GetCell(1).flame = flame;
-			anim.GetCell(2).flame = flame;
-
 			gameObject2D.AddComponent<SpriteRenderer>();
 			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTest.png");
-			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3,4));
-			animator->AddAnimation(anim);
+			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(4,4));
+			hft::HFFLOAT2 div = animator->GetDivision();
+			{
+				SpriteAnimation anim(div, { 0,0 }, 5);
+				anim.SetID(0);
+				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
+				anim.SetPriority(0);
+				float flame = 20;
+
+				for (int i = 0; i < 5; i++)
+					anim.GetCell(i).flame = flame;
+
+				animator->AddAnimation(anim);
+			}
+			{
+				SpriteAnimation anim(div, { 1,1 }, 4);
+				anim.SetID(1);
+				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+				anim.SetPriority(1);
+				float flame(40);
+				for (int i = 0; i < 4; i++)
+					anim.GetCell(i).flame = flame;
+
+				animator->AddAnimation(anim);
+			}
 
 		}
 
@@ -91,7 +105,17 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
-	gameObject2D.GetComponent<SpriteAnimator>()->Update();
+	SpriteAnimator* animator = gameObject2D.GetComponent<SpriteAnimator>();
+	
+	animator->Stop(0);
+	animator->Stop(1);
+
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		animator->Play(0);
+	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		animator->Play(1);
+
+	animator->Update();
 
 	{
 		float spd = 100.f;

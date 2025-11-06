@@ -1,4 +1,3 @@
-#include "./01-Shape/01-Cube/Cube.h"
 #include "MeshFilter.h"
 
 #include "../../../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"

@@ -156,7 +156,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\Texture.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\00-Component\Component.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\01-Transform\Transform.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\01-Shape\01-Cube\Cube.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshFilter.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\02-MeshRenderer\MeshRenderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\00-Collider2D\Collider2D.h" />

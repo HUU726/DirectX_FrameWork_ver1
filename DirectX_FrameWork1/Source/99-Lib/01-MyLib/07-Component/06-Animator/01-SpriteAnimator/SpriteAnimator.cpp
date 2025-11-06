@@ -95,7 +95,7 @@ void SpriteAnimation::Update()
 			break;
 		case SPRITE_ANIM_TYPE::BOOMERANG:
 			moveVec *= -1;
-			cellIndex += moveVec;
+			cellIndex += moveVec * 2;
 			break;
 		default: break;
 		}
@@ -153,6 +153,34 @@ void SpriteAnimator::SendTex()
 	animations.at(animIndex).SendTex();
 }
 
+void SpriteAnimator::Play(int _id)
+{
+	SpriteAnimation& useAnim = animations.at(0);
+	for (auto& anim : animations)
+	{
+		if (anim.GetID() == _id)
+		{
+			useAnim = anim;
+			break;
+		}
+	}
+	useAnim.Active();
+}
+
+void SpriteAnimator::Stop(int _id)
+{
+	SpriteAnimation& useAnim = animations.at(0);
+	for (auto& anim : animations)
+	{
+		if (anim.GetID() == _id)
+		{
+			useAnim = anim;
+			break;
+		}
+	}
+	useAnim.InActive();
+}
+
 void SpriteAnimator::Init()
 {
 	if (!(division == hft::HFFLOAT2(1, 1)))
@@ -161,13 +189,14 @@ void SpriteAnimator::Init()
 
 void SpriteAnimator::Update()
 {
-
-	for (auto& anim : animations)
+	for (animIndex = 0; animIndex < animations.size(); animIndex++)
 	{
-		if (anim.GetActive())
+		if (animations.at(animIndex).GetActive())
 		{
-			anim.Update();
-			break;
+			animations.at(animIndex).Update();
+			return;
 		}
 	}
+
+	animIndex = 0;
 }
