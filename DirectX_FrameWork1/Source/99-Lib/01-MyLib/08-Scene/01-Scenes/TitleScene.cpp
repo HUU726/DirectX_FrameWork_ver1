@@ -42,7 +42,7 @@ void TitleScene::Init()
 			anim.GetCell(2).flame = flame;
 
 			gameObject2D.AddComponent<SpriteRenderer>();
-			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/char01.png");
+			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTest.png");
 			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3,4));
 			animator->AddAnimation(anim);
 
