@@ -10,7 +10,7 @@
 *												インクルード
 ***************************************************************************************************************************/
 #include "RendererManager.h"
-#include "../../../../02-App/FH_Window.h"
+#include "../../../../02-App/HF_Window.h"
 
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")
