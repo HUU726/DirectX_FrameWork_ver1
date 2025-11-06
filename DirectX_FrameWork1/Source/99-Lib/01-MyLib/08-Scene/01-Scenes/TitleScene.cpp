@@ -14,6 +14,13 @@
 
 #include "../../101-Time/Time.h"
 
+enum ANIM_ID
+{
+	WAIT = 0,
+	JUMP = 1,
+	RUN = 2,
+};
+
 void TitleScene::Init()
 {
 	{	//2DƒJƒƒ‰‰Šú‰»
@@ -38,10 +45,10 @@ void TitleScene::Init()
 			hft::HFFLOAT2 div = animator->GetDivision();
 			{
 				SpriteAnimation anim(div, { 0,0 }, 5);
-				anim.SetID(0);
-				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
+				anim.SetID(ANIM_ID::WAIT);
+				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
 				anim.SetPriority(0);
-				float flame = 20;
+				float flame = 40;
 
 				for (int i = 0; i < 5; i++)
 					anim.GetCell(i).flame = flame;
@@ -50,11 +57,23 @@ void TitleScene::Init()
 			}
 			{
 				SpriteAnimation anim(div, { 1,1 }, 4);
-				anim.SetID(1);
-				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+				anim.SetID(ANIM_ID::JUMP);
+				anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
 				anim.SetPriority(1);
-				float flame(40);
+				float flame(30);
 				for (int i = 0; i < 4; i++)
+					anim.GetCell(i).flame = flame;
+
+				animator->AddAnimation(anim);
+			}
+			{
+				SpriteAnimation anim(div, {2,1},7);
+				anim.SetID(ANIM_ID::RUN);
+				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
+				anim.SetPriority(2);
+				float flame = 10;
+
+				for ( int i = 0; i < 7; i++ )
 					anim.GetCell(i).flame = flame;
 
 				animator->AddAnimation(anim);
@@ -107,13 +126,15 @@ void TitleScene::Update()
 	lightObject.Update();
 	SpriteAnimator* animator = gameObject2D.GetComponent<SpriteAnimator>();
 	
-	animator->Stop(0);
-	animator->Stop(1);
+	animator->Stop(WAIT);
+	animator->Stop(RUN);
 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		animator->Play(0);
+		animator->Play(ANIM_ID::WAIT);
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		animator->Play(1);
+		animator->Play(ANIM_ID::JUMP);
+	if (GetAsyncKeyState(VK_UP) & 0x8000 )
+		animator->Play(ANIM_ID::RUN);
 
 	animator->Update();
 

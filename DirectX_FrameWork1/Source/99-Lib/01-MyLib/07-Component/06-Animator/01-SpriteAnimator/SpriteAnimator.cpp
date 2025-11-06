@@ -155,30 +155,30 @@ void SpriteAnimator::SendTex()
 
 void SpriteAnimator::Play(int _id)
 {
-	SpriteAnimation& useAnim = animations.at(0);
+	SpriteAnimation* p_useAnim = &animations.at(0);
 	for (auto& anim : animations)
 	{
 		if (anim.GetID() == _id)
 		{
-			useAnim = anim;
+			p_useAnim = &anim;
 			break;
 		}
 	}
-	useAnim.Active();
+	p_useAnim->Active();
 }
 
 void SpriteAnimator::Stop(int _id)
 {
-	SpriteAnimation& useAnim = animations.at(0);
+	SpriteAnimation* p_useAnim = &animations.at(0);
 	for (auto& anim : animations)
 	{
 		if (anim.GetID() == _id)
 		{
-			useAnim = anim;
+			p_useAnim = &anim;
 			break;
 		}
 	}
-	useAnim.InActive();
+	p_useAnim->InActive();
 }
 
 void SpriteAnimator::Init()
