@@ -324,5 +324,8 @@
     <Image Include="Assets\01-Texture\99-Test\char01.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="..\..\..\..\Desktop\AnimationTest.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>
