@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "FH_Window.h"
+#include "../99-Lib/01-MyLib/101-Time/Time.h"
 #include "../03-Game/Game.h"
 
 
@@ -37,6 +38,8 @@ void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
 	InitWindow();
 	InitSystem();
 	CreateConsole();
+
+	Time::GetInstance().SetFps(60);
 }
 
 void Application::Run()
@@ -49,7 +52,10 @@ void Application::Run()
 		if (!p_window->Update())
 			break;
 
-		game.Run();
+		if (!Time::GetInstance().Update())
+			game.Run();
+
+		
 
 	}
 

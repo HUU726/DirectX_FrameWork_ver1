@@ -9,6 +9,10 @@
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
 
+#include "../../07-Component/06-Animator/Animator.h"
+
+#include "../../101-Time/Time.h"
+
 void TitleScene::Init()
 {
 	{	//2Dカメラ初期化
@@ -28,6 +32,45 @@ void TitleScene::Init()
 	{	//オブジェクト初期化
 		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
 		gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
+
+		{
+			Animation anim;
+			anim.Active();
+			anim.SetType(ANIM_TYPE::LOOP);
+			float cellScl = 0.25;
+			float flame = 20;
+			{
+				AnimationCell cell;
+				cell.flame = flame;
+				cell.uv = { 0,0 };
+				cell.range = { cellScl,cellScl };
+				anim.AddCell(cell);
+			}
+			{
+				AnimationCell cell;
+				cell.flame = flame;
+				cell.uv = { 0.25f,0.25f };
+				cell.range = { cellScl,cellScl };
+				anim.AddCell(cell);
+			}
+			{
+				AnimationCell cell;
+				cell.flame = flame;
+				cell.uv = { 0.5f,0.5f };
+				cell.range = { cellScl,cellScl };
+				anim.AddCell(cell);
+			}
+			{
+				AnimationCell cell;
+				cell.flame = flame;
+				cell.uv = { 0.75f,0.75f };
+				cell.range = { cellScl,cellScl };
+				anim.AddCell(cell);
+			}
+			gameObject2D.AddComponent<Animator>()->AddAnimation(anim);
+
+		}
+
 		Transform* p_trf = gameObject2D.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
 		p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
@@ -71,20 +114,22 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
-	
+	gameObject2D.GetComponent<Animator>()->Update();
+
 	{
-		float spd = 0.06f;
+		float spd = 100.f;
+		float deltaTime = Time::GetInstance().DeltaTime();
 
 		Transform* p_trf = camera3D.GetTransformPtr();
 
-		if ( GetAsyncKeyState('Q') & 0x8000 )
-			p_trf->rotation.y -= 0.02f;
+		if (GetAsyncKeyState('Q') & 0x8000)
+			p_trf->rotation.y -= spd * deltaTime;
 		if ( GetAsyncKeyState('E') & 0x8000 )
-			p_trf->rotation.y += 0.02f;
+			p_trf->rotation.y += spd * deltaTime;
 		if ( GetAsyncKeyState('R') & 0x8000 )
-			p_trf->rotation.x -= 0.02f;
+			p_trf->rotation.x -= spd * deltaTime;
 		if ( GetAsyncKeyState('F') & 0x8000 )
-			p_trf->rotation.x += 0.02f;
+			p_trf->rotation.x += spd * deltaTime;
 	
 		hft::HFFLOAT3 moveVec;
 		if (GetAsyncKeyState('D') & 0x8000)
@@ -102,7 +147,7 @@ void TitleScene::Update()
 		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 			moveVec.y -= 1;
 		
-		p_trf->position += moveVec * spd;
+		p_trf->position += moveVec * spd * deltaTime;
 
 	}
 	{	//デバッグ用

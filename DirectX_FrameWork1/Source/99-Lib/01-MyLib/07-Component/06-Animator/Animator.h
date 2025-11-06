@@ -29,12 +29,15 @@ class Animation
 private:
 	std::vector<AnimationCell> cells;	//アニメーションセル
 	int cellIndex;	//現在選択中のセル番号  ０～
+	int curFlame;
+	int moveVec;
 
 	bool isActive;	//アニメーションを実行するかどうか
 	ANIM_TYPE type;	//ループするかどうか
 	int priority;	//アニメーション優先順位
 
 public:
+	Animation();
 	/*** ゲッター ***/
 	bool GetActive() const { return isActive; }
 	int GetPriority() const { return priority; }
@@ -45,6 +48,7 @@ public:
 	void InActive() { isActive = false; }
 	void SetPriority(int _priority) { priority = _priority; }
 	void AddCell(const AnimationCell& _cell);
+	void AddCells(const std::vector<AnimationCell>& _cells);
 	void SetType(ANIM_TYPE _type) { type = _type; }
 
 	void SendTex();
