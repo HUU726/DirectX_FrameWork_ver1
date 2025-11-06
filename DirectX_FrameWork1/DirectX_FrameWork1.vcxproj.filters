@@ -320,4 +320,9 @@
   <ItemGroup>
     <None Include="Source\99-Lib\01-MyLib\999-Shader\10-ShaderTypes\ShaderTypes.hlsli" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\01-Texture\99-Test\char01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
