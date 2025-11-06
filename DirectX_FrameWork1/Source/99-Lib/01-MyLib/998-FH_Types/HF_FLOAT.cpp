@@ -60,6 +60,11 @@ void hft::HFFLOAT2::operator/=(const HFFLOAT2& _value)
 	y /= _value.y;
 }
 
+bool hft::HFFLOAT2::operator==(const HFFLOAT2& _value)
+{
+	return (x == _value.x && y == _value.y);
+}
+
 
 /********************************************************************************************
 * HFFLOAT3
@@ -128,7 +133,6 @@ hft::HFFLOAT3 hft::HFFLOAT3::operator*(const float& _value)
 {
     return { x * _value, y * _value, z * _value };
 }
-
 
 
 /********************************************************************************************

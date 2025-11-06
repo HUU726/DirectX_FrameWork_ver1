@@ -21,5 +21,6 @@ namespace hft
 	};
 
 
+	HRESULT CreateVertexBuffer(std::shared_ptr <Shape> _sp_shape);
 	HRESULT CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape);
 }

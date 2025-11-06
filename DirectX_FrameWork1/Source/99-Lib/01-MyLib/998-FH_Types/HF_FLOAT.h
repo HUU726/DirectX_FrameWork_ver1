@@ -23,6 +23,8 @@ namespace hft
 		void operator-=(const HFFLOAT2& _value);
 		void operator*=(const HFFLOAT2& _value);
 		void operator/=(const HFFLOAT2& _value);
+
+		bool operator==(const HFFLOAT2& _value);
 	};
 
 	struct HFFLOAT3 : public DirectX::XMFLOAT3
@@ -43,6 +45,7 @@ namespace hft
 		void operator/=(const HFFLOAT3& _value);
 
 		HFFLOAT3 operator*(const float& _value);
+
 	};
 
 	struct HFFLOAT4 : public DirectX::XMFLOAT4

@@ -9,7 +9,8 @@
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
 
-#include "../../07-Component/06-Animator/Animator.h"
+#include "../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
+#include "../../07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
 #include "../../101-Time/Time.h"
 
@@ -30,44 +31,20 @@ void TitleScene::Init()
 	}
 
 	{	//オブジェクト初期化
-		gameObject2D.AddComponent<SpriteRenderer>()->SetShape("circle");
-		gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
-
 		{
-			Animation anim;
+			SpriteAnimation anim({ 3,4 }, { 0,0 }, 3);
 			anim.Active();
-			anim.SetType(ANIM_TYPE::LOOP);
+			anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
 			float cellScl = 0.25;
-			float flame = 20;
-			{
-				AnimationCell cell;
-				cell.flame = flame;
-				cell.uv = { 0,0 };
-				cell.range = { cellScl,cellScl };
-				anim.AddCell(cell);
-			}
-			{
-				AnimationCell cell;
-				cell.flame = flame;
-				cell.uv = { 0.25f,0.25f };
-				cell.range = { cellScl,cellScl };
-				anim.AddCell(cell);
-			}
-			{
-				AnimationCell cell;
-				cell.flame = flame;
-				cell.uv = { 0.5f,0.5f };
-				cell.range = { cellScl,cellScl };
-				anim.AddCell(cell);
-			}
-			{
-				AnimationCell cell;
-				cell.flame = flame;
-				cell.uv = { 0.75f,0.75f };
-				cell.range = { cellScl,cellScl };
-				anim.AddCell(cell);
-			}
-			gameObject2D.AddComponent<Animator>()->AddAnimation(anim);
+			float flame = 12;
+			anim.GetCell(0).flame = flame;
+			anim.GetCell(1).flame = flame;
+			anim.GetCell(2).flame = flame;
+
+			gameObject2D.AddComponent<SpriteRenderer>();
+			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/char01.png");
+			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3,4));
+			animator->AddAnimation(anim);
 
 		}
 
@@ -114,7 +91,7 @@ void TitleScene::Update()
 	camera2D.Update();
 	camera3D.Update();
 	lightObject.Update();
-	gameObject2D.GetComponent<Animator>()->Update();
+	gameObject2D.GetComponent<SpriteAnimator>()->Update();
 
 	{
 		float spd = 100.f;

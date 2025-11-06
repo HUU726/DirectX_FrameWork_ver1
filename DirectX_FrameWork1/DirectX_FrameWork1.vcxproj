@@ -131,7 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\Animator.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.cpp" />
@@ -145,7 +145,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\02-Camera3D\CameraObject3D.cpp" />
     <ClCompile Include="Source\01-Main\main.cpp" />
     <ClCompile Include="Source\02-App\Application.cpp" />
-    <ClCompile Include="Source\02-App\FH_Window.cpp" />
+    <ClCompile Include="Source\02-App\HF_Window.cpp" />
     <ClCompile Include="Source\03-Game\Game.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp" />
@@ -175,9 +175,10 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\101-Time\Time.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\Animator.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\GameObject3D.h" />
@@ -191,7 +192,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\02-Camera3D\CameraObject3D.h" />
     <ClInclude Include="Source\01-Main\main.h" />
     <ClInclude Include="Source\02-App\Application.h" />
-    <ClInclude Include="Source\02-App\FH_Window.h" />
+    <ClInclude Include="Source\02-App\HF_Window.h" />
     <ClInclude Include="Source\03-Game\Game.h" />
     <ClInclude Include="Source\04-Object\GameObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\98-RendererManager\RendererManager.h" />

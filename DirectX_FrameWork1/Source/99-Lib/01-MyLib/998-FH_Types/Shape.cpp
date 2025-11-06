@@ -2,9 +2,34 @@
 #include "../02-Renderer/98-RendererManager/RendererManager.h"
 
 
+HRESULT hft::CreateVertexBuffer(std::shared_ptr<Shape> _sp_shape)
+{
+	RendererManager& rendererMng = RendererManager::GetInstance();
+	HRESULT hr;
+
+	D3D11_BUFFER_DESC vbDesc;
+	ZeroMemory(&vbDesc, sizeof(vbDesc));
+	vbDesc.Usage = D3D11_USAGE_DEFAULT;
+	vbDesc.ByteWidth = sizeof(hft::Vertex) * _sp_shape->vertices.size();
+	vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbDesc.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA initData;
+	ZeroMemory(&initData, sizeof(initData));
+	initData.pSysMem = (void*)_sp_shape->vertices.data();
+
+	hr = rendererMng.GetDevice()->CreateBuffer(&vbDesc, &initData, &_sp_shape->p_vertexBuffer);
+	if (FAILED(hr)) {
+		MessageBoxA(nullptr, "CreateBuffer(vertex buffer) error", "Error", MB_OK);
+		return hr;
+	}
+
+	return S_OK;
+}
+
 HRESULT hft::CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
 {
-	RendererManager& system = RendererManager::GetInstance();
+	RendererManager& rendererMng = RendererManager::GetInstance();
 	HRESULT hr;
 
 	{
@@ -19,7 +44,7 @@ HRESULT hft::CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
 		ZeroMemory(&initData, sizeof(initData));
 		initData.pSysMem = (void*)_sp_shape->vertices.data();
 
-		hr = system.GetDevice()->CreateBuffer(&vbDesc, &initData, &_sp_shape->p_vertexBuffer);
+		hr = rendererMng.GetDevice()->CreateBuffer(&vbDesc, &initData, &_sp_shape->p_vertexBuffer);
 		if (FAILED(hr)) {
 			MessageBoxA(nullptr, "CreateBuffer(vertex buffer) error", "Error", MB_OK);
 			return hr;
@@ -39,7 +64,7 @@ HRESULT hft::CreateVertexIndexBuffer(std::shared_ptr<Shape> _sp_shape)
 		ZeroMemory(&initData, sizeof(initData));
 		initData.pSysMem = (void*)_sp_shape->indices.data();
 
-		hr = system.GetDevice()->CreateBuffer(&ibDesc, &initData, &_sp_shape->p_indexBuffer);
+		hr = rendererMng.GetDevice()->CreateBuffer(&ibDesc, &initData, &_sp_shape->p_indexBuffer);
 		if (FAILED(hr)) {
 			MessageBoxA(nullptr, "CreateBuffer(index buffer) error", "Error", MB_OK);
 			return hr;
