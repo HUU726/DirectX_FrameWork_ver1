@@ -11,6 +11,7 @@ namespace hft
 	struct HFFLOAT2 : public DirectX::XMFLOAT2
 	{
 		HFFLOAT2() { x = 0, y = 0; }
+		HFFLOAT2(float _value) {x = _value, y = _value; }
 		HFFLOAT2(float _x, float _y) { x = _x, y = _y; }
 
 		void operator=(const HFFLOAT3& _value);
@@ -25,6 +26,7 @@ namespace hft
 		void operator/=(const HFFLOAT2& _value);
 
 		bool operator==(const HFFLOAT2& _value);
+		bool operator==(const float* rhs) const = delete;
 	};
 
 	struct HFFLOAT3 : public DirectX::XMFLOAT3

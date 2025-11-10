@@ -127,6 +127,35 @@ void Mesh3DRenderer::Draw(const hft::Polygon* _polygon)
 {
 }
 
+void Mesh3DRenderer::Draw(TestModel* _sp_model)
+{
+	if(p_camera == nullptr)
+		return;
+
+	RenderPipeline();
+
+	std::shared_ptr<StaticMesh> staticMesh = _sp_model->GetMesh();
+	std::vector<hft::Subset>& subsets = staticMesh->subsets;
+	std::vector<hft::Material>& materials = staticMesh->materials;
+	std::vector<std::shared_ptr<Texture>> textures = staticMesh->GetTextures();
+
+	for ( int i = 0; i < subsets.size(); i++ )
+	{
+		SetMaterial(materials[subsets[i].materialIndex]);
+		
+		if ( materials[subsets[i].materialIndex].isTexture )
+		{
+			SetTexture(textures[subsets[i].materialIndex]);
+		}
+
+		p_DeviceContext->DrawIndexed(
+			subsets[i].indexNum,
+			subsets[i].indexBase,
+			subsets[i].vertexBase
+			);
+	}
+}
+
 void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 {
 	if (p_camera == nullptr)

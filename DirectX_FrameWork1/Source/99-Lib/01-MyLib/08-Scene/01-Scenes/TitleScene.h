@@ -1,6 +1,7 @@
 #pragma once
 #include "./00-BaseScene/BaseScene.h"
 
+#include "../../1000-Test/TestModel/TestModel.h"
 
 class TitleScene : public BaseScene
 {
@@ -15,6 +16,8 @@ private:
 	GameObject3D sqhereObject;
 	GameObject3D planeObject;
 	GameObject3D cubeObject;
+
+	TestModel testModel;
 
 
 public:

@@ -4,6 +4,7 @@
 #include "../../998-FH_Types/Vertex.h"
 #include "../../998-FH_Types/Polygon.h"
 #include "../../998-FH_Types/Mesh.h"
+#include "../../1000-Test/TestModel/TestModel.h"
 
 
 
@@ -32,6 +33,7 @@ public:
 	void SetCamera(Camera3D* _p_camera);
 
 	void Draw(const hft::Polygon* _p_polygon);
+	void Draw(TestModel* _p_model);
 	void Draw(const SpriteRenderer* _p_renderer);
 	void Draw(MeshRenderer* _p_renderer);
 	void Draw(const MeshFilter* _p_meshFilter);

@@ -110,7 +110,7 @@ namespace AssimpPerse
 						std::shared_ptr<Texture> texture = std::make_shared<Texture>();
 
 						// 内蔵テクスチャの場合
-						bool sts = LoadTextureFromMemory(
+						HRESULT sts = LoadTextureFromMemory(
 							(unsigned char*)tex->pcData,			// 先頭アドレス
 							tex->mWidth,
 							&texture->p_textureView);			// テクスチャサイズ（メモリにある場合幅がサイズ）	
@@ -127,8 +127,8 @@ namespace AssimpPerse
 
 						std::string texname = texturedirectory + "/" + texpath;
 
-						bool sts = LoadTexture(texname.c_str(), &texture->p_textureView);
-						if (sts) {
+						HRESULT sts = LoadTexture(texname.c_str(), &texture->p_textureView);
+						if (sts == S_OK) {
 							g_textures[m] = texture;
 						}
 

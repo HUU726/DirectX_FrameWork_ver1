@@ -14,6 +14,9 @@
 
 #include "../../101-Time/Time.h"
 
+
+
+
 enum ANIM_ID
 {
 	WAIT = 0,
@@ -108,6 +111,13 @@ void TitleScene::Init()
 		p_trf->position = hft::HFFLOAT3{ 700.f,0.f,0.f };
 		p_trf->rotation = hft::HFFLOAT3{ 20,0,45 };
 		p_trf->scale = hft::HFFLOAT3{ 400.f,400.f,400.f };
+	}
+
+	{
+		testModel.Init();
+		Transform* p_trf = testModel.GetTransformPtr();
+		p_trf->position = { 0,0,0 };
+		p_trf->scale = {300,300,300};
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
@@ -216,6 +226,7 @@ void TitleScene::Draw()
 	cubeObject.Draw();
 	lightObject.Draw();
 	gameObject2D.Draw();
+	testModel.Draw();
 }
 
 void TitleScene::UnInit()

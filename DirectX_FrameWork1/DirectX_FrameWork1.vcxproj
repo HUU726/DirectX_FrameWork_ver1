@@ -112,6 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -186,6 +188,8 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.h" />
@@ -240,6 +244,8 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

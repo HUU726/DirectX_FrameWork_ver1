@@ -199,7 +199,7 @@ void SpriteAnimator::Stop(int _id)
 
 void SpriteAnimator::Init()
 {
-	if (!(division == hft::HFFLOAT2(1, 1)))
+	if ( !(division == static_cast<const hft::HFFLOAT2>(1.f)) )
 		SetDivisions(division);
 }
 
