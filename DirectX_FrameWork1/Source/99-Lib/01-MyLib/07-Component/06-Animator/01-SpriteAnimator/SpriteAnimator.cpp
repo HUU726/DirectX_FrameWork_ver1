@@ -52,6 +52,22 @@ SpriteAnimation::SpriteAnimation(hft::HFFLOAT2 _spriteDiv, hft::HFFLOAT2 _startI
 }
 
 
+void SpriteAnimation::Active()
+{
+	if (!isActive)
+	{
+		isActive = true;
+		curFlame = 0;
+		cellIndex = 0;
+	}
+}
+
+void SpriteAnimation::InActive()
+{
+	if (isActive)
+		isActive = false;
+}
+
 void SpriteAnimation::AddCell(const SpriteAnimationCell& _cell)
 {
 	cells.push_back(SpriteAnimationCell(_cell));

@@ -47,8 +47,8 @@ public:
 	SPRITE_ANIM_TYPE GetType() const { return type; }
 
 	/*** セッター ***/
-	void Active() { isActive = true; }
-	void InActive() { isActive = false; }
+	void Active();
+	void InActive();
 	void SetID(int _id) { id = _id; }
 	void SetPriority(int _priority) { priority = _priority; }
 	void AddCell(const SpriteAnimationCell& _cell);

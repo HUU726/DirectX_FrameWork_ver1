@@ -7,6 +7,7 @@
 #include "../../04-Texture/Texture.h"
 #include "../../07-Component/01-Transform/Transform.h"
 #include "../../07-Component/05-Light/Light.h"
+#include "../../998-FH_Types/Material.h"
 
 class IF_Camera;
 
@@ -45,6 +46,7 @@ protected:
 
 	ID3D11Buffer* p_PSConstantIsTexture;	//ピクセルシェーダー用定数バッファ
 	ID3D11Buffer* p_PSConstantTexCoord;	//アニメーション用定数バッファ
+	ID3D11Buffer* p_constantMaterial;	//マテリアル用定数バッファ
 
 	ID3D11Buffer* p_constantWorld;		//ワールド行列定数バッファ
 	ID3D11Buffer* p_constantVP;			//View・Projection行列定数バッファ
@@ -90,6 +92,7 @@ public:
 	void SetIndexBuffer(ID3D11Buffer* _indexBuffer);
 	void SetTexture(std::shared_ptr<Texture> _p_texture = nullptr);
 	void SetTex(hft::HFFLOAT2 _uv = { 0,0 });
+	void SetMaterial(const hft::Material& _material);
 
 };
 

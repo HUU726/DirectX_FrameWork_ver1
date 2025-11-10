@@ -71,7 +71,7 @@ void TitleScene::Init()
 				anim.SetID(ANIM_ID::RUN);
 				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
 				anim.SetPriority(2);
-				float flame = 10;
+				float flame = 15;
 
 				for ( int i = 0; i < 7; i++ )
 					anim.GetCell(i).flame = flame;
@@ -125,16 +125,19 @@ void TitleScene::Update()
 	camera3D.Update();
 	lightObject.Update();
 	SpriteAnimator* animator = gameObject2D.GetComponent<SpriteAnimator>();
-	
-	animator->Stop(WAIT);
-	animator->Stop(RUN);
 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		animator->Play(ANIM_ID::WAIT);
+	else
+		animator->Stop(WAIT);
+
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		animator->Play(ANIM_ID::JUMP);
-	if (GetAsyncKeyState(VK_UP) & 0x8000 )
+
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
 		animator->Play(ANIM_ID::RUN);
+	else
+		animator->Stop(RUN);
 
 	animator->Update();
 

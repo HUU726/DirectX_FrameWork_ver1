@@ -2,6 +2,7 @@
 #include "../98-RendererManager/RendererManager.h"
 #include "../../998-FH_Types/Vertex.h"
 #include "../../998-FH_Types/TransformMatrix.h"
+
 #include "../../07-Component/04-Camera/00-IF_Camera/IF_Camera.h"
 
 
@@ -203,6 +204,18 @@ void IF_Renderer::CreateCommonBuffer()
 		hr = this->p_Device->CreateBuffer(&cdDesc, NULL, &this->p_constantLight);
 		if ( FAILED(hr) ) return;
 	}
+
+	{
+		D3D11_BUFFER_DESC cbDesc;
+		cbDesc.ByteWidth = (sizeof(hft::Material) + 15) & ~15;
+		cbDesc.Usage = D3D11_USAGE_DEFAULT;
+		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cbDesc.CPUAccessFlags = 0;
+		cbDesc.MiscFlags = 0;
+		cbDesc.StructureByteStride = 0;
+		hr = this->p_Device->CreateBuffer(&cbDesc, NULL, &this->p_constantMaterial);
+		if (FAILED(hr)) return;
+	}
 }
 
 void IF_Renderer::RenderPipeline()
@@ -260,6 +273,7 @@ IF_Renderer::~IF_Renderer()
 {
 	p_PSConstantIsTexture->Release();
 	p_PSConstantTexCoord->Release();
+	p_constantMaterial->Release();
 	p_constantWorld->Release();
 	p_constantVP->Release();
 	p_constantLight->Release();
@@ -340,6 +354,13 @@ void IF_Renderer::SetTex(hft::HFFLOAT2 _uv)
 
 	p_DeviceContext->UpdateSubresource(p_PSConstantTexCoord, 0, NULL, &cb, 0, 0);
 	p_DeviceContext->PSSetConstantBuffers(6, 1, &p_PSConstantTexCoord);
+}
+
+void IF_Renderer::SetMaterial(const hft::Material& _material)
+{
+	p_DeviceContext->UpdateSubresource(p_constantMaterial, 0, NULL, &_material, 0, 0);
+	p_DeviceContext->VSGetConstantBuffers(4, 1, &p_constantMaterial);
+	p_DeviceContext->PSGetConstantBuffers(4, 1, &p_constantMaterial);
 }
 
 

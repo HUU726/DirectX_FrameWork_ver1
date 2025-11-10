@@ -184,6 +184,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Material.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Shape.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\01-Camera2D\CameraObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Mesh.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Polygon.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Sprite2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\SubSet.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\TransformMatrix.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\HF_FLOAT.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />

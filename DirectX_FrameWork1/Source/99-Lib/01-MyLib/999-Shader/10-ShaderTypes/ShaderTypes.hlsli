@@ -48,10 +48,11 @@ cbuffer LightBuffer : register(b3)
 
 struct Material
 {
-    float4 ambent;
+    float4 ambient;
     float4 diffuse;
     float4 specular;
     float4 emission;
+    float shininess;
     bool isTexture;
     bool2 fake;
 };
