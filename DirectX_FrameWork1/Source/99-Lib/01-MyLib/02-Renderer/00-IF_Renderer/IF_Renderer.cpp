@@ -339,7 +339,6 @@ void IF_Renderer::SetTexture(std::shared_ptr<Texture> _sp_texture)
 			cb.isTexture = 1;
 			//テクスチャをピクセルシェーダーに渡す
 			p_DeviceContext->PSSetShaderResources(0, 1, &_sp_texture->p_textureView);
-
 		}
 	}
 

@@ -4,8 +4,8 @@
 #include <memory>
 #include <unordered_map>
 
-HRESULT LoadTexture(ID3D11Device* device, const char* filename, ID3D11ShaderResourceView** srv);
-
+HRESULT LoadTexture(const char* filename, ID3D11ShaderResourceView** srv);
+HRESULT LoadTextureFromMemory(const unsigned char* _data, int _len, ID3D11ShaderResourceView** srv);
 
 
 struct Texture

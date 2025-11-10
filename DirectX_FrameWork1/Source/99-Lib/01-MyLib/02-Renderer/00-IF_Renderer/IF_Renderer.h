@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "../../04-Texture/Texture.h"
+#include "../../998-FH_Types/Mesh.h"
 #include "../../07-Component/01-Transform/Transform.h"
 #include "../../07-Component/05-Light/Light.h"
-#include "../../998-FH_Types/Material.h"
 
 class IF_Camera;
 
