@@ -11,6 +11,6 @@ namespace hft
 		unsigned int vertexNum;		//頂点数
 		unsigned int indexBase;		//開始インデックス
 		unsigned int vertexBase;	//開始頂点
-		unsigned int materialID;	//マテリアル番号
+		unsigned int materialIndex;	//マテリアル番号
 	};
 }

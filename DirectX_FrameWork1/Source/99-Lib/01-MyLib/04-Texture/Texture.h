@@ -12,6 +12,9 @@ struct Texture
 {
 	std::string filePath;	//ファイルパス
 	ID3D11ShaderResourceView* p_textureView;
+	int width;
+	int height;
+	int bpp;
 };
 
 class TextureTable
