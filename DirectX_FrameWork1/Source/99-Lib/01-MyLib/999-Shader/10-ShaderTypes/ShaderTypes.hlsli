@@ -46,6 +46,22 @@ cbuffer LightBuffer : register(b3)
     LIGHT light;
 }
 
+struct Material
+{
+    float4 ambent;
+    float4 diffuse;
+    float4 specular;
+    float4 emission;
+    bool isTexture;
+    bool2 fake;
+};
+
+cbuffer MaterialBuffer : register(b4)
+{
+    Material material;
+}
+
+
 cbuffer TexBuffer : register(b6)
 {
     matrix matTex;
