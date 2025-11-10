@@ -71,8 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDire)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(WindowsSDK_IncludePath);$(ProjectDir)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\include;$(VC_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(WindowsSDK_IncludePath);$(ProjectDir)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\include;$(VC_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Source\99-Lib\02-ExternalLib\assimp\5.2.5\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,6 +116,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,9 +135,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.cpp" />
@@ -138,6 +149,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\AssimpParse\AssimpPerse.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Shape.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\01-Camera2D\CameraObject2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.cpp" />
@@ -176,6 +188,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\06-Animator\01-SpriteAnimator\SpriteAnimator.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\98-LightObject\LightObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\05-Light\Light.h" />
@@ -183,6 +196,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\01-2DGameObject\GameObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\02-ShapeTable3D\ShapeTable3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\99-ShapeTable\01-ShapeTable2D\ShapeTable2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\AssimpParse\AssimpPerse.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Shape.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\99-CameraObject\01-Camera2D\CameraObject2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\01-Camera2D\Camera2D.h" />
