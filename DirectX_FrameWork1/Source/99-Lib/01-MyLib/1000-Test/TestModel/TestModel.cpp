@@ -7,6 +7,7 @@ void TestModel::Init()
 	std::string texDirectory = "Assets/02-Model/00-TestModel/";
 
 	std::string tmpStr1(reinterpret_cast<const char*>(modelFile.c_str()), modelFile.size());
+	sp_staticMesh = std::make_shared<StaticMesh>();
 	sp_staticMesh->Load(tmpStr1,texDirectory);
 
 	hft::CreateVertexIndexBuffer(sp_staticMesh);

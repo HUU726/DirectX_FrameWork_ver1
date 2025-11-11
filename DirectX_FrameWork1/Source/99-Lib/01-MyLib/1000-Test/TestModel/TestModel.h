@@ -2,7 +2,7 @@
 
 #include "../../06-GameObject/GameObject.h"
 #include "../../998-FH_Types/StaticMesh/StaticMesh.h"
-#include "../../../02-ExternalLib/stringUtility/utility.h"
+#include "../stringUtility/utility.h"
 
 
 class TestModel : public GameObject

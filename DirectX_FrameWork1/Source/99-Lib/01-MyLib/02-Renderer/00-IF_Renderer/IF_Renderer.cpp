@@ -146,6 +146,8 @@ HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const 
 void IF_Renderer::CreateCommonBuffer()
 {
 	HRESULT hr;
+	static int cnt = 0;
+	cnt++;
 
 	{	//PS定数バッファ作成
 		D3D11_BUFFER_DESC PS_cbDesc;
@@ -358,8 +360,8 @@ void IF_Renderer::SetTex(hft::HFFLOAT2 _uv)
 void IF_Renderer::SetMaterial(const hft::Material& _material)
 {
 	p_DeviceContext->UpdateSubresource(p_constantMaterial, 0, NULL, &_material, 0, 0);
-	p_DeviceContext->VSGetConstantBuffers(4, 1, &p_constantMaterial);
-	p_DeviceContext->PSGetConstantBuffers(4, 1, &p_constantMaterial);
+	p_DeviceContext->VSSetConstantBuffers(4, 1, &p_constantMaterial);
+	p_DeviceContext->PSSetConstantBuffers(4, 1, &p_constantMaterial);
 }
 
 

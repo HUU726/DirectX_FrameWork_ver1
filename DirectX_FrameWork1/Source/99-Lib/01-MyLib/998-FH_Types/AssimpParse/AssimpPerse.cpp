@@ -114,7 +114,7 @@ namespace AssimpPerse
 							(unsigned char*)tex->pcData,			// 先頭アドレス
 							tex->mWidth,
 							&texture->p_textureView);			// テクスチャサイズ（メモリにある場合幅がサイズ）	
-						if (sts) {
+						if (static_cast<HRESULT>(sts) == S_OK) {
 							g_textures[m] = texture;
 						}
 						std::cout << "Embedded" << std::endl;
@@ -128,7 +128,7 @@ namespace AssimpPerse
 						std::string texname = texturedirectory + "/" + texpath;
 
 						HRESULT sts = LoadTexture(texname.c_str(), &texture->p_textureView);
-						if (sts == S_OK) {
+						if (static_cast<HRESULT>(sts) == S_OK) {
 							g_textures[m] = texture;
 						}
 

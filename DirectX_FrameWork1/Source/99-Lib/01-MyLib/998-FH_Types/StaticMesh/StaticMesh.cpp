@@ -13,11 +13,11 @@ void StaticMesh::Load(std::string _filePath, std::string _textureDirectory)
 	AssimpPerse::GetModelData(_filePath, _textureDirectory);
 
 	l_subsets = AssimpPerse::GetSubsets();		// サブセット情報取得
-	l_vertices = AssimpPerse::GetVertices();		// 頂点データ（メッシュ単位）
+	l_vertices = AssimpPerse::GetVertices();	// 頂点データ（メッシュ単位）
 	l_indices = AssimpPerse::GetIndices();		// インデックスデータ（メッシュ単位）
 	l_materials = AssimpPerse::GetMaterials();	// マテリアル情報取得
 
-	textures = AssimpPerse::GetTextures();	// テクスチャ情報取得	
+	textures = AssimpPerse::GetTextures();	// テクスチャ情報取得
 
 	// 頂点データ作成
 	for ( const auto& mv : l_vertices )

@@ -116,7 +116,7 @@ void TitleScene::Init()
 	{
 		testModel.Init();
 		Transform* p_trf = testModel.GetTransformPtr();
-		p_trf->position = { 0,0,0 };
+		p_trf->position = { 0,0,500 };
 		p_trf->scale = {300,300,300};
 	}
 
