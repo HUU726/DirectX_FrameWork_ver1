@@ -10,8 +10,9 @@
 * グローバル関数
 ***************************************************************************************************/
 // テクスチャをロード
-HRESULT LoadTexture(const char* filename, ID3D11ShaderResourceView** srv)
+HRESULT LoadTexture(const char* _filePath, ID3D11ShaderResourceView** srv)
 {
+	
 	auto device = RendererManager::GetInstance().GetDevice();
 
 	bool sts = true;
@@ -22,9 +23,9 @@ HRESULT LoadTexture(const char* filename, ID3D11ShaderResourceView** srv)
 	int m_bpp; // BPP
 
 	// 画像読み込み
-	pixels = stbi_load(filename, &m_width, &m_height, &m_bpp, 4);
+	pixels = stbi_load(_filePath, &m_width, &m_height, &m_bpp, 4);
 	if (pixels == nullptr) {
-		MessageBoxA(NULL, filename, "load error", MB_OK);
+		MessageBoxA(NULL, _filePath, "load error", MB_OK);
 		return S_FALSE;
 	}
 

@@ -1,17 +1,21 @@
 #include "../../10-ShaderTypes/ShaderTypes.hlsli"
 
-Texture2D g_Texture : register(t0);
-SamplerState g_SamplerState : register(s0);
+Texture2D myTexture : register(t0);
+SamplerState mySampler : register(s0);
 
 float4 main(in PS_IN input)  : SV_Target
 {	
-    float4 color;
+    float4 color = input.col;
 
-    // Sample関数→テクスチャから該当のUV位置のピクセル色を取って来る
-    //color = g_Texture.Sample(g_SamplerState, input.tex);
-    //color *= input.col;
+    if (material.isTexture)
+    {
+        color = color * myTexture.Sample(mySampler, input.tex);
+    }
+    else
+    {
+        color = color * material.diffuse;
+    }
 
-    color = input.col;
 
     return color;
 }

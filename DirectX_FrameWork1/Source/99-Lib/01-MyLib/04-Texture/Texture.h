@@ -4,7 +4,7 @@
 #include <memory>
 #include <unordered_map>
 
-HRESULT LoadTexture(const char* filename, ID3D11ShaderResourceView** srv);
+HRESULT LoadTexture(const char* filePath, ID3D11ShaderResourceView** srv);
 HRESULT LoadTextureFromMemory(const unsigned char* _data, int _len, ID3D11ShaderResourceView** srv);
 
 

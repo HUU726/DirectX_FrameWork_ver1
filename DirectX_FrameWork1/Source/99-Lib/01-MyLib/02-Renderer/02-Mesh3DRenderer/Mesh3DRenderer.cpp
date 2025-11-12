@@ -142,11 +142,6 @@ void Mesh3DRenderer::Draw(TestModel* _sp_model)
 	for ( int i = 0; i < subsets.size(); i++ )
 	{
 		SetMaterial(materials[subsets[i].materialIndex]);
-		
-		if ( materials[subsets[i].materialIndex].isTexture )
-		{
-			SetTexture(textures[subsets[i].materialIndex]);
-		}
 
 		p_DeviceContext->DrawIndexed(
 			subsets[i].indexNum,

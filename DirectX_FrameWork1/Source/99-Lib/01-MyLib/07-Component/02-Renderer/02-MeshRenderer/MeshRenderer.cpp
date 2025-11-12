@@ -49,6 +49,7 @@ std::shared_ptr<Texture> MeshRenderer::LoadTexture(const char* _filePath)
 	if (textureSource)
 	{
 		sp_texture = textureSource;
+		auto mesh = p_meshFilter->GetMesh();
 		return sp_texture;
 	}
 

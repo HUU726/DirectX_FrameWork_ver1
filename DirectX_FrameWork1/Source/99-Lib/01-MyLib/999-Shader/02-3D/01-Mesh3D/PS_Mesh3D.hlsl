@@ -15,11 +15,14 @@ float4 main(PS_IN input) : SV_Target
 {
     float4 color = input.col;
 
-    if (isTexture > 0)
+    if (material.isTexture)
     {
         color = color * myTexture.Sample(mySampler, input.tex);
     }
-    
-    // Œˆ’è‚µ‚½F‚ğreturn‚·‚é
+    else
+    {
+        color = color * material.diffuse;
+    }
+
     return color;
 }

@@ -25,7 +25,8 @@ PS_IN main(in VS_IN input)
     
     output.col.xyz = input.col.xyz * d * light.diffuse.xyz; // 拡散光の影響を乗算
     output.col.xyz += input.col.xyz * light.ambient.xyz; // アンビエント光を加算
-    output.col.a = input.col.a; // アルファ値はそのまま使用
+    output.col.xyz += material.emission.xyz;    //Emissionを加算
+    output.col.a = input.col.a * material.diffuse.a; // アルファ値はそのまま使用
 	
 	//texture=============================
 	// テクスチャ座標はそのまま使用
