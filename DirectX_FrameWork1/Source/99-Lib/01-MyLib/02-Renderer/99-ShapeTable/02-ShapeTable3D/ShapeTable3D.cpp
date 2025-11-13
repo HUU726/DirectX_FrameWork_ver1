@@ -50,6 +50,10 @@ std::shared_ptr<hft::Mesh> CreatePlaneShape()
 	plane->indices.resize(PLANE_INDEX_NUM);
 	plane->indices = { 0,1,2,1,3,2 };
 
+	plane->materials.push_back(hft::Material());
+	plane->materials[0].shader.CreateVertexShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/02-LightMesh3D/VS_LightMesh3D.hlsl");
+	plane->materials[0].shader.CreatePixelShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl");
+
 	return plane;
 }
 
@@ -129,6 +133,10 @@ std::shared_ptr<hft::Mesh> CreateCubeShape()
 		cube->indices[baseIndexNum + 5] = baseVertexNum + 2;
 	}
 	
+	cube->materials.push_back(hft::Material());
+	cube->materials[0].shader.CreateVertexShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/02-LightMesh3D/VS_LightMesh3D.hlsl");
+	cube->materials[0].shader.CreatePixelShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl");
+
 	return cube;
 }
 
@@ -188,7 +196,9 @@ std::shared_ptr<hft::Mesh> CreateSqhereShape()
 		}
 	}
 
-
+	sqhere->materials.push_back(hft::Material());
+	sqhere->materials[0].shader.CreateVertexShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/02-LightMesh3D/VS_LightMesh3D.hlsl");
+	sqhere->materials[0].shader.CreatePixelShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl");
 
 	return sqhere;
 }
@@ -274,6 +284,10 @@ std::shared_ptr<hft::Mesh> CreateLightShape()
 		light->indices[baseIndexNum + 4] = baseVertexNum + 3;
 		light->indices[baseIndexNum + 5] = baseVertexNum + 2;
 	}
+
+	light->materials.push_back(hft::Material());
+	light->materials[0].shader.CreateVertexShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/VS_Mesh3D.hlsl");
+	light->materials[0].shader.CreatePixelShader("Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl");
 
 	return light;
 }

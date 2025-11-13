@@ -27,6 +27,16 @@ struct PS_CB_TexCoord
 	DirectX::XMMATRIX matTex;
 };
 
+struct CB_MATERIAL
+{
+	hft::HFFLOAT4 ambient;
+	hft::HFFLOAT4 diffuse;
+	hft::HFFLOAT4 specular;
+	hft::HFFLOAT4 emission;
+	float shininess;
+	int isTexture;
+};
+
 
 class IF_Renderer
 {
@@ -64,11 +74,6 @@ protected:
 	ID3D11DepthStencilView* p_DepthStencilView;	// デプスステンシルビュー
 	/****************************************************************************************************************************/
 
-
-	HRESULT CompileShader(const char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void** ppShaderObject, int* pShaderObjectSize);
-	HRESULT CreateVertexShader(ID3D11VertexShader** ppVertexShader, ID3D11InputLayout** ppVertexLayout, D3D11_INPUT_ELEMENT_DESC* pLayout, unsigned int numElements, const char* szFileName);
-	HRESULT CreatePixelShader(ID3D11PixelShader** ppPixelShader, const char* szFileName);
-
 	virtual HRESULT InitShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
 	virtual HRESULT InitBuffer() = 0;		//頂点バッファを初期化
 	void CreateCommonBuffer();
@@ -80,6 +85,7 @@ protected:
 	~IF_Renderer();
 
 public:
+	ID3D11InputLayout* GetInputLayout() const { return p_InputLayout; }
 	std::vector<D3D11_INPUT_ELEMENT_DESC> GetLayouts() const { return layouts; }
 	const char* GetVSPaht() const { return VS_Path; }
 	const char* GetPSPath() const { return PS_Path; }
@@ -96,3 +102,7 @@ public:
 
 };
 
+
+HRESULT CompileShader(const char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void** ppShaderObject, int* pShaderObjectSize);
+HRESULT CreateVertexShader(ID3D11VertexShader** ppVertexShader, ID3D11InputLayout** ppVertexLayout, D3D11_INPUT_ELEMENT_DESC* pLayout, unsigned int numElements, const char* szFileName);
+HRESULT CreatePixelShader(ID3D11PixelShader** ppPixelShader, const char* szFileName);

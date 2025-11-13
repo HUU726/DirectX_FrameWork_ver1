@@ -113,7 +113,7 @@ void TitleScene::Init()
 		p_trf->scale = hft::HFFLOAT3{ 400.f,400.f,400.f };
 	}
 
-	{
+	{	//ƒ‚ƒfƒ‹
 		testModel.Init();
 		Transform* p_trf = testModel.GetTransformPtr();
 		p_trf->position = { 0,0,500 };
@@ -226,7 +226,7 @@ void TitleScene::Draw()
 	cubeObject.Draw();
 	lightObject.Draw();
 	gameObject2D.Draw();
-	testModel.Draw();
+	//testModel.Draw();
 }
 
 void TitleScene::UnInit()

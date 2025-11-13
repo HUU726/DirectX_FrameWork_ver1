@@ -15,7 +15,7 @@ float4 main(PS_IN input) : SV_Target
 {
     float4 color = input.col;
 
-    if (material.isTexture)
+    if (material.isTexture > 0)
     {
         color = color * myTexture.Sample(mySampler, input.tex);
     }

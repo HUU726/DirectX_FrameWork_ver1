@@ -15,10 +15,12 @@
 #include <string.h>
 #include <assert.h>
 
+#include "../../999-Shader/00-Shader/Shader.h"
 
 
 
-HRESULT IF_Renderer::CompileShader(const char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void** ppShaderObject, int* pShaderObjectSize)
+
+HRESULT CompileShader(const char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void** ppShaderObject, int* pShaderObjectSize)
 {
 	//拡張子csoのファイル名を作成
 	char csoFileName[256];
@@ -108,35 +110,41 @@ HRESULT IF_Renderer::CompileShader(const char* szFileName, LPCSTR szEntryPoint, 
 	return S_OK;
 }
 
-HRESULT IF_Renderer::CreateVertexShader(ID3D11VertexShader** ppVertexShader, ID3D11InputLayout** ppVertexLayout, D3D11_INPUT_ELEMENT_DESC* pLayout, unsigned int numElements, const char* szFileName)
+HRESULT CreateVertexShader(ID3D11VertexShader** ppVertexShader, ID3D11InputLayout** ppVertexLayout, D3D11_INPUT_ELEMENT_DESC* pLayout, unsigned int numElements, const char* szFileName)
 {
+	RendererManager& rendererMng = RendererManager::GetInstance();
+	auto p_device = rendererMng.GetDevice();
+
 	void* ShaderObject;
 	int	ShaderObjectSize;
 
 	// ファイルの拡張子に合わせてコンパイル
-	HRESULT hr = CompileShader(szFileName, "main", "vs_5_0", &ShaderObject, &ShaderObjectSize);
+	HRESULT hr = ::CompileShader(szFileName, "main", "vs_5_0", &ShaderObject, &ShaderObjectSize);
 	if (FAILED(hr)) return E_FAIL;
 
 	// デバイスを使って頂点シェーダーを作成
-	hr = this->p_Device->CreateVertexShader(ShaderObject, ShaderObjectSize, NULL, ppVertexShader);
+	hr = p_device->CreateVertexShader(ShaderObject, ShaderObjectSize, NULL, ppVertexShader);
 
 	// デバイスを使って頂点レイアウトを作成
-	this->p_Device->CreateInputLayout(pLayout, numElements, ShaderObject, ShaderObjectSize, ppVertexLayout);
+	p_device->CreateInputLayout(pLayout, numElements, ShaderObject, ShaderObjectSize, ppVertexLayout);
 
 	return S_OK;
 }
 
-HRESULT IF_Renderer::CreatePixelShader(ID3D11PixelShader** ppPixelShader, const char* szFileName)
+HRESULT CreatePixelShader(ID3D11PixelShader** ppPixelShader, const char* szFileName)
 {
+	RendererManager& rendererMng = RendererManager::GetInstance();
+	auto p_device = rendererMng.GetDevice();
+
 	void* ShaderObject;
 	int	ShaderObjectSize;
 
 	// ファイルの拡張子に合わせてコンパイル
-	HRESULT hr = CompileShader(szFileName, "main", "ps_5_0", &ShaderObject, &ShaderObjectSize);
+	HRESULT hr = ::CompileShader(szFileName, "main", "ps_5_0", &ShaderObject, &ShaderObjectSize);
 	if (FAILED(hr)) return hr;
 
 	// ピクセルシェーダーを生成
-	hr = this->p_Device->CreatePixelShader(ShaderObject, ShaderObjectSize, nullptr, ppPixelShader);
+	hr = p_device->CreatePixelShader(ShaderObject, ShaderObjectSize, nullptr, ppPixelShader);
 	if (FAILED(hr)) return hr;
 
 	return S_OK;
@@ -209,7 +217,7 @@ void IF_Renderer::CreateCommonBuffer()
 
 	{
 		D3D11_BUFFER_DESC cbDesc;
-		cbDesc.ByteWidth = (sizeof(hft::Material) + 15) & ~15;
+		cbDesc.ByteWidth = (sizeof(CB_MATERIAL) + 15) & ~15;
 		cbDesc.Usage = D3D11_USAGE_DEFAULT;
 		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		cbDesc.CPUAccessFlags = 0;
@@ -359,7 +367,17 @@ void IF_Renderer::SetTex(hft::HFFLOAT2 _uv)
 
 void IF_Renderer::SetMaterial(const hft::Material& _material)
 {
-	p_DeviceContext->UpdateSubresource(p_constantMaterial, 0, NULL, &_material, 0, 0);
+	CB_MATERIAL cb;
+	cb.ambient = _material.ambient;
+	cb.diffuse = _material.diffuse;
+	cb.emission = _material.emission;
+	cb.specular = _material.specular;
+	cb.shininess = _material.shininess;
+	cb.isTexture = _material.isTexture;
+
+	_material.shader.SetGPU();
+
+	p_DeviceContext->UpdateSubresource(p_constantMaterial, 0, NULL, &cb, 0, 0);
 	p_DeviceContext->VSSetConstantBuffers(4, 1, &p_constantMaterial);
 	p_DeviceContext->PSSetConstantBuffers(4, 1, &p_constantMaterial);
 }

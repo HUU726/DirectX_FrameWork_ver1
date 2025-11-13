@@ -44,7 +44,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
 	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl";
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layouts.data(), layouts.size(), VS_Path);
+	hr = ::CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layouts.data(), layouts.size(), VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
@@ -52,7 +52,7 @@ HRESULT Sprite2DRenderer::InitShader()
 
 	// ピクセルシェーダーオブジェクトを生成
 	PS_Path = "Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl";
-	hr = CreatePixelShader(&this->p_PixelShader, PS_Path);
+	hr = ::CreatePixelShader(&this->p_PixelShader, PS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreatePixelShader error", "error", MB_OK);
 		return hr;

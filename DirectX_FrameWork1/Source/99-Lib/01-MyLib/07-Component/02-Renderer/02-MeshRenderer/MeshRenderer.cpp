@@ -50,6 +50,7 @@ std::shared_ptr<Texture> MeshRenderer::LoadTexture(const char* _filePath)
 	{
 		sp_texture = textureSource;
 		auto mesh = p_meshFilter->GetMesh();
+		mesh->materials[0].isTexture = 1;
 		return sp_texture;
 	}
 
@@ -77,7 +78,6 @@ void MeshRenderer::Draw()
 		renderer.SetTexture(sp_texture);						//テクスチャをセット
 
 		renderer.SetWorldMatrix(gameObject->GetTransform());	//ワールド行列セット
-
 
 		renderer.Draw(this);
 	}

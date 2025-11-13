@@ -53,8 +53,7 @@ struct Material
     float4 specular;
     float4 emission;
     float shininess;
-    bool isTexture;
-    bool2 fake;
+    int isTexture;
 };
 
 cbuffer MaterialBuffer : register(b4)

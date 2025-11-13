@@ -33,7 +33,7 @@ HRESULT Mesh3DRenderer::InitShader()
 
 	// 頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
 	VS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/02-LightMesh3D/VS_LightMesh3D.hlsl";
-	hr = CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
+	hr = ::CreateVertexShader(&this->p_VertexShader, &this->p_InputLayout, layout, numElements, VS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreateVertexShader error", "error", MB_OK);
 		return hr;
@@ -41,7 +41,7 @@ HRESULT Mesh3DRenderer::InitShader()
 
 	// ピクセルシェーダーオブジェクトを生成
 	PS_Path = "Source/99-Lib/01-MyLib/999-Shader/02-3D/01-Mesh3D/PS_Mesh3D.hlsl";
-	hr = CreatePixelShader(&this->p_PixelShader, PS_Path);
+	hr = ::CreatePixelShader(&this->p_PixelShader, PS_Path);
 	if (FAILED(hr)) {
 		MessageBoxA(NULL, "CreatePixelShader error", "error", MB_OK);
 		return hr;
@@ -161,6 +161,8 @@ void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
 		return;
 
 	RenderPipeline();
+
+	SetMaterial(shape->materials[0]);
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // 描画命令
 }
 

@@ -2,7 +2,7 @@
 
 
 #include "Shape.h"
-
+#include "../999-Shader/00-Shader/Shader.h"
 
 
 namespace hft
@@ -22,12 +22,13 @@ namespace hft
 	struct Material
 	{
 		HFFLOAT4 ambient;
-		HFFLOAT4 diffuse;
+		HFFLOAT4 diffuse = { 1,1,1,1 };
 		HFFLOAT4 specular;
 		HFFLOAT4 emission;
 		float shininess;
-		bool isTexture;
-		bool fake[2];
+		int isTexture;
+
+		Shader shader;
 	};
 
 	struct Mesh : public hft::Shape
