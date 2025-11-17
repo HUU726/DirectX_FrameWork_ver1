@@ -226,7 +226,7 @@ void TitleScene::Draw()
 	cubeObject.Draw();
 	lightObject.Draw();
 	gameObject2D.Draw();
-	//testModel.Draw();
+	testModel.Draw();
 }
 
 void TitleScene::UnInit()

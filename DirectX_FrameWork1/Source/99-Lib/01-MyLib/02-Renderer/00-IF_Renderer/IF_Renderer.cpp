@@ -15,9 +15,6 @@
 #include <string.h>
 #include <assert.h>
 
-#include "../../999-Shader/00-Shader/Shader.h"
-
-
 
 
 HRESULT CompileShader(const char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void** ppShaderObject, int* pShaderObjectSize)
@@ -233,9 +230,6 @@ void IF_Renderer::RenderPipeline()
 	this->p_DeviceContext->IASetInputLayout(this->p_InputLayout);
 
 	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
-
-	this->p_DeviceContext->VSSetShader(this->p_VertexShader, NULL, 0);
-	this->p_DeviceContext->PSSetShader(this->p_PixelShader, NULL, 0);
 
 	{
 		// 定数バッファを頂点シェーダーにセットする

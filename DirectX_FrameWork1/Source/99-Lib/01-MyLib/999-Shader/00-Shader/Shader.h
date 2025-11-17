@@ -15,6 +15,7 @@ namespace hft
 		ID3D11InputLayout* p_inputLayout;
 	
 	public:
+		VertexShader(){}
 		void SetFilePath(std::string _filePath) { filePath = _filePath; }
 		ID3D11VertexShader* GetDirectXVertexShader() { return p_vertexShader; }
 		ID3D11InputLayout* GetInputLayout() { return p_inputLayout; }
@@ -33,6 +34,7 @@ namespace hft
 		ID3D11PixelShader* p_pixelShader;
 
 	public:
+		PixelShader(){}
 		std::string GetFilePath();
 		ID3D11PixelShader* GetDirectXPixelShader() { return p_pixelShader; }
 		void SetFilePath(std::string _filePath) { filePath = _filePath; }

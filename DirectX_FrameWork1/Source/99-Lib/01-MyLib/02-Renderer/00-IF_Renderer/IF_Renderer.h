@@ -8,6 +8,7 @@
 #include "../../998-FH_Types/Mesh.h"
 #include "../../07-Component/01-Transform/Transform.h"
 #include "../../07-Component/05-Light/Light.h"
+#include "../../999-Shader/00-Shader/Shader.h"
 
 class IF_Camera;
 
@@ -43,8 +44,8 @@ class IF_Renderer
 protected:
 	ID3D11InputLayout* p_InputLayout;	// インプットレイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layouts;
-	ID3D11VertexShader* p_VertexShader;	// 頂点シェーダーオブジェクト
-	ID3D11PixelShader* p_PixelShader;	// ピクセルシェーダーオブジェクト
+	ID3D11VertexShader* p_defaultVertexShader;	// 頂点シェーダーオブジェクト
+	ID3D11PixelShader* p_defaultPixelShader;	// ピクセルシェーダーオブジェクト
 	D3D_PRIMITIVE_TOPOLOGY topology;	// 頂点の結び方(とらえ方)
 
 	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数

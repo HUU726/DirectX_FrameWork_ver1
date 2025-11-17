@@ -21,6 +21,8 @@
 #include <string.h>
 #include <assert.h>
 
+#include "../../999-Shader/99-ShaderTable/ShaderTable.h"
+
 
 RendererManager::RendererManager()
 {

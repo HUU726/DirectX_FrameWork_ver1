@@ -5,7 +5,6 @@ namespace hft
 {
 	VertexShaderTable::VertexShaderTable()
 	{
-
 	}
 
 	std::shared_ptr<VertexShader> VertexShaderTable::GetShader(std::string _filePath)
@@ -33,6 +32,9 @@ namespace hft
 		}
 		table.clear();
 	}
+
+
+
 
 
 

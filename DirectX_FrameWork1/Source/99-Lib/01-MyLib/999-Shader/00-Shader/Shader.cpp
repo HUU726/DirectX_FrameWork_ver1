@@ -3,6 +3,7 @@
 #include "../../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../../02-Renderer/00-IF_Renderer/IF_Renderer.h"
 #include "../99-ShaderTable/ShaderTable.h"
+#include "../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 
 #include <iostream>
 

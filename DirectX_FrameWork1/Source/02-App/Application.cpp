@@ -28,7 +28,7 @@ void Application::InitWindow()
 void Application::InitSystem()
 {
 	HWND hWnd = p_window->GetHWND();
-	system.Init(hWnd);
+	rendererMng.Init(hWnd);
 }
 
 void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
@@ -67,7 +67,7 @@ int Application::UnInit()
 {
 	int l_result = int(p_window->GetMsg().wParam);
 
-	system.UnInit();
+	rendererMng.UnInit();
 	p_window->UnInit();
 	delete p_window;
 

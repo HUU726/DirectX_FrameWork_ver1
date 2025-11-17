@@ -2,7 +2,7 @@
 
 
 #include "Shape.h"
-#include "../999-Shader/00-Shader/Shader.h"
+#include "../999-Shader/99-ShaderTable/ShaderTable.h"
 
 
 namespace hft
