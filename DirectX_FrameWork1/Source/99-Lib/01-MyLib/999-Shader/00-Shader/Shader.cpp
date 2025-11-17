@@ -50,6 +50,35 @@ namespace hft
 
 
 
+	ID3D11InputLayout* Shader::GetInputLayout() const
+	{
+		if (!sp_vertexShader)
+			nullptr;
+
+		return sp_vertexShader->GetInputLayout();
+	}
+
+	bool Shader::GetHaveShader() const
+	{
+		if (!sp_vertexShader)
+			return false;
+		if (!sp_pixelShader)
+			return false;
+
+		return true;
+	}
+
+	ID3D11VertexShader* Shader::GetVertexShader() const
+	{
+		return sp_vertexShader->GetDirectXVertexShader();
+		
+	}
+
+	ID3D11PixelShader* Shader::GetPixelShader() const
+	{
+		return sp_pixelShader->GetDirectXPixelShader();
+	}
+
 	void Shader::SetVertexShader(std::shared_ptr<VertexShader> _sp_shader)
 	{
 		sp_vertexShader = _sp_shader;

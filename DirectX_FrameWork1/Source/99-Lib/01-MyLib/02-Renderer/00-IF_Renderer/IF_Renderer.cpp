@@ -271,6 +271,10 @@ IF_Renderer::IF_Renderer()
 	p_Device = l_p_system.GetDevice();
 	p_DeviceContext = l_p_system.GetDeviceContext();
 	p_camera = nullptr;
+
+	sp_defaultShader = std::make_shared<hft::Shader>();
+	sp_defaultShader->CreateVertexShader("Source/99-Lib/01-MyLib/999-Shader/98-DefaultShader/VS_Default.hlsl");
+	sp_defaultShader->CreatePixelShader("Source/99-Lib/01-MyLib/999-Shader/98-DefaultShader/PS_Default.hlsl");
 }
 
 IF_Renderer::~IF_Renderer()
@@ -368,8 +372,16 @@ void IF_Renderer::SetMaterial(const hft::Material& _material)
 	cb.specular = _material.specular;
 	cb.shininess = _material.shininess;
 	cb.isTexture = _material.isTexture;
-
-	_material.shader.SetGPU();
+	
+	if (_material.shader.GetHaveShader())
+		_material.shader.SetGPU();
+	else
+	{
+		ID3D11InputLayout* inputLayout = sp_defaultShader->GetInputLayout();
+		p_DeviceContext->IASetInputLayout(sp_defaultShader->GetInputLayout());
+		p_DeviceContext->VSSetShader(sp_defaultShader->GetVertexShader(), NULL, 0);
+		p_DeviceContext->PSSetShader(sp_defaultShader->GetPixelShader(), NULL, 0);
+	}
 
 	p_DeviceContext->UpdateSubresource(p_constantMaterial, 0, NULL, &cb, 0, 0);
 	p_DeviceContext->VSSetConstantBuffers(4, 1, &p_constantMaterial);

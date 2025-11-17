@@ -46,6 +46,7 @@ protected:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layouts;
 	ID3D11VertexShader* p_defaultVertexShader;	// 頂点シェーダーオブジェクト
 	ID3D11PixelShader* p_defaultPixelShader;	// ピクセルシェーダーオブジェクト
+	std::shared_ptr<hft::Shader> sp_defaultShader;
 	D3D_PRIMITIVE_TOPOLOGY topology;	// 頂点の結び方(とらえ方)
 
 	ID3D11SamplerState* p_SamplerState;	// サンプラー用変数

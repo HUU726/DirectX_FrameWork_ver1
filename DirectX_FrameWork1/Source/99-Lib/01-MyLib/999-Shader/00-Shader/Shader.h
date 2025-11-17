@@ -52,6 +52,11 @@ namespace hft
 		std::shared_ptr<PixelShader> sp_pixelShader;
 
 	public:
+		bool GetHaveShader() const;
+		ID3D11InputLayout* GetInputLayout() const;
+		ID3D11VertexShader* GetVertexShader() const;
+		ID3D11PixelShader* GetPixelShader() const;
+
 		void SetVertexShader(std::shared_ptr<VertexShader> _sp_shader);
 		void SetPixelShader(std::shared_ptr<PixelShader> _sp_shader);
 		void CreateVertexShader(std::string _filePath);
