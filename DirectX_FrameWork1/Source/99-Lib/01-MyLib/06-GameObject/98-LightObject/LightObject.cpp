@@ -7,7 +7,7 @@ LightObject::LightObject()
 {
 
 	p_comp_light = AddComponent<Light>();
-	AddComponent<MeshRenderer>()->SetShape("light");
+	GetComponent<MeshRenderer>()->SetShape("light");
 	Transform* p_trf = GetTransformPtr();
 	p_trf->position = { -700.f,0.f,0.f };
 	p_trf->rotation = { 0,0,0 };	//30,-40,0

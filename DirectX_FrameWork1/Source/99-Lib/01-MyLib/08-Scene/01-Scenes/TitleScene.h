@@ -2,6 +2,7 @@
 #include "./00-BaseScene/BaseScene.h"
 
 #include "../../1000-Test/TestModel/TestModel.h"
+#include "../../06-GameObject/301-GroundObject/GroundObject.h"
 
 class TitleScene : public BaseScene
 {
@@ -18,6 +19,7 @@ private:
 	GameObject3D cubeObject;
 
 	TestModel testModel;
+	GroundObject groundObject;
 
 
 public:

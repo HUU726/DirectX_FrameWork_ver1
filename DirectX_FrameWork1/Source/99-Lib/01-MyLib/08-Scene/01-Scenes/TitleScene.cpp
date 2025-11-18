@@ -40,9 +40,9 @@ void TitleScene::Init()
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
 
-	{	//オブジェクト初期化
+	{	//2Dオブジェクト初期化
 		{
-			gameObject2D.AddComponent<SpriteRenderer>();
+			gameObject2D.GetComponent<SpriteRenderer>();
 			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTest.png");
 			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(4,4));
 			hft::HFFLOAT2 div = animator->GetDivision();
@@ -90,7 +90,7 @@ void TitleScene::Init()
 	}
 
 	{	//球体
-		sqhereObject.AddComponent<MeshRenderer>()->SetShape("sqhere");
+		sqhereObject.GetComponent<MeshRenderer>()->SetShape("sqhere");
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = sqhereObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
@@ -98,14 +98,14 @@ void TitleScene::Init()
 		p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
 	}
 	{	//板
-		planeObject.AddComponent<MeshRenderer>()->SetShape("plane");
+		planeObject.GetComponent<MeshRenderer>()->SetShape("plane");
 		Transform* p_trf = planeObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ 0.f,-400.f,0.f };
 		p_trf->rotation = hft::HFFLOAT3{ 0,0,0 };
 		p_trf->scale = hft::HFFLOAT3{ 600.f,1.f,600.f };
 	}
 	{	//立方体
-		cubeObject.AddComponent<MeshRenderer>()->SetShape("cube");
+		cubeObject.GetComponent<MeshRenderer>()->SetShape("cube");
 		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 		Transform* p_trf = cubeObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ 700.f,0.f,0.f };
@@ -120,8 +120,15 @@ void TitleScene::Init()
 		p_trf->scale = {300,300,300};
 	}
 
+	{	//地面初期化
+		groundObject.Init();
+		Transform* p_trf = groundObject.GetTransformPtr();
+		p_trf->position.y = -500.f;
+		p_trf->scale = {50,10,50};
+	}
+
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
-	camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
+	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 }
 
 void TitleScene::Input()
@@ -221,12 +228,13 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
-	sqhereObject.Draw();
-	planeObject.Draw();
-	cubeObject.Draw();
-	lightObject.Draw();
+	//sqhereObject.Draw();
+	//planeObject.Draw();
+	//cubeObject.Draw();
+	//lightObject.Draw();
 	gameObject2D.Draw();
-	testModel.Draw();
+	//testModel.Draw();
+	groundObject.Draw();
 }
 
 void TitleScene::UnInit()

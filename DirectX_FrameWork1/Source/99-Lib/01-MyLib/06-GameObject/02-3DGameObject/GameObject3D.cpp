@@ -2,6 +2,11 @@
 
 #include "../../07-Component/02-Renderer/02-MeshRenderer/MeshRenderer.h"
 
+GameObject3D::GameObject3D()
+{
+	AddComponent<MeshRenderer>();
+}
+
 void GameObject3D::Init()
 {
 }

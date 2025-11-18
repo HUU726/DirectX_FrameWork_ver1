@@ -3,6 +3,11 @@
 
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
+GameObject2D::GameObject2D()
+{
+	AddComponent<SpriteRenderer>();
+}
+
 void GameObject2D::Init()
 {
 	

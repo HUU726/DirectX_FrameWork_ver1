@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\00-Shader\Shader.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\99-ShaderTable\ShaderTable.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\999-Shader\00-Shader\Shader.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\999-Shader\99-ShaderTable\ShaderTable.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\stb_image.h" />

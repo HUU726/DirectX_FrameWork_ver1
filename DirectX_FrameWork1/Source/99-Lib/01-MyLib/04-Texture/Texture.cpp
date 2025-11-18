@@ -18,12 +18,12 @@ HRESULT LoadTexture(const char* _filePath, ID3D11ShaderResourceView** srv)
 	bool sts = true;
 	unsigned char* pixels;
 
-	int m_width; // 幅
-	int m_height; // 高さ
-	int m_bpp; // BPP
+	int l_width; // 幅
+	int l_height; // 高さ
+	int l_bpp; // BPP
 
 	// 画像読み込み
-	pixels = stbi_load(_filePath, &m_width, &m_height, &m_bpp, 4);
+	pixels = stbi_load(_filePath, &l_width, &l_height, &l_bpp, 4);
 	if (pixels == nullptr) {
 		MessageBoxA(NULL, _filePath, "load error", MB_OK);
 		return S_FALSE;
@@ -33,8 +33,8 @@ HRESULT LoadTexture(const char* _filePath, ID3D11ShaderResourceView** srv)
 	ID3D11Texture2D* pTexture;
 
 	D3D11_TEXTURE2D_DESC desc{};
-	desc.Width = m_width;
-	desc.Height = m_height;
+	desc.Width = l_width;
+	desc.Height = l_height;
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // RGBA
@@ -74,24 +74,24 @@ HRESULT LoadTextureFromMemory(const unsigned char* _data, int _len, ID3D11Shader
 	bool sts = true;
 	unsigned char* pixels;
 
-	int m_width; // 幅
-	int m_height; // 高さ
-	int m_bpp; // BPP
+	int l_width; // 幅
+	int l_height; // 高さ
+	int l_bpp; // BPP
 
 	// 画像読み込み
 	pixels = stbi_load_from_memory(_data,
 		_len,
-		&m_width,
-		&m_height,
-		&m_bpp,
+		&l_width,
+		&l_height,
+		&l_bpp,
 		STBI_rgb_alpha);
 
 	// テクスチャ2Dリソース生成
 	ID3D11Texture2D* pTexture;
 
 	D3D11_TEXTURE2D_DESC desc{};
-	desc.Width = m_width;
-	desc.Height = m_height;
+	desc.Width = l_width;
+	desc.Height = l_height;
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // RGBA

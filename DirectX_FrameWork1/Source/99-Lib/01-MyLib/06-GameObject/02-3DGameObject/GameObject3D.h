@@ -7,6 +7,7 @@ private:
 
 
 public:
+	GameObject3D();
 	void Init() override;
 	void Update() override;
 	void Draw() override;

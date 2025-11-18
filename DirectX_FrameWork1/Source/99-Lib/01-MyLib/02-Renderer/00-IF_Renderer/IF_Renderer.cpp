@@ -227,8 +227,6 @@ void IF_Renderer::CreateCommonBuffer()
 
 void IF_Renderer::RenderPipeline()
 {
-	this->p_DeviceContext->IASetInputLayout(this->p_InputLayout);
-
 	this->p_DeviceContext->IASetPrimitiveTopology(this->topology);
 
 	{
@@ -330,27 +328,14 @@ void IF_Renderer::SetIndexBuffer(ID3D11Buffer* _indexBuffer)
 
 void IF_Renderer::SetTexture(std::shared_ptr<Texture> _sp_texture)
 {
-	PS_CB_IsTexture cb;
-
 	if (!_sp_texture)
-	{
-		cb.isTexture = 0;
-	}
-	else
-	{
-		if (!_sp_texture->p_textureView)
-		{
-			cb.isTexture = 0;
-		}
-		else
-		{
-			cb.isTexture = 1;
-			//テクスチャをピクセルシェーダーに渡す
-			p_DeviceContext->PSSetShaderResources(0, 1, &_sp_texture->p_textureView);
-		}
-	}
+		return;
 
-	p_DeviceContext->UpdateSubresource(p_PSConstantIsTexture, 0, NULL, &cb, 0, 0);
+	if (_sp_texture->p_textureView)
+	{
+		//テクスチャをピクセルシェーダーに渡す
+		p_DeviceContext->PSSetShaderResources(0, 1, &_sp_texture->p_textureView);
+	}
 }
 
 void IF_Renderer::SetTex(hft::HFFLOAT2 _uv)

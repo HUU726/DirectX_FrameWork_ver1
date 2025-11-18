@@ -29,6 +29,7 @@ namespace hft
 		int isTexture;
 
 		Shader shader;
+		//std::shared_ptr<Texture> sp_texture;
 	};
 
 	struct Mesh : public hft::Shape
