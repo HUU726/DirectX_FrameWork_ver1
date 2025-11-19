@@ -60,6 +60,12 @@ void hft::HFFLOAT2::operator/=(const HFFLOAT2& _value)
 	y /= _value.y;
 }
 
+void hft::HFFLOAT2::operator/=(const float& _value)
+{
+	x /= _value;
+	y /= _value;
+}
+
 bool hft::HFFLOAT2::operator==(const HFFLOAT2& _value)
 {
 	return (x == _value.x && y == _value.y);
@@ -127,6 +133,12 @@ void hft::HFFLOAT3::operator/=(const HFFLOAT3& _value)
 	x /= _value.x;
 	y /= _value.y;
 	z /= _value.z;
+}
+void hft::HFFLOAT3::operator/=(const float& _value)
+{
+	x /= _value;
+	y /= _value;
+	z /= _value;
 }
 
 hft::HFFLOAT3 hft::HFFLOAT3::operator*(const float& _value)
@@ -196,6 +208,14 @@ void hft::HFFLOAT4::operator/=(const HFFLOAT4& _value)
 	z /= _value.z;
 	w /= _value.w;
 }
+void hft::HFFLOAT4::operator/=(const float& _value)
+{
+	x /= _value;
+	y /= _value;
+	z /= _value;
+	w /= _value;
+}
+
 
 void hft::HFFLOAT4::operator+=(const hft::HFFLOAT3& _value)
 {

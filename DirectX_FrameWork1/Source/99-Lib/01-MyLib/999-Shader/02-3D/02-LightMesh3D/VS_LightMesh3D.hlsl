@@ -25,7 +25,7 @@ PS_IN main(in VS_IN input)
     
     output.col.xyz = input.col.xyz * d * light.diffuse.xyz; // ŠgUŒõ‚Ì‰e‹¿‚ğæZ
     output.col.xyz += input.col.xyz * light.ambient.xyz; // ƒAƒ“ƒrƒGƒ“ƒgŒõ‚ğ‰ÁZ
-    output.col.xyz += material.emission.xyz;    //Emission‚ğ‰ÁZ
+    output.col.xyz += material.emission.xyz;    //emission‚ğ‰ÁZ
     output.col.a = input.col.a * material.diffuse.a; // ƒAƒ‹ƒtƒ@’l‚Í‚»‚Ì‚Ü‚Üg—p
 	
 	//texture=============================

@@ -24,6 +24,7 @@ namespace hft
 		void operator-=(const HFFLOAT2& _value);
 		void operator*=(const HFFLOAT2& _value);
 		void operator/=(const HFFLOAT2& _value);
+		void operator/=(const float& _value);
 
 		bool operator==(const HFFLOAT2& _value);
 		bool operator==(const float* rhs) const = delete;
@@ -45,6 +46,7 @@ namespace hft
 		void operator-=(const HFFLOAT3& _value);
 		void operator*=(const HFFLOAT3& _value);
 		void operator/=(const HFFLOAT3& _value);
+		void operator/=(const float& _value);
 
 		HFFLOAT3 operator*(const float& _value);
 
@@ -65,6 +67,7 @@ namespace hft
 		void operator-=(const HFFLOAT4& _value);
 		void operator*=(const HFFLOAT4& _value);
 		void operator/=(const HFFLOAT4& _value);
+		void operator/=(const float& _value);
 
 		void operator+=(const HFFLOAT3& _value);
 	};

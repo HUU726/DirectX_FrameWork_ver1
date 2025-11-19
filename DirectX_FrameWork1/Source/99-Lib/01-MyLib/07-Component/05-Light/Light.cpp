@@ -10,7 +10,7 @@ void Light::Init()
 	data.enable = true;
 	data.direction = { 1,1,1,0 };
 	data.diffuse = { 1.5f,1.5f,1.5f,1.f };
-	data.ambent = { 0.35f,0.35f,0.35f,1.f };
+	data.ambent = { 0.45f,0.45f,0.45f,1.f };
 }
 
 void Light::Update()

@@ -17,6 +17,7 @@ class Component
 {
 protected:
 	GameObject* gameObject;
+	bool isActive;
 
 public:
 	Component() : gameObject(nullptr) {};
