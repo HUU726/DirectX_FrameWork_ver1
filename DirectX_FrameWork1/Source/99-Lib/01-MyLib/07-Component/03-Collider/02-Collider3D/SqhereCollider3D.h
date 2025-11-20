@@ -6,11 +6,13 @@ class SqhereCollider3D : public Collider3D
 {
 private:
 
-
-
 public:
+	bool CollideWith(Collider3D* _p_col) override;
+	bool CollideWithBox(Collider3D* _p_col) override;
+	bool CollideWithSqhere(Collider3D* _p_col) override;
+	bool CollideWithMesh(Collider3D* _p_col) override;
 
-
-
+	void Init() override;
+	void Update() override;
 };
 

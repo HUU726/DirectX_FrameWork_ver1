@@ -53,4 +53,36 @@ namespace hft
 		};
 	}
 
+	inline Vector3 Vector3::Transform(const Vector3& _vec, const DirectX::XMMATRIX& _mat) noexcept
+	{
+		DirectX::XMVECTOR v1 = DirectX::XMLoadFloat3(&_vec);
+		DirectX::XMVECTOR X = DirectX::XMVector3TransformCoord(v1, _mat);
+
+		Vector3 result;
+		DirectX::XMStoreFloat3(&result, X);
+		return result;
+	}
+
+	HFFLOAT3 Vector3::Transform(const HFFLOAT3& _value, const DirectX::XMMATRIX& _mat) noexcept
+	{
+		DirectX::XMVECTOR v1 = DirectX::XMLoadFloat3(&_value);
+		DirectX::XMVECTOR X = DirectX::XMVector3TransformCoord(v1, _mat);
+
+		Vector3 result;
+		DirectX::XMStoreFloat3(&result, X);
+		return result;
+	}
+
+	float Dot(HFFLOAT3 _vec1, HFFLOAT3 _vec2)
+	{
+		return (_vec1.x * _vec2.x + _vec1.y * _vec2.y + _vec1.z * _vec2.z);
+	}
+
+	HFFLOAT3 Cross(HFFLOAT3 _vec1, HFFLOAT3 _vec2)
+	{
+		return { _vec1.y * _vec2.z - _vec1.z * _vec2.y,
+				_vec1.z * _vec2.x - _vec1.x * _vec2.z,
+				_vec1.x * _vec2.y - _vec1.y * _vec2.x };
+	}
+
 }

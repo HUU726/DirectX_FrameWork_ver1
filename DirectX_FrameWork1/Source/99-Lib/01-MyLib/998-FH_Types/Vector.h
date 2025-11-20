@@ -46,6 +46,8 @@ namespace hft
 			result /= len;
 			return result;
 		}
+
+		
 	};
 
 
@@ -56,11 +58,15 @@ namespace hft
 
 	struct Vector3 : public Vector<HFFLOAT3>
 	{
-
+		static Vector3 Transform(const Vector3& _vec, const DirectX::XMMATRIX& _mat) noexcept;
+		static HFFLOAT3 Transform(const HFFLOAT3& _value, const DirectX::XMMATRIX& _mat) noexcept;
 	};
 
 	struct Vector4 : public Vector<HFFLOAT4>
 	{
 
 	};
+
+	float Dot(HFFLOAT3 _vec1, HFFLOAT3 _vec2);
+	HFFLOAT3 Cross(HFFLOAT3 _vec1, HFFLOAT3 _vec2);
 }
