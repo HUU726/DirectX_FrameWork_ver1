@@ -7,6 +7,13 @@
 #include "../../../01-Transform/Transform.h"
 #include "../../../../998-FH_Types/HF_FLOAT.h"
 
+#include "../../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
+
+Collider2D::Collider2D()
+{
+	Collider2DManager::GetInstance().AddCollider(this);
+}
+
 void Collider2D::SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func)
 {
 	funcOnCollisionEnter = _func;

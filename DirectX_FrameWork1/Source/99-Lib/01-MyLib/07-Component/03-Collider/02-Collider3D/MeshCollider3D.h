@@ -17,6 +17,8 @@ public:
 	MeshCollider3D();
 	MeshCollider3D(const std::shared_ptr<hft::Mesh>& _mesh);
 
+	std::shared_ptr<hft::Mesh> GetMesh() { return sp_mesh; }
+
 	bool CollideWith(Collider3D* _p_col) override;
 	bool CollideWithBox(Collider3D* _p_col) override;
 	bool CollideWithSqhere(Collider3D* _p_col) override;

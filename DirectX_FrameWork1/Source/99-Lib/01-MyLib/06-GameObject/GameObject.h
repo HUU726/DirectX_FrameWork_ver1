@@ -24,6 +24,7 @@ protected:
 	std::string name;		//オブジェクト名
 	std::string tag;		//タグ
 	std::vector<std::unique_ptr<Component>> li_comp;		//コンポーネントリスト
+	Transform* p_transform;
 	bool isActive;
 	bool isRender;
 
@@ -53,13 +54,15 @@ public:
 		return nullptr;
 	}
 
-	Transform& GetTransform() { return *GetComponent<Transform>(); }
-	Transform* GetTransformPtr() { return GetComponent<Transform>(); }
+	int GetID() { return id; }
+	const Transform& GetTransform() const { return *p_transform; }
+	Transform* GetTransformPtr() { return p_transform; }
 	std::string GetName() { return name; }
 	std::string GetTag() { return tag; }
 	bool GetIsActive() { return isActive; }
 	bool GetIsRender() { return isRender; }
 
+	void SetID(int _id) { id = _id; }
 	void SetIsActive(bool _is) { isActive = _is; }
 	void SetIsRender(bool _is) { isRender = _is; }
 

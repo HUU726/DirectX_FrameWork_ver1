@@ -287,7 +287,7 @@ IF_Renderer::~IF_Renderer()
 
 
 
-void IF_Renderer::SetWorldMatrix(Transform& _transform)
+void IF_Renderer::SetWorldMatrix(const Transform& _transform)
 {
 	hft::TransformMatrix mtrxTf;
 	mtrxTf.ConversionPosition(_transform.position);

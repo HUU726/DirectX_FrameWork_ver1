@@ -26,7 +26,6 @@ bool SqhereCollider3D::CollideWithMesh(Collider3D* _p_col)
 
 void SqhereCollider3D::Init()
 {
-    Collider3DManager::GetInstance().AddCollider(this);
     Transform transform = gameObject->GetTransform();
     position = transform.position;
     size = transform.scale;

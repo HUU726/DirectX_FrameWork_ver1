@@ -92,7 +92,7 @@ public:
 	const char* GetVSPaht() const { return VS_Path; }
 	const char* GetPSPath() const { return PS_Path; }
 
-	void SetWorldMatrix(Transform& _transform);
+	void SetWorldMatrix(const Transform& _transform);
 	void SetVPMatrix();
 	void SetLight(const LightData& _data);
 

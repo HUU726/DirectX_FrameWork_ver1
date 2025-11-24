@@ -5,6 +5,9 @@
 GameObject3D::GameObject3D()
 {
 	AddComponent<MeshRenderer>();
+	p_transform->position = {0,0,0};
+	p_transform->rotation = {0,0,0};
+	p_transform->scale = {100,100,100};
 }
 
 void GameObject3D::Init()

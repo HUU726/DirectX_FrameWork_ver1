@@ -100,17 +100,14 @@ void TitleScene::Init()
 	{	//”Â
 		planeObject.GetComponent<MeshRenderer>()->SetShape("plane");
 		Transform* p_trf = planeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 0.f,-400.f,0.f };
-		p_trf->rotation = hft::HFFLOAT3{ 0,0,0 };
-		p_trf->scale = hft::HFFLOAT3{ 600.f,1.f,600.f };
+		p_trf->position = hft::HFFLOAT3{ 50.f,200.f,-50.f };
+		p_trf->rotation = hft::HFFLOAT3{ 0,0,90 };
 	}
 	{	//—§•û‘Ì
 		cubeObject.GetComponent<MeshRenderer>()->SetShape("cube");
 		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 		Transform* p_trf = cubeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 700.f,0.f,0.f };
-		p_trf->rotation = hft::HFFLOAT3{ 20,0,45 };
-		p_trf->scale = hft::HFFLOAT3{ 400.f,400.f,400.f };
+		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
 	}
 
 	{	//ƒ‚ƒfƒ‹
@@ -229,8 +226,8 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {	
 	//sqhereObject.Draw();
-	//planeObject.Draw();
-	//cubeObject.Draw();
+	planeObject.Draw();
+	cubeObject.Draw();
 	//lightObject.Draw();
 	gameObject2D.Draw();
 	//testModel.Draw();

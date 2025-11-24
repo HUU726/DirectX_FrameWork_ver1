@@ -1,6 +1,13 @@
 #include "Collider3D.h"
 
 
+#include "../../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
+
+
+Collider3D::Collider3D()
+{
+	Collider3DManager::GetInstance().AddCollider(this);
+}
 
 void Collider3D::SetFuncCollisionEnter(CallbackOnCollisionEnter3D _func)
 {
@@ -22,6 +29,7 @@ void Collider3D::OnCollisionEnter3D(Collider3D* _p_col)
 #include "../BoxCollider3D.h"
 #include "../SqhereCollider3D.h"
 #include "../MeshCollider3D.h"
+#include "../../../../06-GameObject/GameObject.h"
 #include "../../../../998-FH_Types/Vector.h"
 
 
@@ -45,13 +53,54 @@ bool SqhereSqhere(Collider3D* _sqhere1, Collider3D* _sqhere2)
 	return false;
 }
 
+/**
+* @brief	球体とメッシュ(Polygon)の当たり判定
+* @param	Collider3D*		_sqhere		球体
+* @param	Collider3D*		_mesh		メッシュ(三角形ポリゴン)
+*/
 bool SqhereMesh(Collider3D* _sqhere, Collider3D* _mesh)
 {
-	if (auto sqherePtr = dynamic_cast<SqhereCollider3D*>(_sqhere))
+	auto sqherePtr = dynamic_cast<SqhereCollider3D*>(_sqhere);
+	if (!sqherePtr)
 	{
-		
-		//auto closest = CloasestPointOnTriangle();
+		return false;
 	}
+
+	auto meshPtr = dynamic_cast<MeshCollider3D*>(_mesh);
+	if (!meshPtr)
+	{
+		return false;
+	}
+
+	hft::HFFLOAT4 sqherePos = sqherePtr->GetGameObject()->GetTransform().position;
+	float r = sqherePtr->GetRadius();
+
+	auto sp_mesh = meshPtr->GetMesh();
+	auto vertices = sp_mesh->vertices;
+	auto indices = sp_mesh->indices;
+
+	for ( int i = 0; i < indices.size() - 3; i+=3 )
+	{
+		hft::HFFLOAT3 posA = vertices[indices[i + 0]].position;
+		hft::HFFLOAT3 posB = vertices[indices[i + 1]].position;
+		hft::HFFLOAT3 posC = vertices[indices[i + 2]].position;
+
+		hft::HFFLOAT3 nearPos = CloasestPointOnTriangle(sqherePos, posA, posB, posC);
+
+		float dx = nearPos.x - sqherePos.x;
+		float dy = nearPos.y - sqherePos.y;
+		float dz = nearPos.z - sqherePos.z;
+
+		float  distance  = dx * dx + dy * dy + dz * dz;
+		
+		if ( distance <= r * r )
+		{
+			return true;
+		}
+	}
+
+	
+	//auto closest = CloasestPointOnTriangle();
 	return false;
 }
 
@@ -60,7 +109,7 @@ bool MeshMesh(Collider3D* _mesh1, Collider3D* _mesh2)
 	return false;
 }
 
-DirectX::XMFLOAT3 CloasestPointOnTriangle(hft::HFFLOAT3 _posP, hft::HFFLOAT3 _posA, hft::HFFLOAT3 _posB, hft::HFFLOAT3 _posC)
+hft::HFFLOAT3 CloasestPointOnTriangle(hft::HFFLOAT3 _posP, hft::HFFLOAT3 _posA, hft::HFFLOAT3 _posB, hft::HFFLOAT3 _posC)
 {
 
 	//辺のベクトルをとる

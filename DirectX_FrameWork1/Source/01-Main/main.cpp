@@ -15,5 +15,5 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	Application& app = Application::GetInstance();
 	app.Init(hInstance, nCmdShow);
 	app.Run();
-	return app.UnInit();;
+	return app.UnInit();
 }

@@ -143,6 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\CompornentManager.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\03-Plane\PlaneObject.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\01-Cube\CubeObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\MeshCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\SqhereCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.cpp" />
@@ -196,8 +200,13 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\CompornentManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\03-Plane\PlaneObject.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\01-Cube\CubeObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\MeshCollider3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\SqhereCollider3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.h" />
@@ -258,6 +267,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vertex.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

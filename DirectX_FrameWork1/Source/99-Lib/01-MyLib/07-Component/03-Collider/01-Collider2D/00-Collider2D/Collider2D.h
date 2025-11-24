@@ -12,7 +12,7 @@ enum class SHAPE_2D
 	ALL_COLLIDER,
 };
 
-enum COLLISION_STAT
+enum COLLISION_STATE
 {
 	NO_TOUCH,
 	TOP_TOUCH,
@@ -34,24 +34,24 @@ protected:
 	hft::HFFLOAT3 size;			// 四角形：ｘ＝横、ｙ＝縦	円：ｘ＝半径	線分：ｘ＝長さ
 	
 	bool isTrigger = false;	// トリガー
-	COLLISION_STAT state;				// 当たっているかどうか
-	bool isActive = true;	// 当たり判定を行うかどうか
+	COLLISION_STATE state;				// 当たっているかどうか
 
 	CallbackOnCollisionEnter2D funcOnCollisionEnter = nullptr;
 
 public:
+	Collider2D();
+
 	SHAPE_2D GetShape() { return shape; }
 	hft::HFFLOAT3 GetSize() { return size; }
 	hft::HFFLOAT3 GetOffset() { return offset; }
 	bool GetIsTrigger() { return isTrigger; }
-	COLLISION_STAT GetState() { return state; }
-	bool GetIsActive() { return isActive; }
+	COLLISION_STATE GetState() { return state; }
 	CallbackOnCollisionEnter2D GetFuncCollisionEnter() { return funcOnCollisionEnter; }
 
 
 	void SetSize(hft::HFFLOAT3 _size) { size = _size; }
 	void SetOffset(hft::HFFLOAT3 _offset) { offset = _offset; }
-	void SetState(COLLISION_STAT _state) { state = _state; }
+	void SetState(COLLISION_STATE _state) { state = _state; }
 	void SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func);
 
 	void OnCollisionEnter(Collider2D* _p_col);

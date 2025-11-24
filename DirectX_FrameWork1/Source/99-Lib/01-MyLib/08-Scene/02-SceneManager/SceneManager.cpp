@@ -19,10 +19,10 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-	static RendererManager& system = RendererManager::GetInstance();
-	system.ClearScreen();
+	static RendererManager& rendererMng = RendererManager::GetInstance();
+	rendererMng.ClearScreen();
 	curScene->Draw();
-	system.SwapChain();
+	rendererMng.SwapChain();
 }
 
 

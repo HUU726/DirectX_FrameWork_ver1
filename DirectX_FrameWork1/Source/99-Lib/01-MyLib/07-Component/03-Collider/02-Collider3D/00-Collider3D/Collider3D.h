@@ -18,11 +18,12 @@ protected:
 	CallbackOnCollisionEnter3D funcOnCollisionEnter = nullptr;	
 
 public:
+	Collider3D();
+
 	hft::HFFLOAT3 GetOffset() { return offset; }
 	hft::HFFLOAT3 GetPosition() { return offset; }
 	hft::HFFLOAT3 GetSize() { return size; }
 	bool GetIsTrigger() { return isTrigger; }
-	bool GetIsAction() { return isActive; }
 	CallbackOnCollisionEnter3D GetFuncCollisionEnter() { return funcOnCollisionEnter; }
 
 	void SetOffset(hft::HFFLOAT3 _offset) { offset = _offset; }
@@ -35,7 +36,7 @@ public:
 	virtual bool CollideWithBox(Collider3D* _p_col) = 0;
 	virtual bool CollideWithSqhere(Collider3D* _p_col) = 0;
 	virtual bool CollideWithMesh(Collider3D* _p_col) = 0;
-
+			
 };
 
 class BoxCollider3D;
@@ -49,4 +50,4 @@ bool SqhereSqhere(Collider3D* _sqhere1, Collider3D* _sqhere2);
 bool SqhereMesh(Collider3D* _sqhere, Collider3D* _mesh);
 bool MeshMesh(Collider3D* _mesh1, Collider3D* _mesh2);
 
-DirectX::XMFLOAT3 CloasestPointOnTriangle(hft::HFFLOAT3 _posP, hft::HFFLOAT3 _posA, hft::HFFLOAT3 _posB, hft::HFFLOAT3 _posC);
+hft::HFFLOAT3 CloasestPointOnTriangle(hft::HFFLOAT3 _posP, hft::HFFLOAT3 _posA, hft::HFFLOAT3 _posB, hft::HFFLOAT3 _posC);

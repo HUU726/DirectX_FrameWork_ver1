@@ -20,10 +20,11 @@ protected:
 	bool isActive;
 
 public:
-	Component() : gameObject(nullptr) {};
+	Component() : gameObject(nullptr), isActive(true) {};
 	virtual ~Component() = default;
 
 	void SetGameObject(GameObject* _p_gameObject) { this->gameObject = _p_gameObject; }
+	bool GetIsActive() { return isActive; }
 	GameObject* GetGameObject() { return this->gameObject; }
 
 

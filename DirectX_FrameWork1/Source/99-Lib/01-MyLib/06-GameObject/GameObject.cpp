@@ -1,9 +1,12 @@
 #include "GameObject.h"
 #include "../07-Component/01-Transform/Transform.h"
+#include "./999-GameObjectManager/GameObjectManager.h"
 
 GameObject::GameObject()
 {
-	AddComponent<Transform>();
+	GameObjectManager::GetInstance().AddGameObject(this);
+
+	p_transform = AddComponent<Transform>();
 	isActive = true;
 	isRender = true;
 }
