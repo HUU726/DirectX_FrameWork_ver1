@@ -3,10 +3,18 @@
 
 #include "../../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
 
+#include "../../../99-CompMng/CompornentManager.h"
+
 
 Collider3D::Collider3D()
 {
+	CompornentManager<Collider3D>::GetInstance().Add(this);
 	Collider3DManager::GetInstance().AddCollider(this);
+}
+
+Collider3D::~Collider3D()
+{
+	CompornentManager<Collider3D>::GetInstance().Delete(this);
 }
 
 void Collider3D::SetFuncCollisionEnter(CallbackOnCollisionEnter3D _func)

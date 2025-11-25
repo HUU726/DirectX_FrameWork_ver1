@@ -15,8 +15,8 @@
 
 //球体
 #define SQHERE_RADIUS (1.0f)
-#define SQHERE_STACK_NUM (18)
-#define SQHERE_SLICE_NUM (36)
+#define SQHERE_STACK_NUM (10)
+#define SQHERE_SLICE_NUM (20)
 
 
 
@@ -159,6 +159,7 @@ std::shared_ptr<hft::Mesh> CreateSqhereShape()
 			float z = SQHERE_RADIUS * sinf(phi) * sinf(theta);
 
 			hft::HFFLOAT3 position(x,y,z);
+			position /= 2.0;
 			hft::HFFLOAT3 normal = position; //球の中心からの方向 = 法線
 			DirectX::XMVECTOR nrmVec = DirectX::XMLoadFloat3(&normal);
 			nrmVec = DirectX::XMVector3Normalize(nrmVec);	//法線ベクトル作成

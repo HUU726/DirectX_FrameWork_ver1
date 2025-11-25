@@ -9,9 +9,17 @@
 
 #include "../../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
+#include "../../../99-CompMng/CompornentManager.h"
+
 Collider2D::Collider2D()
 {
+	CompornentManager<Collider2D>::GetInstance().Add(this);
 	Collider2DManager::GetInstance().AddCollider(this);
+}
+
+Collider2D::~Collider2D()
+{
+	CompornentManager<Collider2D>::GetInstance().Delete(this);
 }
 
 void Collider2D::SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func)

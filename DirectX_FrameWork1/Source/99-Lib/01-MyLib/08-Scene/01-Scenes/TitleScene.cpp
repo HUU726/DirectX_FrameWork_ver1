@@ -93,9 +93,9 @@ void TitleScene::Init()
 		sqhereObject.GetComponent<MeshRenderer>()->SetShape("sqhere");
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = sqhereObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{0.f,0.f,0.f};
+		p_trf->position = hft::HFFLOAT3{0.f,200.f,-100.f};
 		p_trf->rotation = { 0,0,0 };
-		p_trf->scale = hft::HFFLOAT3{300.f,300.f,300.f};
+		p_trf->scale = hft::HFFLOAT3{100.f,100.f,100.f};
 	}
 	{	//”Â
 		planeObject.GetComponent<MeshRenderer>()->SetShape("plane");
@@ -108,6 +108,7 @@ void TitleScene::Init()
 		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 		Transform* p_trf = cubeObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
+		p_trf->scale = {100,100,100};
 	}
 
 	{	//ƒ‚ƒfƒ‹
@@ -225,7 +226,7 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
-	//sqhereObject.Draw();
+	sqhereObject.Draw();
 	planeObject.Draw();
 	cubeObject.Draw();
 	//lightObject.Draw();

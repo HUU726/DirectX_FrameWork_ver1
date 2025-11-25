@@ -40,6 +40,7 @@ protected:
 
 public:
 	Collider2D();
+	~Collider2D();
 
 	SHAPE_2D GetShape() { return shape; }
 	hft::HFFLOAT3 GetSize() { return size; }

@@ -1,10 +1,17 @@
 #pragma once
 #include "../01-Scenes/00-BaseScene/BaseScene.h"
 
+
+#include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
+
 class SceneManager
 {
 private:
 	std::unique_ptr<BaseScene> curScene;
+
+	GameObjectManager& gameObjMng = GameObjectManager::GetInstance();
+
+
 
 	SceneManager() = default;
 	~SceneManager() = default;

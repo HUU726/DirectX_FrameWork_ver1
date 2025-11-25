@@ -8,7 +8,7 @@ private:
 	int idCnt;
 	std::vector<GameObject*> gameObjects;
 
-	GameObjectManager();
+	GameObjectManager() {}
 
 public:
 	static GameObjectManager& GetInstance()

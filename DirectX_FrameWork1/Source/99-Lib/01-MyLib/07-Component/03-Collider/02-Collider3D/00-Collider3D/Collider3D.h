@@ -19,6 +19,7 @@ protected:
 
 public:
 	Collider3D();
+	~Collider3D();
 
 	hft::HFFLOAT3 GetOffset() { return offset; }
 	hft::HFFLOAT3 GetPosition() { return offset; }

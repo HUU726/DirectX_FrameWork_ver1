@@ -3,22 +3,28 @@
 #include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 #include "../../06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
+#include "../../99-CompMng/CompornentManager.h"
+
 SpriteRenderer::SpriteRenderer()
 {
+	CompornentManager<SpriteRenderer>::GetInstance().Add(this);
 	sp_shape = ShapeTable2D::GetInstance().GetShape("sprite");
 }
 
 SpriteRenderer::SpriteRenderer(const char* _filePath)
 {
+	CompornentManager<SpriteRenderer>::GetInstance().Add(this);
 }
 
 SpriteRenderer::SpriteRenderer(hft::Polygon& _shape, const char* _filePath)
 {
+	CompornentManager<SpriteRenderer>::GetInstance().Add(this);
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape.name);
 }
 
 SpriteRenderer::~SpriteRenderer()
 {
+	CompornentManager<SpriteRenderer>::GetInstance().Delete(this);
 }
 
 std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::string _name)

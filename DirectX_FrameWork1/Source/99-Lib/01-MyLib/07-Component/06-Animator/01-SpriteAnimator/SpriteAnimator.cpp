@@ -120,16 +120,25 @@ void SpriteAnimation::Update()
 }
 
 /******************************************************************************************/
+#include "../../99-CompMng/CompornentManager.h"
+
 SpriteAnimator::SpriteAnimator()
 {
+	CompornentManager<SpriteAnimator>::GetInstance().Add(this);
 	animIndex = 0;
 	division = { 1,1 };
 }
 
 SpriteAnimator::SpriteAnimator(hft::HFFLOAT2 _div)
 {
+	CompornentManager<SpriteAnimator>::GetInstance().Add(this);
 	animIndex = 0;
 	division = _div;
+}
+
+SpriteAnimator::~SpriteAnimator()
+{
+	CompornentManager<SpriteAnimator>::GetInstance().Delete(this);
 }
 
 //óDêÊìxÇÃçÇÇ¢èáÇ…ì¸ÇÍÇƒÇ¢Ç≠
@@ -215,4 +224,11 @@ void SpriteAnimator::Update()
 	}
 
 	animIndex = 0;
+}
+
+
+
+void SpriteAnimator::Action()
+{
+	Update();
 }

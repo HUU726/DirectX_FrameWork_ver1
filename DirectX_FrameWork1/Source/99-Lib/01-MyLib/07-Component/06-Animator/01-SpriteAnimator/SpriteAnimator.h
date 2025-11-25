@@ -74,6 +74,7 @@ private:
 public:
 	SpriteAnimator();
 	SpriteAnimator(hft::HFFLOAT2 _div);
+	~SpriteAnimator();
 	/*** セッター ***/
 	void AddAnimation(const SpriteAnimation& _anim);
 	void SetDivisions(hft::HFFLOAT2 _div);
@@ -87,6 +88,8 @@ public:
 
 	void Init() override;
 	void Update() override;
+
+	void Action();
 
 };
 
