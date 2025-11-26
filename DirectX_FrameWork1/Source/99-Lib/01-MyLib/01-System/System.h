@@ -2,7 +2,8 @@
 
 #include "../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../06-GameObject/999-GameObjectManager/GameObjectManager.h"
-#include "../07-Component/99-CompMng/CompornentManager.h"
+
+class Base_ComponentManager;
 
 class System
 {

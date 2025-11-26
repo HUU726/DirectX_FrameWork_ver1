@@ -53,6 +53,23 @@ public:
 		//return AddComponent<T>();
 		return nullptr;
 	}
+	template<class T>
+	void DeleteComponent()
+	{
+		for (auto& comp : this->li_comp)
+		{
+			if (auto& up_comp = dynamic_cast<std::unique_ptr<T>>(comp))
+			{
+				auto it = std::find(li_comp.begin(), li_comp.end(), comp);
+				li_comp.erase(it);
+				up_comp.release();
+			}
+		}
+	}
+	void AllDeleteComponent()
+	{
+		li_comp.clear();
+	}
 
 	int GetID() { return id; }
 	const Transform& GetTransform() const { return *p_transform; }

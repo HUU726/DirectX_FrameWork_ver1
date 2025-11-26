@@ -18,7 +18,7 @@ public:
 	}
 
 	void AddGameObject(GameObject* _p_gameObject);
-	void DestroyObject(GameObject* _p_gameObject);
+	void DeleteObject(GameObject* _p_gameObject);
 	void Clear();
 
 };

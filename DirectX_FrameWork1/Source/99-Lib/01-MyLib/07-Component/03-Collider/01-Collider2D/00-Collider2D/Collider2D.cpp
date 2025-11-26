@@ -1,7 +1,8 @@
 #include "Collider2D.h"
 
+#define NOMINMAX
 #include <DirectXMath.h>
-#include <cmath>
+#include <algorithm>
 
 #include "../../../../06-GameObject/GameObject.h"
 #include "../../../01-Transform/Transform.h"

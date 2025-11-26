@@ -9,7 +9,7 @@ void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 	gameObjects.push_back(_p_gameObject);
 }
 
-void GameObjectManager::DestroyObject(GameObject* _p_gameObject)
+void GameObjectManager::DeleteObject(GameObject* _p_gameObject)
 {
 	auto it = std::find(gameObjects.begin(),gameObjects.end(), _p_gameObject);
 

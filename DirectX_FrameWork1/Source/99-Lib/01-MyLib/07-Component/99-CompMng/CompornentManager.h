@@ -3,22 +3,26 @@
 #include "./IF_ComponentManager.h"
 
 #include <vector>
+#include "../../01-System/System.h"
+
 
 template<class T>
 class CompornentManager : public Base_ComponentManager
 {
 private:
-	using Base = T;
 	using Self = CompornentManager<T>;
 
 	std::vector<T*> compornents;
 
-	CompornentManager() {}
+	CompornentManager()
+	{
+		System::GetInstance().AddCompMng(this);
+	}
 
 public:
-	static CompornentManager<T>& GetInstance()
+	static Self& GetInstance()
 	{
-		static CompornentManager<T> instance;
+		static Self instance;
 		return instance;
 	}
 

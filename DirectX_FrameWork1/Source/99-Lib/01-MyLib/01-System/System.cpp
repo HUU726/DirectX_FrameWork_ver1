@@ -3,6 +3,7 @@
 #include "../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 #include "../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
 #include "../999-Shader/99-ShaderTable/ShaderTable.h"
+#include "../07-Component/99-CompMng/CompornentManager.h"
 
 
 System::System()
