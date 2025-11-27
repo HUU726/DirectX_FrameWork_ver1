@@ -50,6 +50,17 @@ void SceneManager::ChangeScene()
 	}
 }
 
+void SceneManager::ChangeScene(std::unique_ptr<BaseScene> _uq_scene)
+{
+	if (_uq_scene != nullptr)
+	{
+		UnloadScene();
+		curScene = std::move(_uq_scene);
+		Collider2DManager::GetInstance().UnInit();
+		SetUpScene();
+	}
+}
+
 void SceneManager::SetUpScene()
 {
 	curScene->Init();

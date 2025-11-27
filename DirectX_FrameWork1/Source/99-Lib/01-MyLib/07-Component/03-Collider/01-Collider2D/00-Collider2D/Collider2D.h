@@ -55,7 +55,7 @@ public:
 	void SetState(COLLISION_STATE _state) { state = _state; }
 	void SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func);
 
-	void OnCollisionEnter(Collider2D* _p_col);
+	void OnCollisionEnter2D(Collider2D* _p_col);
 	virtual bool CollideWith(Collider2D* _collider) = 0;
 	virtual bool CollideWithBox(Collider2D* _box) = 0;
 	virtual bool CollideWithCircle(Collider2D* _circle) = 0;

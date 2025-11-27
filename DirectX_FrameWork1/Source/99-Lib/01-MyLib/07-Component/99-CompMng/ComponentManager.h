@@ -7,14 +7,14 @@
 
 
 template<class T>
-class CompornentManager : public Base_ComponentManager
+class ComponentManager : public IF_ComponentManager
 {
 private:
-	using Self = CompornentManager<T>;
+	using Self = ComponentManager<T>;
 
 	std::vector<T*> compornents;
 
-	CompornentManager()
+	ComponentManager()
 	{
 		System::GetInstance().AddCompMng(this);
 	}
@@ -27,7 +27,7 @@ public:
 	}
 
 	void Add(T* _p_comp) { compornents.push_back(_p_comp); }
-	void Delete(T* _p_comp)
+	void Remove(T* _p_comp)
 	{
 		auto it = std::find(compornents.begin(), compornents.end(), _p_comp);
 		if ( it != compornents.end() )
@@ -36,16 +36,31 @@ public:
 		}
 	}
 
-	void Action()
+	void Action() override;
+
+};
+
+
+
+template<class T>
+void ComponentManager<T>::Action()
+{
 	{
-		for ( auto& comp : compornents )
+		for (auto& comp : compornents)
 		{
-			if ( !comp->GetIsActive() )
+			if (!comp->GetIsActive())
 				continue;
 
 			comp->Action();
 		}
 	}
-};
+}
 
 
+class Collider2D;
+template<>
+void ComponentManager<Collider2D>::Action();
+
+class Collider3D;
+template<>
+void ComponentManager<Collider3D>::Action();

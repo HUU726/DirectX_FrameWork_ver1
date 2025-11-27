@@ -17,13 +17,15 @@ void Collider2DManager::ClearCollider()
 
 void Collider2DManager::RemoveCollider(Collider2D* _p_col)
 {
-	li_collider.erase(std::find(li_collider.begin(), li_collider.end(), _p_col));
+	auto it = std::find(li_collider.begin(), li_collider.end(), _p_col);
+	if (it != li_collider.end())
+		li_collider.erase(it);
 }
 
 void Collider2DManager::SelectCollider()
 {
 	li_enableCol.clear();
-	for (auto collider : li_collider)
+	for (auto& collider : li_collider)
 	{
 		if (collider->GetGameObject()->GetIsActive())
 			li_enableCol.push_back(collider);
@@ -44,9 +46,9 @@ void Collider2DManager::CheckCollision()
 
 			if (col1->CollideWith(col2))
 			{
-				col1->OnCollisionEnter(col2);
-				col2->OnCollisionEnter(col1);
-				//std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
+				col1->OnCollisionEnter2D(col2);
+				col2->OnCollisionEnter2D(col1);
+				std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
 			}
 		}
 
@@ -62,4 +64,10 @@ void Collider2DManager::Update()
 void Collider2DManager::UnInit()
 {
 	ClearCollider();
+}
+
+
+void Collider2DManager::Action()
+{
+	Update();
 }

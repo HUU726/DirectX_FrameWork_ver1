@@ -183,10 +183,16 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\CompornentManager.cpp">
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,7 +386,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\CompornentManager.h">
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.h">

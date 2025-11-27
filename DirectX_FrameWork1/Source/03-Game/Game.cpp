@@ -4,6 +4,7 @@
 
 #include "../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
+#include "../99-Lib/01-MyLib/101-Time/Time.h"
 
 
 Game::Game()
@@ -20,6 +21,8 @@ void Game::Init()
 {
 	SceneManager& sceneMng = SceneManager::GetInstance();
 	sceneMng.Init();
+
+	Time::GetInstance().SetFps(60);
 }
 
 void Game::Run()

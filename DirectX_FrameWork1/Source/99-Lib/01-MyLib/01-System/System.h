@@ -3,16 +3,21 @@
 #include "../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../06-GameObject/999-GameObjectManager/GameObjectManager.h"
 
-class Base_ComponentManager;
+class IF_ComponentManager;
 
 class System
 {
 private:
 	RendererManager& rendererMng = RendererManager::GetInstance();
 	GameObjectManager& gameObjMng = GameObjectManager::GetInstance();
-	std::vector<Base_ComponentManager*> compMngers;
+	std::vector<IF_ComponentManager*> compMngs;
 	
 	System();
+
+	void InputCompMngAction();
+	void GameObjectMngAction();
+	void BeforeRender_CompMngsAction();
+	void RendererCompMngAction();
 
 public:
 	static System& GetInstance()
@@ -21,10 +26,12 @@ public:
 		return instance;
 	}
 
-	void AddCompMng(Base_ComponentManager* _p_compMng);
+	void AddCompMng(IF_ComponentManager* _p_compMng);
 
-	void Init();
-	void ActionComponentMng();
-	void UnInit();
+	void InitSystem(HWND _hwnd);
+	void UnInitSystem();
+
+	void GameLoopPipeline();
+	void ClearManagersData();
 
 };

@@ -31,6 +31,7 @@ public:
 	void UnInit();
 
 	void ChangeScene();	// シーン変更
+	void ChangeScene(std::unique_ptr<BaseScene> _uq_scene);
 	void SetUpScene();	// シーンのセットアップ
 	void RunScene();
 	void UnloadScene();	// シーンの後片付け

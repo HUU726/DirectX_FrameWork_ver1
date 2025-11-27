@@ -4,25 +4,25 @@
 #include "../../../998-FH_Types/TransformMatrix.h"
 #include "../../../04-Texture/Texture.h"
 
-#include "../../99-CompMng/CompornentManager.h"
+#include "../../99-CompMng/ComponentManager.h"
 
 MeshRenderer::MeshRenderer()
 {
-	CompornentManager<MeshRenderer>::GetInstance().Add(this);
+	ComponentManager<MeshRenderer>::GetInstance().Add(this);
 	p_meshFilter = new	MeshFilter;
 	isCreate = true;
 }
 
 MeshRenderer::MeshRenderer(const char* _filePath)
 {
-	CompornentManager<MeshRenderer>::GetInstance().Add(this);
+	ComponentManager<MeshRenderer>::GetInstance().Add(this);
 	p_meshFilter = new	MeshFilter;
 	isCreate = true;
 }
 
 MeshRenderer::MeshRenderer(MeshFilter& _meshFilter, const char* _filePath)
 {
-	CompornentManager<MeshRenderer>::GetInstance().Add(this);
+	ComponentManager<MeshRenderer>::GetInstance().Add(this);
 	p_meshFilter = &_meshFilter;
 }
 
@@ -33,7 +33,7 @@ MeshRenderer::~MeshRenderer()
 		delete p_meshFilter;
 		p_meshFilter = nullptr;
 	}
-	CompornentManager<MeshRenderer>::GetInstance().Delete(this);
+	ComponentManager<MeshRenderer>::GetInstance().Remove(this);
 }
 
 std::shared_ptr<hft::Mesh> MeshRenderer::SetShape(std::string _name)
@@ -85,4 +85,9 @@ void MeshRenderer::Draw()
 
 		renderer.Draw(this);
 	}
+}
+
+void MeshRenderer::Action()
+{
+	Draw();
 }

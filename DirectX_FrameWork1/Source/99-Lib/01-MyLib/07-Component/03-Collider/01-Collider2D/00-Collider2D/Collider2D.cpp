@@ -10,17 +10,17 @@
 
 #include "../../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
-#include "../../../99-CompMng/CompornentManager.h"
+#include "../../../99-CompMng/ComponentManager.h"
 
 Collider2D::Collider2D()
 {
-	CompornentManager<Collider2D>::GetInstance().Add(this);
+	ComponentManager<Collider2D>::GetInstance().Add(this);
 	Collider2DManager::GetInstance().AddCollider(this);
 }
 
 Collider2D::~Collider2D()
 {
-	CompornentManager<Collider2D>::GetInstance().Delete(this);
+	ComponentManager<Collider2D>::GetInstance().Remove(this);
 }
 
 void Collider2D::SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func)
@@ -28,7 +28,7 @@ void Collider2D::SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func)
 	funcOnCollisionEnter = _func;
 }
 
-void Collider2D::OnCollisionEnter(Collider2D* _p_col)
+void Collider2D::OnCollisionEnter2D(Collider2D* _p_col)
 {
 	if (funcOnCollisionEnter != nullptr)
 		funcOnCollisionEnter(_p_col);

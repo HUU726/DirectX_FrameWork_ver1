@@ -19,6 +19,7 @@ public:
 
 	void Init() override;
 	void Update() override;
+	void Action() override;
 
 };
 

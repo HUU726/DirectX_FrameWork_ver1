@@ -28,7 +28,7 @@ void Application::InitWindow()
 void Application::InitSystem()
 {
 	HWND hWnd = p_window->GetHWND();
-	rendererMng.Init(hWnd);
+	System::GetInstance().InitSystem(hWnd);
 }
 
 void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
@@ -55,8 +55,6 @@ void Application::Run()
 		if (!Time::GetInstance().Update())
 			game.Run();
 
-		
-
 	}
 
 	game.Uninit();
@@ -67,7 +65,7 @@ int Application::UnInit()
 {
 	int l_result = int(p_window->GetMsg().wParam);
 
-	rendererMng.UnInit();
+	System::GetInstance().UnInitSystem();
 	p_window->UnInit();
 	delete p_window;
 

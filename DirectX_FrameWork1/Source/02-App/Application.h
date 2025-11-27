@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <iostream>
 #include "../99-Lib/01-MyLib/02-Renderer/98-RendererManager/RendererManager.h"
+#include "../99-Lib/01-MyLib/01-System/System.h"
 
 /***************************************************************************************************
 *				マクロ
@@ -24,7 +25,6 @@ private:
 	HINSTANCE hInstance;	//アプリケーションID
 	int nCmdShow;
 	HF_Window* p_window;	//ウィンドウ
-	RendererManager& rendererMng = RendererManager::GetInstance();
 
 
 	void InitWindow();

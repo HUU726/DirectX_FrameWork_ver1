@@ -122,3 +122,8 @@ void Camera2D::Update()
 	UpdateViewMatrix();
 	Sprite2DRenderer::GetInstance().SetVPMatrix();
 }
+
+void Camera2D::Action()
+{
+	Update();
+}

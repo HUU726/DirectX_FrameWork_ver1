@@ -13,7 +13,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	GameObjectManager::GetInstance().DeleteObject(this);
+	GameObjectManager::GetInstance().RemoveGameObject(this);
 	AllDeleteComponent();
 }
 

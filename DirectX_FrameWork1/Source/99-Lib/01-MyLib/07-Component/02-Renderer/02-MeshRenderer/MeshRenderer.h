@@ -27,5 +27,6 @@ public:
 
 	void Init() override;
 	void Draw() override;
+	void Action() override;
 };
 

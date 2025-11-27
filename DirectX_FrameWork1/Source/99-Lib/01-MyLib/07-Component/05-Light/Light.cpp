@@ -32,6 +32,11 @@ void Light::Update()
 	renderer.SetLight(data);
 }
 
+void Light::Action()
+{
+	Update();
+}
+
 LightData All_LightData::GetData()
 {
     return allData;
