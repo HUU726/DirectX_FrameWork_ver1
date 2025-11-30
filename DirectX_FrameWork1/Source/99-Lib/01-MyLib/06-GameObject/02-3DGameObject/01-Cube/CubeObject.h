@@ -11,5 +11,8 @@ protected:
 public:
 	CubeObject();
 
+	void Init() override;
+	void Update() override;
+
 };
 

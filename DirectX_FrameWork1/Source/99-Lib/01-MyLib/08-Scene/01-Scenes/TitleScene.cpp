@@ -12,6 +12,8 @@
 #include "../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 #include "../../07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
+#include "../../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
+
 #include "../../101-Time/Time.h"
 
 
@@ -47,7 +49,7 @@ void TitleScene::Init()
 	}
 
 	{	//‹…‘Ì
-		sqhereObject.GetComponent<MeshRenderer>()->SetShape("sqhere");
+		sqhereObject.Init();
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = sqhereObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{0.f,200.f,-100.f};
@@ -55,13 +57,13 @@ void TitleScene::Init()
 		p_trf->scale = hft::HFFLOAT3{100.f,100.f,100.f};
 	}
 	{	//”Â
-		planeObject.GetComponent<MeshRenderer>()->SetShape("plane");
+		planeObject.Init();
 		Transform* p_trf = planeObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ 50.f,200.f,-50.f };
 		p_trf->rotation = hft::HFFLOAT3{ 0,0,90 };
 	}
 	{	//—§•û‘Ì
-		cubeObject.GetComponent<MeshRenderer>()->SetShape("cube");
+		cubeObject.Init();
 		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 		Transform* p_trf = cubeObject.GetTransformPtr();
 		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
@@ -115,10 +117,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {	
-	sqhereObject.Draw();
-	planeObject.Draw();
-	cubeObject.Draw();
-	groundObject.Draw();
 }
 
 void TitleScene::UnInit()

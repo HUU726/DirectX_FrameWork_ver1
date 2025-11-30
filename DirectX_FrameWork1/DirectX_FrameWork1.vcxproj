@@ -206,6 +206,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.h" />
@@ -277,6 +278,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

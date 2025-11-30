@@ -7,8 +7,17 @@
 
 PlaneObject::PlaneObject()
 {
-	auto mesh = GetComponent<MeshRenderer>()->GetShape();
-	mesh = ShapeTable3D::GetInstance().GetShape("plane");
 
-	AddComponent<MeshCollider3D>();
+}
+
+void PlaneObject::Init()
+{
+	auto sp_shape = ShapeTable3D::GetInstance().GetShape("plane");
+	GetComponent<MeshRenderer>()->SetShape(sp_shape);
+
+	auto collider = AddComponent<MeshCollider3D>();
+}
+
+void PlaneObject::Update()
+{
 }

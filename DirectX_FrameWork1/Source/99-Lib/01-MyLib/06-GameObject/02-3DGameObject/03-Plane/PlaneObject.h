@@ -7,8 +7,11 @@ class PlaneObject : public GameObject3D
 protected:
 
 
-private:
+public:
 	PlaneObject();
+
+	void Init() override;
+	void Update() override;
 
 };
 

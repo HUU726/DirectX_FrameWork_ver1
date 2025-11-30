@@ -7,18 +7,23 @@
 #include "../../1000-Test/TestAnimation2D/TestAnimation2D.h"
 #include "../../1000-Test/TestEnemy/TestEnemy.h"
 
+
+#include "../../06-GameObject/02-3DGameObject/01-Cube/CubeObject.h"
+#include "../../06-GameObject/02-3DGameObject/02-Sqhere/SqhereObject.h"
+#include "../../06-GameObject/02-3DGameObject/03-Plane/PlaneObject.h"
+
+
 class TitleScene : public BaseScene
 {
 private:
-	int	flameCnt;	// フレームカウント
 	CameraObject2D camera2D;
 	CameraObject3D camera3D;
 
 	LightObject lightObject;
 
-	GameObject3D sqhereObject;
-	GameObject3D planeObject;
-	GameObject3D cubeObject;
+	SqhereObject sqhereObject;
+	PlaneObject planeObject;
+	CubeObject cubeObject;
 
 	TestModel testModel;
 	GroundObject groundObject;

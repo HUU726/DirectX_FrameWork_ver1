@@ -9,7 +9,6 @@
 Collider3D::Collider3D()
 {
 	Collider3DManager::GetInstance().AddCollider(this);
-
 	ComponentManager<Collider3D>::GetInstance().Add(this);
 }
 

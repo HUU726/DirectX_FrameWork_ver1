@@ -203,7 +203,7 @@ void SpriteAnimator::Stop(int _id)
 
 void SpriteAnimator::Init()
 {
-	if ( !(division == static_cast<const hft::HFFLOAT2>(1.f)) )
+	if (!(division == static_cast<const hft::HFFLOAT2>(1.f)))
 		SetDivisions(division);
 
 	auto comp = gameObject->GetComponent<SpriteRenderer>();
