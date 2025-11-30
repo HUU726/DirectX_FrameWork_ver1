@@ -42,6 +42,8 @@ public:
 	HINSTANCE GetHInstance() { return hInstance; }
 	int GetNCmdShow() { return nCmdShow; }
 
+	bool isLoop();
+
 	void Init(HINSTANCE _hInstance, int _nCmdShow);
 	void Run();
 	int UnInit();

@@ -7,7 +7,7 @@ template<>
 void ComponentManager<Collider3D>::Action()
 {
 	std::vector<Collider3D*> li_enableCol;
-	for (auto& collider : compornents)
+	for (auto& collider : components)
 	{
 		if (collider->GetIsActive())
 			li_enableCol.push_back(collider);

@@ -12,6 +12,7 @@ private:
 	bool isCreate = false;		// Mesh‚ğì‚Á‚½‚©‚Ç‚¤‚©
 	bool isRender = true;		// •`‰æˆ—‚ğ‚·‚é‚©‚Ç‚¤‚©
 
+
 public:
 	MeshRenderer();
 	MeshRenderer(const char* _filePath);

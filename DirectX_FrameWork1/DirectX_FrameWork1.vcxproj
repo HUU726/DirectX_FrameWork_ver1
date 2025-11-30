@@ -203,6 +203,9 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\01-System\System.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.h" />
@@ -271,6 +274,9 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\StaticMesh\StaticMesh.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestModel\TestModel.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\01-System\System.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

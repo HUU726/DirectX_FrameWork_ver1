@@ -1,8 +1,10 @@
 #include "Camera3D.h"
 
+#include "../../99-CompMng/ComponentManager.h"
 #include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../../../02-App/HF_Window.h"
+
 
 std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 {
@@ -95,6 +97,8 @@ Camera3D::Camera3D()
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
+
+	ComponentManager<Camera3D>::GetInstance().Add(this);
 }
 
 Camera3D::Camera3D(float _fov, float _aspectRatio, float _nearClip, float _farClip)
@@ -107,10 +111,16 @@ Camera3D::Camera3D(float _fov, float _aspectRatio, float _nearClip, float _farCl
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
+
+	auto& compMng = ComponentManager<Camera3D>::GetInstance();
+	compMng.Add(this);
+	compMng.SetType(COMP_MNG_TYPES::COMP_CAMERA3D);
 }
 
 Camera3D::~Camera3D()
-{}
+{
+	ComponentManager<Camera3D>::GetInstance().Remove(this);
+}
 
 void Camera3D::Init()
 {

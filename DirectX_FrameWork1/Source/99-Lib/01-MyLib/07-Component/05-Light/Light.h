@@ -19,6 +19,8 @@ private:
 	LightData data;
 
 public:
+	Light();
+	~Light();
 	void Init() override;
 	void Update() override;
 	void Action() override;

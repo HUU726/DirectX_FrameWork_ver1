@@ -195,6 +195,15 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -393,6 +402,15 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\IF_ComponentManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #include "GameObjectManager.h"
 
-
+#include "../GameObject.h"
 
 void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 {

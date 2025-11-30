@@ -24,6 +24,12 @@ enum ANIM_ID
 	RUN = 2,
 };
 
+
+TitleScene::~TitleScene()
+{
+
+}
+
 void TitleScene::Init()
 {
 	{	//2Dカメラ初期化
@@ -38,55 +44,6 @@ void TitleScene::Init()
 		p_trf->position = {0.f,0.f,-500.f,0.f};
 
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
-	}
-
-	{	//2Dオブジェクト初期化
-		{
-			gameObject2D.GetComponent<SpriteRenderer>();
-			gameObject2D.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTest.png");
-			SpriteAnimator* animator = gameObject2D.AddComponent<SpriteAnimator>(hft::HFFLOAT2(4,4));
-			hft::HFFLOAT2 div = animator->GetDivision();
-			{
-				SpriteAnimation anim(div, { 0,0 }, 5);
-				anim.SetID(ANIM_ID::WAIT);
-				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-				anim.SetPriority(0);
-				float flame = 40;
-
-				for (int i = 0; i < 5; i++)
-					anim.GetCell(i).flame = flame;
-
-				animator->AddAnimation(anim);
-			}
-			{
-				SpriteAnimation anim(div, { 1,1 }, 4);
-				anim.SetID(ANIM_ID::JUMP);
-				anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-				anim.SetPriority(1);
-				float flame(30);
-				for (int i = 0; i < 4; i++)
-					anim.GetCell(i).flame = flame;
-
-				animator->AddAnimation(anim);
-			}
-			{
-				SpriteAnimation anim(div, {2,1},7);
-				anim.SetID(ANIM_ID::RUN);
-				anim.SetType(SPRITE_ANIM_TYPE::BOOMERANG);
-				anim.SetPriority(2);
-				float flame = 15;
-
-				for ( int i = 0; i < 7; i++ )
-					anim.GetCell(i).flame = flame;
-
-				animator->AddAnimation(anim);
-			}
-
-		}
-
-		Transform* p_trf = gameObject2D.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
-		p_trf->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
 	}
 
 	{	//球体
@@ -111,7 +68,7 @@ void TitleScene::Init()
 		p_trf->scale = {100,100,100};
 	}
 
-	{	//モデル
+	{	//モデルテスト
 		testModel.Init();
 		Transform* p_trf = testModel.GetTransformPtr();
 		p_trf->position = { 0,0,500 };
@@ -125,6 +82,23 @@ void TitleScene::Init()
 		p_trf->scale = {50,10,50};
 	}
 
+	{	//プレイヤーテスト
+		testPlayer.Init();
+		Transform* p_trf = testPlayer.GetTransformPtr();
+		p_trf->position = { 0.f,0.f,-500.f,0.f };
+
+		camera3D.SetTransform(testPlayer.GetTransformPtr());
+		testPlayer.SetCameraObject3D(&camera3D);
+	}
+
+	
+
+	{	//アニメーション適用テスト
+		testAnimation2D.Init();
+	}
+	{	//エネミーテスト
+		testEnemy.Init();
+	}
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 }
@@ -136,92 +110,7 @@ void TitleScene::Input()
 
 void TitleScene::Update()
 {
-	camera2D.Update();
-	camera3D.Update();
-	lightObject.Update();
-	SpriteAnimator* animator = gameObject2D.GetComponent<SpriteAnimator>();
-
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		animator->Play(ANIM_ID::WAIT);
-	else
-		animator->Stop(WAIT);
-
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		animator->Play(ANIM_ID::JUMP);
-
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-		animator->Play(ANIM_ID::RUN);
-	else
-		animator->Stop(RUN);
-
-	animator->Update();
-
-	{
-		float spd = 100.f;
-		float deltaTime = Time::GetInstance().DeltaTime();
-
-		Transform* p_trf = camera3D.GetTransformPtr();
-
-		if (GetAsyncKeyState('Q') & 0x8000)
-			p_trf->rotation.y -= spd * deltaTime;
-		if ( GetAsyncKeyState('E') & 0x8000 )
-			p_trf->rotation.y += spd * deltaTime;
-		if ( GetAsyncKeyState('R') & 0x8000 )
-			p_trf->rotation.x -= spd * deltaTime;
-		if ( GetAsyncKeyState('F') & 0x8000 )
-			p_trf->rotation.x += spd * deltaTime;
 	
-		hft::HFFLOAT3 moveVec;
-		if (GetAsyncKeyState('D') & 0x8000)
-			moveVec += camera3D.GetRight();
-		if (GetAsyncKeyState('A') & 0x8000)
-			moveVec -= camera3D.GetRight();
-
-		if (GetAsyncKeyState('W') & 0x8000)
-			moveVec += camera3D.GetForward();
-		if (GetAsyncKeyState('S') & 0x8000)
-			moveVec -= camera3D.GetForward();
-
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-			moveVec.y += 1;
-		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-			moveVec.y -= 1;
-		
-		p_trf->position += moveVec * spd * deltaTime;
-
-	}
-	{	//デバッグ用
-		bool isDraw = false;
-		if (GetAsyncKeyState('M') & 0x0001)
-			isDraw = true;
-
-		if (isDraw)
-		{
-			Transform* p_cameraTrf = camera3D.GetTransformPtr();
-			Transform* p_lightTrf = lightObject.GetTransformPtr();
-			Transform* p_sqhereTrf = sqhereObject.GetTransformPtr();
-
-			std::cout << "Camera3D Position : " << p_cameraTrf->position.x << "," << p_cameraTrf->position.y << "," << p_cameraTrf->position.z << std::endl;
-			std::cout << "light    Position : " << p_lightTrf->position.x << "," << p_lightTrf->position.y << "," << p_lightTrf->position.z << std::endl;
-			std::cout << "sqhere   Position : " << p_sqhereTrf->position.x << "," << p_sqhereTrf->position.y << "," << p_sqhereTrf->position.z << std::endl << std::endl;
-
-			std::cout << "light    Rotation : " << p_lightTrf->rotation.x << "," << p_lightTrf->rotation.y << "," << p_lightTrf->rotation.z << std::endl;
-			std::cout << "sqhere   Rotation : " << p_sqhereTrf->rotation.x << "," << p_sqhereTrf->rotation.y << "," << p_sqhereTrf->rotation.z << std::endl;
-			std::cout << std::endl << std::endl << std::endl;
-		}
-	}
-
-	{
-		Transform* p_trf = sqhereObject.GetTransformPtr();
-		p_trf->rotation.x += 0.003f;
-		p_trf->rotation.y += 0.003f;
-		p_trf->rotation.z += 0.003f;
-	}
-
-
-	flameCnt++;
-	if (flameCnt > 10000000000000)
-		nextScene = std::make_unique<GameScene>();
 }
 
 void TitleScene::Draw()
@@ -229,9 +118,6 @@ void TitleScene::Draw()
 	sqhereObject.Draw();
 	planeObject.Draw();
 	cubeObject.Draw();
-	//lightObject.Draw();
-	gameObject2D.Draw();
-	//testModel.Draw();
 	groundObject.Draw();
 }
 

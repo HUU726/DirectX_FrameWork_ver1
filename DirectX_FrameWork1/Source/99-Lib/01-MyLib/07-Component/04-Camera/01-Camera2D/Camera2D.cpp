@@ -1,5 +1,6 @@
 #include "Camera2D.h"
 
+#include "../../99-CompMng/ComponentManager.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
 #include "../../../../../02-App/HF_Window.h"
@@ -92,6 +93,8 @@ Camera2D::Camera2D()
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
+
+	ComponentManager<Camera2D>::GetInstance().Add(this);
 }
 
 Camera2D::Camera2D(float _width, float _height, float _newarClip, float forClip)
@@ -104,10 +107,15 @@ Camera2D::Camera2D(float _width, float _height, float _newarClip, float forClip)
 	forward = { 0.f,0.f,1.f };
 	right = { 1.f,0.f,0.f };
 	up = { 0.f,1.f,0.f };
+
+	auto& compMng = ComponentManager<Camera2D>::GetInstance();
+	compMng.Add(this);
+	compMng.SetType(COMP_MNG_TYPES::COMP_CAMERA2D);
 }
 
 Camera2D::~Camera2D()
 {
+	ComponentManager<Camera2D>::GetInstance().Remove(this);
 }
 
 void Camera2D::Init()

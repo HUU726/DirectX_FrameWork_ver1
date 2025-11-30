@@ -8,6 +8,8 @@
 Texture2D myTexture : register(t0); //テクスチャー
 SamplerState mySampler : register(s0); //サンプラー
 
+
+
 // ピクセルシェーダーのエントリポイント
 float4 main(in PS_IN input) : SV_Target
 {

@@ -3,7 +3,18 @@
 
 #include "../../06-GameObject/GameObject.h"
 #include "../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
+#include "../99-CompMng/ComponentManager.h"
 
+
+Light::Light()
+{
+	ComponentManager<Light>::GetInstance().Add(this);
+}
+
+Light::~Light()
+{
+	ComponentManager<Light>::GetInstance().Remove(this);
+}
 
 void Light::Init()
 {

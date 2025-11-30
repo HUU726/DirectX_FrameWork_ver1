@@ -1,9 +1,8 @@
 #include "Game.h"
 
+#include "../02-App/Application.h"
 #include "../99-Lib/01-MyLib/02-Renderer/98-RendererManager/RendererManager.h"
-
 #include "../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
-
 #include "../99-Lib/01-MyLib/101-Time/Time.h"
 
 
@@ -19,17 +18,25 @@ Game::~Game()
 
 void Game::Init()
 {
-	SceneManager& sceneMng = SceneManager::GetInstance();
-	sceneMng.Init();
-
 	Time::GetInstance().SetFps(60);
 }
 
 void Game::Run()
 {
-	static SceneManager& sceneMng = SceneManager::GetInstance();
+	SceneManager& sceneMng = SceneManager::GetInstance();
+	Application& app = Application::GetInstance();
+	System& system = System::GetInstance();
+	int cnt = 0;
 
-	sceneMng.RunScene();
+	while (app.isLoop())
+	{
+		if ( !Time::GetInstance().Update() )
+		{
+			sceneMng.ChangeScene();
+			system.GameLoopPipeline();
+		}
+	}
+	
 }
 
 void Game::Uninit()

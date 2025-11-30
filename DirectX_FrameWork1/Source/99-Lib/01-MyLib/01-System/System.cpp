@@ -4,15 +4,12 @@
 #include "../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
 #include "../999-Shader/99-ShaderTable/ShaderTable.h"
 #include "../07-Component/99-CompMng/ComponentManager.h"
+#include "../08-Scene/02-SceneManager/SceneManager.h"
 
 System::System()
 {
-	ShapeTable2D::GetInstance();
-	ShapeTable3D::GetInstance();
-	hft::PixelShaderTable::GetInstance();
-	hft::VertexShaderTable::GetInstance();
-
-	compMngs.resize(COMP_MNG_TYPES::COMP_MAX);
+	int size = COMP_MNG_TYPES::COMP_MAX;
+	compMngs.resize(size);
 }
 
 void System::AddCompMng(IF_ComponentManager* _p_compMng)
@@ -20,13 +17,22 @@ void System::AddCompMng(IF_ComponentManager* _p_compMng)
 	auto it = std::find(compMngs.begin(), compMngs.end(), _p_compMng);
 	if ( it == compMngs.end())
 	{
-		compMngs[_p_compMng->GetType()] = _p_compMng;
+		int typeIndex = _p_compMng->GetType();
+		compMngs[typeIndex] = _p_compMng;
 	}
 }
 
 void System::InitSystem(HWND _hwnd)
 {
 	rendererMng.Init(_hwnd);
+
+	ShapeTable2D::GetInstance();
+	ShapeTable3D::GetInstance();
+	hft::PixelShaderTable::GetInstance();
+	hft::VertexShaderTable::GetInstance();
+
+	SceneManager& sceneMng = SceneManager::GetInstance();
+	sceneMng.Init();
 }
 void System::UnInitSystem()
 {
@@ -44,14 +50,15 @@ void System::GameLoopPipeline()
 
 void System::ClearManagersData()
 {
-	gameObjMng.Clear();
+	//gameObjMng.Clear();
 }
 
 
 
 void System::InputCompMngAction()
 {
-	compMngs[COMP_MNG_TYPES::COMP_INPUT]->Action();
+	if (compMngs[COMP_MNG_TYPES::COMP_INPUT] != nullptr )
+		compMngs[COMP_MNG_TYPES::COMP_INPUT]->Action();
 }
 
 void System::GameObjectMngAction()
@@ -64,7 +71,8 @@ void System::BeforeRender_CompMngsAction()
 	int compMngIndex = COMP_MNG_TYPES::COMP_INPUT + 1;
 	for (; compMngIndex < COMP_MNG_TYPES::COMP_BEFORE_RENDER; compMngIndex++)
 	{
-		compMngs[compMngIndex]->Action();
+		if (compMngs[compMngIndex] != nullptr )
+			compMngs[compMngIndex]->Action();
 	}
 }
 

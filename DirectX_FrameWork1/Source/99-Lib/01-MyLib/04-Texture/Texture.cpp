@@ -157,6 +157,7 @@ std::shared_ptr<Texture> TextureTable::LoadTexture(std::string _filePath)
 		RendererManager& rendererMng = RendererManager::GetInstance();
 
 		auto sp_texture = std::make_shared<Texture>();
+		sp_texture->filePath = _filePath;
 		ID3D11ShaderResourceView* p_srv = sp_texture->p_textureView;
 		::LoadTexture(_filePath.c_str(), &sp_texture->p_textureView);
 

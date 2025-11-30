@@ -18,9 +18,9 @@ void CameraObject3D::Init()
 
 void CameraObject3D::Update()
 {
+	if (p_standTransform != nullptr)
+	{
+		*p_transform = *p_standTransform;
+	}
 	p_comp_camera->Update();
-}
-
-void CameraObject3D::Draw()
-{
 }

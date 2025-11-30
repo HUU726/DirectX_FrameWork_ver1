@@ -5,9 +5,11 @@
 
 #include "../../99-CompMng/ComponentManager.h"
 
+
 SpriteRenderer::SpriteRenderer()
 {
 	ComponentManager<SpriteRenderer>::GetInstance().Add(this);
+
 	sp_shape = ShapeTable2D::GetInstance().GetShape("sprite");
 }
 
@@ -35,7 +37,7 @@ std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::string _name)
 
 std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::shared_ptr<hft::Polygon> _shape)
 {
-	sp_shape = ShapeTable2D::GetInstance().GetShape(_shape->name);
+	sp_shape = _shape;
     return sp_shape;
 }
 

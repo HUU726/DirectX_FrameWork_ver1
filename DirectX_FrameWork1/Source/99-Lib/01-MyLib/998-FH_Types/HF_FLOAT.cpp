@@ -162,7 +162,6 @@ void hft::HFFLOAT4::operator=(const HFFLOAT3& _value)
 	x = _value.x;
 	y = _value.y;
 	z = _value.z;
-	w = 0.f;
 }
 hft::HFFLOAT4 hft::HFFLOAT4::operator+(const HFFLOAT4& _value)
 {

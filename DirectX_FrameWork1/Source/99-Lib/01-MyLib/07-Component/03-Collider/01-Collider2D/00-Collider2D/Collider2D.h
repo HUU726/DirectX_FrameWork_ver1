@@ -38,6 +38,7 @@ protected:
 
 	CallbackOnCollisionEnter2D funcOnCollisionEnter = nullptr;
 
+
 public:
 	Collider2D();
 	~Collider2D();

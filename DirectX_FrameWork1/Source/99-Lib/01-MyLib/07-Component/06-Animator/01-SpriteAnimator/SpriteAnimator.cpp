@@ -19,7 +19,6 @@ SpriteAnimation::SpriteAnimation()
 
 SpriteAnimation::SpriteAnimation(hft::HFFLOAT2 _spriteDiv, hft::HFFLOAT2 _startIndex, float _cellNum)
 {
-
 	cellIndex = 0;
 	curFlame = 0;
 	moveVec = 1;
@@ -86,11 +85,6 @@ void SpriteAnimation::SendTex()
 
 void SpriteAnimation::Update()
 {
-
-	hft::HFFLOAT2 l_uv = cells.at(cellIndex).uv;
-	Sprite2DRenderer::GetInstance().SetTex(l_uv);
-
-
 	curFlame++;
 
 	if (cells.at(cellIndex).flame <= curFlame)
@@ -162,13 +156,14 @@ void SpriteAnimator::SetDivisions(hft::HFFLOAT2 _div)
 		hft::HFFLOAT2 cellScl;
 		cellScl.x = 1.0 / division.x;
 		cellScl.y = 1.0 / division.y;
-		auto polygon = ShapeTable2D::GetInstance().GetShape("sprite");
-		polygon->vertices[1].uv = { cellScl.x,0 };
-		polygon->vertices[2].uv = { 0,cellScl.y };
-		polygon->vertices[3].uv = { cellScl.x,cellScl.y };
-		hft::CreateVertexBuffer(polygon);
-		polygon->p_indexBuffer = ShapeTable2D::GetInstance().GetIndexBuffer("sprite");
-		comp->SetShape(polygon);
+		auto polygon = *ShapeTable2D::GetInstance().GetShape("sprite");
+		polygon.vertices[1].uv = { cellScl.x,0 };
+		polygon.vertices[2].uv = { 0,cellScl.y };
+		polygon.vertices[3].uv = { cellScl.x,cellScl.y };
+		auto sp_polygon = std::make_shared<hft::Polygon>(polygon);
+		hft::CreateVertexBuffer(sp_polygon);
+		sp_polygon->p_indexBuffer = ShapeTable2D::GetInstance().GetIndexBuffer("sprite");
+		comp->SetShape(sp_polygon);
 	}
 }
 
@@ -210,6 +205,15 @@ void SpriteAnimator::Init()
 {
 	if ( !(division == static_cast<const hft::HFFLOAT2>(1.f)) )
 		SetDivisions(division);
+
+	auto comp = gameObject->GetComponent<SpriteRenderer>();
+
+	auto& shader = comp->GetShape()->material.shader;
+	auto VS_anim = hft::VertexShaderTable::GetInstance().CreateShader("Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl");
+	auto PS_anim = hft::PixelShaderTable::GetInstance().CreateShader("Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl");
+	
+	shader.SetVertexShader(VS_anim);
+	shader.SetPixelShader(PS_anim);
 }
 
 void SpriteAnimator::Update()

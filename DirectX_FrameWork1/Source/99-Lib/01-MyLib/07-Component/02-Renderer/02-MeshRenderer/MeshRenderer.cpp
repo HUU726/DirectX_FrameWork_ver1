@@ -9,6 +9,7 @@
 MeshRenderer::MeshRenderer()
 {
 	ComponentManager<MeshRenderer>::GetInstance().Add(this);
+
 	p_meshFilter = new	MeshFilter;
 	isCreate = true;
 }

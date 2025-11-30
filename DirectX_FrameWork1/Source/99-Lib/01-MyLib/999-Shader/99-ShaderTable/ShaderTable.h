@@ -27,6 +27,7 @@ namespace hft
 		}
 
 		std::shared_ptr<VertexShader> GetShader(std::string _filePath);
+		std::shared_ptr<VertexShader> CreateShader(std::string _filePath);
 
 		void AddShader(std::shared_ptr<VertexShader> _shader);
 		void ClearTable();
@@ -52,6 +53,7 @@ namespace hft
 		}
 
 		std::shared_ptr<PixelShader> GetShader(std::string _filePath);
+		std::shared_ptr<PixelShader> CreateShader(std::string _filePath);
 
 		void AddShader(std::shared_ptr<PixelShader> _shader);
 		void ClearTable();
@@ -59,7 +61,7 @@ namespace hft
 	};
 
 
-	void LoadVertexShader(std::string _filePath);
-	void LoadPixelShader(std::string _filePath);
+	std::shared_ptr<VertexShader> LoadVertexShader(std::string _filePath);
+	std::shared_ptr<PixelShader> LoadPixelShader(std::string _filePath);
 
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../00-Component/Component.h"
 #include "../../../998-FH_Types/HF_FLOAT.h"
 
 #include <vector>
@@ -62,6 +61,8 @@ public:
 };
 
 /******************************************************************************************/
+#include "../../00-Component/Component.h"
+
 
 class SpriteAnimator : public Component
 {
@@ -69,7 +70,6 @@ private:
 	std::vector<SpriteAnimation> animations;	//アニメーション(優先度の高いアニメーションほど若い添え字)
 	int animIndex;	//現在アクティブなアニメーション
 	hft::HFFLOAT2 division;
-
 
 public:
 	SpriteAnimator();

@@ -1,17 +1,11 @@
 #pragma once
 #include "../01-Scenes/00-BaseScene/BaseScene.h"
 
-
-#include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
-
 class SceneManager
 {
 private:
 	std::unique_ptr<BaseScene> curScene;
-
-	GameObjectManager& gameObjMng = GameObjectManager::GetInstance();
-
-
+	std::unique_ptr<BaseScene> nextScene;
 
 	SceneManager() = default;
 	~SceneManager() = default;
@@ -31,7 +25,7 @@ public:
 	void UnInit();
 
 	void ChangeScene();	// シーン変更
-	void ChangeScene(std::unique_ptr<BaseScene> _uq_scene);
+	void LoadScene(std::unique_ptr<BaseScene> _uq_scene);
 	void SetUpScene();	// シーンのセットアップ
 	void RunScene();
 	void UnloadScene();	// シーンの後片付け

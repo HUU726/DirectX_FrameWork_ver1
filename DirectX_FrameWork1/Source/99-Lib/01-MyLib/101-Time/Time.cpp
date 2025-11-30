@@ -42,6 +42,6 @@ bool Time::Update()
 		return true;		//１フレーム未満
 
 	preTime = curTime;
-	curTime = std::chrono::high_resolution_clock::now();
+	curTime = nowTime;
 	return false;	//１フレームを超えている
 }

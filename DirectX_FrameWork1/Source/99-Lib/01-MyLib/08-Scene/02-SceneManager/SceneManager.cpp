@@ -29,7 +29,6 @@ void SceneManager::Draw()
 
 void SceneManager::Init()
 {
-	RendererManager::GetInstance();
 	curScene = std::make_unique<TitleScene>();
 	SetUpScene();
 }
@@ -40,25 +39,19 @@ void SceneManager::UnInit()
 
 void SceneManager::ChangeScene()
 {
-	auto scene = curScene->GetNextScene();
-	if (scene != nullptr)
+	if (nextScene != nullptr)
 	{
 		UnloadScene();
-		curScene = std::move(scene);
+		curScene = std::move(nextScene);
 		Collider2DManager::GetInstance().UnInit();
 		SetUpScene();
 	}
 }
 
-void SceneManager::ChangeScene(std::unique_ptr<BaseScene> _uq_scene)
+void SceneManager::LoadScene(std::unique_ptr<BaseScene> _uq_scene)
 {
 	if (_uq_scene != nullptr)
-	{
-		UnloadScene();
-		curScene = std::move(_uq_scene);
-		Collider2DManager::GetInstance().UnInit();
-		SetUpScene();
-	}
+		nextScene = std::move(_uq_scene);
 }
 
 void SceneManager::SetUpScene()
@@ -73,7 +66,9 @@ void SceneManager::RunScene()
 	Draw();
 }
 
+#include "../../01-System/System.h"
 void SceneManager::UnloadScene()
 {
+	System::GetInstance().ClearManagersData();
 	curScene->UnInit();
 }

@@ -1,7 +1,6 @@
 #include "Application.h"
 
 #include "HF_Window.h"
-#include "../99-Lib/01-MyLib/101-Time/Time.h"
 #include "../03-Game/Game.h"
 
 
@@ -31,6 +30,11 @@ void Application::InitSystem()
 	System::GetInstance().InitSystem(hWnd);
 }
 
+bool Application::isLoop()
+{
+	return p_window->Update();
+}
+
 void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
 {
 	hInstance = _hInstance;
@@ -38,25 +42,13 @@ void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
 	InitWindow();
 	InitSystem();
 	CreateConsole();
-
-	Time::GetInstance().SetFps(60);
 }
 
 void Application::Run()
 {
-	static Game& game = Game::GetInstance();
+	Game& game = Game::GetInstance();
 	game.Init();
-
-	while (true)
-	{
-		if (!p_window->Update())
-			break;
-
-		if (!Time::GetInstance().Update())
-			game.Run();
-
-	}
-
+	game.Run();
 	game.Uninit();
 
 }

@@ -6,18 +6,25 @@
 #include "../../01-System/System.h"
 
 
+#include "../02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+#include "../02-Renderer/02-MeshRenderer/MeshRenderer.h"
+#include "../03-Collider/01-Collider2D/00-Collider2D/Collider2D.h"
+#include "../03-Collider/02-Collider3D/00-Collider3D/Collider3D.h"
+#include "../04-Camera/01-Camera2D/Camera2D.h"
+#include "../04-Camera/02-Camera3D/Camera3D.h"
+#include "../05-Light/Light.h"
+#include "../06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+
+
 template<class T>
 class ComponentManager : public IF_ComponentManager
 {
 private:
 	using Self = ComponentManager<T>;
 
-	std::vector<T*> compornents;
+	std::vector<T*> components;
 
-	ComponentManager()
-	{
-		System::GetInstance().AddCompMng(this);
-	}
+	ComponentManager();
 
 public:
 	static Self& GetInstance()
@@ -26,14 +33,18 @@ public:
 		return instance;
 	}
 
-	void Add(T* _p_comp) { compornents.push_back(_p_comp); }
+	void Add(T* _p_comp) { components.push_back(_p_comp); }
 	void Remove(T* _p_comp)
 	{
-		auto it = std::find(compornents.begin(), compornents.end(), _p_comp);
-		if ( it != compornents.end() )
+		auto it = std::find(components.begin(), components.end(), _p_comp);
+		if ( it != components.end() )
 		{
-			compornents.erase(it);
+			components.erase(it);
 		}
+	}
+	void AllRemove()
+	{
+		components.clear();
 	}
 
 	void Action() override;
@@ -46,7 +57,7 @@ template<class T>
 void ComponentManager<T>::Action()
 {
 	{
-		for (auto& comp : compornents)
+		for (auto& comp : components)
 		{
 			if (!comp->GetIsActive())
 				continue;
@@ -56,11 +67,45 @@ void ComponentManager<T>::Action()
 	}
 }
 
+template<class T>
+ComponentManager<T>::ComponentManager()
+{
+
+}
+
 
 class Collider2D;
+template<>
+ComponentManager<Collider2D>::ComponentManager();
 template<>
 void ComponentManager<Collider2D>::Action();
 
 class Collider3D;
 template<>
+ComponentManager<Collider3D>::ComponentManager();
+template<>
 void ComponentManager<Collider3D>::Action();
+
+class SpriteAnimator;
+template<>
+ComponentManager<SpriteAnimator>::ComponentManager();
+
+class Camera3D;
+template<>
+ComponentManager<Camera3D>::ComponentManager();
+
+class Camera2D;
+template<>
+ComponentManager<Camera2D>::ComponentManager();
+
+class Light;
+template<>
+ComponentManager<Light>::ComponentManager();
+
+class MeshRenderer;
+template<>
+ComponentManager<MeshRenderer>::ComponentManager();
+
+class SpriteRenderer;
+template<>
+ComponentManager<SpriteRenderer>::ComponentManager();

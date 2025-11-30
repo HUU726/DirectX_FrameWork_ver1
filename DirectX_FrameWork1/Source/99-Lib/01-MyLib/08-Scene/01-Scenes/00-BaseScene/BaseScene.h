@@ -20,7 +20,7 @@ protected:
 
 public:
 	BaseScene() : nextScene(nullptr) {}
-	~BaseScene() = default;
+	virtual ~BaseScene() {}
 
 	std::unique_ptr<BaseScene> GetNextScene()
 	{

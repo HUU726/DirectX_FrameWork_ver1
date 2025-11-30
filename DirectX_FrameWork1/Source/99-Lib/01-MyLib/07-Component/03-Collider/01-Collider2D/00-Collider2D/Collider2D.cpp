@@ -14,8 +14,8 @@
 
 Collider2D::Collider2D()
 {
-	ComponentManager<Collider2D>::GetInstance().Add(this);
 	Collider2DManager::GetInstance().AddCollider(this);
+	ComponentManager<Collider2D>::GetInstance().Add(this);
 }
 
 Collider2D::~Collider2D()
