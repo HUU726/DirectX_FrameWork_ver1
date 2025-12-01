@@ -1,4 +1,6 @@
 #include "BoxCollider3D.h"
+
+#include "../../../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
 #include "../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../998-FH_Types/TransformMatrix.h"
@@ -28,6 +30,14 @@ void BoxCollider3D::Init()
 	Transform transform(gameObject->GetTransform());
     position = transform.position;
     size = transform.scale;
+	
+	auto mesh = ShapeTable3D::GetInstance().GetShape("cube");
+	auto vertices = mesh->vertices;
+
+	for ( auto vertex : vertices )
+	{
+		worldPos.push_back(vertex.position * size);
+	}
 }
 
 void BoxCollider3D::Update()

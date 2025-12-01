@@ -26,11 +26,11 @@ void Game::Run()
 	SceneManager& sceneMng = SceneManager::GetInstance();
 	Application& app = Application::GetInstance();
 	System& system = System::GetInstance();
-	int cnt = 0;
+	Time& time = Time::GetInstance();
 
 	while (app.isLoop())
 	{
-		if ( !Time::GetInstance().Update() )
+		if (!time.Update())
 		{
 			sceneMng.ChangeScene();
 			system.GameLoopPipeline();

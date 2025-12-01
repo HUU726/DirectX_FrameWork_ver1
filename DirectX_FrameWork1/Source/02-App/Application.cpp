@@ -39,9 +39,9 @@ void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
 {
 	hInstance = _hInstance;
 	nCmdShow = _nCmdShow;
+	CreateConsole();
 	InitWindow();
 	InitSystem();
-	CreateConsole();
 }
 
 void Application::Run()

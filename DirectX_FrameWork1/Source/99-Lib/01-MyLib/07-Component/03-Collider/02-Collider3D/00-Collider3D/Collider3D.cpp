@@ -84,14 +84,17 @@ bool SqhereMesh(Collider3D* _sqhere, Collider3D* _mesh)
 	float r = sqherePtr->GetRadius();
 
 	auto sp_mesh = meshPtr->GetMesh();
-	auto vertices = sp_mesh->vertices;
+	auto li_vertexWorldPos = meshPtr->GetVertexWorldScales();
+	auto meshPos = meshPtr->GetGameObject()->GetTransform().position;
 	auto indices = sp_mesh->indices;
 
-	for ( int i = 0; i < indices.size() - 3; i+=3 )
+	for ( int i = 0; i < indices.size() - 2; i+=3 )
 	{
-		hft::HFFLOAT3 posA = vertices[indices[i + 0]].position;
-		hft::HFFLOAT3 posB = vertices[indices[i + 1]].position;
-		hft::HFFLOAT3 posC = vertices[indices[i + 2]].position;
+		hft::HFFLOAT3 posA = li_vertexWorldPos[indices[i + 0]] + meshPos;
+		hft::HFFLOAT3 posB = li_vertexWorldPos[indices[i + 1]] + meshPos;
+		hft::HFFLOAT3 posC = li_vertexWorldPos[indices[i + 2]] + meshPos;
+
+		
 
 		hft::HFFLOAT3 nearPos = CloasestPointOnTriangle(sqherePos, posA, posB, posC);
 

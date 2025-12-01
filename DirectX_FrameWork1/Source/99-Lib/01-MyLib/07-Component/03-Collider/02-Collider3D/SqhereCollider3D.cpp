@@ -29,6 +29,7 @@ void SqhereCollider3D::Init()
     Transform transform = gameObject->GetTransform();
     position = transform.position;
     size = transform.scale;
+	radius = transform.scale.x / 2.0f;
 }
 
 void SqhereCollider3D::Update()

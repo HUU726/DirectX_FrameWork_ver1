@@ -5,6 +5,7 @@
 class BoxCollider3D : public Collider3D
 {
 private:
+	std::vector<hft::HFFLOAT3> worldPos;
 
 public:
 	bool CollideWith(Collider3D* _p_col) override;

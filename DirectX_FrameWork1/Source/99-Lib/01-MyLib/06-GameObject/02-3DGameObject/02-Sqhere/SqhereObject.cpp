@@ -22,4 +22,12 @@ void SqhereObject::Init()
 
 void SqhereObject::Update()
 {
+	if (GetAsyncKeyState('K') & 0x8000 )
+		p_transform->position.z -= 0.5f;
+	if (GetAsyncKeyState('I') & 0x8000 )
+		p_transform->position.z += 0.5f;
+	if (GetAsyncKeyState('J') & 0x8000 )
+		p_transform->position.x -= 0.5f;
+	if ( GetAsyncKeyState('L') & 0x8000 )
+		p_transform->position.x += 0.5f;
 }

@@ -19,13 +19,6 @@
 
 
 
-enum ANIM_ID
-{
-	WAIT = 0,
-	JUMP = 1,
-	RUN = 2,
-};
-
 
 TitleScene::~TitleScene()
 {
@@ -52,21 +45,21 @@ void TitleScene::Init()
 		sqhereObject.Init();
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = sqhereObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{0.f,200.f,-100.f};
+		p_trf->position = hft::HFFLOAT3{0.f,200.f,0.f};
 		p_trf->rotation = { 0,0,0 };
 		p_trf->scale = hft::HFFLOAT3{100.f,100.f,100.f};
 	}
 	{	//”Â
 		planeObject.Init();
 		Transform* p_trf = planeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 50.f,200.f,-50.f };
-		p_trf->rotation = hft::HFFLOAT3{ 0,0,90 };
+		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
+		p_trf->rotation = hft::HFFLOAT3{ 0,0,0 };
 	}
 	{	//—§•û‘Ì
 		cubeObject.Init();
 		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 		Transform* p_trf = cubeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
+		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,100.f };
 		p_trf->scale = {100,100,100};
 	}
 
