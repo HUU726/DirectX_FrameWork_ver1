@@ -16,6 +16,7 @@
 #include "../07-Component/01-Transform/Transform.h"
 #include "Time.h"
 
+class Collider;
 
 class GameObject
 {
@@ -85,6 +86,10 @@ public:
 
 	void InitComponent();
 	void UpdateComponent();
+
+	virtual void OnCollisionEnter(Collider* _p_collider) {}
+	virtual void OnCollisionStay(Collider* _p_collider) {}
+	virtual void OnCollisionExit(Collider* _p_collider) {}
 
 	virtual void Init() = 0;
 	virtual void Update() = 0;

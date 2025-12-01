@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\00-Collider\Collider.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\03-Plane\PlaneObject.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\00-Collider\Collider.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\03-Plane\PlaneObject.h" />

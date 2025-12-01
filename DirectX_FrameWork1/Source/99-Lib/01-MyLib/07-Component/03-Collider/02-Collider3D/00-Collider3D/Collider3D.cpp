@@ -3,6 +3,7 @@
 
 #include "../../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
 
+#include "../../../../06-GameObject/02-3DGameObject/GameObject3D.h"
 #include "../../../99-CompMng/ComponentManager.h"
 
 
@@ -10,6 +11,8 @@ Collider3D::Collider3D()
 {
 	Collider3DManager::GetInstance().AddCollider(this);
 	ComponentManager<Collider3D>::GetInstance().Add(this);
+
+	funcOnCollisionEnter = [this](Collider* _p_collider) { gameObject->OnCollisionEnter(_p_collider); };
 }
 
 Collider3D::~Collider3D()
@@ -23,7 +26,7 @@ void Collider3D::SetFuncCollisionEnter(CallbackOnCollisionEnter3D _func)
 }
 
 
-void Collider3D::OnCollisionEnter3D(Collider3D* _p_col)
+void Collider3D::OnCollisionEnter3D(Collider* _p_col)
 {
 	if (funcOnCollisionEnter != nullptr)
 		funcOnCollisionEnter(_p_col);

@@ -207,6 +207,9 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\00-Collider\Collider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -417,6 +420,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\00-Collider\Collider.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
