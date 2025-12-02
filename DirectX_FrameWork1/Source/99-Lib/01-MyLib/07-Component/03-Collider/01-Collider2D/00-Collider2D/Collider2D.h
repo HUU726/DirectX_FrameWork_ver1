@@ -36,8 +36,8 @@ public:
 	Collider2D();
 	~Collider2D();
 
-	SHAPE_2D GetShape() { return shape; }
-	COLLISION_STATE GetState() { return state; }
+	SHAPE_2D GetShape() const { return shape; }
+	COLLISION_STATE GetState() const { return state; }
 	void SetState(COLLISION_STATE _state) { state = _state; }
 
 	virtual bool CollideWith(Collider2D* _collider) = 0;

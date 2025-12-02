@@ -9,11 +9,6 @@
 
 namespace hft
 {
-	std::string VertexShader::GetFilePath()
-	{
-		return filePath;
-	}
-
 	void VertexShader::SetGPU()
 	{
 		auto deviceContext = RendererManager::GetInstance().GetDeviceContext();
@@ -30,10 +25,6 @@ namespace hft
 
 
 
-	std::string PixelShader::GetFilePath()
-	{
-		return filePath;
-	}
 
 	void PixelShader::SetGPU()
 	{

@@ -42,7 +42,7 @@ public:
 	int GetID() const { return id; }
 	bool GetActive() const { return isActive; }
 	int GetPriority() const { return priority; }
-	SpriteAnimationCell& GetCell(int _index) { return cells.at(_index); }
+	SpriteAnimationCell& GetCellRef(int _index) { return cells.at(_index); }
 	SPRITE_ANIM_TYPE GetType() const { return type; }
 
 	/*** セッター ***/
@@ -80,7 +80,7 @@ public:
 	void SetDivisions(hft::HFFLOAT2 _div);
 
 	/*** ゲッター ***/
-	hft::HFFLOAT2 GetDivision() { return division; }
+	hft::HFFLOAT2 GetDivision() const { return division; }
 
 	void SendTex();
 	void Play(int _id);

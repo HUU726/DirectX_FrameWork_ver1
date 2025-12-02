@@ -26,7 +26,7 @@ namespace hft
 			return instance;
 		}
 
-		std::shared_ptr<VertexShader> GetShader(std::string _filePath);
+		std::shared_ptr<VertexShader> GetShader(std::string _filePath) const;
 		std::shared_ptr<VertexShader> CreateShader(std::string _filePath);
 
 		void AddShader(std::shared_ptr<VertexShader> _shader);
@@ -52,7 +52,7 @@ namespace hft
 			return instance;
 		}
 
-		std::shared_ptr<PixelShader> GetShader(std::string _filePath);
+		std::shared_ptr<PixelShader> GetShader(std::string _filePath) const;
 		std::shared_ptr<PixelShader> CreateShader(std::string _filePath);
 
 		void AddShader(std::shared_ptr<PixelShader> _shader);

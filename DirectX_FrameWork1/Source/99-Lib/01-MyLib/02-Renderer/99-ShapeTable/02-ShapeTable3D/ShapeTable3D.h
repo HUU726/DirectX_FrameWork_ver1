@@ -27,7 +27,7 @@ public:
 	}
 	void AddShape(hft::Mesh& _shape);
 	void AddShape(std::shared_ptr<hft::Mesh> _sp_shape);
-	std::shared_ptr<hft::Mesh> GetShape(std::string _name) { return table[_name]; }
+	std::shared_ptr<hft::Mesh> GetShape(std::string _name) const { return table.at(_name); }
 	void ClearTable();
 
 };

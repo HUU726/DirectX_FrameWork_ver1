@@ -19,7 +19,7 @@ public:
 	~MeshFilter();
 	std::shared_ptr<hft::Mesh> SetMesh(std::string _name);
 	std::shared_ptr<hft::Mesh> SetMesh(std::shared_ptr<hft::Mesh> _sp_mesh);
-	std::shared_ptr<hft::Mesh> GetMesh() { return sp_mesh; }
+	std::shared_ptr<hft::Mesh> const GetMesh() { return sp_mesh; }
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);
 
 	void Init() override;

@@ -17,7 +17,7 @@ void TestEnemy::Init()
 
 		for ( int i = 0; i < 9; i++ )
 		{
-			anim.GetCell(i).flame = flame;
+			anim.GetCellRef(i).flame = flame;
 		}
 
 		p_spriteAnimator->AddAnimation(anim);

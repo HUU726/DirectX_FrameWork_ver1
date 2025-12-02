@@ -19,7 +19,7 @@ namespace hft
 		void SetFilePath(std::string _filePath) { filePath = _filePath; }
 		ID3D11VertexShader* GetDirectXVertexShader() { return p_vertexShader; }
 		ID3D11InputLayout* GetInputLayout() { return p_inputLayout; }
-		std::string GetFilePath();
+		std::string GetFilePath() const { return filePath; };
 		void SetDirectXVertexShader(ID3D11VertexShader* _p_shader) { p_vertexShader = _p_shader; }
 		void SetDirectXInputLayout(ID3D11InputLayout* _p_inputLayout) { p_inputLayout = _p_inputLayout; }
 		void SetGPU();
@@ -35,7 +35,7 @@ namespace hft
 
 	public:
 		PixelShader(){}
-		std::string GetFilePath();
+		std::string GetFilePath() const { return filePath; };
 		ID3D11PixelShader* GetDirectXPixelShader() { return p_pixelShader; }
 		void SetFilePath(std::string _filePath) { filePath = _filePath; }
 		void SetDirectXPixelShader(ID3D11PixelShader* _p_shader) { p_pixelShader = _p_shader; }

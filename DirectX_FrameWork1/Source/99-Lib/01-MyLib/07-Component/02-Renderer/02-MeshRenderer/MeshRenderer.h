@@ -20,8 +20,8 @@ public:
 	~MeshRenderer();
 	std::shared_ptr<hft::Mesh> SetShape(std::string _name);
 	std::shared_ptr<hft::Mesh> SetShape(std::shared_ptr<hft::Mesh> _shape);
-	std::shared_ptr<hft::Mesh> GetShape() { return p_meshFilter->GetMesh(); }
-	std::shared_ptr<Texture> GetTexture() { return sp_texture; }
+	std::shared_ptr<hft::Mesh> const GetShape() { return p_meshFilter->GetMesh(); }
+	std::shared_ptr<Texture> GetTexture() const { return sp_texture; }
 
 	std::shared_ptr<Texture> LoadTexture(const char* _filePath);
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);

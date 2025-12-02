@@ -72,13 +72,13 @@ public:
 		li_comp.clear();
 	}
 
-	int GetID() { return id; }
+	int GetID() const { return id; }
 	const Transform& GetTransform() const { return *p_transform; }
-	Transform* GetTransformPtr() { return p_transform; }
-	std::string GetName() { return name; }
-	std::string GetTag() { return tag; }
-	bool GetIsActive() { return isActive; }
-	bool GetIsRender() { return isRender; }
+	Transform* GetTransformPtr() const { return p_transform; }
+	std::string GetName() const { return name; }
+	std::string GetTag() const { return tag; }
+	bool GetIsActive() const { return isActive; }
+	bool GetIsRender() const { return isRender; }
 
 	void SetID(int _id) { id = _id; }
 	void SetIsActive(bool _is) { isActive = _is; }

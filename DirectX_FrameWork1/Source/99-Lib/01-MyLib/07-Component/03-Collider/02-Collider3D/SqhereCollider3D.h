@@ -13,7 +13,7 @@ public:
 	bool CollideWithSqhere(Collider3D* _p_col) override;
 	bool CollideWithMesh(Collider3D* _p_col) override;
 
-	float GetRadius() { return radius; }
+	float GetRadius() const { return radius; }
 
 	void Init() override;
 	void Update() override;

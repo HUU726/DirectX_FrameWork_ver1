@@ -9,10 +9,10 @@ namespace hft
 	{
 	}
 
-	std::shared_ptr<VertexShader> VertexShaderTable::GetShader(std::string _filePath)
+	std::shared_ptr<VertexShader> VertexShaderTable::GetShader(std::string _filePath) const
 	{
 		if (table.count(_filePath))
-			return table[_filePath];
+			return table.at(_filePath);
 
 		return nullptr;
 	}
@@ -56,11 +56,11 @@ namespace hft
 
 	}
 
-	std::shared_ptr<PixelShader> PixelShaderTable::GetShader(std::string _filePath)
+	std::shared_ptr<PixelShader> PixelShaderTable::GetShader(std::string _filePath) const
 	{
 		if (table.count(_filePath))
 		{
-			return table[_filePath];
+			return table.at(_filePath);
 		}
 		
 		return nullptr;

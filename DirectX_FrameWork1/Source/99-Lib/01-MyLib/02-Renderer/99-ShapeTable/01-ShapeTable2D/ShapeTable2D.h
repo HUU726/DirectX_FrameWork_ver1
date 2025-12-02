@@ -26,8 +26,8 @@ public:
 		return instance;
 	}
 	void AddShape(hft::Polygon& _shape);
-	std::shared_ptr<hft::Polygon> GetShape(std::string _name) { return table[_name]; }
-	ID3D11Buffer* GetIndexBuffer(std::string _name) { return table[_name]->p_indexBuffer; }
+	std::shared_ptr<hft::Polygon> GetShape(std::string _name) const { return table.at(_name); }
+	ID3D11Buffer* GetIndexBuffer(std::string _name) const { return table.at(_name)->p_indexBuffer; }
 	void ClearTable();
 
 };

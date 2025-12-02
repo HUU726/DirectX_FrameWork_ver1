@@ -23,7 +23,7 @@ void TestAnimation2D::Init()
 		float flame = 40;
 
 		for ( int i = 0; i < 5; i++ )
-			anim.GetCell(i).flame = flame;
+			anim.GetCellRef(i).flame = flame;
 
 		animator->AddAnimation(anim);
 	}
@@ -34,7 +34,7 @@ void TestAnimation2D::Init()
 		anim.SetPriority(1);
 		float flame(30);
 		for ( int i = 0; i < 4; i++ )
-			anim.GetCell(i).flame = flame;
+			anim.GetCellRef(i).flame = flame;
 
 		animator->AddAnimation(anim);
 	}
@@ -46,7 +46,7 @@ void TestAnimation2D::Init()
 		float flame = 15;
 
 		for ( int i = 0; i < 7; i++ )
-			anim.GetCell(i).flame = flame;
+			anim.GetCellRef(i).flame = flame;
 
 		animator->AddAnimation(anim);
 	}

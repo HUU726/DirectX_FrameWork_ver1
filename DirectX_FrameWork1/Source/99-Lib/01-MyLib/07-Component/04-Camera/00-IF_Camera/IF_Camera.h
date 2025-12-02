@@ -36,11 +36,11 @@ protected:
 
 public:
 	/*** ゲッター ***/
-	DirectX::XMMATRIX GetMatrixView() { return matrixView; }
-	DirectX::XMMATRIX GetMatrixProj() { return matrixProj; }
-	hft::HFFLOAT3 GetForward() { return forward; }
-	hft::HFFLOAT3 GetRight() { return right; }
-	hft::HFFLOAT3 GetUp() { return up; }
+	DirectX::XMMATRIX GetMatrixView() const { return matrixView; }
+	DirectX::XMMATRIX GetMatrixProj() const { return matrixProj; }
+	hft::HFFLOAT3 GetForward() const { return forward; }
+	hft::HFFLOAT3 GetRight() const { return right; }
+	hft::HFFLOAT3 GetUp() const { return up; }
 
 	/*** セッター ***/
 	void SetTarget(GameObject* _p_target) { p_target = _p_target; }

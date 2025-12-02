@@ -24,8 +24,8 @@ public:
 	}
 
 	/*** ÉQÉbÉ^Å[ ***/
-	ID3D11Device* GetDevice() { return p_Device; }
-	ID3D11DeviceContext* GetDeviceContext() { return p_DeviceContext; }
+	ID3D11Device* GetDevice() const { return p_Device; }
+	ID3D11DeviceContext* GetDeviceContext() const { return p_DeviceContext; }
 
 	HRESULT Init(HWND _hwnd);
 	void UnInit();

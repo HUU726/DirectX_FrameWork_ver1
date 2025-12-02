@@ -10,9 +10,9 @@ private:
 public:
 	CameraObject2D();
 	~CameraObject2D();
-	hft::HFFLOAT3 GetForward() {return p_comp_camera->GetForward(); }
-	hft::HFFLOAT3 GetRight() {return p_comp_camera->GetRight(); }
-	hft::HFFLOAT3 GetUp() {return p_comp_camera->GetUp(); }
+	hft::HFFLOAT3 GetForward() const { return p_comp_camera->GetForward(); }
+	hft::HFFLOAT3 GetRight() const { return p_comp_camera->GetRight(); }
+	hft::HFFLOAT3 GetUp() const { return p_comp_camera->GetUp(); }
 	void Init() override;
 	void Update() override;
 	void Draw() override;

@@ -35,9 +35,6 @@ public:
 	~TitleScene() override;
 
 	void Init() override;
-	void Input() override;
-	void Update() override;
-	void Draw() override;
 	void UnInit() override;
 
 };

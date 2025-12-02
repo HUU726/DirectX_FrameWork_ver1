@@ -5,27 +5,6 @@
 #include "../01-Scenes/TitleScene.h"
 
 
-void SceneManager::Input()
-{
-	curScene->Input();
-}
-
-void SceneManager::Update()
-{
-	ChangeScene();
-	curScene->Update();
-	Collider2DManager::GetInstance().Update();
-}
-
-void SceneManager::Draw()
-{
-	static RendererManager& rendererMng = RendererManager::GetInstance();
-	rendererMng.ClearScreen();
-	curScene->Draw();
-	rendererMng.SwapChain();
-}
-
-
 
 void SceneManager::Init()
 {
@@ -57,13 +36,6 @@ void SceneManager::LoadScene(std::unique_ptr<BaseScene> _uq_scene)
 void SceneManager::SetUpScene()
 {
 	curScene->Init();
-}
-
-void SceneManager::RunScene()
-{
-	Input();
-	Update();
-	Draw();
 }
 
 #include "../../01-System/System.h"

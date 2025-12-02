@@ -25,6 +25,6 @@ protected:
 public:
 
 	void SetType(COMP_MNG_TYPES _type) { type = _type; }
-	COMP_MNG_TYPES GetType() { return type; }
+	COMP_MNG_TYPES GetType() const { return type; }
 	virtual void Action() = 0;
 };

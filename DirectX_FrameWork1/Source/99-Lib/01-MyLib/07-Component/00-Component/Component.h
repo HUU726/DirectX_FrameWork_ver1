@@ -22,9 +22,9 @@ public:
 	Component() : gameObject(nullptr), isActive(true) {};
 	virtual ~Component() = default;
 
-	void SetGameObject(GameObject* _p_gameObject) { this->gameObject = _p_gameObject; }
-	bool GetIsActive() { return isActive; }
-	GameObject* GetGameObject() { return this->gameObject; }
+	void SetGameObject(GameObject* _p_gameObject) { gameObject = _p_gameObject; }
+	bool GetIsActive() const { return isActive; }
+	GameObject* GetGameObject() const { return gameObject; }
 
 
 	virtual void Init() = 0;
