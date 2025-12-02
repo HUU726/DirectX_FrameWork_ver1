@@ -54,6 +54,7 @@ bool MeshCollider3D::CollideWithMesh(Collider3D* _p_col)
 
 void MeshCollider3D::Init()
 {
+	InitCallbackFunc();
 	sp_mesh = gameObject->GetComponent<MeshRenderer>()->GetShape();
 
 	Transform trf = gameObject->GetTransform();

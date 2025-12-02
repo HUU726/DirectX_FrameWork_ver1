@@ -10,6 +10,8 @@ protected:
 public:
 	PlaneObject();
 
+	void OnCollisionEnter(Collider* _p_collider) override;
+
 	void Init() override;
 	void Update() override;
 

@@ -22,8 +22,8 @@ enum COLLISION_STATE
 	RIGHT_TOUCH,
 };
 
-
-typedef std::function<void(Collider*)> CallbackOnCollisionEnter2D;
+class Collider2D;
+typedef std::function<void(Collider2D*)> CallbackOnCollisionEnter2D;
 
 class Collider2D : public Collider
 {
@@ -32,20 +32,14 @@ protected:
 	hft::HFFLOAT3 position;		// åªç›ÇÃÉèÅ[ÉãÉhç¿ïW
 	COLLISION_STATE state;				// ìñÇΩÇ¡ÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
 
-	CallbackOnCollisionEnter2D funcOnCollisionEnter = nullptr;
-
 public:
 	Collider2D();
 	~Collider2D();
 
 	SHAPE_2D GetShape() { return shape; }
 	COLLISION_STATE GetState() { return state; }
-	CallbackOnCollisionEnter2D GetFuncCollisionEnter() { return funcOnCollisionEnter; }
-
 	void SetState(COLLISION_STATE _state) { state = _state; }
-	void SetFuncCollisionEnter(CallbackOnCollisionEnter2D _func);
 
-	void OnCollisionEnter2D(Collider2D* _p_col);
 	virtual bool CollideWith(Collider2D* _collider) = 0;
 	virtual bool CollideWithBox(Collider2D* _box) = 0;
 	virtual bool CollideWithCircle(Collider2D* _circle) = 0;

@@ -27,6 +27,7 @@ bool BoxCollider3D::CollideWithMesh(Collider3D* _p_col)
 
 void BoxCollider3D::Init()
 {
+    InitCallbackFunc();
 	Transform transform(gameObject->GetTransform());
     position = transform.position;
     size = transform.scale;

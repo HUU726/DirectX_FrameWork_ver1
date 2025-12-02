@@ -11,25 +11,11 @@ Collider3D::Collider3D()
 {
 	Collider3DManager::GetInstance().AddCollider(this);
 	ComponentManager<Collider3D>::GetInstance().Add(this);
-
-	funcOnCollisionEnter = [this](Collider* _p_collider) { gameObject->OnCollisionEnter(_p_collider); };
 }
 
 Collider3D::~Collider3D()
 {
 	ComponentManager<Collider3D>::GetInstance().Remove(this);
-}
-
-void Collider3D::SetFuncCollisionEnter(CallbackOnCollisionEnter3D _func)
-{
-	funcOnCollisionEnter = _func;
-}
-
-
-void Collider3D::OnCollisionEnter3D(Collider* _p_col)
-{
-	if (funcOnCollisionEnter != nullptr)
-		funcOnCollisionEnter(_p_col);
 }
 
 

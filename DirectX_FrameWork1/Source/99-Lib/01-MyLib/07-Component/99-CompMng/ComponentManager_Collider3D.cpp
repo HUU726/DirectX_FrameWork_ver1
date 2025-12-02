@@ -26,8 +26,8 @@ void ComponentManager<Collider3D>::Action()
 
 			if (col1->CollideWith(col2))
 			{
-				col1->OnCollisionEnter3D(col2);
-				col2->OnCollisionEnter3D(col1);
+				col1->OnCollisionEnter(col2);
+				col2->OnCollisionEnter(col1);
 				std::cout << col1 << " F " << col2 << " A‚ªÕ“Ë‚µ‚Ü‚µ‚½" << std::endl;
 			}
 		}

@@ -24,6 +24,7 @@ bool CircleCollider2D::CollideWithLine(Collider2D* _line)
 
 void CircleCollider2D::Init()
 {
+    InitCallbackFunc();
     Transform transform = gameObject->GetTransform();
     position = transform.position;
     size = transform.scale;

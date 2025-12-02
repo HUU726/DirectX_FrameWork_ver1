@@ -24,6 +24,7 @@ bool BoxCollider2D::CollideWithLine(Collider2D* _line)
 
 void BoxCollider2D::Init()
 {
+	InitCallbackFunc();
 	Transform transform = gameObject->GetTransform();
 	position = transform.position;
 	size = transform.scale;

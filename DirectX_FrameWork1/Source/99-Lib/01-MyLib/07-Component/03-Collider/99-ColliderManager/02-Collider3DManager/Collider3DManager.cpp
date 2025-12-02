@@ -58,8 +58,8 @@ void Collider3DManager::CheckCollision()
 
             if (_p_col1->CollideWith(_p_col2))
             {
-                _p_col1->OnCollisionEnter3D(_p_col2);
-                _p_col2->OnCollisionEnter3D(_p_col1);
+                _p_col1->OnCollisionEnter(_p_col2);
+                _p_col2->OnCollisionEnter(_p_col1);
                 std::cout << _p_col1 << "F" << _p_col2 << " ‚ªƒqƒbƒg‚µ‚Ü‚µ‚½" << std::endl;
             }
         }

@@ -21,6 +21,8 @@ protected:
 	CallbackOnCollisionFunc funcOnCollisionStay;
 	CallbackOnCollisionFunc funcOnCollisionExit;
 
+	void InitCallbackFunc();
+
 public:
 	Collider();
 
