@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <iostream>
 #include "../07-Component/00-Component/Component.h"
 #include "../07-Component/01-Transform/Transform.h"
 #include "Time.h"

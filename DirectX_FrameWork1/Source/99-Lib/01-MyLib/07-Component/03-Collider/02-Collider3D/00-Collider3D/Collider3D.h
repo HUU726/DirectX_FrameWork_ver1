@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../../00-Collider/Collider.h"
-#include "../../../../998-FH_Types/HF_FLOAT.h"
-#include <functional>
-
 
 
 class Collider3D : public Collider
