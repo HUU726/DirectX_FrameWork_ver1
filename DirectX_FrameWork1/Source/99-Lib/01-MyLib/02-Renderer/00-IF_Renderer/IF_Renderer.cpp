@@ -257,7 +257,7 @@ void IF_Renderer::Init()
 	this->p_Device = l_p_system->GetDevice();
 	this->p_DeviceContext = l_p_system->GetDeviceContext();
 
-	InitShader();
+	InitDefaultShader();
 	InitBuffer();
 	CreateCommonBuffer();
 	InitState();

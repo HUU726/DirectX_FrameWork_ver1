@@ -33,6 +33,11 @@ public:
 	}
 
 	std::shared_ptr<Texture> GetTexture(std::string _filePath);
+	/**
+	* @brief	画像をロードする
+	* @param	std::string		_filePath	ファイルパス
+	* @return	std::shared_ptr<Texture>	シェアードポインタのテクスチャ―
+	*/
 	std::shared_ptr<Texture> LoadTexture(std::string _filePath);
 	void ReleaseTable();
 

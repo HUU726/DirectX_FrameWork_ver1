@@ -8,7 +8,6 @@ Application::Application()
 {
 	p_window = nullptr;
 }
-
 void Application::CreateConsole()
 {
 	FILE* p_fl;
@@ -16,18 +15,15 @@ void Application::CreateConsole()
 	freopen_s(&p_fl, "CONOUT$", "w", stdout);  // 標準出力をリダイレクト
 	std::cout << "DirectX 11 + Console initialized!" << std::endl;
 }
-
-
 void Application::InitWindow()
 {
 	p_window = new HF_Window;
 	p_window->Init();
 }
-
 void Application::InitSystem()
 {
 	HWND hWnd = p_window->GetHWND();
-	System::GetInstance().InitSystem(hWnd);
+	System::GetInstance().Init(hWnd);
 }
 
 bool Application::isLoop()
@@ -43,23 +39,20 @@ void Application::Init(HINSTANCE _hInstance, int _nCmdShow)
 	InitWindow();
 	InitSystem();
 }
-
-void Application::Run()
-{
-	Game& game = Game::GetInstance();
-	game.Init();
-	game.Run();
-	game.Uninit();
-
-}
-
 int Application::UnInit()
 {
 	int l_result = int(p_window->GetMsg().wParam);
 
-	System::GetInstance().UnInitSystem();
+	System::GetInstance().UnInit();
 	p_window->UnInit();
 	delete p_window;
 
 	return l_result;
+}
+void Application::Run()
+{
+	Game& game = Game::GetInstance();
+	game.Init();	//ゲーム初期化
+	game.Run();		//ゲームループ
+	game.Uninit();	//ゲーム終了処理
 }

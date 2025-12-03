@@ -25,7 +25,17 @@ public:
 		static ShapeTable2D instance;
 		return instance;
 	}
-	void AddShape(hft::Polygon& _shape);
+
+	/**
+	* @brief	ポリゴンの追加
+	* @param	const hft::Polygon&	_shape	ポリゴンを追加
+	*/
+	void AddShape(const hft::Polygon& _shape);
+	/**
+	* @brief	ポリゴンの追加
+	* @param	const std::shared_ptr<hft::Polygon>&	_sp_shape	シェアードポインタのポリゴンを追加
+	*/
+	void AddShape(const std::shared_ptr<hft::Polygon>& _sp_shape);
 	std::shared_ptr<hft::Polygon> GetShape(std::string _name) const { return table.at(_name); }
 	ID3D11Buffer* GetIndexBuffer(std::string _name) const { return table.at(_name)->p_indexBuffer; }
 	void ClearTable();

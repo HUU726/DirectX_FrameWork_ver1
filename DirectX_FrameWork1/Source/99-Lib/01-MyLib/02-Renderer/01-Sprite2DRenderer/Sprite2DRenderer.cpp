@@ -14,7 +14,10 @@ Sprite2DRenderer::Sprite2DRenderer()
 	Init();
 }
 
-HRESULT Sprite2DRenderer::InitShader()
+/**
+* @brief	デフォルトのシェーダーを初期化
+*/
+HRESULT Sprite2DRenderer::InitDefaultShader()
 {
 
 	HRESULT hr;
@@ -60,6 +63,10 @@ HRESULT Sprite2DRenderer::InitBuffer()
 	return S_OK;
 }
 
+/**
+* @brief	ステートを初期化
+* @note		描画に使う設計図を設定
+*/
 HRESULT Sprite2DRenderer::InitState()
 {
 	HRESULT hr;

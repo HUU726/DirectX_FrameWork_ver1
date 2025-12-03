@@ -22,7 +22,7 @@ void System::AddCompMng(IF_ComponentManager* _p_compMng)
 	}
 }
 
-void System::InitSystem(HWND _hwnd)
+void System::Init(HWND _hwnd)
 {
 	rendererMng.Init(_hwnd);
 
@@ -34,7 +34,7 @@ void System::InitSystem(HWND _hwnd)
 	SceneManager& sceneMng = SceneManager::GetInstance();
 	sceneMng.Init();
 }
-void System::UnInitSystem()
+void System::UnInit()
 {
 	rendererMng.UnInit();
 	compMngs.clear();
@@ -66,6 +66,9 @@ void System::GameObjectMngAction()
 	gameObjMng.Action();
 }
 
+/**
+* @brief	
+*/
 void System::BeforeRender_CompMngsAction()
 {
 	int compMngIndex = COMP_MNG_TYPES::COMP_INPUT + 1;
@@ -76,6 +79,10 @@ void System::BeforeRender_CompMngsAction()
 	}
 }
 
+/**
+* @brief	描画系コンポネントの処理実行
+* @note		3D → 2D	の順番で描画
+*/
 void System::RendererCompMngAction()
 {
 	rendererMng.ClearScreen();

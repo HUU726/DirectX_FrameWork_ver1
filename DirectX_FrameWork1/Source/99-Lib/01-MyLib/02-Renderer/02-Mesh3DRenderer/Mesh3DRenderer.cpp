@@ -10,7 +10,10 @@ Mesh3DRenderer::Mesh3DRenderer()
 	Init();
 }
 
-HRESULT Mesh3DRenderer::InitShader()
+/**
+* @brief	デフォルトのシェーダーを初期化
+*/
+HRESULT Mesh3DRenderer::InitDefaultShader()
 {
 	HRESULT hr;
 
@@ -51,6 +54,10 @@ HRESULT Mesh3DRenderer::InitBuffer()
 	return S_OK;
 }
 
+/**
+* @brief	ステートを初期化
+* @note		描画に使う道筋を設定
+*/
 HRESULT Mesh3DRenderer::InitState()
 {
 	HRESULT hr;

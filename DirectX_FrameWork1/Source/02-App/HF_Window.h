@@ -33,6 +33,9 @@ public:
 	bool Update();
 	void UnInit();
 
+	/**
+	* @brief	ウィンドウの名前を変更
+	*/
 	void EditWindowName();
 
 };

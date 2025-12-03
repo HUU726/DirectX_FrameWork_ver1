@@ -80,7 +80,7 @@ protected:
 	ID3D11DepthStencilView* p_DepthStencilView;	// デプスステンシルビュー
 	/****************************************************************************************************************************/
 
-	virtual HRESULT InitShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
+	virtual HRESULT InitDefaultShader() = 0;	//レイアウト・シェーダー・定数バッファの初期化
 	virtual HRESULT InitBuffer() = 0;		//頂点バッファを初期化
 	void CreateCommonBuffer();
 	virtual HRESULT InitState() = 0;	//サンプラー・ブレンドステート・深度の初期化

@@ -2,7 +2,7 @@
 
 
 /**
-* @brief	ゲームクラスを作る
+* @file		ゲームクラスを作る
 * @date		2025/05/22
 */
 
@@ -24,7 +24,6 @@ public:
 	}
 
 	void Init();	//初期化
-	void Run();		//実行
 	void Uninit();	//終了処理
-
+	void Run();		//ゲームループ
 };

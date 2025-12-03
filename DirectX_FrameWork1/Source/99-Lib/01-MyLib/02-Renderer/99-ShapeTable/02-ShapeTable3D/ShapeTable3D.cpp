@@ -324,14 +324,16 @@ ShapeTable3D::ShapeTable3D()
 	}
 }
 
-void ShapeTable3D::AddShape(hft::Mesh& _shape)
+void ShapeTable3D::AddShape(const hft::Mesh& _shape)
 {
 	table[_shape.name] = std::make_shared<hft::Mesh>(_shape);
 }
 
-void ShapeTable3D::AddShape(std::shared_ptr<hft::Mesh> _sp_shape)
+void ShapeTable3D::AddShape(const std::shared_ptr<hft::Mesh> _sp_shape)
 {
-	table[_sp_shape->name] = _sp_shape;
+	std::string name = _sp_shape->name;
+	if (table.count(name) == 0)
+		table[name] = _sp_shape;
 }
 
 void ShapeTable3D::ClearTable()

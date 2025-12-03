@@ -7,7 +7,10 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
-
+/**
+* @brief	ウィンドウクラスの初期化＆OSへ転送
+* @note		設計図を作成
+*/
 void HF_Window::InitClass()
 {
 	// ウィンドウクラス情報をまとめる
@@ -27,6 +30,10 @@ void HF_Window::InitClass()
 	RegisterClassEx(&wc);
 }
 
+/**
+* @brief	ウィンドウを初期化＆描画
+* @note		InitClass関数で作った設計図をもとにウィンドウを作成
+*/
 void HF_Window::InitWindow()
 {
 	// ウィンドウの情報をまとめる
@@ -75,6 +82,9 @@ void HF_Window::Init()
 	InitWindow();
 }
 
+/**
+* @brief	ウィンドウプロシージャ―をマイフレーム更新
+*/
 bool HF_Window::Update()
 {
 	// 新たにメッセージがあれば
@@ -99,10 +109,10 @@ void HF_Window::UnInit()
 
 void HF_Window::EditWindowName()
 {
+	//SetWindowTextA(hWnd, CLASS_NAME);
 }
 
-//wsprintfA(str, "FPS=%d", fpsCounter);
-//SetWindowTextA(hWnd, str);
+
 
 
 

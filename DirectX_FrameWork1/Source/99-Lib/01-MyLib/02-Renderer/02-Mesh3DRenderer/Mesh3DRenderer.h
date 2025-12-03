@@ -18,7 +18,7 @@ class MeshRenderer;
 class Mesh3DRenderer : public IF_Renderer
 {
 private:
-	HRESULT InitShader() override;
+	HRESULT InitDefaultShader() override;
 	HRESULT InitBuffer() override;
 	HRESULT InitState() override;
 

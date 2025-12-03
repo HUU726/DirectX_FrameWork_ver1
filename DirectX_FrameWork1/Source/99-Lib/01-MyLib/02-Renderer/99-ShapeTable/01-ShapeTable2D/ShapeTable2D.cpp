@@ -110,7 +110,8 @@ ShapeTable2D::ShapeTable2D()
 
 }
 
-void ShapeTable2D::AddShape(hft::Polygon& _shape)
+
+void ShapeTable2D::AddShape(const hft::Polygon& _shape)
 {
 	if (table.count(_shape.name) == 0 )
 	{
@@ -118,6 +119,13 @@ void ShapeTable2D::AddShape(hft::Polygon& _shape)
 		CreateVertexIndexBuffer(shape);
 		table[shape->name] = shape;
 	}
+}
+void ShapeTable2D::AddShape(const std::shared_ptr<hft::Polygon>& _sp_shape)
+{
+	std::string name = _sp_shape->name;
+	if ( table.count(name) == 0 )
+		table[name] = _sp_shape;
+
 }
 
 void ShapeTable2D::ClearTable()

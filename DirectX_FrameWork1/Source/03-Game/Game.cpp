@@ -8,7 +8,6 @@
 
 Game::Game()
 {
-
 }
 
 Game::~Game()
@@ -20,7 +19,17 @@ void Game::Init()
 {
 	Time::GetInstance().SetFps(60);
 }
+void Game::Uninit()
+{
+	SceneManager& sceneMng = SceneManager::GetInstance();
+	sceneMng.UnInit();
+}
 
+
+/**
+* @brief	ƒQ[ƒ€ƒ‹[ƒv
+* @note		SceneManager/System‚Ì‰Šú‰»
+*/
 void Game::Run()
 {
 	SceneManager& sceneMng = SceneManager::GetInstance();
@@ -37,10 +46,4 @@ void Game::Run()
 		}
 	}
 	
-}
-
-void Game::Uninit()
-{
-	SceneManager& sceneMng = SceneManager::GetInstance();
-	sceneMng.UnInit();
 }

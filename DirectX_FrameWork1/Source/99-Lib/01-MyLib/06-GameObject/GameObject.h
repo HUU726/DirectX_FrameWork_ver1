@@ -34,6 +34,12 @@ public:
 	GameObject();
 	~GameObject();
 
+	/**
+	* @brief	コンポーネントを追加
+	* @param	コンポーネントごとのコンストラクタ引数
+	* @return	コンポーネントのポインタ
+	* @memo		AddComponent<T>();	T：コンポネントの型
+	*/
 	template <class T, class... Args>
 	T* AddComponent(Args&&... args)
 	{
@@ -44,6 +50,11 @@ public:
 		this->li_comp.push_back(std::move(comp));
 		return compPtr;
 	}
+	/**
+	* @brief	コンポーネントを取得
+	* @return	コンポーネントポインタ
+	* @memo		GetComponent<T>();	T：コンポネントの型
+	*/
 	template<class T>
 	T* GetComponent()
 	{
@@ -55,6 +66,10 @@ public:
 		//return AddComponent<T>();
 		return nullptr;
 	}
+	/**
+	* @brief	コンポネントを削除
+	* @memo		DeleteComponent<T>();	T：コンポネントの型
+	*/
 	template<class T>
 	void DeleteComponent()
 	{
@@ -68,13 +83,22 @@ public:
 			}
 		}
 	}
+	/**
+	* @brief	全てのコンポネントを削除
+	*/
 	void AllDeleteComponent()
 	{
 		li_comp.clear();
 	}
 
 	int GetID() const { return id; }
+	/**
+	* @brief	トランスフォームのデータ取得
+	*/
 	const Transform& GetTransform() const { return *p_transform; }
+	/**
+	* @brief	トランスフォームのポインタ取得
+	*/
 	Transform* GetTransformPtr() const { return p_transform; }
 	std::string GetName() const { return name; }
 	std::string GetTag() const { return tag; }
