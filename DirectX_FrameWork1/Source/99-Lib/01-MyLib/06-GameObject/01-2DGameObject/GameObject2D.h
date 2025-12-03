@@ -1,6 +1,7 @@
 #pragma once
 #include "../GameObject.h"
-#include "../../07-Component/03-Collider/01-Collider2D/00-Collider2D/Collider2D.h"
+
+class Collider2D;
 
 class GameObject2D : public GameObject
 {

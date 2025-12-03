@@ -16,11 +16,6 @@
 class TitleScene : public BaseScene
 {
 private:
-	CameraObject2D camera2D;
-	CameraObject3D camera3D;
-
-	LightObject lightObject;
-
 	SqhereObject sqhereObject;
 	PlaneObject planeObject;
 	CubeObject cubeObject;

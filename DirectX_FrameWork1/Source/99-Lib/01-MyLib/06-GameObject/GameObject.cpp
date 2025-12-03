@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "../07-Component/01-Transform/Transform.h"
+
 #include "./999-GameObjectManager/GameObjectManager.h"
 
 GameObject::GameObject()

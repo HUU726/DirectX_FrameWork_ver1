@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../00-IF_Renderer/IF_Renderer.h"
-#include "../../998-FH_Types/Vertex.h"
-#include "../../998-FH_Types/Polygon.h"
+
+
 #include "../../998-FH_Types/Mesh.h"
+#include "../../998-FH_Types/Polygon.h"
 #include "../../1000-Test/TestModel/TestModel.h"
 
 
@@ -35,7 +36,7 @@ public:
 	void Draw(const hft::Polygon* _p_polygon);
 	void Draw(TestModel* _p_model);
 	void Draw(const SpriteRenderer* _p_renderer);
-	void Draw(MeshRenderer* _p_renderer);
+	void Draw(const MeshRenderer* _p_renderer);
 	void Draw(const MeshFilter* _p_meshFilter);
 	void Draw(const hft::Mesh* _p_mesh);
 };

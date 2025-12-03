@@ -1,15 +1,8 @@
 #include "Mesh3DRenderer.h"
 
-#include "../98-RendererManager/RendererManager.h"
-
-#include "../../07-Component/01-Transform/Transform.h"
-
-#include "../../998-FH_Types/TransformMatrix.h"
-
 #include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
 #include "../../07-Component/02-Renderer/02-MeshRenderer/MeshRenderer.h"
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-#include "../../06-GameObject/GameObject.h"
 
 
 Mesh3DRenderer::Mesh3DRenderer()
@@ -152,7 +145,7 @@ void Mesh3DRenderer::Draw(TestModel* _sp_model)
 	}
 }
 
-void Mesh3DRenderer::Draw(MeshRenderer* _p_renderer)
+void Mesh3DRenderer::Draw(const MeshRenderer* _p_renderer)
 {
 	if (p_camera == nullptr)
 		return;

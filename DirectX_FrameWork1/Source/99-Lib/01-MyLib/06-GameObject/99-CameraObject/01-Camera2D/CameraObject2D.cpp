@@ -11,6 +11,20 @@ CameraObject2D::~CameraObject2D()
 {
 }
 
+
+hft::HFFLOAT3 CameraObject2D::GetForward() const
+{
+	return p_comp_camera->GetForward();
+}
+hft::HFFLOAT3 CameraObject2D::GetRight() const
+{
+	return p_comp_camera->GetRight();
+}
+hft::HFFLOAT3 CameraObject2D::GetUp() const
+{
+	return p_comp_camera->GetUp();
+}
+
 void CameraObject2D::Init()
 {
 }

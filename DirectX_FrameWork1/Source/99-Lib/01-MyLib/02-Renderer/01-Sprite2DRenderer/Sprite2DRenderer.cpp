@@ -1,17 +1,9 @@
 #include "Sprite2DRenderer.h"
 
-#include "../98-RendererManager/RendererManager.h"
-
-#include "../../07-Component/01-Transform/Transform.h"
-#include "../../998-FH_Types/Vertex.h"
-#include "../../998-FH_Types/Sprite2D.h"
-#include "../../998-FH_Types/TransformMatrix.h"
-
-#include "../../998-FH_Types/Polygon.h"
 
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-#include "../../06-GameObject/GameObject.h"
+
 
 #define VERTEX_NUM_2D (4)
 

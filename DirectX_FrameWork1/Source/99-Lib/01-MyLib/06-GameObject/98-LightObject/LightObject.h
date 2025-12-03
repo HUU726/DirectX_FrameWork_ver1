@@ -1,6 +1,6 @@
 #pragma once
+
 #include "../02-3DGameObject/GameObject3D.h"
-#include "../../07-Component/05-Light/Light.h"
 
 enum class LIGHT_TYPE
 {
@@ -9,6 +9,8 @@ enum class LIGHT_TYPE
 	SPOT,
 	AMBI,
 };
+
+class Light;
 
 class LightObject : public GameObject3D
 {

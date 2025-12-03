@@ -1,6 +1,5 @@
 #include "GameObject2D.h"
 
-
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
 GameObject2D::GameObject2D()

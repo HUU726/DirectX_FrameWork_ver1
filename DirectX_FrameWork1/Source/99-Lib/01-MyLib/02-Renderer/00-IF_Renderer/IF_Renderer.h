@@ -4,10 +4,14 @@
 #include <DirectXMath.h>
 #include <vector>
 
+
+
+
+
 #include "../../04-Texture/Texture.h"
-#include "../../998-FH_Types/Mesh.h"
-#include "../../07-Component/01-Transform/Transform.h"
 #include "../../07-Component/05-Light/Light.h"
+#include "../../998-FH_Types/Mesh.h"
+#include "../../998-FH_Types/TransformMatrix.h"
 #include "../../999-Shader/00-Shader/Shader.h"
 
 class IF_Camera;

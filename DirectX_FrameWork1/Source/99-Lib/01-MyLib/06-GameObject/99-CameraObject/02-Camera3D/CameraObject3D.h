@@ -2,8 +2,7 @@
 
 #include "../../GameObject.h"
 
-#include "../../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
-
+class Camera3D;
 
 class CameraObject3D : public GameObject
 {
@@ -14,9 +13,9 @@ private:
 public:
 	CameraObject3D();
 	~CameraObject3D();
-	hft::HFFLOAT3 GetForward() const { return p_comp_camera->GetForward(); }
-	hft::HFFLOAT3 GetRight() const { return p_comp_camera->GetRight(); }
-	hft::HFFLOAT3 GetUp() const { return p_comp_camera->GetUp(); }
+	hft::HFFLOAT3 GetForward() const;
+	hft::HFFLOAT3 GetRight() const;
+	hft::HFFLOAT3 GetUp() const;
 
 	void SetStandPos(hft::HFFLOAT3 _pos) { p_transform->position = { _pos.x,_pos.y,_pos.z }; }
 	void SetTransform(Transform* _c_p_transform) { p_standTransform = _c_p_transform; }
