@@ -24,12 +24,16 @@ void SqhereObject::Init()
 
 void SqhereObject::Update()
 {
-	if (GetAsyncKeyState('K') & 0x8000 )
-		p_transform->position.z -= 0.5f;
-	if (GetAsyncKeyState('I') & 0x8000 )
-		p_transform->position.z += 0.5f;
-	if (GetAsyncKeyState('J') & 0x8000 )
-		p_transform->position.x -= 0.5f;
+	hft::HFFLOAT3 moveVec;
+	float speed = 1.f;
+	if (GetAsyncKeyState('K') & 0x8000)
+		moveVec -= p_transform->Forward();
+	if (GetAsyncKeyState('I') & 0x8000)
+		moveVec += p_transform->Forward();
+	if (GetAsyncKeyState('J') & 0x8000)
+		moveVec -= p_transform->Right();;
 	if ( GetAsyncKeyState('L') & 0x8000 )
-		p_transform->position.x += 0.5f;
+		moveVec += p_transform->Right();;
+
+	p_transform->position += moveVec * speed;
 }

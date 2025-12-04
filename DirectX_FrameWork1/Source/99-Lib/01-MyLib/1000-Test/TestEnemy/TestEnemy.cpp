@@ -23,7 +23,7 @@ void TestEnemy::Init()
 		p_spriteAnimator->AddAnimation(anim);
 	}
 
-	p_transform->position = hft::HFFLOAT3{ 0.f,0.f,5.f };
+	p_transform->position = hft::HFFLOAT3{ -500.f,0.f,5.f };
 	p_transform->scale = hft::HFFLOAT3{150.f,150.f,1};
 }
 

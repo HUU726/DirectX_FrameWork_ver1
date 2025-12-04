@@ -47,7 +47,6 @@ namespace hft
 			return result;
 		}
 
-		
 	};
 
 
@@ -58,8 +57,12 @@ namespace hft
 
 	struct Vector3 : public Vector<HFFLOAT3>
 	{
+		Vector3() {}
+		Vector3(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
+
 		static Vector3 Transform(const Vector3& _vec, const DirectX::XMMATRIX& _mat) noexcept;
 		static HFFLOAT3 Transform(const HFFLOAT3& _value, const DirectX::XMMATRIX& _mat) noexcept;
+
 	};
 
 	struct Vector4 : public Vector<HFFLOAT4>

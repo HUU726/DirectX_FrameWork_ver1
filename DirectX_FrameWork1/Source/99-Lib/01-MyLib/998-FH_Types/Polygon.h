@@ -1,7 +1,7 @@
 #pragma once
 
 #include "./Shape.h"
-#include "./Mesh.h"
+#include "./Material.h"
 
 namespace hft
 {
