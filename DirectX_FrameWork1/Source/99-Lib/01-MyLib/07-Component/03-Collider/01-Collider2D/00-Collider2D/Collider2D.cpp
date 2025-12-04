@@ -32,19 +32,18 @@ bool BoxBox(Collider2D* _box1, Collider2D* _box2)
 	auto box1 = dynamic_cast<BoxCollider2D*>(_box1);
 	auto box2 = dynamic_cast<BoxCollider2D*>(_box2);
 
-	box1->Update();
-	box2->Update();
+	hft::HFFLOAT3 box1Pos = box1->GetGameObject()->GetTransform().position;
+	box1Pos += box1->GetOffset();
+	hft::HFFLOAT3 box1Size = box1->GetSize();
 
-	auto box1Pos = box1->GetGameObject()->GetTransform().position;
-	auto box2Pos = box2->GetGameObject()->GetTransform().position;
+	hft::HFFLOAT3 box2Pos = box2->GetGameObject()->GetTransform().position;
+	box2Pos += box2->GetOffset();
+	hft::HFFLOAT3 box2Size = box2->GetSize();
 
-	auto box1VertexWorldPos = box1->GetVertexWorldPos();
-	auto box2VertexWorldPos = box2->GetVertexWorldPos();
-
-	hft::HFFLOAT2 col1TopLeft = box1VertexWorldPos[0] + box1Pos;
-	hft::HFFLOAT2 col1BottomRight = box1VertexWorldPos[3] + box1Pos;
-	hft::HFFLOAT2 col2TopLeft = box2VertexWorldPos[0] + box2Pos;
-	hft::HFFLOAT2 col2BottomRight = box2VertexWorldPos[3] + box2Pos;
+	hft::HFFLOAT2 col1TopLeft = { box1Pos.x - box1Size.x,box1Pos.y + box1Size.y };
+	hft::HFFLOAT2 col1BottomRight = { box1Pos.x + box1Size.x,box1Pos.y - box1Size.y };
+	hft::HFFLOAT2 col2TopLeft = { box2Pos.x - box2Size.x,box2Pos.y + box2Size.y };
+	hft::HFFLOAT2 col2BottomRight = { box2Pos.x + box2Size.x,box2Pos.y - box2Size.y };
 
 	if (!(col1TopLeft.x < col2BottomRight.x &&
 		col1BottomRight.x > col2TopLeft.x &&
@@ -93,6 +92,10 @@ bool CircleCircle(Collider2D* _circle1, Collider2D* _circle2)
 
 	hft::HFFLOAT3 col1Pos = circle1->GetGameObject()->GetTransform().position;
 	hft::HFFLOAT3 col2Pos = circle2->GetGameObject()->GetTransform().position;
+
+	col1Pos += circle1->GetOffset();
+	col2Pos += circle2->GetOffset();
+
 	float col1R = circle1->GetRadius();
 	float col2R = circle2->GetRadius();
 
@@ -120,22 +123,21 @@ bool BoxCircle(Collider2D* _box, Collider2D* _circle)
 	auto box = dynamic_cast<BoxCollider2D*>(_box);
 	auto circle = dynamic_cast<CircleCollider2D*>(_circle);
 
-	box->Update();
-	circle->Update();
-
-	auto vertexWorldPos = box->GetVertexWorldPos();
-
 	hft::HFFLOAT3 boxPos = box->GetGameObject()->GetTransform().position;
-	hft::HFFLOAT3 boxSize;
-	boxSize.x = vertexWorldPos[1].x - vertexWorldPos[0].x;
-	boxSize.y = vertexWorldPos[0].y - vertexWorldPos[2].y;
+	hft::HFFLOAT3 circlePos = circle->GetGameObject()->GetTransform().position;
 
-	float top = boxPos.y - (boxSize.y / 2);
-	float bottom = boxPos.y + (boxSize.y / 2);
-	float left = boxPos.x - (boxSize.x / 2);
-	float right = boxPos.x - (boxSize.x / 2);
+	boxPos += box->GetOffset();
+	circlePos += circle->GetOffset();
 
-	hft::HFFLOAT3 circlePos = circle->GetPosition();
+	hft::HFFLOAT3 boxSize = box->GetSize();
+	float radius = circle->GetRadius();
+
+	boxSize /= 2.f;
+	float top = boxPos.y - boxSize.y;
+	float bottom = boxPos.y + boxSize.y;
+	float left = boxPos.x - boxSize.x;
+	float right = boxPos.x - boxSize.x;
+
 	float closestX = std::max(left, std::min(circlePos.x, right));
 	float closestY = std::max(bottom, std::min(circlePos.y, top));
 
@@ -143,9 +145,9 @@ bool BoxCircle(Collider2D* _box, Collider2D* _circle)
 	float dy = circlePos.y - closestY;
 
 	float disLength = dx * dx + dy * dy;
-	float r = circle->GetRadius();
+	float radiusLength = radius * radius;
 
-	if (disLength <= (r * r))
+	if (disLength <= radiusLength)
 	{
 		_box->SetState(TOP_TOUCH);
 		_circle->SetState(TOP_TOUCH);

@@ -45,5 +45,4 @@ void BoxCollider3D::Update()
 {
     Transform transform = gameObject->GetTransform();
     position = transform.position;
-    size = transform.scale;
 }

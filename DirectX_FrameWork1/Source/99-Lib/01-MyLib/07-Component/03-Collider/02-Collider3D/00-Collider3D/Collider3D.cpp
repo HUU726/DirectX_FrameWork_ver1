@@ -69,7 +69,7 @@ bool SqhereMesh(Collider3D* _sqhere, Collider3D* _mesh)
 		return false;
 	}
 
-	hft::HFFLOAT4 sqherePos = sqherePtr->GetGameObject()->GetTransform().position;
+	hft::HFFLOAT3 sqherePos = sqherePtr->GetGameObject()->GetTransform().position;
 	float r = sqherePtr->GetRadius();
 
 	auto sp_mesh = meshPtr->GetMesh();

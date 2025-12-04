@@ -53,7 +53,7 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveForwardToTarget()
 	ansVector.resize(ALL_ELEMENT);
 
 	Transform transform = gameObject->GetTransform();
-	hft::HFFLOAT4 pos = transform.position;
+	hft::HFFLOAT3 pos = transform.position;
 	hft::HFFLOAT3 rot = transform.rotation;
 	float roll = DirectX::XMConvertToRadians(rot.z);
 

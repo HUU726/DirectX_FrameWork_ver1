@@ -14,7 +14,6 @@ void ComponentManager<Collider2D>::Action()
 			li_enableCol.push_back(collider);
 	}
 
-
 	for (int i = 0; i < li_enableCol.size(); i++)
 	{
 		for (int j = i + 1; j < li_enableCol.size(); j++)

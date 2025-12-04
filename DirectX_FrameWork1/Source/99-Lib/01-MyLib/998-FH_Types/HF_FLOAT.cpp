@@ -104,6 +104,10 @@ hft::HFFLOAT3 hft::HFFLOAT3::operator+(const HFFLOAT3& _value)
 {
 	return { x + _value.x,y + _value.y,z + _value.z };
 }
+hft::HFFLOAT3 hft::HFFLOAT3::operator+(const HFFLOAT4& _value)
+{
+	return { x + _value.x,y + _value.y,z + _value.z };
+}
 hft::HFFLOAT3 hft::HFFLOAT3::operator-(const HFFLOAT3& _value)
 {
 	return { x - _value.x,y - _value.y,z - _value.z };
@@ -168,6 +172,11 @@ void hft::HFFLOAT4::operator=(const HFFLOAT3& _value)
 	x = _value.x;
 	y = _value.y;
 	z = _value.z;
+}
+
+hft::HFFLOAT4 hft::HFFLOAT4::operator+(const HFFLOAT3& _value)
+{
+	return { x + _value.x,y + _value.y,z + _value.z,w };
 }
 hft::HFFLOAT4 hft::HFFLOAT4::operator+(const HFFLOAT4& _value)
 {
