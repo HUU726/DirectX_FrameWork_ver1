@@ -14,17 +14,17 @@ public:
 
 	/**
 	* @brief	コライダー同士が衝突した際の処理
-	* @param	Collider2D*	_p_col	２D用コライダーのポインタ
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	virtual void OnCollisionEnter2D(Collider2D* _p_col) {}
 	/**
 	* @brief	コライダー同士が離れた際の処理
-	* @param	Collider2D*	_p_col	２D用コライダーのポインタ
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	virtual void OnCollisionExit2D(Collider2D* _p_col) {}
 	/**
 	* @brief	コライダー同士が接触中の処理
-	* @param	Collider2D*	_p_col	２D用コライダーのポインタ
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	virtual void OnCollisionStay2D(Collider2D* _p_col) {}
 

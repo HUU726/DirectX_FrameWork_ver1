@@ -33,7 +33,3 @@ void CameraObject2D::Update()
 {
 	p_comp_camera->Update();
 }
-
-void CameraObject2D::Draw()
-{
-}

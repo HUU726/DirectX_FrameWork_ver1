@@ -7,17 +7,6 @@
 
 
 
-Collider3DManager::Collider3DManager()
-{
-
-}
-
-
-bool CubeCube(const Collider3D* _col1, const Collider3D* _col2)
-{
-    return false;
-}
-
 void Collider3DManager::AddCollider(Collider3D* _p_col)
 {
     li_collider.push_back(_p_col);
@@ -76,4 +65,9 @@ void Collider3DManager::Update()
 void Collider3DManager::UnInit()
 {
     ClearCollider();
+}
+
+void Collider3DManager::Action()
+{
+    Update();
 }

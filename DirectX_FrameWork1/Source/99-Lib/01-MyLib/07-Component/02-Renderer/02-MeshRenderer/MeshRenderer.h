@@ -10,7 +10,6 @@ private:
 	MeshFilter* p_meshFilter;	// メッシュフィルター
 	std::shared_ptr<Texture> sp_texture;
 	bool isCreate = false;		// Meshを作ったかどうか
-	bool isRender = true;		// 描画処理をするかどうか
 
 
 public:
@@ -23,7 +22,17 @@ public:
 	std::shared_ptr<hft::Mesh> GetShape() const { return p_meshFilter->GetMesh(); }
 	std::shared_ptr<Texture> GetTexture() const { return sp_texture; }
 
+	/**
+	* @brief	テクスチャをロード
+	* @param	const char*		_filePath	ファイルパス
+	* @return	std::shared_ptr<Texture>	シェアードポインタテクスチャ
+	*/
 	std::shared_ptr<Texture> LoadTexture(const char* _filePath);
+	/**
+	* @brief	モデルをロード
+	* @param	const char*		_filePath	ファイルパス
+	* @return	std::shared_ptr<hft::Mesh>	シェアードポインタメッシュ
+	*/
 	std::shared_ptr<hft::Mesh> LoadModel(const char* _filePath);
 
 	void Init() override;

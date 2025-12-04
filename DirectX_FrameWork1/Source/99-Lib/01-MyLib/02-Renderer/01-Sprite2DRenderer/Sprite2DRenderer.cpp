@@ -1,6 +1,7 @@
 #include "Sprite2DRenderer.h"
 
 
+#include "../../998-FH_Types/Sprite2D.h"
 #include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
@@ -127,7 +128,7 @@ void Sprite2DRenderer::SetCamera(Camera2D* _p_camera)
 	p_camera = _p_camera;
 }
 
-void Sprite2DRenderer::Draw(const Sprite2D* _sprite)
+void Sprite2DRenderer::Draw(const hft::Sprite2D* _sprite)
 {
 
 	if (p_camera == nullptr)

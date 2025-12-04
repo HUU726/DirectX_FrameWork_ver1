@@ -3,6 +3,10 @@
 #include "../../../06-GameObject/GameObject.h"
 
 
+/**
+* @brief	所属GameObjectのOnCollision系関数を取得
+* @note		Collider派生先の末端コライダーで呼び出す
+*/
 void Collider::InitCallbackFunc()
 {
 	funcOnCollisionEnter = [this](Collider* _p_collider){(gameObject->OnCollisionEnter(_p_collider));};

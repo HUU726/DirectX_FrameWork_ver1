@@ -1,5 +1,11 @@
 #pragma once
 
+
+/**
+* @file		Mesh‚ÆMeshRenderer‚ð‚Â‚È‚®‚½‚ß‚ÌƒNƒ‰ƒX
+*/
+
+
 #include <vector>
 
 #include "../../00-Component/Component.h"

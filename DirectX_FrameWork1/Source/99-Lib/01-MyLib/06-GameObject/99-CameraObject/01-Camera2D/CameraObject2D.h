@@ -6,7 +6,7 @@ class Camera2D;
 class CameraObject2D : public GameObject
 {
 private:
-	Camera2D* p_comp_camera;
+	Camera2D* p_comp_camera;	//2Dカメラコンポネントポインタ
 
 public:
 	CameraObject2D();
@@ -16,6 +16,5 @@ public:
 	hft::HFFLOAT3 GetUp() const;
 	void Init() override;
 	void Update() override;
-	void Draw() override;
 };
 

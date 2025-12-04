@@ -6,6 +6,10 @@
 #include "../../../../../02-App/HF_Window.h"
 
 
+/**
+* @brief	回転を考慮してカメラ情報の更新
+* @note		ターゲットから前方向を求める（ロックオン）
+*/
 std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;
@@ -47,6 +51,10 @@ std::vector<DirectX::XMVECTOR> Camera3D::DeriveTargetToForward()
 	return ansVector;
 }
 
+/**
+* @brief	回転を考慮してカメラ情報の更新
+* @note		前方向からターゲットを求める（フリールック）
+*/
 std::vector<DirectX::XMVECTOR> Camera3D::DeriveForwardToTarget()
 {
 	std::vector<DirectX::XMVECTOR> ansVector;

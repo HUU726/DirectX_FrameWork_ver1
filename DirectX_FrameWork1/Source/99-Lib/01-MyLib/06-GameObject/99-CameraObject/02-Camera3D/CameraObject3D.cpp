@@ -26,10 +26,28 @@ hft::HFFLOAT3 CameraObject3D::GetUp() const
 }
 
 
+void CameraObject3D::SetStandPos(hft::HFFLOAT3 _pos)
+{
+	p_transform->position = { _pos.x,_pos.y,_pos.z };
+}
+void CameraObject3D::SetStandPos(Transform* _p_transform)
+{
+	p_standTransform = _p_transform;
+}
+void CameraObject3D::SetTarget(GameObject* _p_gameObject)
+{
+	p_comp_camera->SetTarget(_p_gameObject);
+}
+
+
+
 void CameraObject3D::Init()
 {
 }
 
+/**
+* @note		カメラが追跡する座標があれば毎フレームそのオブジェクトの座標の値で自身の座標を更新
+*/
 void CameraObject3D::Update()
 {
 	if (p_standTransform != nullptr)

@@ -5,15 +5,12 @@
 
 LightObject::LightObject()
 {
-
 	p_comp_light = AddComponent<Light>();
 	GetComponent<MeshRenderer>()->SetShape("light");
 	Transform* p_trf = GetTransformPtr();
 	p_trf->position = { -700.f,0.f,0.f };
-	p_trf->rotation = { 0,0,0 };	//30,-40,0
+	p_trf->rotation = { 0,0,0 };
 	p_trf->scale = { 200,200,80 };
-
-
 }
 
 void LightObject::SetLightType(LIGHT_TYPE _type)

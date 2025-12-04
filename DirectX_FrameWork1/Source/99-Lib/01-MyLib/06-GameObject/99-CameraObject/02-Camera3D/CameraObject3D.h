@@ -7,8 +7,8 @@ class Camera3D;
 class CameraObject3D : public GameObject
 {
 private:
-	Camera3D* p_comp_camera;
-	Transform* p_standTransform;
+	Camera3D* p_comp_camera;		//3Dカメラコンポネントポインタ
+	Transform* p_standTransform;	//追跡するTransform
 
 public:
 	CameraObject3D();
@@ -17,9 +17,21 @@ public:
 	hft::HFFLOAT3 GetRight() const;
 	hft::HFFLOAT3 GetUp() const;
 
-	void SetStandPos(hft::HFFLOAT3 _pos) { p_transform->position = { _pos.x,_pos.y,_pos.z }; }
-	void SetTransform(Transform* _c_p_transform) { p_standTransform = _c_p_transform; }
-
+	/**
+	* @brief	カメラの位置座標を設定
+	* @param	hft::HFFLOAT3	_pos	カメラの座標
+	*/
+	void SetStandPos(hft::HFFLOAT3 _pos);
+	/**
+	* @brief	カメラの位置座標をポインタで指定
+	* @param	Transform*	_p_transform	カメラの座標をポインタで変更
+	*/
+	void SetStandPos(Transform* _p_transform);
+	/**
+	* @brief	カメラが見る先を設定
+	* @param	GameObject*		_p_gameObject	見るオブジェクト
+	*/
+	void SetTarget(GameObject* _p_gameObject);
 
 	void Init() override;
 	void Update() override;

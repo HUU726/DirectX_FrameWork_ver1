@@ -15,11 +15,16 @@ class Light;
 class LightObject : public GameObject3D
 {
 protected:
-	LIGHT_TYPE type;
-	Light* p_comp_light;
+	LIGHT_TYPE type;		//ライトの種類
+	Light* p_comp_light;	//ライトコンポネントポインタ
 
 public:
 	LightObject();
+
+	/**
+	* @brief	ライトの種類をセット
+	* @param	LIGHT_TYPE	_type	ライトの種類　※列挙型
+	*/
 	void SetLightType(LIGHT_TYPE _type);
 	void Init() override;
 	void Update() override;

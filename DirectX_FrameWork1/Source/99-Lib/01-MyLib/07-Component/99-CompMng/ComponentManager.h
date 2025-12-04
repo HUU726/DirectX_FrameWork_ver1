@@ -22,7 +22,7 @@ class ComponentManager : public IF_ComponentManager
 private:
 	using Self = ComponentManager<T>;
 
-	std::vector<T*> components;
+	std::vector<T*> components;	//コンポネント格納コンテナ
 
 	ComponentManager();
 
@@ -47,6 +47,9 @@ public:
 		components.clear();
 	}
 
+	/**
+	* @brief	コンポネント別のAction関数を呼び出す
+	*/
 	void Action() override;
 
 };

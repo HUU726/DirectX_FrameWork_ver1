@@ -13,7 +13,7 @@ protected:
 	float farClip;	//最遠クリップ距離
 	int priority;	//描画優先度(昇順)
 
-	GameObject* p_target;
+	GameObject* p_target;	//カメラの見る先
 
 	enum VIEW_ELEMENT
 	{
@@ -23,12 +23,12 @@ protected:
 		ALL_ELEMENT,
 	};
 
-	hft::HFFLOAT3 forward;
-	hft::HFFLOAT3 right;
-	hft::HFFLOAT3 up;
+	hft::HFFLOAT3 forward;	//前ベクトル
+	hft::HFFLOAT3 right;	//右ベクトル
+	hft::HFFLOAT3 up;		//上ベクトル
 
-	DirectX::XMMATRIX matrixView;
-	DirectX::XMMATRIX matrixProj;
+	DirectX::XMMATRIX matrixView;	//View行列
+	DirectX::XMMATRIX matrixProj;	//Projection行列
 
 	virtual std::vector<DirectX::XMVECTOR> DeriveTargetToForward() = 0;
 	virtual std::vector<DirectX::XMVECTOR> DeriveForwardToTarget() = 0;

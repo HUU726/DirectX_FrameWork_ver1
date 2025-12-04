@@ -135,7 +135,7 @@ SpriteAnimator::~SpriteAnimator()
 	ComponentManager<SpriteAnimator>::GetInstance().Remove(this);
 }
 
-//優先度の高い順に入れていく
+//優先度を考慮して入れていく
 void SpriteAnimator::AddAnimation(const SpriteAnimation& _anim)
 {
 	int index = 0;
@@ -145,7 +145,7 @@ void SpriteAnimator::AddAnimation(const SpriteAnimation& _anim)
 			index = i;
 	}
 
-	animations.insert(animations.begin() + index, SpriteAnimation(_anim));
+	animations.insert(animations.begin() + index, _anim);
 }
 
 void SpriteAnimator::SetDivisions(hft::HFFLOAT2 _div)
@@ -201,6 +201,9 @@ void SpriteAnimator::Stop(int _id)
 	p_useAnim->InActive();
 }
 
+/**
+* @note		SpriteAnimatorを取得したGameObjectは強制的にシェーダーをアニメーション用に変更
+*/
 void SpriteAnimator::Init()
 {
 	if (!(division == static_cast<const hft::HFFLOAT2>(1.f)))

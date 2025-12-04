@@ -13,9 +13,9 @@
 class BaseScene
 {
 protected:
-	CameraObject2D camera2D;
-	CameraObject3D camera3D;
-	LightObject lightObject;
+	CameraObject2D camera2D;	//2D用カメラオブジェクト
+	CameraObject3D camera3D;	//3D用カメラオブジェクト
+	LightObject lightObject;	//ライトオブジェクト
 
 public:
 	BaseScene() {}

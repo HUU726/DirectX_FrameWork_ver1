@@ -9,8 +9,8 @@
 class MeshCollider3D : public Collider3D
 {
 private:
-	std::shared_ptr<hft::Mesh> sp_mesh;
-	std::vector<hft::HFFLOAT3> li_vertexWorldPos;
+	std::shared_ptr<hft::Mesh> sp_mesh;				//所属GameObjectのMesh
+	std::vector<hft::HFFLOAT3> li_vertexWorldPos;	//ワールド変換した頂点座標コンテナ
 
 
 public:

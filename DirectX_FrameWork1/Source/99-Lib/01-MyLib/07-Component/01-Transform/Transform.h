@@ -12,5 +12,4 @@ struct Transform : public Component
 	Transform() {}
 	Transform(const Transform& _transform) : position(_transform.position), rotation(_transform.rotation), scale(_transform.scale) {}
 	void Init() override {}
-	void Update() override {}
 };

@@ -41,6 +41,10 @@ std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::shared_ptr<hft::Poly
     return sp_shape;
 }
 
+/**
+* @brief	TextureTableに問いかけてその画像が存在すればそのポインタを
+*			存在しなければロードする
+*/
 std::shared_ptr<Texture> SpriteRenderer::LoadTexture(const char* _filePath)
 {
 	TextureTable& tTable = TextureTable::GetInstance();
@@ -62,7 +66,7 @@ void SpriteRenderer::Init()
 
 void SpriteRenderer::Draw()
 {
-	if (isRender)
+	if (isActive)
 	{
 		Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
 		
@@ -70,10 +74,11 @@ void SpriteRenderer::Draw()
 		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
 		renderer.SetTexture(sp_texture);
 
-		
-		if (const auto& comp = gameObject->GetComponent<SpriteAnimator>())
+
+		if (const auto& animator = gameObject->GetComponent<SpriteAnimator>())
 		{
-			comp->SendTex();
+			//所属GameObjectにSpriteAnimatorコンポネントが存在すればそのUV座標を送る
+			animator->SendTex();
 		}
 		else
 		{

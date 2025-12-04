@@ -2,6 +2,9 @@
 
 #include "../GameObject.h"
 
+/*
+* @note		GameObjectのコンストラクタで呼出し
+*/
 void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 {
 	idCnt++;
@@ -9,6 +12,9 @@ void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 	gameObjects.push_back(_p_gameObject);
 }
 
+/**
+* @note		GameObjectのデストラクタで呼び出し
+*/
 void GameObjectManager::RemoveGameObject(GameObject* _p_gameObject)
 {
 	auto it = std::find(gameObjects.begin(),gameObjects.end(), _p_gameObject);

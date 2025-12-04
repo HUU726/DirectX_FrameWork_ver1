@@ -5,7 +5,7 @@
 class SqhereCollider3D : public Collider3D
 {
 private:
-	float radius;
+	float radius;	//”¼Œa
 
 public:
 	bool CollideWith(Collider3D* _p_col) override;

@@ -5,9 +5,11 @@
 class BoxCollider3D : public Collider3D
 {
 private:
-	std::vector<hft::HFFLOAT3> worldPos;
+	std::vector<hft::HFFLOAT3> li_vertexWorldPos;	//ワールド変換した頂点座標コンテナ
 
 public:
+	std::vector<hft::HFFLOAT3> GetVertexWorldScales() const { return li_vertexWorldPos; }
+
 	bool CollideWith(Collider3D* _p_col) override;
 	bool CollideWithBox(Collider3D* _p_col) override;
 	bool CollideWithSqhere(Collider3D* _p_col) override;

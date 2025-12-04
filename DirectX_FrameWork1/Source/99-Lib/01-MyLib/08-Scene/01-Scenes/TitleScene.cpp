@@ -82,7 +82,7 @@ void TitleScene::Init()
 		Transform* p_trf = testPlayer.GetTransformPtr();
 		p_trf->position = { 0.f,0.f,-500.f,0.f };
 
-		camera3D.SetTransform(testPlayer.GetTransformPtr());
+		camera3D.SetStandPos(testPlayer.GetTransformPtr());
 		testPlayer.SetCameraObject3D(&camera3D);
 	}
 

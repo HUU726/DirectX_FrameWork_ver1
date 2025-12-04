@@ -1,7 +1,9 @@
 #include "IF_Camera.h"
 
 
-
+/**
+* @brief	Views—ñ‚ğXV
+*/
 void IF_Camera::UpdateViewMatrix()
 {
 	std::vector<DirectX::XMVECTOR> viewElement;

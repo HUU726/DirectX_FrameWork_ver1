@@ -37,7 +37,7 @@ void BoxCollider3D::Init()
 
 	for ( auto vertex : vertices )
 	{
-		worldPos.push_back(vertex.position * size);
+		li_vertexWorldPos.push_back(vertex.position * size);
 	}
 }
 

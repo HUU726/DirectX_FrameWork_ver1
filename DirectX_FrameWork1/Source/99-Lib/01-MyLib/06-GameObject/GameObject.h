@@ -116,8 +116,18 @@ public:
 	virtual void OnCollisionStay(Collider* _p_collider) {}
 	virtual void OnCollisionExit(Collider* _p_collider) {}
 
+	//========================UnityでいうScriptに当たる========================
+	/**
+	* @brief	初期化
+	*/
 	virtual void Init() = 0;
+
+	/**
+	* @brief	毎フレーム更新処理
+	*/
 	virtual void Update() = 0;
+	//==========================================================================
+
 	virtual void Draw() {};
 
 };

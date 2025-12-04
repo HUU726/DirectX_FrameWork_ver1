@@ -74,7 +74,7 @@ void MeshRenderer::Init()
 
 void MeshRenderer::Draw()
 {
-	if (isRender)
+	if (isActive)
 	{
 		Mesh3DRenderer& renderer = Mesh3DRenderer::GetInstance();
 		auto sp_mesh = p_meshFilter->GetMesh();
