@@ -18,7 +18,7 @@ public:
 	MeshCollider3D(const std::shared_ptr<hft::Mesh>& _mesh);
 
 	std::shared_ptr<hft::Mesh> GetMesh() const { return sp_mesh; }
-	std::vector<hft::HFFLOAT3> GetVertexWorldScales() const { return li_vertexWorldPos; }
+	std::vector<hft::HFFLOAT3> GetVertexWorldPos() const { return li_vertexWorldPos; }
 
 	bool CollideWith(Collider3D* _p_col) override;
 	bool CollideWithBox(Collider3D* _p_col) override;

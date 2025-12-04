@@ -35,7 +35,7 @@ void SqhereCollider3D::Init()
 
 void SqhereCollider3D::Update()
 {
-    Transform transform = gameObject->GetTransform();
+    const Transform& transform = gameObject->GetTransform();
     position = transform.position;
     size = transform.scale;
 }

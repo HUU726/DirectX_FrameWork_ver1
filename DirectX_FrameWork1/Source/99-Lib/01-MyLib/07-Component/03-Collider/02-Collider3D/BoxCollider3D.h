@@ -8,7 +8,7 @@ private:
 	std::vector<hft::HFFLOAT3> li_vertexWorldPos;	//ワールド変換した頂点座標コンテナ
 
 public:
-	std::vector<hft::HFFLOAT3> GetVertexWorldScales() const { return li_vertexWorldPos; }
+	std::vector<hft::HFFLOAT3> GetVertexWorldPos() const { return li_vertexWorldPos; }
 
 	bool CollideWith(Collider3D* _p_col) override;
 	bool CollideWithBox(Collider3D* _p_col) override;

@@ -28,7 +28,7 @@ public:
 	Collider();
 
 	hft::HFFLOAT3 GetOffset() const { return offset; }
-	hft::HFFLOAT3 GetSize() const { return size; }
+	virtual hft::HFFLOAT3 GetSize() const { return size; }
 	bool GetIsTrigger() const { return isTrigger; }
 
 	void SetOffset(const hft::HFFLOAT3& _offset) { offset = _offset; }

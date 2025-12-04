@@ -13,6 +13,7 @@ namespace hft
 		HFFLOAT2() { x = 0, y = 0; }
 		HFFLOAT2(float _value) {x = _value, y = _value; }
 		HFFLOAT2(float _x, float _y) { x = _x, y = _y; }
+		HFFLOAT2(const HFFLOAT3& _value);
 
 		void operator=(const HFFLOAT3& _value);
 		void operator=(const HFFLOAT4& _value);

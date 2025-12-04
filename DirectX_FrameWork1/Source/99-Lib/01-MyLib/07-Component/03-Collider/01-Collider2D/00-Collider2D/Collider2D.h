@@ -37,6 +37,7 @@ public:
 	~Collider2D();
 
 	SHAPE_2D GetShape() const { return shape; }
+	hft::HFFLOAT3 GetPosition() const { return position; }
 	COLLISION_STATE GetState() const { return state; }
 	void SetState(COLLISION_STATE _state) { state = _state; }
 

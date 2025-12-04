@@ -29,3 +29,10 @@ void CircleCollider2D::Init()
     position = transform.position;
     size = transform.scale;
 }
+
+void CircleCollider2D::Update()
+{
+    const Transform& transform = gameObject->GetTransform();
+    position = transform.position;
+    radius = transform.scale.x;
+}

@@ -2,6 +2,8 @@
 #include "../../../06-GameObject/GameObject.h"
 #include "../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
+#include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
+
 bool BoxCollider2D::CollideWith(Collider2D* _p_collider)
 {
 	return _p_collider->CollideWithBox(this);
@@ -22,16 +24,28 @@ bool BoxCollider2D::CollideWithLine(Collider2D* _line)
 	return ::BoxLine(this, _line);
 }
 
+hft::HFFLOAT3 BoxCollider2D::GetSize() const
+{
+	return hft::HFFLOAT3();
+}
+
 void BoxCollider2D::Init()
 {
 	InitCallbackFunc();
 	Transform transform = gameObject->GetTransform();
 	position = transform.position;
-	size = transform.scale;
+
+	auto polygon = ShapeTable2D::GetInstance().GetShape("sprite");
+	auto vertices = polygon->vertices;
+
+	for (auto vertex : vertices)
+		li_vertexWorldPos.push_back(vertex.position * transform.scale);
+
+	size = li_vertexWorldPos[1].x - li_vertexWorldPos[0].x;
 }
 
 void BoxCollider2D::Update()
 {
-	position = gameObject->GetTransform().position;
-	size = gameObject->GetTransform().scale;
+	const Transform& transform = gameObject->GetTransform();
+	position = transform.position;
 }

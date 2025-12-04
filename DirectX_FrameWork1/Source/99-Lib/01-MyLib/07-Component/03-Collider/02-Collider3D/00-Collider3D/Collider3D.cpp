@@ -73,7 +73,7 @@ bool SqhereMesh(Collider3D* _sqhere, Collider3D* _mesh)
 	float r = sqherePtr->GetRadius();
 
 	auto sp_mesh = meshPtr->GetMesh();
-	auto li_vertexWorldPos = meshPtr->GetVertexWorldScales();
+	auto li_vertexWorldPos = meshPtr->GetVertexWorldPos();
 	auto meshPos = meshPtr->GetGameObject()->GetTransform().position;
 	auto indices = sp_mesh->indices;
 
