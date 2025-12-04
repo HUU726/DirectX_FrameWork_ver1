@@ -28,7 +28,7 @@ void ComponentManager<Collider3D>::Action()
 			{
 				col1->OnCollisionEnter(col2);
 				col2->OnCollisionEnter(col1);
-				std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
+				//std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
 			}
 		}
 

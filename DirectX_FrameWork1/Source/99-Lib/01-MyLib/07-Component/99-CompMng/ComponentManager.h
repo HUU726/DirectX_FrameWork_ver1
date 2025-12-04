@@ -77,38 +77,37 @@ ComponentManager<T>::ComponentManager()
 }
 
 
-class Collider2D;
 template<>
 ComponentManager<Collider2D>::ComponentManager();
 template<>
 void ComponentManager<Collider2D>::Action();
 
-class Collider3D;
+
 template<>
 ComponentManager<Collider3D>::ComponentManager();
 template<>
 void ComponentManager<Collider3D>::Action();
 
-class SpriteAnimator;
+
 template<>
 ComponentManager<SpriteAnimator>::ComponentManager();
 
-class Camera3D;
+
 template<>
 ComponentManager<Camera3D>::ComponentManager();
 
-class Camera2D;
+
 template<>
 ComponentManager<Camera2D>::ComponentManager();
 
-class Light;
+
 template<>
 ComponentManager<Light>::ComponentManager();
 
-class MeshRenderer;
+
 template<>
 ComponentManager<MeshRenderer>::ComponentManager();
 
-class SpriteRenderer;
+
 template<>
 ComponentManager<SpriteRenderer>::ComponentManager();

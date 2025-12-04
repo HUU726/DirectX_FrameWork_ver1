@@ -26,7 +26,7 @@ bool BoxCollider2D::CollideWithLine(Collider2D* _line)
 
 hft::HFFLOAT3 BoxCollider2D::GetSize() const
 {
-	return hft::HFFLOAT3();
+	return size;
 }
 
 void BoxCollider2D::Init()
@@ -41,7 +41,8 @@ void BoxCollider2D::Init()
 	for (auto vertex : vertices)
 		li_vertexWorldPos.push_back(vertex.position * transform.scale);
 
-	size = li_vertexWorldPos[1].x - li_vertexWorldPos[0].x;
+	size.x = li_vertexWorldPos[1].x - li_vertexWorldPos[0].x;
+	size.y = li_vertexWorldPos[0].y - li_vertexWorldPos[2].y;
 }
 
 void BoxCollider2D::Update()

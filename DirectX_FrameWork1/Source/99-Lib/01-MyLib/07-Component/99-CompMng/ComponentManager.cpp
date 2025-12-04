@@ -1,5 +1,6 @@
 #include "ComponentManager.h"
 
+
 template<>
 ComponentManager<Collider2D>::ComponentManager()
 {

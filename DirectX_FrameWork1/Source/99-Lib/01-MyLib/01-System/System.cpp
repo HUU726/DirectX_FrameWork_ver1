@@ -38,6 +38,7 @@ void System::UnInit()
 {
 	rendererMng.UnInit();
 	compMngs.clear();
+	gameObjMng.Clear();
 }
 
 void System::GameLoopPipeline()
@@ -50,7 +51,6 @@ void System::GameLoopPipeline()
 
 void System::ClearManagersData()
 {
-	//gameObjMng.Clear();
 }
 
 

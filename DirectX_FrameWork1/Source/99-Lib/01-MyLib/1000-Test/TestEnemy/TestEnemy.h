@@ -10,6 +10,8 @@ private:
 	SpriteAnimator* p_spriteAnimator;
 
 public:
+	TestEnemy();
+
 	void Init() override;
 	void Update() override;
 

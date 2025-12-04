@@ -33,6 +33,10 @@ void GameObjectManager::Clear()
 
 void GameObjectManager::Action()
 {
+	int cnt = 0;
 	for (auto& gameObject : gameObjects)
+	{
+		cnt++;
 		gameObject->Update();
+	}
 }

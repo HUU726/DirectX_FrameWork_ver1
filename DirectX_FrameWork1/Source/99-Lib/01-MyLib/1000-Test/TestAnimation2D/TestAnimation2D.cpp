@@ -2,6 +2,7 @@
 
 #include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+#include "../../07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 
 enum TEST_ANIM_ID
 {
@@ -9,6 +10,12 @@ enum TEST_ANIM_ID
 	JUMP = 1,
 	RUN = 2,
 };
+
+TestAnimation2D::TestAnimation2D()
+{
+	p_transform->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
+	p_transform->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
+}
 
 void TestAnimation2D::Init()
 {
@@ -51,10 +58,7 @@ void TestAnimation2D::Init()
 		animator->AddAnimation(anim);
 	}
 
-
-	p_transform->position = hft::HFFLOAT3{ -500.f, 200.f, 5.f };
-	p_transform->scale = hft::HFFLOAT3{ 150.f,150.f,1.f };
-
+	AddComponent<BoxCollider2D>();
 
 }
 

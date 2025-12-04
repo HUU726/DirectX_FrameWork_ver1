@@ -7,7 +7,7 @@ class TestAnimation2D : public GameObject2D
 private:
 
 public:
-	
+	TestAnimation2D();
 	void Init() override;
 	void Update() override;
 

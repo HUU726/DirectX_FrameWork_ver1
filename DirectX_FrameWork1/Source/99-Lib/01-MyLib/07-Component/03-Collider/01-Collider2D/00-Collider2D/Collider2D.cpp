@@ -35,10 +35,12 @@ bool BoxBox(Collider2D* _box1, Collider2D* _box2)
 	hft::HFFLOAT3 box1Pos = box1->GetGameObject()->GetTransform().position;
 	box1Pos += box1->GetOffset();
 	hft::HFFLOAT3 box1Size = box1->GetSize();
+	box1Size /= 2.f;
 
 	hft::HFFLOAT3 box2Pos = box2->GetGameObject()->GetTransform().position;
 	box2Pos += box2->GetOffset();
 	hft::HFFLOAT3 box2Size = box2->GetSize();
+	box2Size /= 2.f;
 
 	hft::HFFLOAT2 col1TopLeft = { box1Pos.x - box1Size.x,box1Pos.y + box1Size.y };
 	hft::HFFLOAT2 col1BottomRight = { box1Pos.x + box1Size.x,box1Pos.y - box1Size.y };
@@ -47,8 +49,8 @@ bool BoxBox(Collider2D* _box1, Collider2D* _box2)
 
 	if (!(col1TopLeft.x < col2BottomRight.x &&
 		col1BottomRight.x > col2TopLeft.x &&
-		col1TopLeft.y < col2BottomRight.y &&
-		col1BottomRight.y > col2TopLeft.y))
+		col1TopLeft.y > col2BottomRight.y &&
+		col1BottomRight.y < col2TopLeft.y))
 	{
 		_box1->SetState(NO_TOUCH);
 		_box2->SetState(NO_TOUCH);
