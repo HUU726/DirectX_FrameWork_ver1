@@ -1,31 +1,33 @@
 #include "Collider2D.h"
 
 #define NOMINMAX
-#include <DirectXMath.h>
-#include <algorithm>
 
-#include "../../../../06-GameObject/GameObject.h"
-#include "../../../01-Transform/Transform.h"
-#include "../../../../998-FH_Types/HF_FLOAT.h"
-
+#include "../../99-ColliderManager/00-ColliderManager/ColliderManager.h"
 #include "../../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
-
-#include "../../../99-CompMng/ComponentManager.h"
 
 Collider2D::Collider2D()
 {
-	Collider2DManager::GetInstance().AddCollider(this);
-	ComponentManager<Collider2D>::GetInstance().Add(this);
+	ColliderManager<Collider2D>::GetInstance().AddCollider(this);
+	//Collider2DManager::GetInstance().AddCollider(this);
+	//ComponentManager<Collider2D>::GetInstance().Add(this);
 }
 
 Collider2D::~Collider2D()
 {
-	ComponentManager<Collider2D>::GetInstance().Remove(this);
+	ColliderManager<Collider2D>::GetInstance().RemoveCollider(this);
+	//Collider2DManager::GetInstance().RemoveCollider(this);
+	//ComponentManager<Collider2D>::GetInstance().Remove(this);
 }
 
 
+
+
+//#include <algorithm>
+#include "../../../../06-GameObject/GameObject.h"
+
 #include "../BoxCollider2D.h"
 #include "../CircleCollider2D.h"
+
 
 bool BoxBox(Collider2D* _box1, Collider2D* _box2)
 {

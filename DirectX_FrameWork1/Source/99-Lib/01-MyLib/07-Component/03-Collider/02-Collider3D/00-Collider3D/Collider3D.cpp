@@ -1,33 +1,32 @@
 #include "Collider3D.h"
 
-
+#include "../../99-ColliderManager/00-ColliderManager/ColliderManager.h"
 #include "../../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
-
-#include "../../../../06-GameObject/02-3DGameObject/GameObject3D.h"
-#include "../../../99-CompMng/ComponentManager.h"
 
 
 Collider3D::Collider3D()
 {
-	Collider3DManager::GetInstance().AddCollider(this);
-	ComponentManager<Collider3D>::GetInstance().Add(this);
+	ColliderManager<Collider3D>::GetInstance().AddCollider(this);
+	//Collider3DManager::GetInstance().AddCollider(this);
+	//ComponentManager<Collider3D>::GetInstance().Add(this);
 }
 
 Collider3D::~Collider3D()
 {
-	ComponentManager<Collider3D>::GetInstance().Remove(this);
+	ColliderManager<Collider3D>::GetInstance().RemoveCollider(this);
+	//Collider3DManager::GetInstance().RemoveCollider(this);
+	//ComponentManager<Collider3D>::GetInstance().Remove(this);
 }
 
 
 
 
+#include "../../../../998-FH_Types/Vector.h"
+#include "../../../../06-GameObject/GameObject.h"
 
-#include "../../../../998-FH_Types/Mesh.h"
 #include "../BoxCollider3D.h"
 #include "../SqhereCollider3D.h"
 #include "../MeshCollider3D.h"
-#include "../../../../06-GameObject/GameObject.h"
-#include "../../../../998-FH_Types/Vector.h"
 
 
 bool BoxBox(Collider3D* _box1, Collider3D* _box2)

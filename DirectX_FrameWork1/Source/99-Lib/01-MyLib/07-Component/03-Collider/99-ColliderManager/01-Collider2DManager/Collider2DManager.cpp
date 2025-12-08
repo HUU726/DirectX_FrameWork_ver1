@@ -1,8 +1,17 @@
 #include "Collider2DManager.h"
+
+#include "../../../../01-System/System.h"
 #include "../../01-Collider2D/00-Collider2D/Collider2D.h"
 #include "../../../../06-GameObject/GameObject.h"
 
 #include <iostream>
+
+
+Collider2DManager::Collider2DManager()
+{
+	type = COMP_MNG_TYPES::COMP_COLLIDER2D;
+	System::GetInstance().AddCompMng(this);
+}
 
 void Collider2DManager::AddCollider(Collider2D* _collider)
 {
@@ -27,8 +36,11 @@ void Collider2DManager::SelectCollider()
 	li_enableCol.clear();
 	for (auto& collider : li_collider)
 	{
-		if (collider->GetGameObject()->GetIsActive())
+		if ( collider->GetIsActive() )
+		{
 			li_enableCol.push_back(collider);
+			collider->SwapHitColliders();
+		}
 	}
 }
 
@@ -46,12 +58,16 @@ void Collider2DManager::CheckCollision()
 
 			if (col1->CollideWith(col2))
 			{
-				col1->OnCollisionEnter(col2);
-				col2->OnCollisionEnter(col1);
+				col1->AddCurHitCollider(col2);
+				col2->AddCurHitCollider(col1);
 				std::cout << col1 << " F " << col2 << " A‚ªÕ“Ë‚µ‚Ü‚µ‚½" << std::endl;
 			}
 		}
+	}
 
+	for ( auto collider : li_enableCol )
+	{
+		collider->CheckHitColliders();
 	}
 }
 
@@ -69,5 +85,6 @@ void Collider2DManager::UnInit()
 
 void Collider2DManager::Action()
 {
-	Update();
+	SelectCollider();
+	CheckCollision();
 }

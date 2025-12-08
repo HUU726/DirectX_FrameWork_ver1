@@ -13,6 +13,8 @@ public:
 	SqhereObject();
 
 	void OnCollisionEnter(Collider* _p_collider) override;
+	void OnCollisionStay(Collider* _p_collider) override;
+	void OnCollisionExit(Collider* _p_collider) override;
 
 	void Init() override;
 	void Update() override;

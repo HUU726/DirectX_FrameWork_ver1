@@ -45,7 +45,7 @@ void TitleScene::Init()
 		sqhereObject.Init();
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 		Transform* p_trf = sqhereObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{0.f,200.f,0.f};
+		p_trf->position = hft::HFFLOAT3{-300.f,200.f,0.f};
 		p_trf->rotation = { 0,0,0 };
 		p_trf->scale = hft::HFFLOAT3{100.f,100.f,100.f};
 	}

@@ -10,7 +10,10 @@ void ComponentManager<Collider3D>::Action()
 	for (auto& collider : components)
 	{
 		if (collider->GetIsActive())
+		{
 			li_enableCol.push_back(collider);
+			collider->SwapHitColliders();
+		}
 	}
 
 
@@ -26,11 +29,15 @@ void ComponentManager<Collider3D>::Action()
 
 			if (col1->CollideWith(col2))
 			{
-				col1->OnCollisionEnter(col2);
-				col2->OnCollisionEnter(col1);
+				col1->AddCurHitCollider(col2);
+				col2->AddCurHitCollider(col1);
 				//std::cout << col1 << " F " << col2 << " A‚ªÕ“Ë‚µ‚Ü‚µ‚½" << std::endl;
 			}
 		}
+	}
 
+	for ( auto collider : li_enableCol )
+	{
+		collider->CheckHitColliders();
 	}
 }

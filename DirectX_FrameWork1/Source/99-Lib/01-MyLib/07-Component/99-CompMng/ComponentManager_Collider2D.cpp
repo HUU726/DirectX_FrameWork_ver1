@@ -11,7 +11,10 @@ void ComponentManager<Collider2D>::Action()
 	for (auto& collider : components)
 	{
 		if (collider->GetIsActive())
+		{
 			li_enableCol.push_back(collider);
+			collider->SwapHitColliders();
+		}
 	}
 
 	for (int i = 0; i < li_enableCol.size(); i++)
@@ -26,11 +29,15 @@ void ComponentManager<Collider2D>::Action()
 
 			if (col1->CollideWith(col2))
 			{
-				col1->OnCollisionEnter(col2);
-				col2->OnCollisionEnter(col1);
-				std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
+				col1->AddCurHitCollider(col2);
+				col2->AddCurHitCollider(col1);
+				//std::cout << col1 << " ： " << col2 << " 、が衝突しました" << std::endl;
 			}
 		}
+	}
 
+	for ( auto collider : li_enableCol )
+	{
+		collider->CheckHitColliders();
 	}
 }

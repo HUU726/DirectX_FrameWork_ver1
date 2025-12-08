@@ -12,7 +12,7 @@ private:
 	std::vector<Collider3D*> li_collider;	// Cllider3Dのリスト
 	std::vector<Collider3D*> li_enableCol;	// 実際に当たり判定をとるコライダー
 
-	Collider3DManager() {}
+	Collider3DManager();
 
 public:
 	static Collider3DManager& GetInstance()
@@ -25,12 +25,12 @@ public:
 	* @brief	コライダー追加
 	* @param	Collider3D*		_p_col	3D用コライダーのポインタ
 	*/
-	void AddCollider(Collider3D* _p_col);
+	void AddCollider(Collider3D* _p_collider);
 	/**
 	* @brief	コライダー削除
 	* @param	Collider3D*		_p_col	3D用コライダーのポインタ
 	*/
-	void RemoveCollider(Collider3D* _p_col);
+	void RemoveCollider(Collider3D* _p_collider);
 	/**
 	* @brief	コライダー全開放
 	*/

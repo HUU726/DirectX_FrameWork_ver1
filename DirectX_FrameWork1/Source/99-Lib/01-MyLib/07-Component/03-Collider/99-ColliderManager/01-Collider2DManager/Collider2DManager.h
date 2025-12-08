@@ -11,7 +11,7 @@ private:
 	std::vector<Collider2D*> li_collider;	//Collider2Dのリスト
 	std::vector<Collider2D*> li_enableCol;	//実際に当たり判定をとるコライダー
 
-	Collider2DManager() {}
+	Collider2DManager();
 
 public:
 	static Collider2DManager& GetInstance()

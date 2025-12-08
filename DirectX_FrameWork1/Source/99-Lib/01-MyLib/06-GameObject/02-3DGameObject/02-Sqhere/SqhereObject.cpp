@@ -13,6 +13,15 @@ void SqhereObject::OnCollisionEnter(Collider* _p_collider)
 {
 	std::cout << "Sqhere‚ªÕ“Ë‚µ‚½" << std::endl;
 }
+void SqhereObject::OnCollisionStay(Collider* _p_collider)
+{
+	std::cout << "Sqhere‚ªƒqƒbƒg’†" << std::endl;
+}
+
+void SqhereObject::OnCollisionExit(Collider* _p_collider)
+{
+	std::cout << "Sqhere‚ª—£‚ê‚Ü‚µ‚½" << std::endl;
+}
 
 void SqhereObject::Init()
 {
