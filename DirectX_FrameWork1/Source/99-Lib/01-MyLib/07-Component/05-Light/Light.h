@@ -10,7 +10,7 @@ struct LightData
 	bool fake[3];
 	DirectX::XMVECTOR direction;	//平行光源の方向
 	hft::HFFLOAT4 diffuse;		//平行光源の強さと色(RGBA = XYZW)
-	hft::HFFLOAT4 ambent;		//環境光源の強さと色(RGBA = XYZW)
+	hft::HFFLOAT4 ambient;		//環境光源の強さと色(RGBA = XYZW)
 };
 
 class Light : public Component
