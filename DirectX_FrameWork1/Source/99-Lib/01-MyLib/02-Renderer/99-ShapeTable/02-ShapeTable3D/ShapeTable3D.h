@@ -39,4 +39,5 @@ public:
 	std::shared_ptr<hft::Mesh> GetShape(std::string _name) const { return table.at(_name); }
 	void ClearTable();
 
+	void Init();
 };

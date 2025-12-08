@@ -40,5 +40,7 @@ public:
 	ID3D11Buffer* GetIndexBuffer(std::string _name) const { return table.at(_name)->p_indexBuffer; }
 	void ClearTable();
 
+	void Init();
+
 };
 

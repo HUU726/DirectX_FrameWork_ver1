@@ -24,15 +24,13 @@ void System::AddCompMng(IF_ComponentManager* _p_compMng)
 
 void System::Init(HWND _hwnd)
 {
-	rendererMng.Init(_hwnd);
+	rendererMng.Init(_hwnd);	//レンダラーマネージャーを初期化
 
-	ShapeTable2D::GetInstance();
-	ShapeTable3D::GetInstance();
-	hft::PixelShaderTable::GetInstance();
-	hft::VertexShaderTable::GetInstance();
-
-	SceneManager& sceneMng = SceneManager::GetInstance();
-	sceneMng.Init();
+	ShapeTable2D::GetInstance().Init();	//2Dの形状保存テーブルを初期化
+	ShapeTable3D::GetInstance().Init();	//3Dの形状保存てーむるを初期化
+	hft::PixelShaderTable::GetInstance().Init();	//ピクセルシェーダテーブルを初期化
+	hft::VertexShaderTable::GetInstance().Init();	//バーテックスシェーダーテーブルを初期化
+	SceneManager::GetInstance().Init();	//シーンマネージャーを初期化
 }
 void System::UnInit()
 {
@@ -67,7 +65,7 @@ void System::GameObjectMngAction()
 }
 
 /**
-* @brief	
+* @brief	InputコンポネントとRendererコンポネントの間のコンポネントを更新
 */
 void System::BeforeRender_CompMngsAction()
 {

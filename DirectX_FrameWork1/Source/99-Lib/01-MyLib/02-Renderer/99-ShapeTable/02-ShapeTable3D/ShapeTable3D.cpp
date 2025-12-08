@@ -296,32 +296,6 @@ std::shared_ptr<hft::Mesh> CreateLightShape()
 
 ShapeTable3D::ShapeTable3D()
 {
-	{	//Plane
-		auto plane = CreatePlaneShape();
-
-		hft::CreateVertexIndexBuffer(plane);
-		table.insert({plane->name,plane});
-	}
-
-	{	//Cube
-		auto cube = CreateCubeShape();
-
-		hft::CreateVertexIndexBuffer(cube);
-		table.insert({cube->name,cube});
-	}
-
-	{	//Sqhere
-		auto sqhere = CreateSqhereShape();
-		
-		hft::CreateVertexIndexBuffer(sqhere);
-		table.insert({sqhere->name,sqhere});
-	}
-	
-	{	//Light
-		auto light = CreateLightShape();
-		hft::CreateVertexIndexBuffer(light);
-		table.insert({ light->name,light });
-	}
 }
 
 void ShapeTable3D::AddShape(const hft::Mesh& _shape)
@@ -339,4 +313,38 @@ void ShapeTable3D::AddShape(const std::shared_ptr<hft::Mesh> _sp_shape)
 void ShapeTable3D::ClearTable()
 {
 	table.clear();
+}
+
+void ShapeTable3D::Init()
+{
+	//Plane
+	{
+		auto plane = CreatePlaneShape();
+
+		hft::CreateVertexIndexBuffer(plane);
+		table.insert({ plane->name,plane });
+	}
+
+	//Cube
+	{
+		auto cube = CreateCubeShape();
+
+		hft::CreateVertexIndexBuffer(cube);
+		table.insert({ cube->name,cube });
+	}
+
+	//Sqhere
+	{
+		auto sqhere = CreateSqhereShape();
+
+		hft::CreateVertexIndexBuffer(sqhere);
+		table.insert({ sqhere->name,sqhere });
+	}
+
+	//Light
+	{
+		auto light = CreateLightShape();
+		hft::CreateVertexIndexBuffer(light);
+		table.insert({ light->name,light });
+	}
 }

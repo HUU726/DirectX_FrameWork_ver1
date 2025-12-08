@@ -32,6 +32,7 @@ namespace hft
 		void AddShader(std::shared_ptr<VertexShader> _shader);
 		void ClearTable();
 
+		void  Init();
 	};
 
 	/**
@@ -58,6 +59,7 @@ namespace hft
 		void AddShader(std::shared_ptr<PixelShader> _shader);
 		void ClearTable();
 
+		void Init();
 	};
 
 

@@ -12,7 +12,6 @@
 class Game
 {
 private:
-
 	Game();
 
 public:

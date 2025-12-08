@@ -15,13 +15,47 @@
 
 ShapeTable2D::ShapeTable2D()
 {
-	{	//éOäpå`
+}
+
+
+void ShapeTable2D::AddShape(const hft::Polygon& _shape)
+{
+	if (table.count(_shape.name) == 0 )
+	{
+		auto shape = std::make_shared<hft::Polygon>(_shape);
+		CreateVertexIndexBuffer(shape);
+		table[shape->name] = shape;
+	}
+}
+void ShapeTable2D::AddShape(const std::shared_ptr<hft::Polygon>& _sp_shape)
+{
+	std::string name = _sp_shape->name;
+	if ( table.count(name) == 0 )
+		table[name] = _sp_shape;
+
+}
+
+void ShapeTable2D::ClearTable()
+{
+	for ( auto& it : table )
+	{
+		it.second->p_vertexBuffer->Release();
+		it.second->p_indexBuffer->Release();
+	}
+	table.clear();
+}
+
+
+void ShapeTable2D::Init()
+{
+	//éOäpå`
+	{
 		auto triangle = std::make_shared<hft::Polygon>();
 		triangle->name = "triangle";
 		triangle->vertices.resize(TRIANGLE_VERTEX_NUM);
 
 		triangle->vertices[0].position = { 0.f,0.5f,0.f,0.f };
-		triangle->vertices[1].position = { 0.5f,-0.5f,0.f,0.f };		
+		triangle->vertices[1].position = { 0.5f,-0.5f,0.f,0.f };
 		triangle->vertices[2].position = { -0.5f,-0.5f,0.f,0.f };
 
 		triangle->vertices[0].uv = { 0.5f,0.f };
@@ -37,7 +71,8 @@ ShapeTable2D::ShapeTable2D()
 		table.insert({ triangle->name,triangle });
 	}
 
-	{	//éläpå`
+	//éläpå`
+	{
 		auto sprite = std::make_shared<hft::Polygon>();
 		sprite->name = "sprite";
 		sprite->vertices.resize(SPRITE_VERTEX_NUM);
@@ -63,7 +98,8 @@ ShapeTable2D::ShapeTable2D()
 		table.insert({ sprite->name,sprite });
 	}
 
-	{	//â~
+	//â~
+	{
 		auto circle = std::make_shared<hft::Polygon>();
 		circle->name = "circle";
 		circle->vertices.resize(CIRCLE_VERTEX_NUM);
@@ -97,43 +133,14 @@ ShapeTable2D::ShapeTable2D()
 		for (int i = 0, biggerVertexNum = 2; i < CIRCLE_FASE_NUM; i++, biggerVertexNum++)
 		{
 			int baseIndexNum = i * CIRCLE_FASE_VERTEX_NUM;
-			 circle->indices[baseIndexNum] = 0;
-			 circle->indices[baseIndexNum+1] = biggerVertexNum;
-			 circle->indices[baseIndexNum+2] = biggerVertexNum - 1;
+			circle->indices[baseIndexNum] = 0;
+			circle->indices[baseIndexNum + 1] = biggerVertexNum;
+			circle->indices[baseIndexNum + 2] = biggerVertexNum - 1;
 		}
 		if (circle->indices[CIRCLE_INDEX_NUM - 2] == CIRCLE_VERTEX_NUM)
 			circle->indices[CIRCLE_INDEX_NUM - 2] = 1;
-		
+
 		CreateVertexIndexBuffer(circle);
 		table.insert({ circle->name,circle });
 	}
-
-}
-
-
-void ShapeTable2D::AddShape(const hft::Polygon& _shape)
-{
-	if (table.count(_shape.name) == 0 )
-	{
-		auto shape = std::make_shared<hft::Polygon>(_shape);
-		CreateVertexIndexBuffer(shape);
-		table[shape->name] = shape;
-	}
-}
-void ShapeTable2D::AddShape(const std::shared_ptr<hft::Polygon>& _sp_shape)
-{
-	std::string name = _sp_shape->name;
-	if ( table.count(name) == 0 )
-		table[name] = _sp_shape;
-
-}
-
-void ShapeTable2D::ClearTable()
-{
-	for ( auto& it : table )
-	{
-		it.second->p_vertexBuffer->Release();
-		it.second->p_indexBuffer->Release();
-	}
-	table.clear();
 }

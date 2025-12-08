@@ -46,7 +46,10 @@ namespace hft
 		table.clear();
 	}
 
+	void VertexShaderTable::Init()
+	{
 
+	}
 
 
 
@@ -97,6 +100,10 @@ namespace hft
 		table.clear();
 	}
 
+	void PixelShaderTable::Init()
+	{
+
+	}
 
 
 	std::shared_ptr<VertexShader> LoadVertexShader(std::string _filePath)
