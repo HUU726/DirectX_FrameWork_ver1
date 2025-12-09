@@ -3,20 +3,15 @@
 #define NOMINMAX
 
 #include "../../99-ColliderManager/00-ColliderManager/ColliderManager.h"
-#include "../../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
 Collider2D::Collider2D()
 {
 	ColliderManager<Collider2D>::GetInstance().AddCollider(this);
-	//Collider2DManager::GetInstance().AddCollider(this);
-	//ComponentManager<Collider2D>::GetInstance().Add(this);
 }
 
 Collider2D::~Collider2D()
 {
 	ColliderManager<Collider2D>::GetInstance().RemoveCollider(this);
-	//Collider2DManager::GetInstance().RemoveCollider(this);
-	//ComponentManager<Collider2D>::GetInstance().Remove(this);
 }
 
 

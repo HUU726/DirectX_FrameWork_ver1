@@ -1,6 +1,5 @@
 #include "SqhereCollider3D.h"
 
-#include "../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
 #include "../../../06-GameObject/GameObject.h"
 
 

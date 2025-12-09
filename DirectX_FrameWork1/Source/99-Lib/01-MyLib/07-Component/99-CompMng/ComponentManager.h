@@ -8,8 +8,6 @@
 
 #include "../02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../02-Renderer/02-MeshRenderer/MeshRenderer.h"
-#include "../03-Collider/01-Collider2D/00-Collider2D/Collider2D.h"
-#include "../03-Collider/02-Collider3D/00-Collider3D/Collider3D.h"
 #include "../04-Camera/01-Camera2D/Camera2D.h"
 #include "../04-Camera/02-Camera3D/Camera3D.h"
 #include "../05-Light/Light.h"
@@ -75,18 +73,6 @@ ComponentManager<T>::ComponentManager()
 {
 
 }
-
-
-template<>
-ComponentManager<Collider2D>::ComponentManager();
-template<>
-void ComponentManager<Collider2D>::Action();
-
-
-template<>
-ComponentManager<Collider3D>::ComponentManager();
-template<>
-void ComponentManager<Collider3D>::Action();
 
 
 template<>

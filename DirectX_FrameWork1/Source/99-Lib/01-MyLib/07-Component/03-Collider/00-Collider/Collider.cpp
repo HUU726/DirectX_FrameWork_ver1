@@ -25,58 +25,6 @@ Collider::Collider()
 	funcOnCollisionExit = nullptr;
 }
 
-void Collider::AddCurHitCollider(Collider* _p_collider)
-{
-	curHitColliders.push_back(_p_collider);
-}
-
-void Collider::SwapHitColliders()
-{
-	preHitColliders.clear();
-	curHitColliders.swap(preHitColliders);
-}
-
-void Collider::CheckHitColliders()
-{
-
-	if ( curHitColliders.size() == 0 )
-	{
-		for ( auto preCollider : preHitColliders )
-		{
-			OnCollisionExit(preCollider);
-		}
-	}
-	else
-	{
-		for ( auto curCollider : curHitColliders )
-		{
-			//現フレームでヒットしているコライダが前フレームでヒットしているか？
-			if ( std::find(preHitColliders.begin(), preHitColliders.end(), curCollider) == preHitColliders.end() )
-			{
-				OnCollisionEnter(curCollider);
-			}
-
-			for ( auto preCollider : preHitColliders )
-			{
-				//現フレームと前フレームで同コライダがヒットしているか
-				if ( curCollider == preCollider )
-				{
-					OnCollisionStay(curCollider);
-					continue;
-				}
-				//前フレームでヒットしているコライダが現フレームでヒットしているか
-				if ( std::find(curHitColliders.begin(), curHitColliders.end(), preCollider) == curHitColliders.end() )
-				{
-					OnCollisionExit(preCollider);
-				}
-
-			}
-		}
-	}
-
-
-}
-
 void Collider::OnCollisionEnter(Collider* _p_collider)
 {
 	if (funcOnCollisionEnter != nullptr)

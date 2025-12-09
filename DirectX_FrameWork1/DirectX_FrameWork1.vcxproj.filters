@@ -66,12 +66,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -189,12 +183,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\999-GameObjectManager\GameObjectManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider3D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider2D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestPlayer\TestPlayer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -276,12 +264,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.h">

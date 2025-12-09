@@ -1,19 +1,6 @@
 #include "ComponentManager.h"
 
 
-template<>
-ComponentManager<Collider2D>::ComponentManager()
-{
-	type = COMP_MNG_TYPES::COMP_COLLIDER2D;
-	System::GetInstance().AddCompMng(this);
-}
-
-template<>
-ComponentManager<Collider3D>::ComponentManager()
-{
-	type = COMP_MNG_TYPES::COMP_COLLIDER3D;
-	System::GetInstance().AddCompMng(this);
-}
 
 template<>
 ComponentManager<SpriteAnimator>::ComponentManager()

@@ -153,8 +153,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\MeshCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\SqhereCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider2D.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\ComponentManager_Collider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vector.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\00-Shader\Shader.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\99-ShaderTable\ShaderTable.cpp" />
@@ -194,8 +192,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\CircleCollider2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\00-Collider3D\Collider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameScene.cpp" />
@@ -265,8 +261,6 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\01-Collider2D\CircleCollider2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\00-Collider3D\Collider3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\BoxCollider3D.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\01-Collider2DManager\Collider2DManager.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\02-Collider3DManager\Collider3DManager.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\04-Camera\02-Camera3D\Camera3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\GameOverScene.h" />

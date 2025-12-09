@@ -1,6 +1,5 @@
 #include "BoxCollider2D.h"
 #include "../../../06-GameObject/GameObject.h"
-#include "../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
 #include "../../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 

@@ -5,27 +5,41 @@
 #include <vector>
 #include <unordered_set>
 
+
+
+/*******************************************************************************************
+*		ハッシュ管理用
+*******************************************************************************************/
 using ColliderPair = std::pair<Collider*, Collider*>;
 
 struct PairHash
 {
+	//コライダー同士のハッシュを組み合わせてペア用ハッシュ生成
 	size_t operator()(const ColliderPair& _pair) const noexcept
 	{
-		return std::hash<Collider*>()(_pair.first) ^ (std::hash<Collider*>()(_pair.second) << 1);
+		return std::hash<Collider*>()(_pair.first) ^ (std::hash<Collider*>()(_pair.second) << 1); //シフトしてハッシュ値の衝突回避
 	}
 };
 
 struct PairEq
 {
+	//ハッシュが衝突した際に呼ばれる、キー比較
 	bool operator()(const ColliderPair& _pairA, const ColliderPair& _pairB) const noexcept
 	{
-		return (_pairA.first == _pairB.first && _pairA.second == _pairB.second);
+		return (_pairA.first == _pairB.first && _pairA.second == _pairB.second) ||
+				(_pairA.second == _pairB.first && _pairA.first == _pairB.second);
 	}
 };
 
-using PairSet = std::unordered_set<ColliderPair, PairHash, PairEq>;
+using PairSet = std::unordered_set<ColliderPair, PairHash, PairEq>; //2つのコライダーをハッシュに持つテーブル
 
 
+
+
+
+/*******************************************************************************************
+*		コライダーマネージャー
+*******************************************************************************************/
 template<class T>
 class ColliderManager : public IF_ComponentManager
 {
@@ -35,12 +49,12 @@ protected:
 	std::vector<T*> li_collider;
 	std::vector<T*> li_enableCol;
 
-	std::vector<ColliderPair> li_curCollisionPair;
-	std::vector<ColliderPair> li_preCollisionPair;
+	PairSet curColliderPair;
+	PairSet preColliderPair;
 
-	void OnCollisionEnter(Collider* _p_colliderA, Collider* _p_colliderB);
-	void OnCollisionStay(Collider* _p_colliderA, Collider* _p_colliderB);
-	void OnCollisionExit(Collider* _p_colliderA, Collider* _p_colliderB);
+	void OnCollisionEnter(ColliderPair _colliderPair);
+	void OnCollisionStay(ColliderPair _colliderPair);
+	void OnCollisionExit(ColliderPair _colliderPair);
 
 	void CheckPair();
 
@@ -63,28 +77,55 @@ public:
 };
 
 template<class T>
-inline void ColliderManager<T>::OnCollisionEnter(Collider* _p_colliderA, Collider* _p_colliderB)
+inline void ColliderManager<T>::OnCollisionEnter(ColliderPair _colliderPair)
 {
-	_p_colliderA->OnCollisionEnter(_p_colliderB);
-	_p_colliderB->OnCollisionEnter(_p_colliderA);
+	auto& colliderA = _colliderPair.first;
+	auto& colliderB = _colliderPair.second;
+
+	colliderA->OnCollisionEnter(colliderB);
+	colliderB->OnCollisionEnter(colliderA);
 }
 template<class T>
-inline void ColliderManager<T>::OnCollisionStay(Collider* _p_colliderA, Collider* _p_colliderB)
+inline void ColliderManager<T>::OnCollisionStay(ColliderPair _colliderPair)
 {
-	_p_colliderA->OnCollisionStay(_p_colliderB);
-	_p_colliderB->OnCollisionStay(_p_colliderA);
+	auto& colliderA = _colliderPair.first;
+	auto& colliderB = _colliderPair.second;
+
+	colliderA->OnCollisionStay(colliderB);
+	colliderB->OnCollisionStay(colliderA);
 }
 template<class T>
-inline void ColliderManager<T>::OnCollisionExit(Collider* _p_colliderA, Collider* _p_colliderB)
+inline void ColliderManager<T>::OnCollisionExit(ColliderPair _colliderPair)
 {
-	_p_colliderA->OnCollisionExit(_p_colliderB);
-	_p_colliderB->OnCollisionExit(_p_colliderA);
+	auto& colliderA = _colliderPair.first;
+	auto& colliderB = _colliderPair.second;
+
+	colliderA->OnCollisionExit(colliderB);
+	colliderB->OnCollisionExit(colliderA);
 }
 
 template<class T>
 inline void ColliderManager<T>::CheckPair()
 {
+	for ( auto& p : curColliderPair )
+	{
+		if ( preColliderPair.find(p) == preColliderPair.end() )
+		{
+			OnCollisionEnter(p);
+		}
+		else
+		{
+			OnCollisionStay(p);
+		}
+	}
 
+	for ( auto& p : preColliderPair )
+	{
+		if ( curColliderPair.find(p) == curColliderPair.end() )
+		{
+			OnCollisionExit(p);
+		}
+	}
 
 }
 
@@ -109,6 +150,7 @@ inline void ColliderManager<T>::RemoveCollider(T* _p_collider)
 		li_collider.erase(it);
 	}
 }
+
 
 template<class T>
 inline void ColliderManager<T>::Action()

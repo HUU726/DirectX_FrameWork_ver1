@@ -1,6 +1,5 @@
 #include "SceneManager.h"
 
-#include "../../07-Component/03-Collider/99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 #include "../../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../01-Scenes/TitleScene.h"
 
@@ -37,7 +36,6 @@ void SceneManager::ChangeScene()
 	{
 		UnloadScene();
 		curScene = std::move(nextScene);
-		Collider2DManager::GetInstance().UnInit();
 		SetUpScene();
 	}
 }

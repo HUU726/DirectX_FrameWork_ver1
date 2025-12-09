@@ -1,6 +1,5 @@
 #include "CircleCollider2D.h"
 #include "../../../06-GameObject/GameObject.h"
-#include "../99-ColliderManager/01-Collider2DManager/Collider2DManager.h"
 
 bool CircleCollider2D::CollideWith(Collider2D* _collider)
 {

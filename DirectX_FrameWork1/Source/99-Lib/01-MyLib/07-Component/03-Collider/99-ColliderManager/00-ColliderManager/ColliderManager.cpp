@@ -15,16 +15,41 @@ template<>
 void ColliderManager<Collider2D>::SelectCollider()
 {
 	li_enableCol.clear();
+	preColliderPair.clear();
+	curColliderPair.swap(preColliderPair);
+
 	for ( auto collider : li_collider )
 	{
 		if ( collider->GetIsActive() )
-		{
 			li_enableCol.push_back(collider);
-			li_curCollisionPair.swap(li_preCollisionPair);
-			collider->SwapHitColliders();
-		}
 	}
 }
+
+
+template<>
+ColliderManager<Collider3D>::ColliderManager()
+{
+	type = COMP_MNG_TYPES::COMP_COLLIDER3D;
+	System::GetInstance().AddCompMng(this);
+}
+template<>
+void ColliderManager<Collider3D>::SelectCollider()
+{
+	li_enableCol.clear();
+	preColliderPair.clear();
+	curColliderPair.swap(preColliderPair);
+
+	for ( auto collider : li_collider )
+	{
+		if ( collider->GetIsActive() )
+			li_enableCol.push_back(collider);
+	}
+
+}
+
+
+
+
 template<>
 void ColliderManager<Collider2D>::CheckCollision()
 {
@@ -40,43 +65,17 @@ void ColliderManager<Collider2D>::CheckCollision()
 
 			if ( col1->CollideWith(col2) )
 			{
-				auto it = std::pair<Collider2D*, Collider2D*>(col1,col2);
-				li_curCollisionPair.push_back(it);
-				col1->AddCurHitCollider(col2);
-				col2->AddCurHitCollider(col1);
+				auto it = ColliderPair(col1,col2);
+				curColliderPair.insert(it);
 				std::cout << col1 << "：" << col2 << " がヒットしました" << std::endl;
 			}
 		}
 	}
 
-	for ( auto collider : li_enableCol )
-	{
-		collider->CheckHitColliders();
-	}
+	CheckPair();
 }
 
 
-
-template<>
-ColliderManager<Collider3D>::ColliderManager()
-{
-	type = COMP_MNG_TYPES::COMP_COLLIDER3D;
-	System::GetInstance().AddCompMng(this);
-}
-template<>
-void ColliderManager<Collider3D>::SelectCollider()
-{
-	li_enableCol.clear();
-	for ( auto collider : li_collider )
-	{
-		if ( collider->GetIsActive() )
-		{
-			li_enableCol.push_back(collider);
-			li_curCollisionPair.swap(li_preCollisionPair);
-			collider->SwapHitColliders();
-		}
-	}
-}
 template<>
 void ColliderManager<Collider3D>::CheckCollision()
 {
@@ -92,22 +91,14 @@ void ColliderManager<Collider3D>::CheckCollision()
 
 			if ( col1->CollideWith(col2) )
 			{
-				auto it = std::pair<Collider3D*, Collider3D*>(col1, col2);
-				li_curCollisionPair.push_back(it);
-				col1->AddCurHitCollider(col2);
-				col2->AddCurHitCollider(col1);
-				std::cout << col1 << "：" << col2 << " がヒットしました" << std::endl;
+				auto it = ColliderPair(col1, col2);
+				curColliderPair.insert(it);
+				//std::cout << col1 << "：" << col2 << " がヒットしました" << std::endl;
 			}
 		}
 	}
 
-	for ( auto collider : li_enableCol )
-	{
-		collider->CheckHitColliders();
-	}
-
-	if ( li_curCollisionPair.size() > 0 )
-	{
-
-	}
+	CheckPair();
 }
+
+

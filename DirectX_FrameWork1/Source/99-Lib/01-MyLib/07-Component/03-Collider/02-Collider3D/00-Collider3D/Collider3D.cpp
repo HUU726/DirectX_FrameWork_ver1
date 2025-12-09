@@ -1,21 +1,16 @@
 #include "Collider3D.h"
 
 #include "../../99-ColliderManager/00-ColliderManager/ColliderManager.h"
-#include "../../99-ColliderManager/02-Collider3DManager/Collider3DManager.h"
 
 
 Collider3D::Collider3D()
 {
 	ColliderManager<Collider3D>::GetInstance().AddCollider(this);
-	//Collider3DManager::GetInstance().AddCollider(this);
-	//ComponentManager<Collider3D>::GetInstance().Add(this);
 }
 
 Collider3D::~Collider3D()
 {
 	ColliderManager<Collider3D>::GetInstance().RemoveCollider(this);
-	//Collider3DManager::GetInstance().RemoveCollider(this);
-	//ComponentManager<Collider3D>::GetInstance().Remove(this);
 }
 
 
