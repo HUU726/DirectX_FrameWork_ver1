@@ -221,6 +221,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\SqhereCollider3D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\99-CompMng\IF_ComponentManager.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\AsuiPlayer\AsuiPlayer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Material.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\998-FH_Types\Vector.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\999-Shader\00-Shader\Shader.h" />
