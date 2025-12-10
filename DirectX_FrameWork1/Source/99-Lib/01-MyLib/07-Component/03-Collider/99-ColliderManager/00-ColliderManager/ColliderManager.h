@@ -57,9 +57,9 @@ protected:
 	PairSet curColliderPair;
 	PairSet preColliderPair;
 
-	void OnCollisionEnter(ColliderPair _colliderPair);
-	void OnCollisionStay(ColliderPair _colliderPair);
-	void OnCollisionExit(ColliderPair _colliderPair);
+	void OnCollisionEnter(const ColliderPair& _colliderPair);
+	void OnCollisionStay(const ColliderPair& _colliderPair);
+	void OnCollisionExit(const ColliderPair& _colliderPair);
 
 	void CheckPair();
 
@@ -81,8 +81,19 @@ public:
 	void Action() override;
 };
 
+
+
+
+/*******************************************************************************************
+*		テンプレート共通処理
+*******************************************************************************************/
+
+/**
+* @brief	衝突時にペアになっているColliderのOnCollisionEnterを呼び出す
+* @param	ColliderPair	_colliderPair
+*/
 template<class T>
-inline void ColliderManager<T>::OnCollisionEnter(ColliderPair _colliderPair)
+inline void ColliderManager<T>::OnCollisionEnter(const ColliderPair& _colliderPair)
 {
 	auto& colliderA = _colliderPair.first;
 	auto& colliderB = _colliderPair.second;
@@ -90,8 +101,11 @@ inline void ColliderManager<T>::OnCollisionEnter(ColliderPair _colliderPair)
 	colliderA->OnCollisionEnter(colliderB);
 	colliderB->OnCollisionEnter(colliderA);
 }
+/**
+* @brief	ペアになっているColliderのOnCollisionStayを呼び出す
+*/
 template<class T>
-inline void ColliderManager<T>::OnCollisionStay(ColliderPair _colliderPair)
+inline void ColliderManager<T>::OnCollisionStay(const ColliderPair& _colliderPair)
 {
 	auto& colliderA = _colliderPair.first;
 	auto& colliderB = _colliderPair.second;
@@ -100,7 +114,7 @@ inline void ColliderManager<T>::OnCollisionStay(ColliderPair _colliderPair)
 	colliderB->OnCollisionStay(colliderA);
 }
 template<class T>
-inline void ColliderManager<T>::OnCollisionExit(ColliderPair _colliderPair)
+inline void ColliderManager<T>::OnCollisionExit(const ColliderPair& _colliderPair)
 {
 	auto& colliderA = _colliderPair.first;
 	auto& colliderB = _colliderPair.second;
