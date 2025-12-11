@@ -7,6 +7,14 @@
 
 class TrackObject;
 
+struct SlideData
+{
+	hft::HFFLOAT2 anchorPos;
+	hft::HFFLOAT2 moveVec;
+	float power;
+	std::vector<TrackObject*> trackObjects;
+};
+
 class BaseMap : public GameObject
 {
 protected:
@@ -14,16 +22,24 @@ protected:
 	int height;	//縦幅
 	int* p_mapDataArray;	//マップのデータに次元配列
 
-	hft::HFFLOAT2 anchorPos;	//ズラす基点
-	hft::HFFLOAT2 moveVec;		//ズラす方向
-	float power;				//ズラす力
-	std::vector<TrackObject*> trackObjects;	//ズレ列に対応するオブジェクトのポインタ格納用
+	std::vector<SlideData> slideDatas;	//ズラす時に使うデータ
+	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するTrackObjectのポインタ
 
+	/**
+	* @brief	ズラす処理
+	*/
 	void Slide();
-	void TrackObjectUpdate();
+	/**
+	* @brief	ライン上のオブジェクトを取得する処理
+	*/
+	void SearchOnLineObjects(SlideData& _data);
+	/**
+	* @brief	追従オブジェクトの座標をズラす
+	*/
+	void SlideTrackObject();
 
 public:
-	BaseMap() : width(0), height(0), p_mapDataArray(nullptr), power(0) {}
+	BaseMap() {}
 	virtual ~BaseMap() {}
 
 	/**

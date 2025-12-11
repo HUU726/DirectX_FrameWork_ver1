@@ -6,12 +6,10 @@
 class TrackObject : public GameObject2D
 {
 protected:
-	hft::HFFLOAT2 angle;
-	hft::HFFLOAT2 moveVec;
-
-	void Slide();
+	hft::HFFLOAT2 lineIndex;	//マップ上のどのマスにいるか
+	hft::HFFLOAT2 angle;		//どの方向をむいているのか
 
 public:
-	void SetMoveVec(const hft::HFFLOAT2& _moveVec) { moveVec = _moveVec; }
-
+	void SetLineIndex(const hft::HFFLOAT2& _index) { lineIndex = _index; }
+	hft::HFFLOAT2 GetLineIndex() { return lineIndex; }
 };
