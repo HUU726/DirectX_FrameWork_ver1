@@ -194,6 +194,11 @@ hft::HFFLOAT4 hft::HFFLOAT4::operator/(const HFFLOAT4& _value)
 {
 	return { x / _value.x,y / _value.y,z / _value.z,w / _value.w };
 }
+void hft::HFFLOAT4::operator+=(const HFFLOAT2& _value)
+{
+	x += _value.x;
+	y += _value.y;
+}
 void hft::HFFLOAT4::operator+=(const HFFLOAT4& _value)
 {
 	x += _value.x;

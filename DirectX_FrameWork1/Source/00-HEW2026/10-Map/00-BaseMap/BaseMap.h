@@ -13,6 +13,14 @@ struct SlideData
 	hft::HFFLOAT2 moveVec;
 	float power;
 	std::vector<TrackObject*> trackObjects;
+
+	bool operator==(const SlideData& _data)
+	{
+		return (anchorPos == _data.anchorPos &&
+			moveVec == _data.moveVec &&
+			power == _data.power &&
+			trackObjects == _data.trackObjects);
+	}
 };
 
 class BaseMap : public GameObject
@@ -36,7 +44,7 @@ protected:
 	/**
 	* @brief	追従オブジェクトの座標をズラす
 	*/
-	void SlideTrackObject();
+	void SlideTrackObject(SlideData& _data);
 
 public:
 	BaseMap() {}

@@ -7,7 +7,20 @@ void BaseMap::Slide()
 	for (auto& data : slideDatas)
 	{
 		SearchOnLineObjects(data);
-		SlideTrackObject();
+		SlideTrackObject(data);
+		data.power *= 0.8;
+		if (data.power < 1)
+			data.power = 0;
+	}
+
+	for (auto& data : slideDatas)
+	{
+		if (data.power == 0)
+		{
+			auto it = std::find(slideDatas.begin(), slideDatas.end(), data);
+			if (it != slideDatas.end())
+				slideDatas.erase(it);
+		}
 	}
 }
 
@@ -31,8 +44,14 @@ void BaseMap::SearchOnLineObjects(SlideData& _data)
 
 }
 
-void BaseMap::SlideTrackObject()
+void BaseMap::SlideTrackObject(SlideData& _data)
 {
+
+	for (auto obj : _data.trackObjects)
+	{
+		Transform* p_trf = obj->GetTransformPtr();
+		p_trf->position += _data.moveVec * _data.power;
+	}
 }
 
 
