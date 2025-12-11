@@ -7,6 +7,9 @@
 
 class TrackObject;
 
+
+
+//ズラしに必要な情報
 struct SlideData
 {
 	hft::HFFLOAT2 anchorPos;
@@ -23,12 +26,17 @@ struct SlideData
 	}
 };
 
+
+
 class BaseMap : public GameObject
 {
 protected:
 	int width;	//横幅
 	int height;	//縦幅
-	int* p_mapDataArray;	//マップのデータに次元配列
+
+	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
+	std::vector<std::vector<hft::HFFLOAT2>> tilePos;		//タイルの座標
+	std::vector<TrackObject*> tileObjects;
 
 	std::vector<SlideData> slideDatas;	//ズラす時に使うデータ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するTrackObjectのポインタ
@@ -47,8 +55,12 @@ protected:
 	void SlideTrackObject(SlideData& _data);
 
 public:
-	BaseMap() {}
-	virtual ~BaseMap() {}
+	BaseMap();
+	~BaseMap()
+	{
+		for (auto tile : tileObjects)
+			delete tile;
+	}
 
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
@@ -58,11 +70,14 @@ public:
 	*/
 	void SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power);
 
+	void Init() override;
 	/**
 	* @brief	マップのサイズを初期化
 	* @param	const int&	_width	マップ横幅
 	* @height	const int&	_height	マップ縦幅
 	*/
 	void Init(const int& _width, const int& _height);
+
+	void Update() override;
 
 };
