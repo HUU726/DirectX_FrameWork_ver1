@@ -95,16 +95,25 @@ void BaseMap::SlideTileObject(SlideData& _data)
 		for ( auto obj : _data.trackObjects )
 		{
 			hft::HFFLOAT2 index = obj->GetLineIndex();
-			index += _data.moveVec;
+			if ( _data.moveVec.x )
+				index += _data.moveVec;
+			else if ( _data.moveVec.y )
+				index -= _data.moveVec;
 
 			if ( index.x < 0 || index.x > width - 1 )
 				index.x -= (width ) * _data.moveVec.x;
 			else if ( index.y < 0 || index.x > height - 1 )
 				index.y -= (height) * _data.moveVec.y;
 			
+			obj->SetLineIndex(index);
+
 			if ( index.x == 0 )
 			{
 				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = {1,0,0,1};
+			}
+			else if ( index.y == 0 )
+			{
+				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,0,1,1 };
 			}
 			else
 			{
