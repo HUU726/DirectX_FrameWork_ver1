@@ -16,6 +16,8 @@ struct SlideData
 	hft::HFFLOAT2 moveVec;
 	float power;
 	std::vector<TrackObject*> trackObjects;
+	int cntFlame;
+	bool changeFlg;
 
 	bool operator==(const SlideData& _data)
 	{
@@ -33,6 +35,8 @@ class BaseMap : public GameObject
 protected:
 	int width;	//横幅
 	int height;	//縦幅
+	hft::HFFLOAT2 leftTopPos;
+	hft::HFFLOAT2 rightBottomPos;
 
 	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
 	std::vector<std::vector<hft::HFFLOAT2>> tilePos;		//タイルの座標
@@ -46,7 +50,15 @@ protected:
 	*/
 	void Slide();
 	/**
-	* @brief	ライン上のオブジェクトを取得する処理
+	* @brief	ライン上のタイルオブジェクトを取得
+	*/
+	void SearchOnLineTiles(SlideData& _data);
+	/**
+	* @brief	ライン上のタイルオブジェクトをズラす
+	*/
+	void SlideTileObject(SlideData& _data);
+	/**
+	* @brief	ライン上のオブジェクトを取得する
 	*/
 	void SearchOnLineObjects(SlideData& _data);
 	/**
