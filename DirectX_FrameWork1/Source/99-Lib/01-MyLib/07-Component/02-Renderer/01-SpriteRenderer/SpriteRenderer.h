@@ -21,6 +21,7 @@ public:
 	std::shared_ptr<hft::Polygon> SetShape(std::string _name);
 	std::shared_ptr<hft::Polygon> SetShape(std::shared_ptr<hft::Polygon> _shape);
 	std::shared_ptr<hft::Polygon> GetShape() const { return sp_shape; }
+	hft::Polygon& GetPolygonRef() { return polygon; }
 	std::shared_ptr<Texture> GetTexture() const { return sp_texture; }
 
 	/**
