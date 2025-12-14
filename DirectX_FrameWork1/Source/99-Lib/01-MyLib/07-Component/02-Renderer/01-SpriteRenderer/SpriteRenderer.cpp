@@ -32,12 +32,14 @@ SpriteRenderer::~SpriteRenderer()
 std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::string _name)
 {
 	sp_shape = ShapeTable2D::GetInstance().GetShape(_name);
+	polygon = *ShapeTable2D::GetInstance().GetShape(_name);
 	return std::shared_ptr<hft::Polygon>();
 }
 
 std::shared_ptr<hft::Polygon> SpriteRenderer::SetShape(std::shared_ptr<hft::Polygon> _shape)
 {
 	sp_shape = _shape;
+	polygon = *_shape;
     return sp_shape;
 }
 
@@ -73,7 +75,7 @@ void SpriteRenderer::Draw()
 		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
 		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
 		renderer.SetTexture(sp_texture);
-
+		renderer.SetMaterial(polygon.material);
 
 		if (const auto& animator = gameObject->GetComponent<SpriteAnimator>())
 		{
@@ -85,7 +87,7 @@ void SpriteRenderer::Draw()
 			renderer.SetTex();
 		}
 
-		renderer.SetWorldMatrix(gameObject->GetTransform());
+		renderer.SetWorldMatrix(gameObject->GetTransform());	
 		renderer.SetVPMatrix();
 
 		renderer.Draw(this);

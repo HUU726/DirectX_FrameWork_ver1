@@ -10,6 +10,7 @@ class SpriteRenderer : public Component
 {
 private:
 	std::shared_ptr<hft::Polygon> sp_shape;		//ポリゴン(基本三角形２枚の矩形)
+	hft::Polygon polygon;
 	std::shared_ptr<Texture> sp_texture;		//ポリゴンにはるテクスチャー
 
 public:

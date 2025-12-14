@@ -153,7 +153,7 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _p_renderer)
 		return;
 
 	RenderPipeline();
-	SetMaterial(shape->material);
+	//SetMaterial(shape->material);
 
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }
