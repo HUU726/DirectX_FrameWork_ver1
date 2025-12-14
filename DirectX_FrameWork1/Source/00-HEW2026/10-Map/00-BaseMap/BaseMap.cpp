@@ -68,6 +68,7 @@ void BaseMap::SlideTileObject(SlideData& _data)
 	for ( auto obj : _data.trackObjects )
 	{
 		Transform* p_trf = obj->GetTransformPtr();
+		p_trf->position += _data.moveVec * _data.power * Time::GetInstance().DeltaTime();
 
 		if ( _data.moveVec.x)
 		{
@@ -86,7 +87,7 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			}
 		}
 
-		p_trf->position += _data.moveVec * _data.power * Time::GetInstance().DeltaTime();
+
 	}
 
 	if ( _data.changeFlg )
