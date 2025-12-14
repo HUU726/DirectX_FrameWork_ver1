@@ -362,7 +362,7 @@ void IF_Renderer::SetMaterial(const hft::Material& _material)
 		_material.shader.SetGPU();
 	else
 	{
-		ID3D11InputLayout* inputLayout = sp_defaultShader->GetInputLayout();
+		//ID3D11InputLayout* inputLayout = sp_defaultShader->GetInputLayout();
 		p_DeviceContext->IASetInputLayout(sp_defaultShader->GetInputLayout());
 		p_DeviceContext->VSSetShader(sp_defaultShader->GetVertexShader(), NULL, 0);
 		p_DeviceContext->PSSetShader(sp_defaultShader->GetPixelShader(), NULL, 0);

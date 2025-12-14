@@ -11,6 +11,7 @@ SpriteRenderer::SpriteRenderer()
 	ComponentManager<SpriteRenderer>::GetInstance().Add(this);
 
 	sp_shape = ShapeTable2D::GetInstance().GetShape("sprite");
+	polygon = *sp_shape;
 }
 
 SpriteRenderer::SpriteRenderer(const char* _filePath)
@@ -74,6 +75,9 @@ void SpriteRenderer::Draw()
 		
 		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
 		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
+
+		//renderer.SetVertexBuffer(polygon.p_vertexBuffer);
+		//renderer.SetIndexBuffer(polygon.p_indexBuffer);
 		renderer.SetTexture(sp_texture);
 		renderer.SetMaterial(polygon.material);
 

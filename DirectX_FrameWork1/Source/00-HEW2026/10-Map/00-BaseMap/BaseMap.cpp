@@ -104,11 +104,11 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			
 			if ( index.x == 0 )
 			{
-				obj->GetComponent<SpriteRenderer>()->GetShape()->material.diffuse = {1,0,0,1};
+				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = {1,0,0,1};
 			}
 			else
 			{
-				obj->GetComponent<SpriteRenderer>()->GetShape()->material.diffuse = {1,1,1,1};
+				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = {1,1,1,1};
 			}
 		}
 
