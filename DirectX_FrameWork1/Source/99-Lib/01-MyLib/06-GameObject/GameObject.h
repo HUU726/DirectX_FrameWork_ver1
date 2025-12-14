@@ -15,6 +15,7 @@
 #include <iostream>
 
 #include "../07-Component/01-Transform/Transform.h"
+#include "../101-Time/Time.h"
 #include "Time.h"
 
 class Collider;

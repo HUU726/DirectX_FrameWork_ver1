@@ -87,12 +87,16 @@ void TitleScene::Init()
 	}
 
 	
-
 	{	//アニメーション適用テスト
 		testAnimation2D.Init();
+		testAnimation2D.GetTransformPtr()->position = { 0,0 };
 	}
 	{	//エネミーテスト
 		testEnemy.Init();
+	}
+
+	{	//マップテスト
+		map.Init(5, 6);
 	}
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);

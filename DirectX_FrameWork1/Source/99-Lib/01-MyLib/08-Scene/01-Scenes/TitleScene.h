@@ -13,6 +13,9 @@
 #include "../../06-GameObject/02-3DGameObject/03-Plane/PlaneObject.h"
 
 
+#include "../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
+
+
 class TitleScene : public BaseScene
 {
 private:
@@ -25,6 +28,8 @@ private:
 	TestPlayer testPlayer;
 	TestEnemy testEnemy;
 	TestAnimation2D testAnimation2D;
+
+	BaseMap map;
 
 public:
 	~TitleScene() override;

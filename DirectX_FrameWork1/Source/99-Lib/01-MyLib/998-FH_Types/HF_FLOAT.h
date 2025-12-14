@@ -66,6 +66,7 @@ namespace hft
 		HFFLOAT4 operator-(const HFFLOAT4& _value);
 		HFFLOAT4 operator*(const HFFLOAT4& _value);
 		HFFLOAT4 operator/(const HFFLOAT4& _value);
+		void operator+=(const HFFLOAT2& _value);
 		void operator+=(const HFFLOAT4& _value);
 		void operator-=(const HFFLOAT4& _value);
 		void operator*=(const HFFLOAT4& _value);
