@@ -63,13 +63,6 @@ void TitleScene::Init()
 		p_trf->scale = {100,100,100};
 	}
 
-	{	//モデルテスト
-		testModel.Init();
-		Transform* p_trf = testModel.GetTransformPtr();
-		p_trf->position = { 0,0,500 };
-		p_trf->scale = {300,300,300};
-	}
-
 	{	//地面初期化
 		groundObject.Init();
 		Transform* p_trf = groundObject.GetTransformPtr();
@@ -89,7 +82,6 @@ void TitleScene::Init()
 	
 	{	//アニメーション適用テスト
 		testAnimation2D.Init();
-		testAnimation2D.GetTransformPtr()->position = { 0,0 };
 	}
 	{	//エネミーテスト
 		testEnemy.Init();

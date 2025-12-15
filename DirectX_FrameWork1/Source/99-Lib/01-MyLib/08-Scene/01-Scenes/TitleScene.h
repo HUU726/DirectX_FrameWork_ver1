@@ -1,7 +1,6 @@
 #pragma once
 #include "./00-BaseScene/BaseScene.h"
 
-#include "../../1000-Test/TestModel/TestModel.h"
 #include "../../06-GameObject/301-GroundObject/GroundObject.h"
 #include "../../1000-Test/TestPlayer/TestPlayer.h"
 #include "../../1000-Test/TestAnimation2D/TestAnimation2D.h"
@@ -23,7 +22,6 @@ private:
 	PlaneObject planeObject;
 	CubeObject cubeObject;
 
-	TestModel testModel;
 	GroundObject groundObject;
 	TestPlayer testPlayer;
 	TestEnemy testEnemy;
