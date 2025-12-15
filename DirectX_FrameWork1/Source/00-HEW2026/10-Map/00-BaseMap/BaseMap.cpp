@@ -8,6 +8,8 @@
 #define MAP_CENTER_POSY (0)
 #define TILE_SCALEX (100.0f)
 #define TILE_SCALEY (100.0f)
+#define TILE_SCALEX_HALF (TILE_SCALEX / 2.0f)
+#define TILE_SCALEY_HALF (TILE_SCALEY / 2.0f)
 
 void DebugTile_PaitColor(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _moveVec)
 {
@@ -129,7 +131,7 @@ void BaseMap::SlideTileObject(SlideData& _data)
 
 		if ( _data.moveVec.x)
 		{
-			if ( p_trf->position.x > rightBottomPos.x  || p_trf->position.x < leftTopPos.x )
+			if ( p_trf->position.x > rightBottomPos.x  || p_trf->position.x < leftTopPos.x - TILE_SCALEX )
 			{
 				p_trf->position.x -= TILE_SCALEX * width * _data.moveVec.x;
 				_data.changeFlg = true;
@@ -137,7 +139,7 @@ void BaseMap::SlideTileObject(SlideData& _data)
 		}
 		else if ( _data.moveVec.y )
 		{
-			if ( p_trf->position.y > leftTopPos.y || p_trf->position.y < rightBottomPos.y )
+			if ( p_trf->position.y > leftTopPos.y + TILE_SCALEY || p_trf->position.y < rightBottomPos.y )
 			{
 				p_trf->position.y -= TILE_SCALEY * height * _data.moveVec.y;
 				_data.changeFlg = true;
@@ -235,10 +237,10 @@ void BaseMap::Init(const int& _width, const int& _height)
 		tileObjects.push_back(tileObject);
 	}
 
-	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * TILE_SCALEX);
-	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * TILE_SCALEY);
-	rightBottomPos.x = MAP_CENTER_POSX + (width / 2.0f * TILE_SCALEX);
-	rightBottomPos.y = MAP_CENTER_POSY - (height / 2.0f * TILE_SCALEY);
+	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * TILE_SCALEX) + TILE_SCALEX_HALF;
+	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * TILE_SCALEY) - TILE_SCALEY_HALF;
+	rightBottomPos.x = leftTopPos.x + (width * TILE_SCALEX);
+	rightBottomPos.y = leftTopPos.y - (height * TILE_SCALEY);
 
 	for (int y = 0; y < height; y++)
 	{
@@ -259,11 +261,18 @@ void BaseMap::Update()
 	if (GetAsyncKeyState('P') & 0x0001)
 	{
 		SetSlideData(hft::HFFLOAT2(5, 1), hft::HFFLOAT2(1, 0), 100);
+		SetSlideData(hft::HFFLOAT2(5, 2), hft::HFFLOAT2(-1, 0), 100);
 	}
-
 
 	if ( GetAsyncKeyState('O') & 0x0001 )
 	{
+		SetSlideData(hft::HFFLOAT2(5, 1), hft::HFFLOAT2(-1, 0), 100);
+		SetSlideData(hft::HFFLOAT2(5, 2), hft::HFFLOAT2(1, 0), 100);
+	}
+
+	if ( GetAsyncKeyState('U') & 0x0001 )
+	{
+		SetSlideData(hft::HFFLOAT2(4, 3), hft::HFFLOAT2(0, 1), 300);
 		SetSlideData(hft::HFFLOAT2(5, 3), hft::HFFLOAT2(0, -1), 300);
 	}
 
