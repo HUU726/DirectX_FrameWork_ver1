@@ -11,7 +11,7 @@
 #define TILE_SCALEX_HALF (TILE_SCALEX / 2.0f)
 #define TILE_SCALEY_HALF (TILE_SCALEY / 2.0f)
 
-void DebugTile_PaitColor(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _moveVec)
+void Debug_TilePaintColor_FromXY(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _moveVec)
 {
 	if (_moveVec.y)
 	{
@@ -68,10 +68,14 @@ void DebugTile_PaitColor(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _
 		}
 	}
 }
+void Debug_TilePaintColor_FromTile(int _index, std::vector<TrackObject*>& _objects)
+{
+	_objects[_index]->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,0,1 };
+}
 
 void BaseMap::Slide()
 {
-	static int downFlame = 120;
+	static int downFlame = 60;
 
 	for (auto& data : slideDatas)
 	{
@@ -166,8 +170,10 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			
 			obj->SetLineIndex(index);
 
-			DebugTile_PaitColor(index, obj, _data.moveVec);
+			//Debug_TilePaintColor_FromXY(index, obj, _data.moveVec);
 		}
+
+		Debug_TilePaintColor_FromTile(18, tileObjects);
 
 		if ( _data.power < 40 )
 			_data.power = 0;

@@ -39,7 +39,6 @@ protected:
 	hft::HFFLOAT2 rightBottomPos;
 
 	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
-	std::vector<std::vector<hft::HFFLOAT2>> tilePos;		//タイルの座標
 	std::vector<TrackObject*> tileObjects;
 
 	std::vector<SlideData> slideDatas;	//ズラす時に使うデータ
