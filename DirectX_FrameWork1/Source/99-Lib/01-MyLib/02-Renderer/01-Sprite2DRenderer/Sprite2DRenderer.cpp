@@ -152,10 +152,13 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _p_renderer)
 	if (!shape)
 		return;
 
-	RenderPipeline();
-	SetMaterial(shape->material);
+	hft::Polygon& polygon = _p_renderer->GetPolygonRef();
 
-	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
+	RenderPipeline();
+	SetMaterial(polygon.material);
+
+	//p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
+	p_DeviceContext->DrawIndexed(static_cast<UINT>(polygon.indices.size()), 0, 0); // •`‰æ–½—ß
 }
 
 void Sprite2DRenderer::Draw(const hft::Polygon& _shape, hft::HFFLOAT4 _pos, hft::HFFLOAT3 _scl, hft::HFFLOAT3 _rot)

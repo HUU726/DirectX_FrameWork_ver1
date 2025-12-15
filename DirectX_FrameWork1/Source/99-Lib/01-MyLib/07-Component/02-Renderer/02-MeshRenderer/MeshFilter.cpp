@@ -26,12 +26,14 @@ MeshFilter::~MeshFilter()
 std::shared_ptr<hft::Mesh> MeshFilter::SetMesh(std::string _name)
 {
 	sp_mesh = ShapeTable3D::GetInstance().GetShape(_name);
+	mesh = *ShapeTable3D::GetInstance().GetShape(_name);
 	return sp_mesh;
 }
 
 std::shared_ptr<hft::Mesh> MeshFilter::SetMesh(std::shared_ptr<hft::Mesh> _sp_mesh)
 {
 	sp_mesh = ShapeTable3D::GetInstance().GetShape(_sp_mesh->name);
+	mesh = *_sp_mesh;
 	return sp_mesh;
 }
 

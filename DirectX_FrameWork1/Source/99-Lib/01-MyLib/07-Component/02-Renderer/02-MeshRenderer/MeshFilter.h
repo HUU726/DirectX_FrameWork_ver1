@@ -18,6 +18,7 @@ class MeshFilter : public Component
 {
 private:
 	std::shared_ptr<hft::Mesh> sp_mesh;
+	hft::Mesh mesh;
 
 public:
 	MeshFilter();

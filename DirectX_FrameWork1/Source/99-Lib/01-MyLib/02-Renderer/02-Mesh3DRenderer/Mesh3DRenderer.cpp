@@ -163,6 +163,7 @@ void Mesh3DRenderer::Draw(const MeshRenderer* _p_renderer)
 
 	RenderPipeline();
 
+
 	SetMaterial(shape->materials[0]);
 	p_DeviceContext->DrawIndexed(static_cast<UINT>(shape->indices.size()), 0, 0); // •`‰æ–½—ß
 }

@@ -14,15 +14,16 @@ SamplerState mySampler : register(s0); //ƒTƒ“ƒvƒ‰[
 float4 main(PS_IN input) : SV_Target
 {
     float4 color = input.col;
-
+    color = color * material.diffuse;
+    
     if (material.isTexture > 0)
     {
         color = color * myTexture.Sample(mySampler, input.tex);
     }
-    else
-    {
-        color = color * material.diffuse;
-    }
+    //else
+    //{
+    //    color = color * material.diffuse;
+    //}
 
     return color;
 }
