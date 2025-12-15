@@ -9,10 +9,67 @@
 #define TILE_SCALEX (100.0f)
 #define TILE_SCALEY (100.0f)
 
+void DebugTile_PaitColor(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _moveVec)
+{
+	if (_moveVec.y)
+	{
+		switch (static_cast<int>(_index.y))
+		{
+		case 1:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,0,1 };
+			break;
+		case 2:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,1,0,1 };
+			break;
+		case 3:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,0,1,1 };
+			break;
+		case 4:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,0,1 };
+			break;
+		case 5:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,1,1 };
+			break;
+		case 6:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,1,1,1 };
+			break;
+		default:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,1 };
+			break;
+		}
+	}
+	else if (_moveVec.x)
+	{
+		switch (static_cast<int>(_index.x))
+		{
+		case 1:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,0,1 };
+			break;
+		case 2:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,1,0,1 };
+			break;
+		case 3:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,0,1,1 };
+			break;
+		case 4:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,0,1 };
+			break;
+		case 5:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,1,1 };
+			break;
+		case 7:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,1,1,1 };
+			break;
+		default:
+			_obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,1 };
+			break;
+		}
+	}
+}
 
 void BaseMap::Slide()
 {
-	static int downFlame = 240;
+	static int downFlame = 120;
 
 	for (auto& data : slideDatas)
 	{
@@ -102,23 +159,12 @@ void BaseMap::SlideTileObject(SlideData& _data)
 
 			if ( index.x < 0 || index.x > width - 1 )
 				index.x -= (width ) * _data.moveVec.x;
-			else if ( index.y < 0 || index.x > height - 1 )
-				index.y -= (height) * _data.moveVec.y;
+			else if ( index.y < 0 || index.y > height - 1 )
+				index.y += (height) * _data.moveVec.y;
 			
 			obj->SetLineIndex(index);
 
-			if ( index.x == 0 )
-			{
-				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = {1,0,0,1};
-			}
-			else if ( index.y == 0 )
-			{
-				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0,0,1,1 };
-			}
-			else
-			{
-				obj->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = {1,1,1,1};
-			}
+			DebugTile_PaitColor(index, obj, _data.moveVec);
 		}
 
 		if ( _data.power < 40 )
@@ -176,8 +222,8 @@ void BaseMap::Init()
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 void BaseMap::Init(const int& _width, const int& _height)
 {
-	width = _width + 1;
-	height = _height + 1;
+	width = _width + 2;
+	height = _height + 2;
 
 	int tileNum = height * width;
 	for (int i = 0; i < tileNum; i++)
