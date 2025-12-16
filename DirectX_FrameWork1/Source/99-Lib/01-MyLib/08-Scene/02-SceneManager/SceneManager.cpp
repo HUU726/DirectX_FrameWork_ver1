@@ -39,6 +39,10 @@ void SceneManager::ChangeScene()
 		curScene = std::move(nextScene);
 		SetUpScene();
 	}
+	else
+	{
+		GameObjectManager::GetInstance().AddWaitToNow();
+	}
 }
 
 void SceneManager::SetUpScene()

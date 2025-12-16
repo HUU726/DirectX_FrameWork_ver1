@@ -1,15 +1,19 @@
 #include "GameObjectManager.h"
 
 #include "../GameObject.h"
+#include "../../08-Scene/02-SceneManager/SceneManager.h"
 
 /*
 * @note		GameObjectのコンストラクタで呼出し
 */
 void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 {
-	idCnt++;
-	_p_gameObject->SetID(idCnt);
-	waitingQueue.push_back(_p_gameObject);
+	if (SceneManager::GetInstance().GetNext())
+	{
+		idCnt++;
+		_p_gameObject->SetID(idCnt);
+		waitingQueue.push_back(_p_gameObject);
+	}
 }
 
 /**
@@ -33,6 +37,17 @@ void GameObjectManager::SetUpObject()
 void GameObjectManager::Clear()
 {
 	gameObjects.clear();
+}
+
+void GameObjectManager::ClearWaitingQueue()
+{
+	waitingQueue.clear();
+}
+
+void GameObjectManager::AddWaitToNow()
+{
+	if ( waitingQueue.size() )
+		gameObjects.insert(gameObjects.end(), waitingQueue.begin(), waitingQueue.end());
 }
 
 

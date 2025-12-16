@@ -17,9 +17,11 @@ public:
 		return instance;
 	}
 
+	bool GetNext() { return nextScene.get(); }
+
 	void Init();
 	void UnInit();
-
+	
 	/**
 	* @brief	シーンをロード
 	* @param	std::unique_ptr<BaseScene>	_up_scene	ユニークポインタのシーン

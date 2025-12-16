@@ -155,6 +155,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\MeshCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\02-Collider3D\SqhereCollider3D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\301-GroundObject\GroundObject.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\998-FH_Types\Vector.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\00-Shader\Shader.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\999-Shader\99-ShaderTable\ShaderTable.cpp" />

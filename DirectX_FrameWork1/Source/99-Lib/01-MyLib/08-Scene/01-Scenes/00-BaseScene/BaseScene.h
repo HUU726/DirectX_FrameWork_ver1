@@ -18,7 +18,7 @@ protected:
 	LightObject lightObject;	//ライトオブジェクト
 
 public:
-	BaseScene() {}
+	BaseScene();
 	virtual ~BaseScene() {}
 
 	virtual void Init() = 0;

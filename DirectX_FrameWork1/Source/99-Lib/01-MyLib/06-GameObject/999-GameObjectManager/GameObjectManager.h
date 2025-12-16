@@ -40,6 +40,14 @@ public:
 	* @brief	コンテナ内オブジェクトを削除
 	*/
 	void Clear();
+	/**
+	* @brief	待機コンテナを空にする
+	*/
+	void ClearWaitingQueue();
+	/**
+	* @brief	待機コンテナの中身を現在コンテナに追加する
+	*/
+	void AddWaitToNow();
 
 	/**
 	* @brief	格納済みゲームオブジェクトのUpdate関数を呼び出す
