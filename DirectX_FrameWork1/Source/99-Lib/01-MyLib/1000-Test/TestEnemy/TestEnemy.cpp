@@ -47,4 +47,11 @@ void TestEnemy::Update()
 		moveVec.y += 1;
 
 	p_transform->position += moveVec * speed;
+
+	if ( GetAsyncKeyState('Z') & 0x0001 )
+	{
+		TestEnemy* test = new TestEnemy();
+		test->Init();
+		test->GetTransformPtr()->position = { 0,0,-20 };
+	}
 }

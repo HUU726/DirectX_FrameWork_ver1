@@ -48,6 +48,5 @@ void TestPlayer::Update()
 
 		if ( GetAsyncKeyState(VK_UP) & 0x8000 )
 			SceneManager::GetInstance().LoadScene(std::make_unique<GameScene>());
-
 	}
 }

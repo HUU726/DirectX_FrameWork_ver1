@@ -8,7 +8,7 @@
 */
 void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 {
-	if (SceneManager::GetInstance().GetNext())
+	if (!SceneManager::GetInstance().GetNext())
 	{
 		idCnt++;
 		_p_gameObject->SetID(idCnt);
@@ -46,8 +46,11 @@ void GameObjectManager::ClearWaitingQueue()
 
 void GameObjectManager::AddWaitToNow()
 {
-	if ( waitingQueue.size() )
+	if ( waitingQueue.size() && !SceneManager::GetInstance().GetNext() )
+	{
 		gameObjects.insert(gameObjects.end(), waitingQueue.begin(), waitingQueue.end());
+		waitingQueue.clear();
+	}
 }
 
 
