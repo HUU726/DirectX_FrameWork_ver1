@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "../../02-Renderer/98-RendererManager/RendererManager.h"
+#include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include "../01-Scenes/TitleScene.h"
 
 
@@ -43,6 +44,7 @@ void SceneManager::ChangeScene()
 void SceneManager::SetUpScene()
 {
 	curScene->Init();
+	GameObjectManager::GetInstance().SetUpObject();
 }
 
 

@@ -49,6 +49,7 @@ void System::GameLoopPipeline()
 
 void System::ClearManagersData()
 {
+	gameObjMng.Clear();
 }
 
 

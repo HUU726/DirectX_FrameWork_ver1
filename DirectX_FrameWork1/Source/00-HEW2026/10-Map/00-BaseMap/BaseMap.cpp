@@ -216,6 +216,14 @@ BaseMap::BaseMap()
 	p_transform->position.y = MAP_CENTER_POSY;
 }
 
+BaseMap::~BaseMap()
+{
+	for ( int i = 0; i < tileObjects.size(); i++ )
+	{
+		delete tileObjects.at(i);
+	}
+}
+
 
 void BaseMap::SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power)
 {

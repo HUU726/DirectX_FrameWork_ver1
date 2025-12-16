@@ -9,7 +9,7 @@ void GameObjectManager::AddGameObject(GameObject* _p_gameObject)
 {
 	idCnt++;
 	_p_gameObject->SetID(idCnt);
-	gameObjects.push_back(_p_gameObject);
+	waitingQueue.push_back(_p_gameObject);
 }
 
 /**
@@ -25,6 +25,11 @@ void GameObjectManager::RemoveGameObject(GameObject* _p_gameObject)
 	}
 }
 
+void GameObjectManager::SetUpObject()
+{
+	gameObjects.clear();
+	waitingQueue.swap(gameObjects);
+}
 void GameObjectManager::Clear()
 {
 	gameObjects.clear();

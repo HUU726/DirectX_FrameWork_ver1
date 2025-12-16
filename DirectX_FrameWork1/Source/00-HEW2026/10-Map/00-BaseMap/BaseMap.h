@@ -67,11 +67,7 @@ protected:
 
 public:
 	BaseMap();
-	~BaseMap()
-	{
-		for (auto tile : tileObjects)
-			delete tile;
-	}
+	~BaseMap();
 
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
