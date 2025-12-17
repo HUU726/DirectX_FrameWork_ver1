@@ -6,6 +6,8 @@
 #include "../07-Component/99-CompMng/ComponentManager.h"
 #include "../08-Scene/02-SceneManager/SceneManager.h"
 
+#include "../../../04-Input/Input.h"	//朝日奈担当の入力系クラス
+
 System::System()
 {
 	int size = COMP_MNG_TYPES::COMP_MAX;
@@ -31,6 +33,9 @@ void System::Init(HWND _hwnd)
 	hft::PixelShaderTable::GetInstance().Init();	//ピクセルシェーダテーブルを初期化
 	hft::VertexShaderTable::GetInstance().Init();	//バーテックスシェーダーテーブルを初期化
 	SceneManager::GetInstance().Init();	//シーンマネージャーを初期化
+
+	
+
 }
 void System::UnInit()
 {

@@ -4,6 +4,7 @@
 #include "../99-Lib/01-MyLib/02-Renderer/98-RendererManager/RendererManager.h"
 #include "../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 #include "../99-Lib/01-MyLib/101-Time/Time.h"
+#include "../04-Input/Input.h"	//朝日奈担当の入力系クラス
 
 
 Game::Game()
@@ -36,6 +37,7 @@ void Game::Run()
 	Application& app = Application::GetInstance();
 	System& system = System::GetInstance();
 	Time& time = Time::GetInstance();
+	Input& input = Input::GetInstance(); //朝日奈担当の入力システム参照
 
 	while (app.isLoop())
 	{
@@ -43,6 +45,7 @@ void Game::Run()
 		{
 			sceneMng.ChangeScene();
 			system.GameLoopPipeline();
+			input.Update(); //朝日奈担当の入力システム更新
 		}
 	}
 	
