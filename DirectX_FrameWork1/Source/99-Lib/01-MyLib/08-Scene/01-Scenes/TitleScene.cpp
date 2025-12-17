@@ -82,6 +82,7 @@ void TitleScene::Init()
 	
 	{	//アニメーション適用テスト
 		testAnimation2D.Init();
+		testAnimation2D.GetTransformPtr()->position = { 0,0 };
 	}
 	{	//エネミーテスト
 		testEnemy.Init();
