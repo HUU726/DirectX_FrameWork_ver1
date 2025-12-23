@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.cpp" />
     <ClCompile Include="Source\04-Input\Input.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\00-BaseMap\BaseMap.cpp" />
@@ -214,8 +215,11 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.h" />
     <ClInclude Include="Source\04-Input\Input.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-Tile\TileObject.h" />
@@ -293,6 +297,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestAnimation2D\TestAnimation2D.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

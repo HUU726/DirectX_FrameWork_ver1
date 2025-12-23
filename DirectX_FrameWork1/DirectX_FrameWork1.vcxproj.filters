@@ -213,6 +213,15 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\04-Input\Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -441,6 +450,18 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\AsuiPlayer\AsuiPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\04-Input\Input.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

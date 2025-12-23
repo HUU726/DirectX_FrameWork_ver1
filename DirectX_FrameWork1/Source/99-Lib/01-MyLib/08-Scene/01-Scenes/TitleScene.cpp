@@ -40,7 +40,6 @@ void TitleScene::Init()
 
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
-
 	{	//球体
 		sqhereObject.Init();
 		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
@@ -91,8 +90,16 @@ void TitleScene::Init()
 	{	//マップテスト
 		map.Init(5, 6);
 	}
+
+
+	{	//朝日奈担当トゲオブジェクト
+		thornObject.Init();
+	}
+
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
+
+
 }
 
 

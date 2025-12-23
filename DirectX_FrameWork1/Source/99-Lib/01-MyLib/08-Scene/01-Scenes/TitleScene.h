@@ -14,6 +14,7 @@
 
 #include "../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 
+#include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h" //朝日奈担当トゲブロック
 
 class TitleScene : public BaseScene
 {
@@ -29,6 +30,8 @@ private:
 
 	BaseMap map;
 
+	//朝日奈担当のトゲブロック検品用
+	ThormObject thornObject;
 public:
 	~TitleScene() override;
 
