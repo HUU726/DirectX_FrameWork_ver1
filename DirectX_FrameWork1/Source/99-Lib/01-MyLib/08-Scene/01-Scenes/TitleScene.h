@@ -16,22 +16,27 @@
 
 #include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h" //朝日奈担当トゲブロック
 
+#include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
+
 class TitleScene : public BaseScene
 {
 private:
-	SqhereObject sqhereObject;
-	PlaneObject planeObject;
-	CubeObject cubeObject;
+	//SqhereObject sqhereObject;
+	//PlaneObject planeObject;
+	//CubeObject cubeObject;
 
-	GroundObject groundObject;
-	TestPlayer testPlayer;
-	TestEnemy testEnemy;
-	TestAnimation2D testAnimation2D;
-
-	BaseMap map;
+	//GroundObject groundObject;
+	//TestPlayer testPlayer;
+	//TestEnemy testEnemy;
+	//TestAnimation2D testAnimation2D;
+	
+	//BaseMap map;
 
 	//朝日奈担当のトゲブロック検品用
 	ThormObject thornObject;
+
+	//朝日奈担当の連結ブロック検品用
+	//ConnectObject connectObject;
 public:
 	~TitleScene() override;
 

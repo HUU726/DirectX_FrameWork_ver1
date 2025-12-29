@@ -15,6 +15,7 @@ struct Texture
 	int width;
 	int height;
 	int bpp;
+
 };
 
 class TextureTable

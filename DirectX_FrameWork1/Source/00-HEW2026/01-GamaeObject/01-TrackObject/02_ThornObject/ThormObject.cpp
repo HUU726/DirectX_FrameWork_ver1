@@ -1,8 +1,16 @@
 #include "ThormObject.h"
+#include "ThormObjectParam.h"	//トゲオブジェクトのパラメータ
+
+#include "DirectX_FrameWork1/Source/99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
+
+#include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+#include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+
+
 
 ThormObject::ThormObject()
 {
-	
+
 }
 
 ThormObject::~ThormObject()
@@ -12,71 +20,70 @@ ThormObject::~ThormObject()
 
 void ThormObject::Init()
 {
-	//オブジェクトのid設定
-	id = 2;
-	//name = "ThormObject";
-	//tag = "Enemy";
-
-	GetComponent<Transform>()->position = hft::HFFLOAT3{-300.f, 200.f, 5.f};
-
-
-	//マップの何処に配置するか設定
-	hft::HFFLOAT2 index(0.0f, 0.0f);
-	SetLineIndex({ 0.f, 0.f });
+	//パラメータの設定
+	isAttack = ThormObjectParam::isAttack;
+	timer = 0;
+	attackTime = ThormObjectParam::animationTime;
+	defaultTime = ThormObjectParam::defaultTime;
+	animationTime = ThormObjectParam::animationTime;
 
 
-	//ボックスコライダーの設定============================
-	BoxCollider2D* ptr_boxColl2d = AddComponent<BoxCollider2D>();
-	ptr_boxColl2d->SetGameObject((GameObject*)this);
-	ptr_boxColl2d->SetSize({ 100.f, 100.0f, 0.f });
-	//ボックスコライダーの設定============================
+	//本体オブジェクトの設定
+	//位置の設定
+	p_transform->position = hft::HFFLOAT3{ 0.f,0.f, 0.f };
+	p_transform->scale = hft::HFFLOAT3{ 150.f,150.f,1 };
+
+	//レンダラーの設定
+	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTestver2.png");
+
+	//アニメーターの設定
+	//画像の分割数を設定
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
+	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
+
+	//animationの設定
+	SpriteAnimation anim(div, { 0,0 }, 9);
+	anim.Active();
+	anim.SetID(0);
+
+	anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+	anim.SetPriority(0);
+	float flame = 10;
+
+	for (int i = 0; i < 9; i++)
+	{
+		anim.GetCellRef(i).flame = flame;
+	}
 
 
-	//スプライトレンダラーの設定==========================
-	SpriteRenderer* renderer = GetComponent<SpriteRenderer>();
-	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	p_spriteAnimator->AddAnimation(anim);
 
 
+	//コライダーの設定
+	AddComponent<BoxCollider2D>();
 
-	//アニメーターの設定============================
-	//SpriteAnimator* ptr_animator = AddComponent<SpriteAnimator>();
-	//ptr_animator->SetGameObject((GameObject*)this);
 
-	////アニメーションの設定
-	//SpriteAnimation anim01;
-	//anim01.SetID(0);
-	//anim01.SetType(SPRITE_ANIM_TYPE::LOOP);
-	//anim01.SetPriority(0);
-	//anim01.Active();
+	//影オブジェクトの設定
 
-	////セルの設定
-	//SpriteAnimationCell cell0(20, { 0.2f, 0.f });
-	//SpriteAnimationCell cell1(20, { 0.4f, 0.f });
-	//SpriteAnimationCell cell2(20, { 0.6f, 0.f });
-	//SpriteAnimationCell cell3(20, { 0.8f, 0.f });
-
-	//anim01.AddCell(cell0);
-	//anim01.AddCell(cell1);
-	//anim01.AddCell(cell2);
-	//anim01.AddCell(cell3);
-
-	//ptr_animator->AddAnimation(anim01);
-	//アニメーターの設定終了============================
 }
+
 
 void ThormObject::Update()
 {
+	//経過フレームを計る
 	timer++;
 
-	if (isAttack == false)
-	{
-		DefaultMove();
-	}
-	else
+	//攻撃状態かどうか
+	if (isAttack)
 	{
 		AttackMove();
 	}
+	else
+	{
+		DefaultMove();
+	}
 
+	//アニメーションは攻撃状態に関わらず一定周期で行う
 	Animation();
 
 
@@ -84,15 +91,15 @@ void ThormObject::Update()
 
 void ThormObject::Animation()
 {
-	/*if (ptr_animator)
-	{
-		ptr_animator->Update();
-	}*/
+	//影側のアニメーション
+	SpriteAnimator* animator = GetComponent<SpriteAnimator>();
+
+	animator->Play(0);
 }
 
 void ThormObject::SetColliderActive(bool state)
 {
-	BoxCollider2D* ptr_boxColl2d = AddComponent<BoxCollider2D>();
+	BoxCollider2D* ptr_boxColl2d = GetComponent<BoxCollider2D>();
 	ptr_boxColl2d->SetIsActive(state);
 }
 
@@ -113,7 +120,7 @@ void ThormObject::AttackMove()
 	//通常状態に切り替える処理
 	if (attackTime <= timer)
 	{
-		SetColliderActive(true);
+		SetColliderActive(false);
 		isAttack = false;
 		timer = 0;
 		std::cout << "通常モードに切り替え" << std::endl;
