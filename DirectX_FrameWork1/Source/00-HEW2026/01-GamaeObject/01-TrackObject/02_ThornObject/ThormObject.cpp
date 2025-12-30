@@ -20,6 +20,10 @@ ThormObject::~ThormObject()
 
 void ThormObject::Init()
 {
+	//マップ上どのマスにいるか設定
+	SetLineIndex({1.f, 1.f});
+
+	//タイマーを初期化
 	timer = 0;
 
 	//影のパラメータの設定
@@ -30,7 +34,7 @@ void ThormObject::Init()
 		defaultTime = ThormObjectParam::defaultTime;
 
 		//位置の設定
-		p_transform->position = hft::HFFLOAT3{ 0.f,0.f, 0.f };
+		//p_transform->position = hft::HFFLOAT3{ 0.f,0.f, 0.f };
 		p_transform->scale = ThormObjectParam::shadowInitialScale;
 
 		//レンダラーの設定

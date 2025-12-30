@@ -43,6 +43,7 @@ public:
 
 	/// <summary>
 	/// 影の部分の更新処理
+	/// 状態の切り替え、コライダーのアクティブ状態切り替えを行う
 	/// </summary>
 	void ShadowUpdate();
 
