@@ -21,19 +21,24 @@
 class TitleScene : public BaseScene
 {
 private:
-	SqhereObject sqhereObject;
-	PlaneObject planeObject;
-	CubeObject cubeObject;
+	//SqhereObject sqhereObject;
+	//PlaneObject planeObject;
+	//CubeObject cubeObject;
 
-	GroundObject groundObject;
-	TestPlayer testPlayer;
-	TestEnemy testEnemy;
-	TestAnimation2D testAnimation2D;
+	//GroundObject groundObject;
+	//TestPlayer testPlayer;
+	//TestEnemy testEnemy;
+	//TestAnimation2D testAnimation2D;
 
-	BaseMap map;
+	//BaseMap map;
 
-	//朝日奈担当の連結ブロック検品用
-	ConnectObject connectObject;
+	//ThormObject thormObject;
+
+	//朝日奈担当の連結ブロック検品
+	ConnectObject connectObject_0;
+	ConnectObject connectObject_1;
+	ConnectObject connectObject_2;
+	ConnectObject connectObject_3;
 public:
 	~TitleScene() override;
 

@@ -62,34 +62,12 @@ void TitleScene::Init()
 	//	p_trf->scale = {100,100,100};
 	//}
 
-	{	//球体
-		sqhereObject.Init();
-		sqhereObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
-		Transform* p_trf = sqhereObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{-300.f,200.f,0.f};
-		p_trf->rotation = { 0,0,0 };
-		p_trf->scale = hft::HFFLOAT3{100.f,100.f,100.f};
-	}
-	{	//板
-		planeObject.Init();
-		Transform* p_trf = planeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,0.f };
-		p_trf->rotation = hft::HFFLOAT3{ 0,0,0 };
-	}
-	{	//立方体
-		cubeObject.Init();
-		cubeObject.GetComponent<MeshRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-		Transform* p_trf = cubeObject.GetTransformPtr();
-		p_trf->position = hft::HFFLOAT3{ 0.f,200.f,100.f };
-		p_trf->scale = {100,100,100};
-	}
-
-	{	//地面初期化
-		groundObject.Init();
-		Transform* p_trf = groundObject.GetTransformPtr();
-		p_trf->position.y = -500.f;
-		p_trf->scale = {50,10,50};
-	}
+	//{	//地面初期化
+		//groundObject.Init();
+		//Transform* p_trf = groundObject.GetTransformPtr();
+		//p_trf->position.y = -500.f;
+		//p_trf->scale = {50,10,50};
+	//}
 
 	//{	//プレイヤーテスト
 	//	testPlayer.Init();
@@ -110,9 +88,24 @@ void TitleScene::Init()
 	}
 
 	{	//マップテスト
-		map.Init(5, 6);
+		//map.Init(5, 6);
 	}
 
+	{
+		//朝日奈担当トゲブロック
+		//thormObject.Init();
+	}
+
+	{
+		//朝日奈担当連結ブロック
+		connectObject_0.Init();
+		connectObject_1.Init();
+
+		std::cout << "連結ブロックの生成番号1つめ" << connectObject_0.GetInstanceNumber() << std::endl;
+		std::cout << "連結ブロックの生成番号２つめ" << connectObject_1.GetInstanceNumber() << std::endl;
+		std::cout << "連結ブロックの生成番号3つめ" << connectObject_2.GetInstanceNumber() << std::endl;
+		std::cout << "連結ブロックの生成番号4つめ" << connectObject_3.GetInstanceNumber() << std::endl;
+	}
 
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
