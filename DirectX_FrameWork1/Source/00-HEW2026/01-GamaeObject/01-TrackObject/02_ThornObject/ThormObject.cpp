@@ -45,7 +45,7 @@ void ThormObject::Init()
 		hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 		//animationの設定
-		SpriteAnimation anim(div, { 0,0 }, 1);
+		SpriteAnimation anim(div, { 0,0 }, 2);
 		anim.Active();
 		anim.SetID(0);
 
@@ -180,6 +180,10 @@ void ThormObject::ThormAnimation(const State state)
 	{
 		//攻撃状態になったらスケールを変更する
 		bodyTrf->scale = { 0.f, 0.f, 0.f };
+
+		SpriteAnimator* anim = GetComponent<SpriteAnimator>();
+		anim->Stop(0);
+
 	}
 }
 

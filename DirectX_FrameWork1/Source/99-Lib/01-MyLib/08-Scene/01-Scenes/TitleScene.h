@@ -28,12 +28,12 @@ private:
 	//GroundObject groundObject;
 	//TestPlayer testPlayer;
 	//TestEnemy testEnemy;
-	//TestAnimation2D testAnimation2D;
+	TestAnimation2D testAnimation2D;
 	
 	//BaseMap map;
 
 	//朝日奈担当のトゲブロック検品用
-	ThormObject thornObject;
+	//ThormObject thornObject;
 
 	//朝日奈担当の連結ブロック検品用
 	//ConnectObject connectObject;
