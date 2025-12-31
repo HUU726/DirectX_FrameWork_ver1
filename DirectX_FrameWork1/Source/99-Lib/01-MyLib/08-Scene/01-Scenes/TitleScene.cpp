@@ -80,8 +80,8 @@ void TitleScene::Init()
 
 	
 	{	//アニメーション適用テスト
-		testAnimation2D.Init();
-		testAnimation2D.GetTransformPtr()->position = { 0,0 };
+		//testAnimation2D.Init();
+		//testAnimation2D.GetTransformPtr()->position = { 0,0 };
 	}
 	{	//エネミーテスト
 		//testEnemy.Init();
@@ -97,7 +97,7 @@ void TitleScene::Init()
 	}
 
 	{	//朝日奈担当連結オブジェクト
-		//connectObject.Init();
+		connectObject.Init();
 	}
 
 

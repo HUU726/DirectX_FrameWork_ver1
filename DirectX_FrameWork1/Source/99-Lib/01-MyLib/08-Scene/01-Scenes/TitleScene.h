@@ -28,7 +28,7 @@ private:
 	//GroundObject groundObject;
 	//TestPlayer testPlayer;
 	//TestEnemy testEnemy;
-	TestAnimation2D testAnimation2D;
+	//TestAnimation2D testAnimation2D;
 	
 	//BaseMap map;
 
@@ -36,7 +36,7 @@ private:
 	//ThormObject thornObject;
 
 	//朝日奈担当の連結ブロック検品用
-	//ConnectObject connectObject;
+	ConnectObject connectObject;
 public:
 	~TitleScene() override;
 
