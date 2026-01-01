@@ -89,7 +89,19 @@ void ConnectObject::Update()
 
 bool ConnectObject::SearchConnectedState()
 {
-	//接触相手のコライダーを検索
+	//接触相手のコライダーから、自身以外の連結オブジェクトがあるかを検索する
+	std::vector<ConnectObject*> connectObj;
+
+	searchCollVert->
+
+
+	//連結オブジェクトがある場合、自分の番号より大きいかを確認
+
+
+	//大きい場合は座標を保存する
+
+
+	//保存した座標と自身の座標の間に攻撃判定を作る
 }
 
 void ConnectObject::EmitAttackAtConnection(const std::vector<Transform*> targetTrfArray)
