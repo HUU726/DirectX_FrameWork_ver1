@@ -82,7 +82,7 @@ void ConnectObject::Init()
 
 void ConnectObject::Update()
 {
-	
+	//他の連結ブロックと繋がっているか検知し、接触している場合は攻撃判定を追加する
 
 
 }
@@ -90,21 +90,33 @@ void ConnectObject::Update()
 bool ConnectObject::SearchConnectedState()
 {
 	//接触相手のコライダーから、自身以外の連結オブジェクトがあるかを検索する
+
+	//連結しているオブジェクトはこの配列に保管する
 	std::vector<ConnectObject*> connectObj;
 
-	searchCollVert->
-
-
 	//連結オブジェクトがある場合、自分の番号より大きいかを確認
+	if(searchCollVert->GetSize)
+
 
 
 	//大きい場合は座標を保存する
 
 
 	//保存した座標と自身の座標の間に攻撃判定を作る
+
+	return false;
 }
 
 void ConnectObject::EmitAttackAtConnection(const std::vector<Transform*> targetTrfArray)
 {
-	//接触相手の座標
+	//縦と横、どちらの向きで繋がっているか確認する
+
+	//接触相手の座標から自身の座標まで、何マス分あるか検知。マスのサイズは外部から指定する
+
+	//自身を原点に、検知した向きに1マス分ずつ座標をずらしたところにオブジェクトを配置する
+	//間のマス数が今アクティブな攻撃判定用オブジェクトより多い場合は追加でオブジェクトを生成する
+
+	//
 }
+
+

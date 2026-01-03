@@ -100,11 +100,15 @@ void TitleScene::Init()
 		//朝日奈担当連結ブロック
 		connectObject_0.Init();
 		connectObject_1.Init();
+		connectObject_2.Init();
+		connectObject_3.Init();
 
-		std::cout << "連結ブロックの生成番号1つめ" << connectObject_0.GetInstanceNumber() << std::endl;
-		std::cout << "連結ブロックの生成番号２つめ" << connectObject_1.GetInstanceNumber() << std::endl;
-		std::cout << "連結ブロックの生成番号3つめ" << connectObject_2.GetInstanceNumber() << std::endl;
-		std::cout << "連結ブロックの生成番号4つめ" << connectObject_3.GetInstanceNumber() << std::endl;
+
+		//初期位置を変更
+		connectObject_0.GetComponent<Transform>()->position = {  200.f, 200.f, 0.f};
+		connectObject_1.GetComponent<Transform>()->position = {  200.f,   0.f, 0.f};
+		connectObject_2.GetComponent<Transform>()->position = { -200.f, 200.f, 0.f };
+		connectObject_3.GetComponent<Transform>()->position = { -200.f,   0.f, 0.f };
 	}
 
 
