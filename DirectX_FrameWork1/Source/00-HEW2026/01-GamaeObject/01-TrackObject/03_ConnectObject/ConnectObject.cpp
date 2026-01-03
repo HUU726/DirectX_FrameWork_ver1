@@ -95,7 +95,7 @@ bool ConnectObject::SearchConnectedState()
 	std::vector<ConnectObject*> connectObj;
 
 	//連結オブジェクトがある場合、自分の番号より大きいかを確認
-	if(searchCollVert->GetSize)
+	//if(searchCollVert->GetSize)
 
 
 
