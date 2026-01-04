@@ -77,13 +77,9 @@ void BaseMap::Slide()
 {
 	static int downFlame = 60;
 
-	for (auto& data : slideDatas)
+	for (auto& data : tileSlideDatas)
 	{
-		SearchOnLineTiles(data);
 		SlideTileObject(data);
-		SearchOnLineObjects(data);
-		SlideTrackObject(data);
-		std::cout << data.power << std::endl;
 		if (data.cntFlame > downFlame )
 		{
 			data.power *= 0.8;
@@ -94,22 +90,43 @@ void BaseMap::Slide()
 			data.cntFlame++;
 		}
 	}
+	for (auto& data : objSlideDatas)
+	{
+		SlideTrackObject(data);
+		if (data.cntFlame > downFlame)
+		{
+			data.power *= 0.8;
+			data.cntFlame = 0;
+		}
+		else
+		{
+			data.cntFlame++;
+		}
+	}
 
-	for (auto& data : slideDatas)
+	//ズレる力が０になったらパイプラインから除外
+	for (auto& data : tileSlideDatas)
 	{
 		if (data.power == 0)
 		{
-			auto it = std::find(slideDatas.begin(), slideDatas.end(), data);
-			if (it != slideDatas.end())
-				slideDatas.erase(it);
+			auto it = std::find(tileSlideDatas.begin(), tileSlideDatas.end(), data);
+			if (it != tileSlideDatas.end())
+				tileSlideDatas.erase(it);
+		}
+	}
+	for (auto& data : tileSlideDatas)
+	{
+		if (data.power == 0)
+		{
+			auto it = std::find(tileSlideDatas.begin(), tileSlideDatas.end(), data);
+			if (it != tileSlideDatas.end())
+				tileSlideDatas.erase(it);
 		}
 	}
 }
 
 void BaseMap::SearchOnLineTiles(SlideData& _data)
 {
-	_data.trackObjects.clear();
-
 	for ( const auto& obj : tileObjects )
 	{
 		if ( _data.moveVec.x )
@@ -131,26 +148,18 @@ void BaseMap::SlideTileObject(SlideData& _data)
 	for ( auto obj : _data.trackObjects )
 	{
 		Transform* p_trf = obj->GetTransformPtr();
-		p_trf->position += _data.moveVec * _data.power * Time::GetInstance().DeltaTime();
+		hft::HFFLOAT2 moveVec = { _data.moveVec.x,_data.moveVec.y * -1 };
+		p_trf->position += moveVec * _data.power;
 
-		if ( _data.moveVec.x)
+
+		if ( p_trf->position.x > rightBottomPos.x  || p_trf->position.x < leftTopPos.x - TILE_SCALEX )
 		{
-			if ( p_trf->position.x > rightBottomPos.x  || p_trf->position.x < leftTopPos.x - TILE_SCALEX )
-			{
-				p_trf->position.x -= TILE_SCALEX * width * _data.moveVec.x;
-				_data.changeFlg = true;
-			}
+			_data.changeFlg = true;
 		}
-		else if ( _data.moveVec.y )
+		else if ( p_trf->position.y > leftTopPos.y + TILE_SCALEY || p_trf->position.y < rightBottomPos.y )
 		{
-			if ( p_trf->position.y > leftTopPos.y + TILE_SCALEY || p_trf->position.y < rightBottomPos.y )
-			{
-				p_trf->position.y -= TILE_SCALEY * height * _data.moveVec.y;
-				_data.changeFlg = true;
-			}
+			_data.changeFlg = true;
 		}
-
-
 	}
 
 	if ( _data.changeFlg )
@@ -158,33 +167,18 @@ void BaseMap::SlideTileObject(SlideData& _data)
 		for ( auto obj : _data.trackObjects )
 		{
 			hft::HFFLOAT2 index = obj->GetLineIndex();
-			if ( _data.moveVec.x )
-				index += _data.moveVec;
-			else if ( _data.moveVec.y )
-				index -= _data.moveVec;
-
-			if ( index.x < 0 || index.x > width - 1 )
-				index.x -= (width ) * _data.moveVec.x;
-			else if ( index.y < 0 || index.y > height - 1 )
-				index.y += (height) * _data.moveVec.y;
-			
-			obj->SetLineIndex(index);
-
-			//Debug_TilePaintColor_FromXY(index, obj, _data.moveVec);
+			index += _data.moveVec;
+			SetLineIndexToPos(index, *obj);
 		}
 
-		Debug_TilePaintColor_FromTile(18, tileObjects);
-
-		if ( _data.power < 40 )
+		if ( _data.power < 1 )
 			_data.power = 0;
-
 	}
 
 }
 
 void BaseMap::SearchOnLineObjects(SlideData& _data)
 {
-	_data.trackObjects.clear();
 
 	for (const auto& obj : onMapTrackObjects)
 	{
@@ -210,6 +204,23 @@ void BaseMap::SlideTrackObject(SlideData& _data)
 	}
 }
 
+void BaseMap::SetLineIndexToPos(hft::HFFLOAT2& _index, TrackObject& _obj)
+{
+	if (_index.x < 0)
+		_index.x = width - 1;
+	else if (_index.x >= width)
+		_index.x = 0;
+
+	if (_index.y < 0)
+		_index.y = height - 1;
+	else if (_index.y >= height)
+		_index.y = 0;
+
+	_obj.SetLineIndex(_index);
+	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
+	pos = { leftTopPos.x + _index.x * TILE_SCALEX, leftTopPos.y - _index.y * TILE_SCALEY };
+}
+
 BaseMap::BaseMap()
 {
 	p_transform->position.x = MAP_CENTER_POSX;
@@ -219,8 +230,92 @@ BaseMap::BaseMap()
 
 void BaseMap::SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power)
 {
+	//ズレが存在するか確認
+	{
+		if (tileSlideDatas.size() <= 0)
+		{
+			SlideData tileData{ _anchorPos,_moveVec,_power };
+			SearchOnLineTiles(tileData);
+			tileSlideDatas.push_back(tileData);
+
+			SlideData objData{ _anchorPos,_moveVec,_power };
+			SearchOnLineObjects(objData);
+			objSlideDatas.push_back(objData);
+
+			return;
+		}
+	}
+
+	//すでに動いているか確認
+	{
+		for (auto data : tileSlideDatas)
+		{
+			if (data.moveVec.x)
+			{
+				if (data.anchorPos.y == _anchorPos.y)
+					return;
+			}
+			if (data.moveVec.y)
+			{
+				if (data.anchorPos.x == _anchorPos.x)
+					return;
+			}
+		}
+	}
+
+	//クロス確認
+	{
+		hft::HFFLOAT2 curMoveVec = tileSlideDatas.at(0).moveVec;
+		float crossFlg = (_moveVec.x * curMoveVec.y) + (_moveVec.y * curMoveVec.x);
+		if (crossFlg)
+		{
+			hft::HFFLOAT2 moveVecFlg = { (_moveVec.x * _moveVec.x),(_moveVec.y * _moveVec.y) };	//X or Yどっちに動いているかのフラグ
+			float moveVec = (_moveVec.x * moveVecFlg.x) + (_moveVec.y * moveVecFlg.y);		//移動方向 ( 1 or -1 )
+			float basePos = (_anchorPos.x * moveVecFlg.x) + (_anchorPos.y * moveVecFlg.y);	//基準点
+			float changePos = (width * moveVecFlg.x) + (height * moveVecFlg.y);			//マップの、幅or高さ
+
+			//追加するズレの移動方向順に既存ズレとの干渉を「検索」＆「停止・調節」
+			for (int i = basePos + moveVec; i != basePos; i += moveVec)
+			{
+				if (i > changePos)
+					i = 0;
+				if (i < 0)
+					i = changePos;
+
+				for (auto data : tileSlideDatas)
+				{
+					float ancPos = (data.anchorPos.x * moveVecFlg.x) + (data.anchorPos.y * moveVecFlg.y);
+					if (ancPos != i)
+						continue;
+
+					if (_power < data.power)
+						return;
+
+					auto it = std::find(tileSlideDatas.begin(), tileSlideDatas.end(), data);
+					if (it != tileSlideDatas.end())
+					{
+						//ここで列を綺麗に整える
+						for (auto obj : data.trackObjects)
+						{
+							hft::HFFLOAT2 index = obj->GetLineIndex();
+							index -= data.moveVec;
+							SetLineIndexToPos(index, *obj);
+						}
+						tileSlideDatas.erase(it);
+					}
+
+				}
+			}
+		}
+	}
+
 	SlideData data{ _anchorPos,_moveVec,_power };
-	slideDatas.push_back(data);
+	SearchOnLineTiles(data);
+	tileSlideDatas.push_back(data);
+
+	SlideData objData{ _anchorPos,_moveVec,_power };
+	SearchOnLineObjects(objData);
+	objSlideDatas.push_back(objData);
 }
 
 void BaseMap::Init()
@@ -266,22 +361,24 @@ void BaseMap::Update()
 {
 	if (GetAsyncKeyState('P') & 0x0001)
 	{
-		SetSlideData(hft::HFFLOAT2(5, 1), hft::HFFLOAT2(1, 0), 100);
-		SetSlideData(hft::HFFLOAT2(5, 2), hft::HFFLOAT2(-1, 0), 100);
+		SetSlideData(hft::HFFLOAT2(1, 6), hft::HFFLOAT2(-1, 0), 3);
+	}
+	if (GetAsyncKeyState('O') & 0x0001)
+	{
+		SetSlideData(hft::HFFLOAT2(1, 2), hft::HFFLOAT2(1, 0), 6);
+		SetSlideData(hft::HFFLOAT2(1, 3), hft::HFFLOAT2(-1, 0), 2.5);
 	}
 
-	if ( GetAsyncKeyState('O') & 0x0001 )
+	if (GetAsyncKeyState('U') & 0x0001)
 	{
-		SetSlideData(hft::HFFLOAT2(5, 1), hft::HFFLOAT2(-1, 0), 100);
-		SetSlideData(hft::HFFLOAT2(5, 2), hft::HFFLOAT2(1, 0), 100);
+		SetSlideData(hft::HFFLOAT2(5, 4), hft::HFFLOAT2(0, -1), 3);
 	}
-
-	if ( GetAsyncKeyState('U') & 0x0001 )
+	if (GetAsyncKeyState('Y') & 0x0001)
 	{
-		SetSlideData(hft::HFFLOAT2(4, 3), hft::HFFLOAT2(0, 1), 300);
-		SetSlideData(hft::HFFLOAT2(5, 3), hft::HFFLOAT2(0, -1), 300);
+		SetSlideData(hft::HFFLOAT2(4, 4), hft::HFFLOAT2(0, 1), 3);
 	}
 
 
 	Slide();
+	Debug_TilePaintColor_FromTile(7, tileObjects);
 }

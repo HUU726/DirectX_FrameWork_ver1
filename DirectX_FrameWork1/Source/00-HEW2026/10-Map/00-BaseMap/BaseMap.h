@@ -39,10 +39,12 @@ protected:
 	hft::HFFLOAT2 rightBottomPos;
 
 	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
-	std::vector<TrackObject*> tileObjects;
+	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
+	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
 
-	std::vector<SlideData> slideDatas;	//ズラす時に使うデータ
-	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するTrackObjectのポインタ
+	std::vector<SlideData> tileSlideDatas;	//タイルをズラす時に使うデータ
+	std::vector<SlideData> objSlideDatas;	//オブジェをズラすときに使うデータ
+
 
 	/**
 	* @brief	ズラす処理
@@ -64,6 +66,10 @@ protected:
 	* @brief	追従オブジェクトの座標をズラす
 	*/
 	void SlideTrackObject(SlideData& _data);
+	/**
+	* @brief	行列番号を設定かつ座標の調節を行う
+	*/
+	void SetLineIndexToPos(hft::HFFLOAT2& _index, TrackObject& _obj);
 
 public:
 	BaseMap();
@@ -75,9 +81,9 @@ public:
 
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
-	* @param	const hft::HFFLOAT2&	基点
-	* @param	const hft::HFFLOAT2&	方向
-	* @param	const float&			力
+	* @param	const hft::HFFLOAT2&	_anchorPos	基点
+	* @param	const hft::HFFLOAT2&	_moveVec	方向
+	* @param	const float&			_power		力
 	*/
 	void SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power);
 
