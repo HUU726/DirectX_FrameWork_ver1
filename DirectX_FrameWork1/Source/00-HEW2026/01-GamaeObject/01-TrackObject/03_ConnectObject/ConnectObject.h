@@ -22,7 +22,7 @@ private:
 	BoxCollider2D* searchCollHori;  //横のコライダー
 
 	//攻撃判定用のオブジェクト
-	std::vector<GameObject2D*> emitAttackObj;
+	std::vector<GameObject2D*> emitAttackObjects;
 public:
 	ConnectObject();
 	void Init() override;
@@ -32,9 +32,37 @@ public:
 	bool SearchConnectedState();
 
 	//連結部分に攻撃判定用のオブジェクトを配置する
-	void EmitAttackAtConnection(const std::vector<Transform*> targetTrfArray);
+	void EmitAttackAtConnection(const hft::HFFLOAT3 tarPos);
 
-	//ゲッター
+	//上下左右、どちらの方向に繋がっているかを確認する 縦:true, 横:false
+	hft::HFFLOAT3 GetConnectionAxis(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos);
+
+	//接触相手の座標から自身の座標まで、何マス分あるか検知。マスのサイズは外部から指定する
+	int GetContactTileDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos, float cellSize);
+
+	//自身の座標から接触相手の座標まで、縦横いずれかの向きで攻撃判定用オブジェクトを配置する
+	void SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount, float cellSize);
+
+	//自身の生成番号を取得
 	const int GetInstanceNumber() { return myInstanceNumber; }
-};
 
+	/**
+	* @brief	コライダー同士が衝突した際の処理
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+	*/
+	void OnCollisionEnter2D(Collider2D* _p_col) override;
+	/**
+	* @brief	コライダー同士が離れた際の処理
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+	*/
+	void OnCollisionExit2D(Collider2D* _p_col) override;
+	/**
+	* @brief	コライダー同士が接触中の処理
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+	*/
+	void OnCollisionStay2D(Collider2D* _p_col) override;
+
+	void OnTriggerEnter2D(Collider2D* _p_col) override;
+	void OnTriggerExit2D(Collider2D* _p_col) override;
+	void OnTriggerStay2D(Collider2D* _p_col) override;
+};
