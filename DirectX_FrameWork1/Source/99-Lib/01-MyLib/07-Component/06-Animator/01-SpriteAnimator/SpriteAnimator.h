@@ -82,7 +82,10 @@ private:
 
 public:
 	SpriteAnimator();
-	SpriteAnimator(hft::HFFLOAT2 _div);
+	/**
+	* @param	const hft::HFFLOAT2& _div
+	*/
+	SpriteAnimator(const hft::HFFLOAT2& _div);
 	~SpriteAnimator();
 	/*** セッター ***/
 	void AddAnimation(const SpriteAnimation& _anim);

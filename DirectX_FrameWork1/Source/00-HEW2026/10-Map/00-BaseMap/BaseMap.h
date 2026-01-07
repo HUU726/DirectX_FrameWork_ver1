@@ -15,16 +15,19 @@ struct SlideData
 	hft::HFFLOAT2 anchorPos;
 	hft::HFFLOAT2 moveVec;
 	float power;
-	std::vector<TrackObject*> trackObjects;
+	std::vector<TrackObject*> tiles;
+	std::vector<TrackObject*> objects;
 	int cntFlame;
 	bool changeFlg;
+	bool indexFlg;
+	bool indexToChangeFlg = true;
 
 	bool operator==(const SlideData& _data)
 	{
 		return (anchorPos == _data.anchorPos &&
 			moveVec == _data.moveVec &&
 			power == _data.power &&
-			trackObjects == _data.trackObjects);
+			tiles == _data.tiles);
 	}
 };
 
@@ -42,8 +45,9 @@ protected:
 	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
 
-	std::vector<SlideData> tileSlideDatas;	//タイルをズラす時に使うデータ
-	std::vector<SlideData> objSlideDatas;	//オブジェをズラすときに使うデータ
+	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
+
+	TrackObject* trackObjects;
 
 
 	/**

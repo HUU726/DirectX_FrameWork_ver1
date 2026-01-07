@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\00-BaseMap\BaseMap.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\00-ColliderManager\ColliderManager.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\01-Transform\Transform.cpp" />
@@ -214,7 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-Tile\TileObject.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.h" />
     <ClInclude Include="Source\00-HEW2026\10-Map\00-BaseMap\BaseMap.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\Test_HewScene.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\03-Collider\99-ColliderManager\00-ColliderManager\ColliderManager.h" />

@@ -88,7 +88,7 @@ void TitleScene::Init()
 	}
 
 	{	//マップテスト
-		map.Init(5, 6);
+		map.Init(4, 4);
 	}
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
