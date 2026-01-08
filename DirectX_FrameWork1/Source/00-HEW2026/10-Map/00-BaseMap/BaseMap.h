@@ -15,16 +15,19 @@ struct SlideData
 	hft::HFFLOAT2 anchorPos;
 	hft::HFFLOAT2 moveVec;
 	float power;
-	std::vector<TrackObject*> trackObjects;
+	std::vector<TrackObject*> tiles;
+	std::vector<TrackObject*> objects;
 	int cntFlame;
 	bool changeFlg;
+	bool indexFlg;
+	bool indexToChangeFlg = true;
 
 	bool operator==(const SlideData& _data)
 	{
 		return (anchorPos == _data.anchorPos &&
 			moveVec == _data.moveVec &&
 			power == _data.power &&
-			trackObjects == _data.trackObjects);
+			tiles == _data.tiles);
 	}
 };
 
@@ -39,10 +42,11 @@ protected:
 	hft::HFFLOAT2 rightBottomPos;
 
 	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
-	std::vector<TrackObject*> tileObjects;
+	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
+	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
 
-	std::vector<SlideData> slideDatas;	//ズラす時に使うデータ
-	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するTrackObjectのポインタ
+	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
+	std::vector<GameObject*> covers;
 
 	/**
 	* @brief	ズラす処理
@@ -64,16 +68,28 @@ protected:
 	* @brief	追従オブジェクトの座標をズラす
 	*/
 	void SlideTrackObject(SlideData& _data);
+	/**
+	* @brief	行列番号からタイルの座標調節を行う
+	*/
+	void SetLineIndexToPosOfTile(hft::HFFLOAT2& _index, TrackObject& _obj);
+	/**
+	* @brief	行列番号からTrackObjectの座標調節を行う
+	*/
+	void SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft::HFFLOAT2& _index, TrackObject& _obj);
 
 public:
 	BaseMap();
 	~BaseMap();
 
+	/*** ゲッター ***/
+	const hft::HFFLOAT2& GetLefTopPos() { return leftTopPos; }
+	const hft::HFFLOAT2& GetRitBotPos() { return rightBottomPos; }
+
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
-	* @param	const hft::HFFLOAT2&	基点
-	* @param	const hft::HFFLOAT2&	方向
-	* @param	const float&			力
+	* @param	const hft::HFFLOAT2&	_anchorPos	基点
+	* @param	const hft::HFFLOAT2&	_moveVec	方向
+	* @param	const float&			_power		力
 	*/
 	void SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power);
 

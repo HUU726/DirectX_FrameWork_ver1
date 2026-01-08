@@ -123,7 +123,7 @@ SpriteAnimator::SpriteAnimator()
 	division = { 1,1 };
 }
 
-SpriteAnimator::SpriteAnimator(hft::HFFLOAT2 _div)
+SpriteAnimator::SpriteAnimator(const hft::HFFLOAT2& _div)
 {
 	ComponentManager<SpriteAnimator>::GetInstance().Add(this);
 	animIndex = 0;
