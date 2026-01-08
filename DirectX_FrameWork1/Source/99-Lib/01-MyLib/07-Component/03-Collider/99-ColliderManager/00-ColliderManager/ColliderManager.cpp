@@ -67,7 +67,7 @@ void ColliderManager<Collider2D>::CheckCollision()
 			{
 				auto it = ColliderPair(col1,col2);
 				curColliderPair.insert(it);
-				std::cout << col1 << "：" << col2 << " がヒットしました" << std::endl;
+				//std::cout << col1 << "：" << col2 << " がヒットしました" << std::endl;
 			}
 		}
 	}

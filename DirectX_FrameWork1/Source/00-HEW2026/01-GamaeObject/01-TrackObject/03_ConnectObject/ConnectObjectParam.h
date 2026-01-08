@@ -6,6 +6,10 @@
 namespace ConnectObjectParam
 {
 	//検査用コライダーのパラメータ
-	const int   searchCollCell = 5;	 //コライダーの長さ（マス数）
+
+	//コライダーの長さ（マス数）
+	//6の場合上3マス、下3マス
+	const int   searchCollCell = 14;	 
+
 	const float searchCollThickness	 = 20.f; //コライダーの厚み
 }

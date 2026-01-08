@@ -105,10 +105,24 @@ void TitleScene::Init()
 
 
 		//èâä˙à íuÇïœçX
-		connectObject_0.GetComponent<Transform>()->position = {  200.f, 200.f, 0.f};
-		connectObject_1.GetComponent<Transform>()->position = {  200.f,   0.f, 0.f};
-		connectObject_2.GetComponent<Transform>()->position = { -200.f, 200.f, 0.f };
-		connectObject_3.GetComponent<Transform>()->position = { -200.f,   0.f, 0.f };
+		connectObject_0.GetComponent<Transform>()->position = {  -600.f, 300.f, 0.f};
+		connectObject_1.GetComponent<Transform>()->position = {  600.f, 300.f, 0.f};
+		connectObject_2.GetComponent<Transform>()->position = {  -600.f,-300.f, 0.f };
+		connectObject_3.GetComponent<Transform>()->position = {  600.f,-300.f, 0.f };
+
+
+
+		connectObject_0.debug_SetstartPos();
+		connectObject_0.debug_SetmoveDir({10.f, 0.f});
+
+		connectObject_1.debug_SetstartPos();
+		connectObject_1.debug_SetmoveDir({ -10.f, 0.f });
+
+		connectObject_2.debug_SetstartPos();
+		connectObject_2.debug_SetmoveDir({ 0.f, 10.f });
+
+		connectObject_3.debug_SetstartPos();
+		connectObject_3.debug_SetmoveDir({ 0.f, -10.f });
 	}
 
 

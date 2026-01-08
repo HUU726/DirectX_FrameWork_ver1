@@ -16,26 +16,40 @@ private:
 	static int instanceCounter;		//現在何個生成されているかを全体で共有
 	int myInstanceNumber;			//自身の番号
 
+	BoxCollider2D* bodyCollider;
+
+
 	//検査用コライダーのパラメータ
 	int searchCollCell;				//コライダーの長さ(マス数)
 	float searchCollThickness;		//コライダーの厚み
 	BoxCollider2D* searchCollVert;	//縦のコライダー
 	BoxCollider2D* searchCollHori;  //横のコライダー
+	
+	//接触した連結オブジェクト配列
+	std::vector<ConnectObject*> connectObjArray;
 
-	//攻撃判定用のオブジェクト
+	//攻撃判定用のオブジェクト配列
 	std::vector<GameObject2D*> emitAttackObjects;
+
+	hft::HFFLOAT3 debug_moveDir;
+	hft::HFFLOAT3 debug_startPos;
+
+
 public:
 	ConnectObject();
 	void Init() override;
 	void Update() override;
 
+	//全ての攻撃判定オブジェクトのアクティブ状態をリセット
+	void ResetAttackObjectsActive();
+
 	//他の連結ブロックとの接続状態を検査する
-	bool SearchConnectedState();
+	void SearchConnectedState();
 
 	//連結部分に攻撃判定用のオブジェクトを配置する
 	void EmitAttackAtConnection(const hft::HFFLOAT3 tarPos);
 
-	//上下左右、どちらの方向に繋がっているかを確認する 縦:true, 横:false
+	//上下左右、どちらの方向に繋がっているかを確認する
 	hft::HFFLOAT3 GetConnectionAxis(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos);
 
 	//接触相手の座標から自身の座標まで、何マス分あるか検知。マスのサイズは外部から指定する
@@ -46,6 +60,19 @@ public:
 
 	//自身の生成番号を取得
 	const int GetInstanceNumber() { return myInstanceNumber; }
+
+	//本体部分のコライダーを取得
+	const BoxCollider2D* GetBodyCollider() 
+	{ 
+		if (bodyCollider)
+		{
+			return bodyCollider;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}	
 
 	/**
 	* @brief	コライダー同士が衝突した際の処理
@@ -58,10 +85,20 @@ public:
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	void OnCollisionExit(Collider* _p_col) override;
-
+	
 	/**
 	* @brief	コライダー同士が接触中の処理
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	void OnCollisionStay(Collider* _p_col) override;
+
+
+	//デバッグ用の処理
+	void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
+	void debug_SetstartPos()
+	{
+		debug_startPos = GetComponent<Transform>()->position;
+	}
+
+	void debug_Move();
 };
