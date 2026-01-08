@@ -24,10 +24,10 @@ private:
 
 	//GroundObject groundObject;
 	//TestPlayer testPlayer;
-	TestEnemy testEnemy;
-	TestAnimation2D testAnimation2D;
+	//TestEnemy testEnemy;
+	//TestAnimation2D testAnimation2D;
 
-	//BaseMap map;
+	BaseMap map;
 
 public:
 	~TitleScene() override;
