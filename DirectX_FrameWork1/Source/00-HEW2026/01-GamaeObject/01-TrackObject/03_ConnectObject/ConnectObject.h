@@ -1,12 +1,13 @@
 #pragma once
 #include "../00-TrackObject/TrackObject.h"
+#include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/00-Collider/Collider.h"
+
 
 //朝日奈担当連結オブジェクトクラス
 //スプライトレンダラー側にオフセットが無いので、連結部分の描画はオブジェクトを複数配置変更して管理する
 //検査用コライダーに接触したコライダーが連結ブロックかどうかを検索するのはキャスト形式で行う
 
 class BoxCollider2D;
-
 
 class ConnectObject : public TrackObject
 {
@@ -50,19 +51,17 @@ public:
 	* @brief	コライダー同士が衝突した際の処理
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
-	void OnCollisionEnter2D(Collider2D* _p_col) override;
+	void OnCollisionEnter(Collider* _p_col) override;
+
 	/**
 	* @brief	コライダー同士が離れた際の処理
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
-	void OnCollisionExit2D(Collider2D* _p_col) override;
+	void OnCollisionExit(Collider* _p_col) override;
+
 	/**
 	* @brief	コライダー同士が接触中の処理
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
-	void OnCollisionStay2D(Collider2D* _p_col) override;
-
-	void OnTriggerEnter2D(Collider2D* _p_col) override;
-	void OnTriggerExit2D(Collider2D* _p_col) override;
-	void OnTriggerStay2D(Collider2D* _p_col) override;
+	void OnCollisionStay(Collider* _p_col) override;
 };

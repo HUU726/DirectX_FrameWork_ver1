@@ -85,19 +85,21 @@ void ConnectObject::Update()
 	//他の連結ブロックと繋がっているか検知し、接触している場合は攻撃判定を追加する
 
 
-	OnCollisionEnter2D(searchCollHori);
+	//OnCollisionEnter2D(searchCollHori);
 
 }
 
 bool ConnectObject::SearchConnectedState()
 {
-	//接触相手のコライダーから、自身以外の連結オブジェクトがあるかを検索する
-
 	//接触した連結オブジェクト配列
 	std::vector<ConnectObject*> connectObjArray;
 
 	//自分より大きい番号の座標を保存する配列
 	std::vector<hft::HFFLOAT3> connectTfmArray;
+
+	//接触相手のコライダーから、自身以外の連結オブジェクトがあるかを検索する
+	//searchCollVert->GetContacPerson();
+
 
 	//連結オブジェクトがある場合、自分の番号より大きいかを確認
 	for (ConnectObject* obj : connectObjArray)
@@ -208,34 +210,29 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 	}
 }
 
-void ConnectObject::OnCollisionEnter2D(Collider2D* _p_col)
+
+
+/**
+* @brief	コライダー同士が衝突した際の処理
+* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+*/
+void ConnectObject::OnCollisionEnter(Collider* _p_col) 
 {
-
+	_p_col->GetGameObject();
 }
-
-void ConnectObject::OnCollisionExit2D(Collider2D* _p_col)
+/**
+* @brief	コライダー同士が離れた際の処理
+* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+*/
+void ConnectObject::OnCollisionExit(Collider* _p_col) 
 {
-
+	_p_col->GetGameObject();
 }
-
-void ConnectObject::OnCollisionStay2D(Collider2D* _p_col)
+/**
+* @brief	コライダー同士が接触中の処理
+* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+*/
+void ConnectObject::OnCollisionStay(Collider* _p_col) 
 {
-
+	_p_col->GetGameObject();
 }
-
-void ConnectObject::OnTriggerEnter2D(Collider2D* _p_col)
-{
-
-}
-
-void ConnectObject::OnTriggerExit2D(Collider2D* _p_col)
-{
-	//_p_col->OnCollisionEnter();
-}
-
-void ConnectObject::OnTriggerStay2D(Collider2D* _p_col)
-{
-
-}
-
-
