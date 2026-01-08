@@ -46,9 +46,7 @@ protected:
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
 
 	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
-
-	TrackObject* trackObjects;
-
+	std::vector<GameObject*> covers;
 
 	/**
 	* @brief	ズラす処理
@@ -71,9 +69,13 @@ protected:
 	*/
 	void SlideTrackObject(SlideData& _data);
 	/**
-	* @brief	行列番号を設定かつ座標の調節を行う
+	* @brief	行列番号からタイルの座標調節を行う
 	*/
-	void SetLineIndexToPos(hft::HFFLOAT2& _index, TrackObject& _obj);
+	void SetLineIndexToPosOfTile(hft::HFFLOAT2& _index, TrackObject& _obj);
+	/**
+	* @brief	行列番号からTrackObjectの座標調節を行う
+	*/
+	void SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft::HFFLOAT2& _index, TrackObject& _obj);
 
 public:
 	BaseMap();

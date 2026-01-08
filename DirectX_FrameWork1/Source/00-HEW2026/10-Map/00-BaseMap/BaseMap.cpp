@@ -131,7 +131,6 @@ void BaseMap::SearchOnLineTiles(SlideData& _data)
 
 void BaseMap::SlideTileObject(SlideData& _data)
 {
-	std::cout << "index X  :  " << _data.tiles.at(1)->GetLineIndex().x << std::endl;
 
 	for ( auto obj : _data.tiles )
 	{
@@ -145,7 +144,8 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			_data.changeFlg = true;
 			_data.indexToChangeFlg = true;
 		}
-		else if (p_trf->position.x > rightBottomPos.x + TILE_SCALEX_HALF || p_trf->position.x < leftTopPos.x - TILE_SCALEX_HALF)
+		else if (!_data.indexFlg &&
+				(p_trf->position.x > rightBottomPos.x + TILE_SCALEX_HALF || p_trf->position.x < leftTopPos.x - TILE_SCALEX_HALF))
 		{
 			_data.indexFlg = true;
 		}
@@ -155,7 +155,8 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			_data.changeFlg = true;
 			_data.indexToChangeFlg = true;
 		}
-		else if (p_trf->position.y > leftTopPos.y + TILE_SCALEY_HALF || p_trf->position.y < rightBottomPos.y - TILE_SCALEY_HALF)
+		else if (!_data.indexFlg &&
+				(p_trf->position.y > leftTopPos.y + TILE_SCALEY_HALF || p_trf->position.y < rightBottomPos.y - TILE_SCALEY_HALF))
 		{
 			_data.indexFlg = true;
 		}
@@ -168,7 +169,9 @@ void BaseMap::SlideTileObject(SlideData& _data)
 			hft::HFFLOAT2 index = obj->GetLineIndex();
 			if (_data.changeFlg)
 			{
-				SetLineIndexToPos(index, *obj);
+				SetLineIndexToPosOfTile(index, *obj);
+				if (!_data.objects.size())
+					_data.indexFlg = false;
 			}
 			else
 			{
@@ -217,12 +220,16 @@ void BaseMap::SlideTrackObject(SlideData& _data)
 			hft::HFFLOAT2 index = obj->GetLineIndex();
 			if (_data.changeFlg)
 			{
-				SetLineIndexToPos(index, *obj);
+				//SetLineIndexToPosOfTile(index, *obj);
+				_data.indexFlg = false;
 			}
 			else
 			{
 				index += _data.moveVec;
 				obj->SetLineIndex(index);
+				if ((index.x == 0 || index.x == width - 1) ||
+					(index.y == 0 || index.y == height - 1))
+					SetLineIndexToPosOfTrackObject(_data.moveVec, index, *obj);
 				_data.indexToChangeFlg = false;
 			}
 
@@ -230,7 +237,7 @@ void BaseMap::SlideTrackObject(SlideData& _data)
 	}
 }
 
-void BaseMap::SetLineIndexToPos(hft::HFFLOAT2& _index, TrackObject& _obj)
+void BaseMap::SetLineIndexToPosOfTile(hft::HFFLOAT2& _index, TrackObject& _obj)
 {
 	if (_index.x < 0)
 		_index.x = width - 1;
@@ -246,6 +253,24 @@ void BaseMap::SetLineIndexToPos(hft::HFFLOAT2& _index, TrackObject& _obj)
 	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
 	pos.x = leftTopPos.x + _index.x * TILE_SCALEX;
 	pos.y = leftTopPos.y - _index.y * TILE_SCALEY;
+}
+
+void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft::HFFLOAT2& _index, TrackObject& _obj)
+{
+	if (_index.x < 1)
+		_index.x = width - 2;
+	else if (_index.x >= width - 1)
+		_index.x = 1;
+
+	if (_index.y < 1)
+		_index.y = height - 2;
+	else if (_index.y >= height - 1)
+		_index.y = 1;
+
+	_obj.SetLineIndex(_index);
+	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
+	pos.x = leftTopPos.x + _index.x * TILE_SCALEX + (TILE_SCALEX_HALF * _moveVec.x * -1);
+	pos.y = leftTopPos.y - _index.y * TILE_SCALEY + (TILE_SCALEY_HALF * _moveVec.y);
 }
 
 BaseMap::BaseMap()
@@ -322,13 +347,13 @@ void BaseMap::SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2&
 						{
 							hft::HFFLOAT2 index = obj->GetLineIndex();
 							//index -= data.moveVec;
-							SetLineIndexToPos(index, *obj);
+							SetLineIndexToPosOfTile(index, *obj);
 						}
 						for (auto obj : it->objects)
 						{
 							hft::HFFLOAT2 index = obj->GetLineIndex();
 							//index -= data.moveVec;
-							SetLineIndexToPos(index, *obj);
+							SetLineIndexToPosOfTile(index, *obj);
 						}
 						slideDatas.erase(it);
 					}
@@ -350,6 +375,7 @@ void BaseMap::Init()
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
+#include "../../../02-App/HF_Window.h"
 
 void BaseMap::Init(const int& _width, const int& _height)
 {
@@ -384,28 +410,70 @@ void BaseMap::Init(const int& _width, const int& _height)
 		}
 	}
 
+	//マップの四方を囲むカバー
 	{
-		TestObject* p_obj = new	TestObject;
-		p_obj->SetLineIndex({ 3,2 });
-		p_obj->Init();
-		Transform* p_trf = p_obj->GetTransformPtr();
-		p_trf->position.x = leftTopPos.x + (TILE_SCALEX * 3);
-		p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 2);
-		p_trf->position.z = -1;
-		onMapTrackObjects.push_back(p_obj);
+		for (int i = 0; i < 4; i++)
+		{
+			GameObject2D* p_obj = new GameObject2D;
+			p_obj->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
+			covers.push_back(p_obj);
+		}
+
+		hft::HFFLOAT2 l_leftop = { leftTopPos.x + TILE_SCALEX_HALF, leftTopPos.y - TILE_SCALEY_HALF };
+		hft::HFFLOAT2 l_ritbot = { rightBottomPos.x - TILE_SCALEX_HALF,rightBottomPos.y + TILE_SCALEY_HALF };
+
+		//上カバー
+		{
+			auto& cover = covers.at(0);
+			auto p_trf = cover->GetTransformPtr();
+			p_trf->scale.x = l_ritbot.x - l_leftop.x;
+			p_trf->scale.y = (SCREEN_HEIGHT / 2.f) - l_leftop.y;
+			p_trf->position.x = MAP_CENTER_POSX;
+			p_trf->position.y = l_leftop.y + (p_trf->scale.y / 2.f);
+			p_trf->position.z = -5;
+		}
+		//下カバー
+		{
+			auto& cover = covers.at(1);
+			auto p_trf = cover->GetTransformPtr();
+			p_trf->scale.x = l_ritbot.x - l_leftop.x;
+			p_trf->scale.y = l_ritbot.y - (-SCREEN_HEIGHT);
+			p_trf->position.x = MAP_CENTER_POSX;
+			p_trf->position.y = l_ritbot.y - (p_trf->scale.y / 2.f);
+			p_trf->position.z = -5;
+		}
+		//右カバー
+		{
+			auto& cover = covers.at(2);
+			auto p_trf = cover->GetTransformPtr();
+			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_ritbot.x;
+			p_trf->scale.y = SCREEN_HEIGHT;
+			p_trf->position.x = l_ritbot.x + (p_trf->scale.x / 2.f);
+			p_trf->position.y = MAP_CENTER_POSY;
+			p_trf->position.z = -5;
+		}
+		//左カバー
+		{
+			auto& cover = covers.at(3);
+			auto p_trf = cover->GetTransformPtr();
+			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_leftop.x;
+			p_trf->scale.y = SCREEN_HEIGHT;
+			p_trf->position.x = l_leftop.x - (p_trf->scale.x / 2.f);
+			p_trf->position.y = MAP_CENTER_POSY;
+			p_trf->position.z = -5;
+		}
+
 	}
 
 	{
-		trackObjects = new TrackObject[2];
-		for (int i = 0; i < 2; i++)
-		{
-			trackObjects[i].GetComponent<SpriteRenderer>()->SetShape("sprite");
-			trackObjects[i].GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,0,0,1 };
-			trackObjects[i].GetTransformPtr()->scale = { 30,30,1 };
-		}
-		trackObjects[0].GetTransformPtr()->position = { leftTopPos.x,leftTopPos.y,-5 };
-		trackObjects[1].GetTransformPtr()->position = { rightBottomPos.x,rightBottomPos.y,-5 };
-
+		TestObject* p_obj = new	TestObject;
+		p_obj->SetLineIndex({ 3,3 });
+		p_obj->Init();
+		Transform* p_trf = p_obj->GetTransformPtr();
+		p_trf->position.x = leftTopPos.x + (TILE_SCALEX * 3);
+		p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 3);
+		p_trf->position.z = -1;
+		onMapTrackObjects.push_back(p_obj);
 	}
 }
 
@@ -417,7 +485,7 @@ void BaseMap::Update()
 	}
 	if (GetAsyncKeyState('O') & 0x0001)
 	{
-		SetSlideData(hft::HFFLOAT2(1, 2), hft::HFFLOAT2(1, 0), 5);
+		SetSlideData(hft::HFFLOAT2(1, 2), hft::HFFLOAT2(1, 0), 2.5);
 		//SetSlideData(hft::HFFLOAT2(1, 3), hft::HFFLOAT2(-1, 0), 2.5);
 	}
 
@@ -434,5 +502,5 @@ void BaseMap::Update()
 	Slide();
 	//std::cout << "index X  :  " << onMapTrackObjects.at(0)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//std::cout << "index X  :  " << tileObjects.at(17)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Debug_TilePaintColor_FromTile(12, tileObjects);
+	Debug_TilePaintColor_FromTile(15, tileObjects);
 }
