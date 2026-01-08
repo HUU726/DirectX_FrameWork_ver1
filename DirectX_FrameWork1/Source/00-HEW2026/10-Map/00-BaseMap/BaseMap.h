@@ -85,6 +85,10 @@ public:
 			delete tile;
 	}
 
+	/*** ゲッター ***/
+	const hft::HFFLOAT2& GetLefTopPos() { return leftTopPos; }
+	const hft::HFFLOAT2& GetRitBotPos() { return rightBottomPos; }
+
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
 	* @param	const hft::HFFLOAT2&	_anchorPos	基点
