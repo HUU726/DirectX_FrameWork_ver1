@@ -107,8 +107,8 @@ public:
 	bool GetIsRender() const { return isRender; }
 
 	void SetID(int _id) { id = _id; }
-	void SetIsActive(bool _is) { isActive = _is; }
-	void SetIsRender(bool _is) { isRender = _is; }
+	void SetIsActive(bool _is);
+	void SetIsRender(bool _is);
 
 	void InitComponent();
 	void UpdateComponent();
