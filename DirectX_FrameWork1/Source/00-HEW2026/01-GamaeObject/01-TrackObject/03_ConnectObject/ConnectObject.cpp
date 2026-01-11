@@ -85,29 +85,35 @@ void ConnectObject::Init()
 
 void ConnectObject::Update()
 {
+	SetIsActive(false);
+	SetIsRender(false);
+
+
 	//全ての攻撃判定オブジェクトのアクティブ状態をリセット
 	ResetAttackObjectsActive();
-
 
 	//他の連結ブロックと繋がっているか検知し、接触している場合は攻撃判定を追加する
 	SearchConnectedState();
 
 	//デバッグ用の座標移動
 	debug_Move();
-
 }
 
 void ConnectObject::ResetAttackObjectsActive()
 {
 	for (GameObject2D* obj : emitAttackObjects)
 	{
-		//SpriteRenderer* renderer = 
+		//obj->GetTransformPtr()->scale = hft::HFFLOAT3{ 0.f, 0.f, 0.f };
+		//obj->GetTransformPtr()->SetIsActive(false);
+		//obj->GetComponent<SpriteRenderer>()->SetIsActive(false);
+		//obj->GetComponent<BoxCollider2D>()->SetSize(hft::HFFLOAT3{0.f, 0.f, 0.f});
 
-		obj->GetComponent<SpriteRenderer>()->SetIsActive(false);
-		obj->GetComponent<BoxCollider2D>()->SetIsActive(false);
 		obj->SetIsActive(false);
+		obj->SetIsRender(false);
 	}
 }
+
+
 
 void ConnectObject::SearchConnectedState()
 {
@@ -126,7 +132,10 @@ void ConnectObject::SearchConnectedState()
 	}
 
 	//連結している座標が無い場合は何もしない
-	if (connectTfmArray.empty()) { return; }
+	if (connectTfmArray.empty()) 
+	{
+		return; 
+	}
 
 
 	//同じ向きで複数個連結している時の判定被り防止処理
@@ -259,11 +268,12 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 	//自身の座標から接触相手の座標まで攻撃判定用オブジェクトを配置する
 	for (int i = 0; i < cellCount - 1; i++)
 	{
-		//連結部分ののマスの数が今持っている配列より多ければ新しく追加
+		//連結部分のマスの数が今持っている配列より多ければ新しく追加
 		if (emitAttackObjects.size() <= i)
 		{
 			GameObject2D* attackObj = new GameObject2D;
 			attackObj->Init();
+			attackObj->SetIsActive(false);
 
 			//レンダラーの設定
 			SpriteRenderer* renderer = attackObj->AddComponent<SpriteRenderer>();
@@ -332,13 +342,13 @@ void ConnectObject::OnCollisionExit(Collider* _p_col)
 
 		if (connectObj && connectObj != this && _p_col == connectObj->GetBodyCollider())
 		{
-			std::cout << connectObj->GetInstanceNumber() << "番目のオブジェクトが離れた" << std::endl;
-
 			//既に取得した連結ブロックと重複しているか確認
 			auto it = std::find( connectObjArray.begin(), connectObjArray.end(), connectObj);
 
 			if (it != connectObjArray.end())
 			{
+				std::cout << connectObj->GetInstanceNumber() << "番目のオブジェクトが離れた" << std::endl;
+
 				connectObjArray.erase(it);
 			}
 		}
@@ -362,7 +372,7 @@ void ConnectObject::debug_Move()
 	hft::HFFLOAT3 dir = debug_startPos - GetComponent<Transform>()->position;
 	float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
 
-	if (length > 1920)
+	if (length > 500)
 	{
 		GetComponent<Transform>()->position = debug_startPos;
 	}
