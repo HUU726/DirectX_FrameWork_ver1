@@ -11,17 +11,24 @@ TestEnemy::TestEnemy()
 
 void TestEnemy::Init()
 {
+	// by山中
 	GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTestver2.png");
+
+	// hftってなに。分からん
 	p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3,3));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	{
+		// マジックナンバー多いねぇ
 		SpriteAnimation anim(div, {0,0}, 9);
 		anim.SetID(0);
+
+		// ここではenum使えてるのにねぇ
 		anim.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim.SetPriority(0);
 		float flame = 60;
 
+		// あっマジックナンバー！
 		for ( int i = 0; i < 9; i++ )
 		{
 			anim.GetCellRef(i).flame = flame;

@@ -14,6 +14,9 @@
 
 #include "../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 
+#include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h" //朝日奈担当トゲブロック
+
+#include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
 
 class TitleScene : public BaseScene
 {
@@ -27,8 +30,16 @@ private:
 	//TestEnemy testEnemy;
 	//TestAnimation2D testAnimation2D;
 
-	BaseMap map;
+	//BaseMap map;
 
+	ThormObject thormObject;
+
+	//朝日奈担当の連結ブロック検品
+	ConnectObject connectObject_0;
+	ConnectObject connectObject_1;
+	ConnectObject connectObject_2;
+	ConnectObject connectObject_3;
+	ConnectObject connectObject_4;
 public:
 	~TitleScene() override;
 
