@@ -85,10 +85,6 @@ void ConnectObject::Init()
 
 void ConnectObject::Update()
 {
-	SetIsActive(false);
-	SetIsRender(false);
-
-
 	//全ての攻撃判定オブジェクトのアクティブ状態をリセット
 	ResetAttackObjectsActive();
 
@@ -294,6 +290,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 		{
 			//それ以下ならオブジェクトをアクティブ状態にし、位置を調整する
 			emitAttackObjects[i]->SetIsActive(true);
+			emitAttackObjects[i]->SetIsRender(true);
 			emitAttackObjects[i]->GetTransformPtr()->position = spawnPos;
 		}
 
