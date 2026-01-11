@@ -3,6 +3,9 @@
 
 namespace ThormObjectParam
 {
+	const char* shadowTexName = "Assets/01-Texture/99-Test/AnimationTestver2.png";
+	const char* thormTexName = "Assets/01-Texture/99-Test/daruma.jpg";
+
 	const int  defaultTime = 70;									//通常状態のフレーム数
 	const int  fallTime = 50;										//落下状態のフレーム数
 	const int  attackTime = 10;										//攻撃状態のフレーム数

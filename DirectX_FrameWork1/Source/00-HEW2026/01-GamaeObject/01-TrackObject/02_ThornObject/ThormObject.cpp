@@ -21,7 +21,7 @@ ThormObject::~ThormObject()
 void ThormObject::Init()
 {
 	//マップ上どのマスにいるか設定
-	SetLineIndex({1.f, 1.f});
+	//SetLineIndex({1.f, 1.f});
 
 	//タイマーを初期化
 	timer = 0;
@@ -34,11 +34,10 @@ void ThormObject::Init()
 		defaultTime = ThormObjectParam::defaultTime;
 
 		//位置の設定
-		//p_transform->position = hft::HFFLOAT3{ 0.f,0.f, 0.f };
 		p_transform->scale = ThormObjectParam::shadowInitialScale;
 
 		//レンダラーの設定
-		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/AnimationTestver2.png");
+		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(ThormObjectParam::shadowTexName);
 
 		//アニメーターの設定
 		SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(1, 1));
@@ -88,7 +87,7 @@ void ThormObject::Init()
 		//画像の設定
 		{
 			//レンダラーの設定
-			mainBodyObj.GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
+			mainBodyObj.GetComponent<SpriteRenderer>()->LoadTexture(ThormObjectParam::thormTexName);
 
 			//アニメーターの設定
 			SpriteAnimator* p_spriteAnimator = mainBodyObj.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
@@ -147,12 +146,14 @@ void ThormObject::ThormAnimation(const State state)
 {
 	Transform* bodyTrf = mainBodyObj.GetTransformPtr();
 	Transform shadowTrf = GetTransform();
+
 	if (state == Default)
 	{
-		//通常状態の時は落下速度、座標、拡大率を初期値にリセット
+		//通常状態の時は画像非表示、落下速度、座標、拡大率を初期値にリセット
 		thormFallSpeed = 0;
 		bodyTrf->position = shadowTrf.position + initialOffset;
 		bodyTrf->scale = initialScale;
+		mainBodyObj.SetIsRender(false);
 		std::cout << "トゲが落下モードに切り替え" << std::endl;
 	}
 	else if(state == Falling)
@@ -175,6 +176,9 @@ void ThormObject::ThormAnimation(const State state)
 
 		//拡大率を縮小
 		bodyTrf->scale -= hft::HFFLOAT3(scaleDownSpeed, scaleDownSpeed, 0.f);
+
+		//画像を描画する
+		mainBodyObj.SetIsRender(true);
 	}
 	else if(state == Attack)
 	{
@@ -184,6 +188,8 @@ void ThormObject::ThormAnimation(const State state)
 		SpriteAnimator* anim = GetComponent<SpriteAnimator>();
 		anim->Stop(0);
 
+		//画像を描画する
+		mainBodyObj.SetIsRender(true);
 	}
 }
 

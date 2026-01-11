@@ -93,27 +93,29 @@ void TitleScene::Init()
 
 	{
 		//朝日奈担当トゲブロック
-		//thormObject.Init();
+		thormObject.Init();
 	}
 
 	{
 		//朝日奈担当連結ブロック
-		//connectObject_0.Init();
+		connectObject_0.Init();
 		connectObject_1.Init();
 		connectObject_2.Init();
 		connectObject_3.Init();
+		connectObject_4.Init();
 
 
 		//初期位置を変更
-		//connectObject_0.GetComponent<Transform>()->position = {  0.f, 300.f, 0.f};
+		connectObject_0.GetComponent<Transform>()->position = {  0.f, 300.f, 0.f};
 		connectObject_1.GetComponent<Transform>()->position = {  0.f,   0.f, 0.f};
 		connectObject_2.GetComponent<Transform>()->position = {  -200.f,0.f, 0.f };
 		connectObject_3.GetComponent<Transform>()->position = {  200.f,-0.f, 0.f };
+		connectObject_4.GetComponent<Transform>()->position = {  400.f,-300.f, 0.f };
 
 
 
-		//connectObject_0.debug_SetstartPos();
-		//connectObject_0.debug_SetmoveDir({10.f, 0.f});
+		connectObject_0.debug_SetstartPos();
+		connectObject_0.debug_SetmoveDir({2.f, 0.f});
 
 		//connectObject_1.debug_SetstartPos();
 		//connectObject_1.debug_SetmoveDir({ 0.f, 0.f });
@@ -121,11 +123,8 @@ void TitleScene::Init()
 		//connectObject_2.debug_SetstartPos();
 		//connectObject_2.debug_SetmoveDir({ 0.f, 10.f });
 
-		//connectObject_3.debug_SetstartPos();
-		//connectObject_3.debug_SetmoveDir({ 0.f, -10.f });
-
-		//connectObject_0.SetIsActive(false);
-		//connectObject_1.SetIsActive(false);
+		connectObject_3.debug_SetstartPos();
+		connectObject_3.debug_SetmoveDir({ 0.f, -2.f });
 	}
 
 
