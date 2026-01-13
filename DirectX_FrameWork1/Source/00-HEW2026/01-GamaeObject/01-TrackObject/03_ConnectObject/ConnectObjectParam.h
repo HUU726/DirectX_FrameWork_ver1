@@ -12,7 +12,7 @@ namespace ConnectObjectParam
 	//検査用コライダーのパラメータ
 	const float searchCollCellSize = 100.f;
 	const int   searchCollCellCount = 14;//コライダーの長さ（マス数）　6の場合上3マス、下3マス
-	const float searchCollThickness	 = 40.f; //コライダーの厚み
+	const float searchCollThickness	 = 20.f; //コライダーの厚み
 
 
 	//攻撃用オブジェクトのパラメータ

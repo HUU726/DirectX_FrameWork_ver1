@@ -2,7 +2,7 @@
 
 #include "../../01-GamaeObject/01-TrackObject/00-TrackObject/TrackObject.h"
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-
+#include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
 
 #define MAP_CENTER_POSX (0)
 #define MAP_CENTER_POSY (0)
@@ -482,6 +482,51 @@ void BaseMap::Init(const int& _width, const int& _height)
 		p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 3);
 		p_trf->position.z = -1;
 		onMapTrackObjects.push_back(p_obj);
+	}
+
+	//連結ブロック
+	{
+		ConnectObject* connectObj = new ConnectObject;
+		connectObj->Init();
+		connectObj->SetLineIndex({ 2, 2});
+		Transform* trf = connectObj->GetTransformPtr();
+		trf->position.x = leftTopPos.x + (TILE_SCALEX * 2);
+		trf->position.y = leftTopPos.y - (TILE_SCALEY * 2);
+		trf->position.z = -1;
+		onMapTrackObjects.push_back(connectObj);
+	}
+
+	{
+		ConnectObject* connectObj = new ConnectObject;
+		connectObj->Init();
+		connectObj->SetLineIndex({ 2, 4 });
+		Transform* trf = connectObj->GetTransformPtr();
+		trf->position.x = leftTopPos.x + (TILE_SCALEX * 2);
+		trf->position.y = leftTopPos.y - (TILE_SCALEY * 4);
+		trf->position.z = -1;
+		onMapTrackObjects.push_back(connectObj);
+	}
+
+	{
+		ConnectObject* connectObj = new ConnectObject;
+		connectObj->Init();
+		connectObj->SetLineIndex({ 4 ,2 });
+		Transform* trf = connectObj->GetTransformPtr();
+		trf->position.x = leftTopPos.x + (TILE_SCALEX * 4);
+		trf->position.y = leftTopPos.y - (TILE_SCALEY * 2);
+		trf->position.z = -1;
+		onMapTrackObjects.push_back(connectObj);
+	}
+
+	{
+		ConnectObject* connectObj = new ConnectObject;
+		connectObj->Init();
+		connectObj->SetLineIndex({ 4, 4 });
+		Transform* trf = connectObj->GetTransformPtr();
+		trf->position.x = leftTopPos.x + (TILE_SCALEX * 4);
+		trf->position.y = leftTopPos.y - (TILE_SCALEY * 4);
+		trf->position.z = -1;
+		onMapTrackObjects.push_back(connectObj);
 	}
 }
 

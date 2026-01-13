@@ -30,21 +30,13 @@ private:
 	//TestEnemy testEnemy;
 	//TestAnimation2D testAnimation2D;
 
-	//BaseMap map;
+	BaseMap map;
 
-	ThormObject thormObject;
-
-	//朝日奈担当の連結ブロック検品
-	ConnectObject connectObject_0;
-	ConnectObject connectObject_1;
-	ConnectObject connectObject_2;
-	ConnectObject connectObject_3;
-	ConnectObject connectObject_4;
 public:
 	~TitleScene() override;
 
 	void Init() override;
+
 	void UnInit() override;
 
 };
-
