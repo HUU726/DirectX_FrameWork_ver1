@@ -307,7 +307,8 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 		//既存の配列の中から非アクティブなものを探す
 		for (GameObject2D* obj : emitAttackObjects)
 		{
-			if (!obj->GetIsActive())
+			//オブジェクトのisActiveフラグがいじれないのでコンポーネントのフラグでアクティブ状態を確認
+			if (!obj->GetTransform().GetIsActive())
 			{
 				//ある場合はそれを生成位置に持ってくる
 				attackObj = obj;
