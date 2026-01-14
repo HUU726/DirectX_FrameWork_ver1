@@ -18,6 +18,7 @@
 
 #include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
 
+#include "../../../../00-HEW2026/01-GamaeObject/02-UI/UI.h"
 class TitleScene : public BaseScene
 {
 private:
@@ -32,6 +33,7 @@ private:
 
 	BaseMap map;
 
+	UI ui;
 public:
 	~TitleScene() override;
 
