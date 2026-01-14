@@ -309,6 +309,7 @@
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\VS_Sprite2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\99-UI\VS_UI2D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\01-Mesh3D\PS_Mesh3D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
