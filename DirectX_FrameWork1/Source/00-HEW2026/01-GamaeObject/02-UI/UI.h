@@ -1,6 +1,8 @@
 #pragma once
 #include "../../../99-Lib/01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 
+#include"../../../04-Input/Input.h"
+
 
 //UIの種類
 enum Type_UI
@@ -17,6 +19,10 @@ private:
 	Type_UI type;					//UIの種類
 	bool isPressed = false;			//押されているかどうか
 	bool isMouseInside = false;		//マウスが自身の範囲内に存在するか
+
+	Button::KeyBord targetKey;
+	Button::XBox targetXboxBotton;
+
 public:
 	UI();
 	
@@ -24,6 +30,10 @@ public:
 	void Init(const hft::HFFLOAT3 pos, const hft::HFFLOAT2 scale, const char* tex, Type_UI type);
 	
 	void Update() override;
+
+	//自身に対応するキー、XBoxボタンを設定。そのキーが押されたかどうかを他の関数で検知
+	void SetTargetKey(Button::KeyBord key);
+	void SetTargetXBoxButton(Button::XBox botton);
 
 	//ボタンの押下状態を更新
 	void UpdateIsPressed();

@@ -36,7 +36,7 @@ void TitleScene::Init()
 
 	{	//3Dカメラ初期化
 		Transform* p_trf = camera3D.GetTransformPtr();
-		p_trf->position = {0.f,0.f,-500.f,0.f};
+		p_trf->position = { 0.f,0.f,-500.f,0.f };
 
 		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
 	}
@@ -79,7 +79,7 @@ void TitleScene::Init()
 	//	testPlayer.SetCameraObject3D(&camera3D);
 	//}
 
-	
+
 	//{	//アニメーション適用テスト
 	//	testAnimation2D.Init();
 	//	testAnimation2D.GetTransformPtr()->position = { 0,0 };
@@ -94,10 +94,14 @@ void TitleScene::Init()
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 
-	ui.Init();
+	ui.Init({ 0.f, 0.f, -20.f }, {200.f, 100.f}, "Assets/01-Texture/99-Test/AnimationTest.png", Type_UI::ButtonType);
+
+	ui.SetTargetKey(Button::KeyBord::A);
+	ui.SetTargetXBoxButton(Button::XBox::A);
 }
 
 
 void TitleScene::UnInit()
 {
+
 }
