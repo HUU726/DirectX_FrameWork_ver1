@@ -58,30 +58,28 @@ void UI::Update()
 
 		break;
 	case ButtonType:
+
 		UpdateIsMouseInside();
 		UpdateIsPressed();
-		break;
-	case DynamicType:
 
+		//アニメーション系の処理
+		GetTransformPtr()->scale = initialScale;
+
+		if (isPressed)
+		{
+			AnimationPressed();
+		}
+		else if (isMouseInside)
+		{
+			AnimationMouseInside();
+		}
 		break;
 
 	default:
 		break;
 	}
 
-	//アニメーション系の処理
-	
-	//何もない場合は色とサイズを初期値に戻す
-	GetTransformPtr()->scale = initialScale;
 
-	if (isPressed)
-	{
-		AnimationPressed();
-	}
-	else if (isMouseInside)
-	{
-		AnimationMouseInside();
-	}
 
 }
 
@@ -110,12 +108,12 @@ void UI::UpdateIsPressed()
 	if ( (isMouseInside && isMousePressed) || isKeyPressed || isXBottonPressed)
 	{
 		isPressed = true;
-		std::cout << "UIがmouseに押されている" << std::endl;
+		//std::cout << "UIがmouseに押されている" << std::endl;
 	}
 	else
 	{
 		isPressed = false;
-		std::cout << "UIがmouseに押されていない" << std::endl;
+		//std::cout << "UIがmouseに押されていない" << std::endl;
 	}
 }
 
@@ -128,10 +126,10 @@ void UI::UpdateIsMouseInside()
 	hft::HFFLOAT2 mousePos = { posX, posY };
 
 	hft::HFFLOAT3 myPos = GetTransform().position;
-	hft::HFFLOAT2 mySize = GetTransform().scale;
+	//hft::HFFLOAT2 mySize = GetTransform().scale;
 
-	float halfW = mySize.x * 0.5f;
-	float halfH = mySize.y * 0.5f;
+	float halfW = initialScale.x * 0.5f;
+	float halfH = initialScale.y * 0.5f;
 
 	bool isInside = mousePos.x >= myPos.x - halfW &&
 					mousePos.x < myPos.x + halfW &&

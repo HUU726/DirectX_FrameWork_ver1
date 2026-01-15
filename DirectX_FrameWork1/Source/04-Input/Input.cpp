@@ -88,7 +88,7 @@ void Input::MouseUpdate()
 	//クライアント座標だとウィンドウの左上基準なので
 	//ウィンドウの中央を基準とした座標に変換
 	mouseCenterX = mouseClientX - (w / 2);
-	mouseCenterY = mouseClientY - (h / 2);
+	mouseCenterY = -1 * (mouseClientY - (h / 2));
 
 	//マウスボタン更新
 	//キーが押されていればtrueを格納、押されていなければfalseを格納

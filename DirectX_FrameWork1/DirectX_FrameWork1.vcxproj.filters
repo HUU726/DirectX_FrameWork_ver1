@@ -222,6 +222,15 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\02-UI\UI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\02-UI\UIManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -440,9 +449,6 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-Tile\TileObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\00-HEW2026\10-Map\00-BaseMap\BaseMap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -467,6 +473,15 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObjectParam.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\02-UI\UI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\02-UI\UIManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl" />
@@ -477,6 +492,7 @@
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\02-3D\02-LightMesh3D\VS_LightMesh3D.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\98-DefaultShader\VS_Default.hlsl" />
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\98-DefaultShader\PS_Default.hlsl" />
+    <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\99-UI\VS_UI2D.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\99-Lib\01-MyLib\999-Shader\10-ShaderTypes\ShaderTypes.hlsli" />

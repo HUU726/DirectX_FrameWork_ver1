@@ -89,15 +89,14 @@ void TitleScene::Init()
 	//}
 
 	{	//マップテスト
-		map.Init(5, 5);
+		//map.Init(5, 5);
 	}
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
 
-	ui.Init({ 0.f, 0.f, -20.f }, {200.f, 100.f}, "Assets/01-Texture/99-Test/AnimationTest.png", Type_UI::ButtonType);
 
-	ui.SetTargetKey(Button::KeyBord::A);
-	ui.SetTargetXBoxButton(Button::XBox::A);
+	//titleUI.Init();
+	stagePlayUI.Init();
 }
 
 

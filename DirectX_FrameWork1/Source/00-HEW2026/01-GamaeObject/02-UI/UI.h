@@ -9,7 +9,7 @@ enum Type_UI
 {
 	NormalType,	 //初期値から何も作用しない。背景など
 	ButtonType,  //押下を検知等
-	DynamicType, //アニメーションをするUI
+	//DynamicType, //アニメーションをするUI
 };
 
 class UI : public GameObject2D
@@ -41,6 +41,7 @@ public:
 	//mouseが自身の範囲内にあるかの状態を更新
 	void UpdateIsMouseInside();
 
+	//押されているかどうか
 	bool GetIsPressed();
 	bool GetIsMouseInside();
 

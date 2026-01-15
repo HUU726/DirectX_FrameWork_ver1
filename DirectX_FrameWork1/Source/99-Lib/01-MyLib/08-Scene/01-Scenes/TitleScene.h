@@ -18,7 +18,7 @@
 
 #include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
 
-#include "../../../../00-HEW2026/01-GamaeObject/02-UI/UI.h"
+#include "../../../../00-HEW2026/01-GamaeObject/02-UI/UIManager.h"
 class TitleScene : public BaseScene
 {
 private:
@@ -31,9 +31,10 @@ private:
 	//TestEnemy testEnemy;
 	//TestAnimation2D testAnimation2D;
 
-	BaseMap map;
+	//BaseMap map;
 
-	UI ui;
+	//TitleUIManager titleUI;
+	StagePlayUIManager stagePlayUI;
 public:
 	~TitleScene() override;
 
