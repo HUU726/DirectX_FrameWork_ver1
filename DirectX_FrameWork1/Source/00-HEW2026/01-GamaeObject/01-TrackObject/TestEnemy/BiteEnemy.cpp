@@ -90,6 +90,7 @@ void BiteEnemy::Bite_Update()
 // アニメーション
 void BiteEnemy::Bite_Animation(const int& state)
 {
+	/*
 	// 状態で分ける
 	switch (state)
 	{
@@ -106,6 +107,7 @@ void BiteEnemy::Bite_Animation(const int& state)
 		Dead_Animation();
 		break;
 	}
+	*/
 }
 
 void BiteEnemy::Normal_Move()
@@ -161,7 +163,7 @@ void BiteEnemy::Dead_Move()
 }
 
 
-
+// 本体判定を適応するか否か
 void BiteEnemy::SetIColliderActive(bool NewActive)
 {
 	BoxCollider2D* ptr = GetComponent<BoxCollider2D>();

@@ -14,7 +14,6 @@ private:
 
 	// 攻撃判定の情報
 
-
 	// 経過時間 
 	int timer;
 
@@ -25,16 +24,18 @@ private:
 	void SetAngle(const hft::HFFLOAT2& NewAngle) { return; }
 	hft::HFFLOAT2 GetAngle() { return angle; }
 
-	// アニメーションに関する関数
-	void Normal_Animation();
-	void Attack_Animation();
-	void Spin_Animation();
-	void Dead_Animation();
-
+	// 情報を返す
 	int GetAct() { return MoveRotation[Move]; }
 	int GetMove() { return Move; }
 	void AddMove() { Move++; if (Move > 5) { Move = 1; }; }
 	void DeadMove() { Move = 0; }
+
+
+	// アニメーションに関する関数
+	//void Normal_Animation();
+	//void Attack_Animation();
+	//void Spin_Animation();
+	//void Dead_Animation();
 public:
 	BiteEnemy();	
 	~BiteEnemy();				
@@ -45,9 +46,15 @@ public:
 	// パラメータの初期化
 	void InitParam();
 
-	// テスト
+	//=================================================================
+	// Update内の実行関数
+	// ================================================================
+	// フレーム,行動の更新
 	void Bite_Update();
-	void Bite_Test_Update();
+	// アニメーション
+	void Bite_Animation(const int& state);
+
+
 
 	// 自身のコライダーの状態を変更
 	void SetIColliderActive(bool state);	// true:実行 false:非実行
@@ -63,7 +70,4 @@ public:
 	void Attack_Move();	// 攻撃関数
 	void Spin_Move();	// 回転関数
 	void Dead_Move();	// 死亡関数
-
-	// アニメーション
-	void Bite_Animation(const int& state);
 };
