@@ -28,7 +28,8 @@ void BiteEnemy::Init()
 // 更新===============================================================
 void BiteEnemy::Update()
 {
-
+	Bite_Update();				// フレーム、行動の更新
+	Bite_Animation(GetState());	// アニメーションの更新
 }
 
 // パラメータ初期化============================================================
@@ -64,12 +65,6 @@ void BiteEnemy::InitParam()
 	std::cout << "BiteEnemyパラメータ完了\n";
 }
 
-void BiteEnemy::Bite_Test_Update()
-{
-	Bite_Update();				// フレーム、行動の更新
-	Bite_Animation(GetState());	// アニメーションの更新
-}
-
 void BiteEnemy::Bite_Update()
 {
 	// 時間更新
@@ -88,6 +83,27 @@ void BiteEnemy::Bite_Update()
 		break;
 	case 3:
 		Dead_Move();
+		break;
+	}
+}
+
+// アニメーション
+void BiteEnemy::Bite_Animation(const int& state)
+{
+	// 状態で分ける
+	switch (state)
+	{
+	case 0:
+		Normal_Animation();
+		break;
+	case 1:
+		Attack_Animation();
+		break;
+	case 2:
+		Spin_Animation();
+		break;
+	case 3:
+		Dead_Animation();
 		break;
 	}
 }
@@ -133,6 +149,10 @@ void BiteEnemy::Spin_Move()
 
 void BiteEnemy::Dead_Move()
 {
+	if(timer==0)
+	{
+		// 自身の当たり判定の削除
+	}
 	if (Active[GetMove()] <= timer)
 	{
 		timer = 0;
@@ -140,26 +160,7 @@ void BiteEnemy::Dead_Move()
 	}
 }
 
-// アニメーション
-void BiteEnemy::Bite_Animation(const int& state)
-{
-	// 状態で分ける
-	switch (state)
-	{
-	case 0:
-		Normal_Animation();
-		break;
-	case 1:
-		Attack_Animation();
-		break;
-	case 2:
-		Spin_Animation();
-		break;
-	case 3:
-		Dead_Animation();
-		break;
-	}
-}
+
 
 void BiteEnemy::SetIColliderActive(bool NewActive)
 {
