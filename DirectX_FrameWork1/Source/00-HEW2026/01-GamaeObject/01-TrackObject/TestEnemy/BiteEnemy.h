@@ -13,6 +13,7 @@ private:
 	int Move;
 
 	// UŒ‚”»’è‚Ìî•ñ
+	float Attackpos;	// •ûŒü‚É‚æ‚Á‚Ä‰ÁŒ¸‚³‚ê‚é
 
 	// Œo‰ßŠÔ 
 	int timer;

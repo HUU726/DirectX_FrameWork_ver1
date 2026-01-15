@@ -38,29 +38,51 @@ void BiteEnemy::InitParam()
 	// タイマーの初期化
 	timer = 0;
 
-	// 画像の読み込み
-	const char* biteenemyTexName = "Assets/01-Texture/99-Test/daruma.jpg";
 
-	// 本体
+	// パラメータ(別のファイルに移動予定)
+	hitstopspead = 1.0f;	// ヒットストップスピード(現在は等速)
+	hitstoptime = 10.0f;	// ヒットストップ時間
+	Scale = { 50.0f,50.0f,0.0f };	// 画像の大きさ
+	Move = 0;
+
+	// 位置の設定
 	{
-		hitstopspead = 1.0f;	// ヒットストップスピード(現在は等速)
-		hitstoptime = 10.0f;	// ヒットストップ時間
-		Scale = { 50.0f,50.0f,0.0f };	// 画像の大きさ
-		Move = 0;
-
-		//コライダーの設定
-		BoxCollider2D* boxI2d = AddComponent<BoxCollider2D>();
-		boxI2d->SetIsActive(true);
+		p_transform->scale = Scale;
 	}
+
+	// レンダラーの設定
+	const char* biteenemyTexName = "Assets/01-Texture/99-Test/daruma.jpg";
+	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(biteenemyTexName);
+
+	//アニメーターの設定
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(1, 1));
+	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
+
+	//animationの設定
+	SpriteAnimation anim(div, { 0,0 }, 9);
+	anim.Active();
+	anim.SetID(0);
+
+	anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+	anim.SetPriority(0);
+	float flame = 10;
+
+	for (int i = 0; i < 1; i++)
+	{
+		anim.GetCellRef(i).flame = flame;
+	}
+
+	p_spriteAnimator->AddAnimation(anim);
+
+	//コライダーの設定
+	BoxCollider2D* boxI2d = AddComponent<BoxCollider2D>();
+	boxI2d->SetIsActive(true);
+
 
 	// 攻撃マス
-	{
-
-		//コライダーの設定
-		BoxCollider2D* boxA2d = AddComponent<BoxCollider2D>();
-		boxA2d->SetIsActive(false);
-	}
-	
+	//コライダーの設定
+	BoxCollider2D* boxA2d = AddComponent<BoxCollider2D>();
+	boxA2d->SetIsActive(false);
 
 	std::cout << "BiteEnemyパラメータ完了\n";
 }
