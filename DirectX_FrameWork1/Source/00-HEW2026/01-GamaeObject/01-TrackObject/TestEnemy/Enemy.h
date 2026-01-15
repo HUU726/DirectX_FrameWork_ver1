@@ -7,7 +7,7 @@ class CEnemy;
 
 class CEnemy : public TrackObject
 {
-	static int s_instanceCount;		// エネミーの総数
+	inline static int s_instanceCount = 0;		// エネミーの総数
 private:
 	float e_flame = 0;	// フレーム数を格納する変数
 	int e_state = 0;	// 状態を表す変数
@@ -17,10 +17,10 @@ protected:
 	int GetState() { return e_state; }
 	void SetFlame(const float& NewFlame){ e_flame = NewFlame; }
 	float GetFlame() { return  e_flame; }
-	void AddEnemyCount() { s_instanceCount++;}
-	void DeleteEnemyCount() { s_instanceCount--;}
-	int GetEnemyCount() { return s_instanceCount; }
 public:
-	CEnemy() { AddEnemyCount(); }
-	~CEnemy() { DeleteEnemyCount(); }
+	CEnemy() { s_instanceCount++; }	// エネミーの総数追加
+	~CEnemy() { s_instanceCount--; }	// エネミーの総数減少
+
+	// エネミー総数を返す
+	int GetEnemyCount() { return s_instanceCount; }		
 };
