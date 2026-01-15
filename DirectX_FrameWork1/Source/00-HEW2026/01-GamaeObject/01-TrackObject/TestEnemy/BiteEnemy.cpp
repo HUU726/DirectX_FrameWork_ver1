@@ -41,4 +41,26 @@ void BiteEnemy::InitParam()
 	Attack_flame = 20;				// 攻撃状態のかかるフレーム(20F)
 	Spin_flame = 3;					// 回転状態のかかるフレーム(3F)
 	Dead_flame = 20;				// 死亡状態のかかるフレーム(20F)
+
+	std::cout << "BiteEnemyパラメータ完了\n";
 }
+
+void BiteEnemy::Bite_Test_Update()
+{
+	
+}
+
+
+/*
+void BiteEnemy::Bite_Animation(const int& state)
+{
+	switch (state)
+	{
+	case 0:
+		Normal_Animation();
+		break;
+	case 1:
+		Normal_Animation();
+	}
+}
+*/

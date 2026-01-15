@@ -53,5 +53,8 @@ public:
 	void Dead_Move();	// 死亡関数
 
 	// アニメーション
-	void Bite_Animation(int state);
+	void Bite_Animation(const int& state);
+
+	// テスト
+	void Bite_Test_Update();
 };
