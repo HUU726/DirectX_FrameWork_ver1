@@ -81,9 +81,17 @@ void StagePlayUIManager::Init()
 	retryButton.SetTargetKey(Button::KeyBord::Escape);
 	retryButton.SetTargetXBoxButton(Button::XBox::X);
 
-
 	//プレイヤーのHPバーのUI
 	playerHpBar.Init({ 400.f, -100.f, 0.f }, { 100.f, 400.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+
+	//プレイヤーのHPバー背景UI
+	playerHpBarBack.Init({ 400.f, -100.f, 0.f }, { 100.f, 400.f }, "Assets/01-Texture/99-Test/wave.png", Type_UI::NormalType);
+
+	//barの最大Yサイズと初期Y位置を設定
+	maxHpBerHeight = 400.f;
+	barInitialPosY = -100.f;
+	
+
 
 
 	//ポーズボタンが押された時のUI
@@ -111,36 +119,16 @@ void StagePlayUIManager::Update()
 		isPose = true;
 	}
 
-	//フラグごとのUIの状態変化
-	if (isPose)
-	{
-		PoseMode();
-		return;
-	}
-	
-	if (isGoStageSelect)
-	{
-		GoStageSelectMode();
-		return;
-	}
+	//フラグごとのUIの状態変化　くそみたいな書き方やん
+	if (isGoStageSelect) { GoStageSelectMode(); return;}
 
-	if (isGoTitle)
-	{
-		GoTitleMode();
-		return;
-	}
+	if (isGoTitle) { GoTitleMode(); return;}
 
-	if (isGameOver)
-	{
-		GameOverMode();
-		return;
-	}
+	if (isGameOver) { GameOverMode(); return;}
 
-	if (isStageClear)
-	{
-		StageClearMode();
-		return;
-	}
+	if (isStageClear) { StageClearMode(); return;}
+
+	if (isPose) { PoseMode(); return;}
 
 	PlayMode();
 }
@@ -152,7 +140,6 @@ void StagePlayUIManager::PoseMode()
 	restartButton.SetIsRender(true);
 	goStageSelectButton.SetIsRender(true);
 	goTitleButton.SetIsRender(true);
-
 
 	if (restartButton.GetIsPressed())
 	{
@@ -169,11 +156,12 @@ void StagePlayUIManager::PoseMode()
 
 	if (goTitleButton.GetIsPressed())
 	{
-		isPose    = false;
+		isPose = false;
 		isGoTitle = true;
 		return;
 	}
 }
+
 
 void StagePlayUIManager::GoTitleMode()
 {
@@ -201,6 +189,32 @@ void StagePlayUIManager::PlayMode()
 	restartButton.SetIsRender(false);
 	goStageSelectButton.SetIsRender(false);
 	goTitleButton.SetIsRender(false);
+
+
+	ScalePlayerHPBer();
+}
+
+void StagePlayUIManager::ScalePlayerHPBer()
+{
+	if (Input::GetInstance().GetKeyTrigger((int)Button::KeyBord::A))
+	{
+		playerCurHp--;
+	}
+
+
+	float hpRatio		= (float)playerCurHp / playerMaxHp;
+	float currentScaleY = maxHpBerHeight * hpRatio;
+	
+	float moveValue  = -1 * (maxHpBerHeight - currentScaleY) / 2;
+	float currentPosY = barInitialPosY + moveValue;
+	
+	playerHpBar.GetTransformPtr()->scale.y    = currentScaleY;
+	playerHpBar.GetTransformPtr()->position.y = currentPosY;
+}
+
+void StagePlayUIManager::SetPlayerData()
+{
+
 }
 
 bool StagePlayUIManager::GetIsPose()

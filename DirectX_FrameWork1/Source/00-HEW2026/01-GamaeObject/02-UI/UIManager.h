@@ -49,12 +49,22 @@ private:
 	UI poseButton;
 	UI retryButton;
 	UI playerHpBar;
-
+	UI playerHpBarBack;
 
 	UI poseBackGround;
 	UI restartButton;
 	UI goStageSelectButton;
 	UI goTitleButton;
+
+	//バーの最大サイズ
+	float maxHpBerHeight; 
+	
+	//barの初期Y位置
+	float barInitialPosY;
+
+	//プレイヤーのHP
+	int playerMaxHp = 3;	//最大HP
+	int playerCurHp = 3;	//現在のHP
 
 	bool isPose		     = false;
 	bool isGoStageSelect = false;
@@ -65,13 +75,18 @@ public:
 	void Init() override;
 	void Update() override;
 
+	//ゲームの状態ごとのUI表示切替
 	void PoseMode();
 	void GoTitleMode();
 	void GoStageSelectMode();
 	void GameOverMode();
 	void StageClearMode();
 	void PlayMode();
+	
+	//プレイヤーのHPバーの伸縮
+	void ScalePlayerHPBer();
 
+	void SetPlayerData();
 
 	bool GetIsPose();
 	bool GetIsGameOver();
