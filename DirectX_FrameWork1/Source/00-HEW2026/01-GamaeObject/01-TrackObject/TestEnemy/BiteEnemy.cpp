@@ -6,7 +6,7 @@
 
 BiteEnemy::BiteEnemy()
 {
-	AddEnemyCount();	// エネミーの総数
+	AddEnemyCount();	// エネミーの総数追加
 	InitParam();	// エネミーのパラメータの初期化
 
 }
@@ -32,29 +32,13 @@ void BiteEnemy::InitParam()
 {
 	const char* biteenemyTexName = "Assets/01-Texture/99-Test/daruma.jpg";
 
-	hitstopspead = 1.0f;
-	hitstoptime = 10.0f;
-	Scale = { 50.0f,50.0f,0.0f };
-	timer = 0;
-
-	Idle_flame;
-
-	/*
-	// 敵の情報
-	float hitstopspeed;	// HPが0になった際に止まる時間のスピード
-	float hitstoptime;	// ヒットストップがかかるフレーム数
-	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
-	GameObject2D object2D;	// 本体のアニメーション
-	int Move[4];	// 行動ルーチン
-
-	// 経過時間 
-	int timer;
-
-	// 状態別のフレーム数
-	int Idle_1_flame;
-	int Idle_2_flame;
-	int Attack_flame;
-	int Spin_flame;
-	int Dead_flame;
-	*/
+	hitstopspead = 1.0f;	// ヒットストップスピード(現在は等速)
+	hitstoptime = 10.0f;	// ヒットストップ時間
+	Scale = { 50.0f,50.0f,0.0f };	// 画像の大きさ
+	timer = 0;						// 経過フレーム
+	Idle_1_flame = 30;				// 通常状態のかかるフレーム(30F)
+	Idle_2_flame = 20;				// 通常状態のかかるフレーム(20F)
+	Attack_flame = 20;				// 攻撃状態のかかるフレーム(20F)
+	Spin_flame = 3;					// 回転状態のかかるフレーム(3F)
+	Dead_flame = 20;				// 死亡状態のかかるフレーム(20F)
 }
