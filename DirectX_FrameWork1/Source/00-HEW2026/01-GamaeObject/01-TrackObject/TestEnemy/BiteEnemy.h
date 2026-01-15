@@ -9,13 +9,13 @@ private:
 	float hitstoptime;	// ヒットストップがかかるフレーム数
 	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
 	GameObject2D object2D;	// 本体のアニメーション
-	int Move[4] = { 1,2,1,3 };	// 行動ルーチン
 
 	// 経過時間 
 	int timer;
 
 	// 状態別のフレーム数
-	int Idle_flame;
+	int Idle_1_flame;
+	int Idle_2_flame;
 	int Attack_flame;
 	int Spin_flame;
 	int Dead_flame;
