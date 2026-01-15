@@ -8,8 +8,10 @@ private:
 	float hitstopspeed;	// HPが0になった際に止まる時間のスピード
 	float hitstoptime;	// ヒットストップがかかるフレーム数
 	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
-
 	GameObject2D object2D;	// 本体のアニメーション
+	int Move[4] = { 1,2,1,3 };	// 行動ルーチン
+
+
 
 	// 経過時間 
 	int timer;
@@ -20,15 +22,14 @@ private:
 	int Spin_flame;
 	int Dead_flame;
 
-
 	// 向きに関する関数
 	void SetAngle(const hft::HFFLOAT2& NewAngle) { return; }
 	hft::HFFLOAT2 GetAngle() { return angle; }
 public:
-	BiteEnemy(const hft::HFFLOAT2&);	// 指定された座標にオブジェクトを作成,方向の初期化
-	~BiteEnemy();				// 解放処理
+	BiteEnemy();	
+	~BiteEnemy();				
 
-	void Init() override;		// コンポーネント取得
+	void Init() override;		// 初期化処理
 	void Update() override;		// 更新処理
 
 	// コライダーの状態を変更
