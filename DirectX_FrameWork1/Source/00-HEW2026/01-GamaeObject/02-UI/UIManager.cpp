@@ -136,6 +136,13 @@ void StagePlayUIManager::Init()
 		gameOverStageSelectButton.SetTargetXBoxButton(Button::XBox::B);
 		gameOverStageSelectButton.SetIsRender(false);
 	}
+
+
+	//ステージクリア
+	{
+		clearUI.Init({ 0.f, 0.f, 0.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		clearUI.SetIsRender(false);
+	}
 }
 
 
@@ -218,8 +225,11 @@ void StagePlayUIManager::GameOverMode()
 	}
 }
 
+
 void StagePlayUIManager::StageClearMode()
 {
+	clearUI.SetIsRender(true);
+
 	return;
 }
 
@@ -247,13 +257,27 @@ void StagePlayUIManager::PlayMode()
 	if (!isPose && poseButton.GetIsPressed())
 	{
 		isPose = true;
+		return;
 	}
 
 	//HPが0如何になったらゲームオーバーモードに移行
 	if (playerCurHp <= 0)
 	{
 		isGameOver = true;
+		return;
 	}
+
+	if (enemyCount <= 0)
+	{
+		isStageClear = true;
+		return;
+	}
+	if (Input::GetInstance().GetButtonTrigger(Button::XBox::B))
+	{
+		enemyCount--;
+	}
+
+
 }
 
 void StagePlayUIManager::ScalePlayerHPBer()

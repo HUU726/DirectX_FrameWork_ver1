@@ -60,10 +60,11 @@ private:
 	UI gameOverRetryButton;			//ゲームオーバー後のリトライボタン
 	UI gameOverStageSelectButton;	//ゲームオーバー後のステージセレクトボタン
 
+	UI clearUI;
+
 	//ゲームオーバーUIの最大サイズ
 	hft::HFFLOAT2 maxSize = { 200.f, 100.f};
 	float scaleUpSpeed = 10.f;
-
 
 	float maxHpBerHeight; //バーの最大サイズ
 	float barInitialPosY; //barの初期Y位置
@@ -72,6 +73,10 @@ private:
 	int playerMaxHp = 3;	//最大HP
 	int playerCurHp = 3;	//現在のHP
 
+	//敵のカウンター(仮)
+	int enemyCount = 3;
+
+	//各状態のフラグ
 	bool isPose		     = false;
 	bool isGoStageSelect = false;
 	bool isGoTitle		 = false;
