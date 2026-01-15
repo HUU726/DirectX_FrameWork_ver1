@@ -9,7 +9,7 @@ private:
 	float hitstoptime;	// ヒットストップがかかるフレーム数
 	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
 	GameObject2D object2D;	// 本体のアニメーション
-	int MoveRotation[5] = { 3,0,1,0,2 };	// 行動ルーチン
+	int MoveRotation[5] = { 3,0,1,0,2 };	// 行動ルーチン (死亡の時は[0]になる)  通常→攻撃→通常→回転
 	int Move;
 
 	// 攻撃判定の情報
@@ -45,6 +45,10 @@ public:
 	// パラメータの初期化
 	void InitParam();
 
+	// テスト
+	void Bite_Update();
+	void Bite_Test_Update();
+
 	// 自身のコライダーの状態を変更
 	void SetIColliderActive(bool state);	// true:実行 false:非実行
 
@@ -62,8 +66,4 @@ public:
 
 	// アニメーション
 	void Bite_Animation(const int& state);
-
-	// テスト
-	void Bite_Update();
-	void Bite_Test_Update();
 };

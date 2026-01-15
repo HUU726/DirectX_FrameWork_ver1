@@ -4,6 +4,10 @@
 
 #include"BiteEnemy.h"
 
+#define NORMAL 0
+#define ATTACK 1
+#define SPIN 2
+#define DEAD 3
 
 BiteEnemy::BiteEnemy()
 {
@@ -62,12 +66,13 @@ void BiteEnemy::InitParam()
 
 void BiteEnemy::Bite_Test_Update()
 {
-	Bite_Update();				// 本体の更新
+	Bite_Update();				// フレーム、行動の更新
 	Bite_Animation(GetState());	// アニメーションの更新
 }
 
 void BiteEnemy::Bite_Update()
 {
+	// 時間更新
 	timer++;
 	
 	switch (GetAct())
@@ -91,7 +96,8 @@ void BiteEnemy::Normal_Move()
 {
 	if (Active[GetMove()] <= timer)
 	{
-		SetState(0);
+		if(Active[GetMove()] == 30){ SetState(ATTACK); }
+		else if (Active[GetMove()] == 20) { SetState(SPIN); }
 		timer = 0;
 		AddMove();
 	}
@@ -106,7 +112,7 @@ void BiteEnemy::Attack_Move()
 	}
 	if (Active[GetMove()] <= timer)
 	{
-		SetState(1);
+		SetState(NORMAL);
 		// 攻撃判定の消去
 		SetAColliderActive(false);
 		timer = 0;
@@ -119,6 +125,7 @@ void BiteEnemy::Spin_Move()
 	if (Active[GetMove()] <= timer)
 	{
 		SetState(2);
+		SetAngle(0);
 		timer = 0;
 		AddMove();
 	}
@@ -151,6 +158,21 @@ void BiteEnemy::Bite_Animation(const int& state)
 	case 3:
 		Dead_Animation();
 		break;
+	}
+}
+
+void BiteEnemy::SetIColliderActive(bool NewActive)
+{
+	BoxCollider2D* ptr = GetComponent<BoxCollider2D>();
+	ptr->SetIsActive(NewActive);
+
+	if (ptr->GetIsActive() == true)
+	{
+		std::cout << "コライダー実行中\n";
+	}
+	else
+	{
+		std::cout << "コライダー非実行中\n";
 	}
 }
 
