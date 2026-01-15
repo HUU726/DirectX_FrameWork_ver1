@@ -5,13 +5,11 @@ class BiteEnemy : public CEnemy
 {
 private:
 	// 敵の情報
-	float hitstopspeed;	// HPが0になった際に止まる時間のスピード
+	float hitstopspead;	// HPが0になった際に止まる時間のスピード
 	float hitstoptime;	// ヒットストップがかかるフレーム数
 	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
 	GameObject2D object2D;	// 本体のアニメーション
 	int Move[4] = { 1,2,1,3 };	// 行動ルーチン
-
-
 
 	// 経過時間 
 	int timer;
@@ -31,6 +29,9 @@ public:
 
 	void Init() override;		// 初期化処理
 	void Update() override;		// 更新処理
+
+	// パラメータの初期化
+	void InitParam();
 
 	// コライダーの状態を変更
 	void SetColliderActive(bool state);
