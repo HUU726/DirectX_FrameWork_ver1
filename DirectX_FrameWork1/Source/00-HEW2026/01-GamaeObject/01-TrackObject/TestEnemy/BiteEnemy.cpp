@@ -4,9 +4,11 @@
 
 #include"BiteEnemy.h"
 
+
+
 BiteEnemy::BiteEnemy()
 {
-	AddEnemyCount();	// エネミーの総数追加
+	//AddEnemyCount();	// エネミーの総数追加
 	InitParam();	// エネミーのパラメータの初期化
 
 }
