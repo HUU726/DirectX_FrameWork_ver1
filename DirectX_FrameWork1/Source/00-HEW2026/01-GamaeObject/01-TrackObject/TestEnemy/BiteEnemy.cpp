@@ -5,12 +5,9 @@
 #include"BiteEnemy.h"
 
 
-
 BiteEnemy::BiteEnemy()
 {
-	//AddEnemyCount();	// エネミーの総数追加
 	InitParam();	// エネミーのパラメータの初期化
-
 }
 
 BiteEnemy::~BiteEnemy()
@@ -30,6 +27,7 @@ void BiteEnemy::Update()
 
 }
 
+// パラメータ初期化============================================================
 void BiteEnemy::InitParam()
 {
 	const char* biteenemyTexName = "Assets/01-Texture/99-Test/daruma.jpg";

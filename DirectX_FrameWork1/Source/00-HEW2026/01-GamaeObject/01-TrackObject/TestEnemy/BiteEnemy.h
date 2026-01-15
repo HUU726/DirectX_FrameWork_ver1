@@ -23,6 +23,13 @@ private:
 	// 向きに関する関数
 	void SetAngle(const hft::HFFLOAT2& NewAngle) { return; }
 	hft::HFFLOAT2 GetAngle() { return angle; }
+
+	// アニメーションに関する関数
+	void Normal_Animation();
+	void Attack_Animation();
+	void Spin_Animation();
+	void Dead_Animation();
+
 public:
 	BiteEnemy();	
 	~BiteEnemy();				
@@ -36,18 +43,15 @@ public:
 	// コライダーの状態を変更
 	void SetColliderActive(bool state);
 
+	// ヒットストップ
+	void SetDelay();
+
 	// 状態毎の処理をする関数
 	void Normal_Move();	// 通常関数
 	void Attack_Move();	// 攻撃関数
 	void Spin_Move();	// 回転関数
 	void Dead_Move();	// 死亡関数
 
-	// ヒットストップ
-	void SetDelay();
-
 	// アニメーション
-	void Normal_Animation();
-	void Attack_Animation();
-	void Spin_Animation();
-	void Dead_Animation();
+	void Bite_Animation(int state);
 };
