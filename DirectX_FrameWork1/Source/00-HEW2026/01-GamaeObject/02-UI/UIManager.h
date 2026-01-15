@@ -56,11 +56,17 @@ private:
 	UI goStageSelectButton;
 	UI goTitleButton;
 
-	//バーの最大サイズ
-	float maxHpBerHeight; 
-	
-	//barの初期Y位置
-	float barInitialPosY;
+	UI gameOverUI;					//ゲームオーバー時のUI
+	UI gameOverRetryButton;			//ゲームオーバー後のリトライボタン
+	UI gameOverStageSelectButton;	//ゲームオーバー後のステージセレクトボタン
+
+	//ゲームオーバーUIの最大サイズ
+	hft::HFFLOAT2 maxSize = { 200.f, 100.f};
+	float scaleUpSpeed = 10.f;
+
+
+	float maxHpBerHeight; //バーの最大サイズ
+	float barInitialPosY; //barの初期Y位置
 
 	//プレイヤーのHP
 	int playerMaxHp = 3;	//最大HP
@@ -71,24 +77,43 @@ private:
 	bool isGoTitle		 = false;
 	bool isGameOver      = false;
 	bool isStageClear    = false;
+	bool isRetry		 = false;
 public:
 	void Init() override;
 	void Update() override;
 
-	//ゲームの状態ごとのUI表示切替
-	void PoseMode();
-	void GoTitleMode();
-	void GoStageSelectMode();
-	void GameOverMode();
-	void StageClearMode();
-	void PlayMode();
-	
-	//プレイヤーのHPバーの伸縮
-	void ScalePlayerHPBer();
 
+	//ポーズ状態の処理
+	void PoseMode();
+
+	//タイトルシーンに移行時の処理
+	void GoTitleMode();
+
+	//ステージセレクトに移行時の処理
+	void GoStageSelectMode();
+
+	//ゲームオーバー時の処理
+	void GameOverMode();
+
+	//ステージクリア時の処理
+	void StageClearMode();
+	
+	//ステージやり直しの時の処理
+	void RetryMode();
+
+	//通常プレイ時の処理
+	void PlayMode();
+
+	
+	void ScalePlayerHPBer(); //プレイヤーのHPバーの伸縮
 	void SetPlayerData();
 
+
+	//各状態フラグのゲッター
 	bool GetIsPose();
 	bool GetIsGameOver();
 	bool GetIsStageClear();
+	bool GetIsGoStageSelect();
+	bool GetIsGoTitle();
+	bool GetIsRetry();
 };

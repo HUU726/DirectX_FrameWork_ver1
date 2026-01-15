@@ -51,6 +51,9 @@ void UI::Init(const hft::HFFLOAT3 pos, const hft::HFFLOAT2 scale, const char* te
 
 void UI::Update()
 {
+	isPressed     = false;
+	isMouseInside = false;
+
 	//çXêVèàóù
 	switch (type)
 	{
@@ -102,8 +105,8 @@ void UI::UpdateIsPressed()
 						  input.GetMousePress(Button::Mouse::Right) ||
 						  input.GetMousePress(Button::Mouse::Middle);
 
-	bool isKeyPressed = input.GetKeyPress((int)targetKey);
-	bool isXBottonPressed = input.GetButtonPress(targetXboxBotton);
+	bool isKeyPressed = input.GetKeyTrigger((int)targetKey);
+	bool isXBottonPressed = input.GetButtonTrigger(targetXboxBotton);
 
 	if ( (isMouseInside && isMousePressed) || isKeyPressed || isXBottonPressed)
 	{
