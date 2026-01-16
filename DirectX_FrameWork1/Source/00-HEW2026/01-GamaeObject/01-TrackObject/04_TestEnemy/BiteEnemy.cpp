@@ -54,6 +54,7 @@ void BiteEnemy::InitParam()
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定
+	// 通常状態のアニメーション
 	SpriteAnimation anim(div, { 0,0 }, 9);
 	anim.Active();
 	anim.SetID(0);
@@ -233,7 +234,21 @@ void BiteEnemy::SetAColliderPos()
 	else { std::cout << "攻撃方向のエラー\n"; }
 }
 
-// 
+/**
+*@brief	コライダー同士が衝突した際の処理
+* @param	Collider2D* _p_col	2D用コライダーのポインタ
+*/
+void BiteEnemy::OnCollisionEnter(Collider* _p_col)
+{
+	// 接触相手の情報を取得
+	GameObject* col = _p_col->GetGameObject();
+
+	// タグが特定の対象であれば本体を死亡状態へ
+	if (col->GetTag()=="a")
+	{
+		DeadMove();
+	}
+}
 
 
 //========================================================================================

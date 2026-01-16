@@ -31,7 +31,6 @@ private:
 	int GetAct() { return MoveRotation[Move]; }
 	int GetMove() { return Move; }
 	void AddMove() { Move++; if (Move > 5) { Move = 1; }; }
-	void DeadMove() { Move = 0; }
 
 	// アニメーションに関する関数
 	void Normal_Animation();
@@ -67,9 +66,17 @@ public:
 	void SetAColliderPos();	// 向いている方向毎に位置を変更する
 
 
+	/**
+	* @brief	コライダー同士が衝突した際の処理
+	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
+	*/
+	void OnCollisionEnter(Collider* _p_col) override;
+
 	// 状態毎の処理をする関数
 	void Normal_Move();	// 通常関数
 	void Attack_Move();	// 攻撃関数
 	void Spin_Move();	// 回転関数
 	void Dead_Move();	// 死亡関数
+
+	void DeadMove() { Move = 0; }
 };
