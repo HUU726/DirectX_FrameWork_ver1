@@ -9,18 +9,13 @@ class CEnemy : public TrackObject
 {
 	inline static int s_instanceCount = 0;		// エネミーの総数
 private:
-	float e_flame = 0;	// フレーム数を格納する変数
-	int e_state = 0;	// 状態を表す変数
-	
-protected:
-	void SetState(const int& NewState) { e_state = NewState; }
-	int GetState() { return e_state; }
-	void SetFlame(const float& NewFlame){ e_flame = NewFlame; }
-	float GetFlame() { return  e_flame; }
+	int fg;	// 0:死亡フラグON 1:死亡フラグOFF	  
 public:
-	CEnemy() { s_instanceCount++; }	// エネミーの総数追加
-	~CEnemy() { s_instanceCount--; }	// エネミーの総数減少
+	CEnemy() { s_instanceCount++; fg = 0; }	// エネミーの総数追加
 
+	// エネミーの死亡フラグがOFFになった時、一回だけ実行される(エネミーの総数の減少)
+	void DownEnemyCount() { if (fg == 0) { s_instanceCount--; fg++;} }
+	 
 	// エネミー総数を返す
 	int GetEnemyCount() { return s_instanceCount; }		
 };
