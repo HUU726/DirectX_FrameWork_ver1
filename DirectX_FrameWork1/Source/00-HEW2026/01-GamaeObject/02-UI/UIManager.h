@@ -22,8 +22,11 @@ public:
 	void Init() override;
 	void Update() override;
 
-	bool GetIsPressedStartButton(); //ゲームスタートボタンが押されたか検知
-	bool GetIsPressedEndButton();   //ゲーム終了ボタンが押されたか検知
+	//ゲームスタートボタンが押されたか検知
+	bool GetIsPressedStartButton();
+
+	//ゲーム終了ボタンが押されたか検知
+	bool GetIsPressedEndButton();
 
 	//シーン遷移用UIの座標を変化させてアニメーション
 	void SceneTransitionAnim();
@@ -33,12 +36,34 @@ public:
 //ステージセレクトシーンのUI管理
 class StageSelectUIManager : public GameObject2D
 {
-	UI backGround;
-	UI stageTitleUI;
-	UI stageStartButton;
-	UI goToTitleButton;
+private:
+	UI backGround;					//背景
+	UI stageStartButton;			//ステージ開始ボタン
+	UI goToTitleButton;				//タイトル移行ボタン
 
+	std::vector<UI> stageViewUI;	//ステージ画面のUI
+	std::vector<UI> stageNameUI;	//ステージ名のUI
+
+	//int 
+	int currentStageNum;		//現在選択しているステージ名
+	bool isStartStage = false;		//ステージ開始しているかどうか
+	bool isGoTitle = false;			//タイトル移行状態かどうか
+
+public:
+	void Init() override;
+	void Update() override;
+
+
+	//選択ステージの切り替え
+	void ChangeCurrentStage();
+
+	//ステージスタートの時の処理
+	void StartStageMode();
+
+	//タイトルに戻る時の処理
+	void GoTitleMode();
 };
+
 
 
 
@@ -109,7 +134,6 @@ public:
 	//通常プレイ時の処理
 	void PlayMode();
 
-	
 	void ScalePlayerHPBer(); //プレイヤーのHPバーの伸縮
 	void SetPlayerData();
 

@@ -1,6 +1,6 @@
 #include "UIManager.h"
 
-//タイトルシーンの処理=======================================================
+//タイトルシーン管理の処理=======================================================
 void TitleUIManager::Init()
 {
 	backGround.Init({ 0.f, 0.f, 0.f }, { 500.f, 500.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
@@ -66,8 +66,39 @@ void TitleUIManager::SceneTransitionAnim()
 
 
 
-//ステージセレクトシーンの処理=======================================================
+//ステージセレクトシーン管理の処理=======================================================
+void StageSelectUIManager::Init()
+{
+	
+}
 
+void StageSelectUIManager::Update()
+{
+
+}
+
+void StageSelectUIManager::ChangeCurrentStage()
+{
+	Input& input = Input::GetInstance();
+
+
+
+}
+
+void StageSelectUIManager::StartStageMode()
+{
+	return;
+}
+
+void StageSelectUIManager::GoTitleMode()
+{
+	return;
+}
+
+
+
+
+//ステージプレイシーン管理の処理=======================================================
 void StagePlayUIManager::Init()
 {
 	//ポーズボタンUI
@@ -238,8 +269,6 @@ void StagePlayUIManager::RetryMode()
 	return;
 }
 
-
-
 void StagePlayUIManager::PlayMode()
 {
 	//ポーズ時のUIを非表示
@@ -279,6 +308,7 @@ void StagePlayUIManager::PlayMode()
 
 
 }
+
 
 void StagePlayUIManager::ScalePlayerHPBer()
 {
