@@ -4,14 +4,9 @@
 
 #include"BiteEnemy.h"
 
-#define NORMAL 0
-#define ATTACK 1
-#define SPIN 2
-#define DEAD 3
-
 BiteEnemy::BiteEnemy()
 {
-	InitParam();	// エネミーのパラメータの初期化
+	
 }
 
 BiteEnemy::~BiteEnemy()
@@ -22,14 +17,14 @@ BiteEnemy::~BiteEnemy()
 // 初期化=============================================================
 void BiteEnemy::Init()
 {
-
+	InitParam();	// エネミーのパラメータの初期化
 }
 
 // 更新===============================================================
 void BiteEnemy::Update()
 {
 	Bite_Update();				// フレーム、行動の更新
-	Bite_Animation(GetState());	// アニメーションの更新
+	Bite_Animation();	// アニメーションの更新
 }
 
 // パラメータ初期化============================================================
@@ -37,7 +32,6 @@ void BiteEnemy::InitParam()
 {
 	// タイマーの初期化
 	timer = 0;
-
 
 	// パラメータ(別のファイルに移動予定)
 	hitstopspead = 1.0f;	// ヒットストップスピード(現在は等速)
@@ -48,6 +42,7 @@ void BiteEnemy::InitParam()
 	// 位置の設定
 	{
 		p_transform->scale = Scale;
+		p_transform->position = { 0.0f,0.0f,0.0f };
 	}
 
 	// レンダラーの設定
@@ -55,7 +50,7 @@ void BiteEnemy::InitParam()
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(biteenemyTexName);
 
 	//アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(1, 1));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(2, 3));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定
@@ -74,15 +69,14 @@ void BiteEnemy::InitParam()
 
 	p_spriteAnimator->AddAnimation(anim);
 
-	//コライダーの設定
-	BoxCollider2D* boxI2d = AddComponent<BoxCollider2D>();
-	boxI2d->SetIsActive(true);
+	// 本体のコライダーの設定
+	bodyCollider = AddComponent<BoxCollider2D>();
+	bodyCollider->SetIsActive(true);
 
-
-	// 攻撃マス
-	//コライダーの設定
-	BoxCollider2D* boxA2d = AddComponent<BoxCollider2D>();
-	boxA2d->SetIsActive(false);
+	//攻撃のコライダーの設定
+	AttackCollider = AddComponent<BoxCollider2D>();
+	AttackCollider->SetOffset({ -50.f,0.0f,0.0f });
+	AttackCollider->SetIsActive(false);
 
 	std::cout << "BiteEnemyパラメータ完了\n";
 }
@@ -110,11 +104,10 @@ void BiteEnemy::Bite_Update()
 }
 
 // アニメーション
-void BiteEnemy::Bite_Animation(const int& state)
+void BiteEnemy::Bite_Animation()
 {
-	/*
 	// 状態で分ける
-	switch (state)
+	switch (GetAct())
 	{
 	case 0:
 		Normal_Animation();
@@ -129,69 +122,81 @@ void BiteEnemy::Bite_Animation(const int& state)
 		Dead_Animation();
 		break;
 	}
-	*/
 }
 
+//====================================================================================================
+// 状態
+// ===================================================================================================
+// 通常状態の挙動
 void BiteEnemy::Normal_Move()
 {
+	// 決められたフレーム時間経過すれば行動変化
 	if (Active[GetMove()] <= timer)
 	{
-		if(Active[GetMove()] == 30){ SetState(ATTACK); }
-		else if (Active[GetMove()] == 20) { SetState(SPIN); }
 		timer = 0;
+		// 次の挙動へ
 		AddMove();
 	}
 }
 
+// 攻撃状態の挙動
 void BiteEnemy::Attack_Move()
 {
-	if (time == 0)
-	{
-		// 攻撃判定の適用
-		SetAColliderActive(true);
-	}
+	// 攻撃判定を出す
+	if (time == 0){	SetAColliderActive(true);}
 	if (Active[GetMove()] <= timer)
 	{
-		SetState(NORMAL);
-		// 攻撃判定の消去
-		SetAColliderActive(false);
 		timer = 0;
+		// 攻撃判定を消す
+		SetAColliderActive(false);
+		// 次の挙動へ
 		AddMove();
 	}
 }
 
+// 回転状態の挙動
 void BiteEnemy::Spin_Move()
 {
 	if (Active[GetMove()] <= timer)
 	{
-		SetState(2);
-		SetAngle(0);
 		timer = 0;
+		// 向きを更新
+		AddDirection();
+		// 攻撃判定の位置変更
+		SetAColliderPos();
+		// 次の挙動へ
 		AddMove();
 	}
 }
 
+// 回転状態の挙動
 void BiteEnemy::Dead_Move()
 {
-	if(timer==0)
+	if(timer == 0)
 	{
 		// 自身の当たり判定の削除
+		bodyCollider->GetIsActive();
 	}
 	if (Active[GetMove()] <= timer)
 	{
 		timer = 0;
-		delete this;
+		// 描写を削除
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
+		// エネミーの総数の減少
+		DownEnemyCount();
 	}
 }
 
 
+//==============================================================================================
+// 判定
+//==============================================================================================
 // 本体判定を適応するか否か
 void BiteEnemy::SetIColliderActive(bool NewActive)
 {
-	BoxCollider2D* ptr = GetComponent<BoxCollider2D>();
-	ptr->SetIsActive(NewActive);
+	bodyCollider->SetIsActive(NewActive);
 
-	if (ptr->GetIsActive() == true)
+	if (bodyCollider->GetIsActive() == true)
 	{
 		std::cout << "コライダー実行中\n";
 	}
@@ -204,10 +209,10 @@ void BiteEnemy::SetIColliderActive(bool NewActive)
 // 攻撃判定を適応するか否か
 void BiteEnemy::SetAColliderActive(bool NewActive)
 {
-	BoxCollider2D* ptr = GetComponent<BoxCollider2D>();
-	ptr->SetIsActive(NewActive);
+	
+	AttackCollider->SetIsActive(NewActive);
 
-	if (ptr->GetIsActive() == true)
+	if (AttackCollider->GetIsActive() == true)
 	{
 		std::cout << "コライダー実行中\n";
 	}
@@ -215,4 +220,45 @@ void BiteEnemy::SetAColliderActive(bool NewActive)
 	{
 		std::cout << "コライダー非実行中\n";
 	}
+}
+
+// 攻撃判定の位置変更
+void BiteEnemy::SetAColliderPos()
+{
+	const int dir = GetDirection();	// 向きを取得
+	if (dir == 0) { AttackCollider->SetOffset({ -50.0f,0.0f,0.0f }); }
+	else if(dir==1){ AttackCollider->SetOffset({ 0.0f,50.0f,0.0f }); }
+	else if(dir==2){ AttackCollider->SetOffset({ 50.0f,0.0f,0.0f }); }
+	else if(dir==3){ AttackCollider->SetOffset({ 0.0f,-50.0f,0.0f }); }
+	else { std::cout << "攻撃方向のエラー\n"; }
+}
+
+// 
+
+
+//========================================================================================
+//アニメーション
+//========================================================================================
+// 通常状態のアニメーション
+void BiteEnemy::Normal_Animation()
+{
+	// 更新
+}
+
+// 攻撃状態のアニメーション
+void BiteEnemy::Attack_Animation()
+{
+	// 更新
+}
+
+// 回転状態のアニメーション
+void BiteEnemy::Spin_Animation()
+{
+	// 更新
+}
+
+// 死亡状態のアニメーション
+void BiteEnemy::Dead_Animation()
+{
+	// 更新
 }

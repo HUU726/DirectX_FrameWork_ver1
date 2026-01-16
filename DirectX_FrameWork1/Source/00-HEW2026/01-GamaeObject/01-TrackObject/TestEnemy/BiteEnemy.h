@@ -9,11 +9,13 @@ private:
 	float hitstoptime;	// ヒットストップがかかるフレーム数
 	hft::HFFLOAT3 Scale;	// 噛みつく敵の画像のサイズ
 	GameObject2D object2D;	// 本体のアニメーション
+	BoxCollider2D* bodyCollider;	// 本体の判定
 	int MoveRotation[5] = { 3,0,1,0,2 };	// 行動ルーチン (死亡の時は[0]になる)  通常→攻撃→通常→回転
-	int Move;
+	int Move;				// 行動ルーチンで使用する変数
+	int direction;		// 0:右 1:上 2:左 3:下
 
-	// 攻撃判定の情報
-	float Attackpos;	// 方向によって加減される
+	// 攻撃の判定
+	BoxCollider2D* AttackCollider;
 
 	// 経過時間 
 	int timer;
@@ -22,8 +24,8 @@ private:
 	int Active[5] = { 20,30,20,20,3 }; // 死亡:20F 通常1:30F 攻撃:20F 通常2:20F 回転:3F
 
 	// 向きに関する関数
-	void SetAngle(const hft::HFFLOAT2& NewAngle) { return; }
-	hft::HFFLOAT2 GetAngle() { return angle; }
+	void AddDirection() { direction++; if (direction < 4) { direction = 0; } }
+	int GetDirection() { return direction; }
 
 	// 情報を返す
 	int GetAct() { return MoveRotation[Move]; }
@@ -31,12 +33,11 @@ private:
 	void AddMove() { Move++; if (Move > 5) { Move = 1; }; }
 	void DeadMove() { Move = 0; }
 
-
 	// アニメーションに関する関数
-	//void Normal_Animation();
-	//void Attack_Animation();
-	//void Spin_Animation();
-	//void Dead_Animation();
+	void Normal_Animation();
+	void Attack_Animation();
+	void Spin_Animation();
+	void Dead_Animation();
 public:
 	BiteEnemy();	
 	~BiteEnemy();				
@@ -53,18 +54,18 @@ public:
 	// フレーム,行動の更新
 	void Bite_Update();
 	// アニメーション
-	void Bite_Animation(const int& state);
+	void Bite_Animation();
 
 
-
+	//===================================================================================
 	// 自身のコライダーの状態を変更
 	void SetIColliderActive(bool state);	// true:実行 false:非実行
 
 	// 攻撃判定のコライダーの状態を変更
 	void SetAColliderActive(bool state);	// true:実行 false:非実行
+	// 攻撃判定のコライダーの位置を変更
+	void SetAColliderPos();	// 向いている方向毎に位置を変更する
 
-	// ヒットストップ
-	void SetDelay();
 
 	// 状態毎の処理をする関数
 	void Normal_Move();	// 通常関数
