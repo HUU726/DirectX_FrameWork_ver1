@@ -30,7 +30,11 @@ private:
 	// 情報を返す
 	int GetAct() { return MoveRotation[Move]; }
 	int GetMove() { return Move; }
-	void AddMove() { Move++; if (Move > 5) { Move = 1; }; }
+	void AddMove()
+	{
+		Move++; 
+		if(Move > 4){ Move = 1; };
+	}
 
 	// アニメーションに関する関数
 	void Normal_Animation();

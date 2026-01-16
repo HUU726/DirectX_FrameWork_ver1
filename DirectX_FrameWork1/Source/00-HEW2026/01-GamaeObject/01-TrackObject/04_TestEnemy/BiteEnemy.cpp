@@ -37,12 +37,12 @@ void BiteEnemy::InitParam()
 	hitstopspead = 1.0f;	// ヒットストップスピード(現在は等速)
 	hitstoptime = 10.0f;	// ヒットストップ時間
 	Scale = { 50.0f,50.0f,0.0f };	// 画像の大きさ
-	Move = 0;
+	Move = 1;
 
 	// 位置の設定
 	{
 		p_transform->scale = Scale;
-		p_transform->position = { 0.0f,0.0f,0.0f };
+		p_transform->position = { 0.0f,0.0f, -2.0f };
 	}
 
 	// レンダラーの設定
@@ -53,9 +53,10 @@ void BiteEnemy::InitParam()
 	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(2, 3));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
+
 	//animationの設定
 	// 通常状態のアニメーション
-	SpriteAnimation anim(div, { 0,0 }, 9);
+	SpriteAnimation anim(div, { 0,0 }, 6);
 	anim.Active();
 	anim.SetID(0);
 
@@ -63,7 +64,7 @@ void BiteEnemy::InitParam()
 	anim.SetPriority(0);
 	float flame = 10;
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		anim.GetCellRef(i).flame = flame;
 	}
@@ -144,7 +145,7 @@ void BiteEnemy::Normal_Move()
 void BiteEnemy::Attack_Move()
 {
 	// 攻撃判定を出す
-	if (time == 0){	SetAColliderActive(true);}
+	if (timer == 1){SetAColliderActive(true);}
 	if (Active[GetMove()] <= timer)
 	{
 		timer = 0;
@@ -173,7 +174,7 @@ void BiteEnemy::Spin_Move()
 // 回転状態の挙動
 void BiteEnemy::Dead_Move()
 {
-	if(timer == 0)
+	if(timer == 1)
 	{
 		// 自身の当たり判定の削除
 		bodyCollider->GetIsActive();
@@ -182,9 +183,10 @@ void BiteEnemy::Dead_Move()
 	{
 		timer = 0;
 		// 描写を削除
-		GetComponent<SpriteRenderer>()->SetIsActive(false);
+		//GetComponent<SpriteRenderer>()->SetIsActive(false);
 		// エネミーの総数の減少
 		DownEnemyCount();
+		std::cout << "エラー\n";
 	}
 }
 
@@ -244,9 +246,10 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	GameObject* col = _p_col->GetGameObject();
 
 	// タグが特定の対象であれば本体を死亡状態へ
+	bool cheakHit = false;
 	if (col->GetTag()=="a")
 	{
-		DeadMove();
+		//DeadMove();
 	}
 }
 
