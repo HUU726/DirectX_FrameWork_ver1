@@ -5,10 +5,10 @@
 
 class BoxCollider2D;
 
-class BomEnemy : public CEnemy
+class GunEnemy : public CEnemy
 {
 private:
-	//自身の体の判定用のコライダー
+	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
 
 	// 弾が消えてからの待機時間
@@ -20,17 +20,20 @@ private:
 	enum State
 	{
 		Defoult,
-		shotting,
-		dead,
+		Shotting,
+		Dead,
 	};
 	State currentState;
 
-
+	// 方向 /*(-1,0):左向き (0,1):上向き (1,0)右向き (0,-1):下向き*/
+	void SetAngle(hft::HFFLOAT2 NewAngle) { angle = NewAngle; }
+	hft::HFFLOAT2 GetAngle() { return angle; }
 
 	// 弾オブジェクト
 	// BulletObject* bullet;
 
 public:
+	GunEnemy();
 	void Init() override;
 	void Update() override;
 
