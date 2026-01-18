@@ -56,20 +56,57 @@ void BiteEnemy::InitParam()
 
 	//animationの設定
 	// 通常状態のアニメーション
-	SpriteAnimation anim(div, { 0,0 }, 6);
-	anim.Active();
-	anim.SetID(0);
-
-	anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-	anim.SetPriority(0);
+	SpriteAnimation anim1(div, { 0,0 }, 6);
+	anim1.Active();
+	anim1.SetID(0);
+	anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+	anim1.SetPriority(0);
 	float flame = 10;
-
 	for (int i = 0; i < 6; i++)
 	{
-		anim.GetCellRef(i).flame = flame;
+		anim1.GetCellRef(i).flame = flame;
 	}
+	p_spriteAnimator->AddAnimation(anim1);
 
-	p_spriteAnimator->AddAnimation(anim);
+	// 攻撃状態のアニメーション
+	SpriteAnimation anim2(div, { 0,0 }, 6);
+	anim2.Active();
+	anim2.SetID(1);
+	anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+	anim2.SetPriority(0);
+	flame = 10;
+	for (int i = 0; i < 6; i++)
+	{
+		anim2.GetCellRef(i).flame = flame;
+	}
+	p_spriteAnimator->AddAnimation(anim2);
+
+	// 回転状態のアニメーション
+	SpriteAnimation anim3(div, { 0,0 }, 6);
+	anim3.Active();
+	anim3.SetID(2);
+	anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+	anim3.SetPriority(0);
+	flame = 10;
+	for (int i = 0; i < 6; i++)
+	{
+		anim3.GetCellRef(i).flame = flame;
+	}
+	p_spriteAnimator->AddAnimation(anim3);
+
+	// 死亡状態のアニメーション
+	SpriteAnimation anim4(div, { 0,0 }, 6);
+	anim4.Active();
+	anim4.SetID(3);
+	anim4.SetType(SPRITE_ANIM_TYPE::NORMAL);
+	anim4.SetPriority(0);
+	flame = 10;
+	for (int i = 0; i < 6; i++)
+	{
+		anim4.GetCellRef(i).flame = flame;
+	}
+	p_spriteAnimator->AddAnimation(anim4);
+
 
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
