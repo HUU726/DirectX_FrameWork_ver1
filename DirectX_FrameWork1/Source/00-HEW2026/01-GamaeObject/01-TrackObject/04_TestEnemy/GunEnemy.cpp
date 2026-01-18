@@ -21,11 +21,11 @@ void GunEnemy::Update()
 
 	switch (currentState)
 	{
-	case State::Defoult:
+	case State::defoult:
 		break;
-	case State::Shotting:
+	case State::shotting:
 		break;
-	case State::Dead:
+	case State::dead:
 		break;
 	defoult:
 		break;
@@ -57,7 +57,7 @@ void GunEnemy::Dead()
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 }
 
-void OnCollisionEnter(Collider* _p_col)
+void GunEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 対象のオブジェクトと接触した際、Deadへ移行
 }

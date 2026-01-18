@@ -1,9 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-#include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/00-Collider/Collider.h"
-
-class BoxCollider2D;
+#include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 
 class GunEnemy : public CEnemy
 {
@@ -19,9 +17,9 @@ private:
 
 	enum State
 	{
-		Defoult,
-		Shotting,
-		Dead,
+		defoult,
+		shotting,
+		dead,
 	};
 	State currentState;
 
