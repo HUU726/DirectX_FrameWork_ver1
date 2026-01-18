@@ -147,6 +147,7 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BomEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemy.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BulletObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\Enemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.cpp" />
     <ClCompile Include="Source\04-Input\Input.cpp" />
@@ -224,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BomEnemy.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BulletObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\TestEnemy\BomEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h" />

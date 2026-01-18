@@ -3,7 +3,7 @@
 GunEnemy::GunEnemy()
 {
 	// 弾オブジェクト初期化
-	// Bullet = nullptr;
+	// bullet = nullptr;
 }
 
 void GunEnemy::Init()
