@@ -2,7 +2,6 @@
 
 #include "../../../../01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
-#include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/00-Collider/Collider.h"
 
 class BoxCollider2D;
 

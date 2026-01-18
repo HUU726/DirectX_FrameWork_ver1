@@ -1,7 +1,6 @@
 #include"BulletObject.h"
 
 #include"../../../10-Map/00-BaseMap/BaseMap.h"
-#include "../../../../01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
@@ -65,7 +64,7 @@ void BulletObject::Init()
 		anim2.Active();
 		anim2.SetID(1);
 
-		anim2.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim2.SetPriority(0);
 		flame = 10;
 
@@ -107,6 +106,7 @@ void BulletObject::Defoult()
 	CheakMyPos();
 
 	// アニメーションを再生
+	GetComponent<SpriteAnimator>()->Play(0);
 }
 
 void BulletObject::Blast()
@@ -115,7 +115,7 @@ void BulletObject::Blast()
 	p_transform->SetIsActive(false);
 
 	// アニメーションを再生
-
+	GetComponent<SpriteAnimator>()->Play(1);
 }
 
 
