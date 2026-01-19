@@ -11,14 +11,21 @@ private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColler = nullptr;
 
-	// アニメーション用
-	GameObject2D bodyObj;
+	// マップの端
+	hft::HFFLOAT2 LeftTop;
+	hft::HFFLOAT2 RightBottom;
 
-	// 自身が存在できる時間
-	int livetime = 60; 
+	// 弾が存在する時にtrueにし、存在しない時にfalseにする
+	bool active = false;
+
+	// 弾が進み続けるフレーム
+	int livetime = 300;
 
 	// 弾の進むスピード
-	float spead = 1.f;
+	float spead = 2.f;
+
+	// 弾が炸裂してから消えるまでのフレーム
+	int blasttime = 30;
 
 	// 経過時間
 	int timer = 0;
@@ -33,10 +40,6 @@ private:
 	};
 	State currentState;
 
-	// 方向の情報
-	void SetAngle(const hft::HFFLOAT2& NewAngle) { Iangle = NewAngle; }
-	hft::HFFLOAT2 GetAngle() { return Iangle; }
-
 	// Angleから方向の情報をDirectionへ
 	int direction;	// 0:右 1:上 2:左 3:下
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
@@ -49,9 +52,14 @@ private:
 	void CheakMyPos();
 
 public:
-	BulletObject(const hft::HFFLOAT3& NewPosition, const hft::HFFLOAT2& NewAngle); // 座標、方向を初期化
+	BulletObject();
 	void Init() override;
+	void Init(const hft::HFFLOAT2& NewAngle);	// 方向指定
 	void Update() override;
+	void Update(const hft::HFFLOAT3 NewPosition);	// 座標指定
+
+	void SetBulletActive(const bool& NewActive) { active = NewActive; }
+	bool GetBulletActive() { return active; }
 
 	void Defoult();
 	void Blast();

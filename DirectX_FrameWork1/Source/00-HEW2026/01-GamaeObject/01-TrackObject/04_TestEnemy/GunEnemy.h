@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-
+#include"BulletObject.h"
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 
 class GunEnemy : public CEnemy
@@ -10,10 +10,13 @@ private:
 	BoxCollider2D* bodyColl = nullptr;
 
 	// 弾が消えてからの待機時間
-	int waittimer = 30;
+	int waittimer = 180;
 
 	// 経過時間
 	int timer = 0;
+
+	// 弾オブジェクトを作成するフレーム数
+	int shot = 10;
 
 	enum State
 	{
@@ -28,7 +31,7 @@ private:
 	hft::HFFLOAT2 GetAngle() { return angle; }
 
 	// 弾オブジェクト
-	// BulletObject* bullet;
+	BulletObject bullet;
 
 public:
 	GunEnemy();
