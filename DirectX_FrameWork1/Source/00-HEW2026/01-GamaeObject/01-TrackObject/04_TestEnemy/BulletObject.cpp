@@ -15,8 +15,6 @@ BulletObject::BulletObject()
 }
 
 void BulletObject::Init(){}
-void BulletObject::Update() {}
-
 
 //=================================================================
 //Init
@@ -100,31 +98,21 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 //=======================================================================
 //Update
 //=======================================================================
-void BulletObject::Update(const hft::HFFLOAT3& NewPosition)
+void BulletObject::Update()
 {
-	// 弾が存在しないとき最新の座標を格納し続ける
-	if (GetBulletActive() != true)
-	{
-		p_transform->position = NewPosition;
-		std::cout << "弾オブジェクト座標更新\n";
-	}
 	// 弾が存在するとき
-	else 
+	timer++;	// フレーム数更新
+
+	switch (currentState)
 	{
-		timer++;	// フレーム数更新
-
-		switch (currentState)
-		{
-		case defoult:
-			Defoult();
-			break;
-		case blast:
-			Blast();
-			break;
-		default:
-			std::cout << "弾オブジェクト行動エラー\n";
-		}
-
+	case defoult:
+		Defoult();
+		break;
+	case blast:
+		Blast();
+		break;
+	default:
+		std::cout << "弾オブジェクト行動エラー\n";
 	}
 }
 

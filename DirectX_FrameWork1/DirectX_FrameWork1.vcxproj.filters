@@ -503,6 +503,9 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BulletObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemyParam.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl" />

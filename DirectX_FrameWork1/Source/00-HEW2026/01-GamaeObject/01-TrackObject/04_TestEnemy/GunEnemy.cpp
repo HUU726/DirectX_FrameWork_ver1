@@ -1,4 +1,5 @@
 #include"GunEnemy.h"
+#include"GunEnemyParam.h"
 #include"../../../../01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
 GunEnemy::GunEnemy()
@@ -18,27 +19,26 @@ void GunEnemy::Init()
 		currentState = State::defoult;
 
 		// 向きの調整
-		hft::HFFLOAT2 AGL = { 0,1 };
+		//hft::HFFLOAT2 AGL = angle;
+		hft::HFFLOAT2 AGL = { 1,0 };
 		SetAngle(AGL);
+
 		// タイマーの初期化
 		timer = 0;
 
 		// 位置の設定
 		{
-			p_transform->scale = { 50.f,50.f,50.f };
-			p_transform->position = { 0.0f,0.0f, -2.0f };
+			p_transform->scale = GunEnemyParam::scale;
+			p_transform->position = GunEnemyParam::position;
 		}
 	}
-	
 
 	// レンダラーの設定
-	const char* biteenemyTexName = "Assets/01-Texture/99-Test/daruma.jpg";
-	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(biteenemyTexName);
+	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(GunEnemyParam::biteenemyTexName);
 
 	//アニメーターの設定
 	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(2, 3));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
-
 
 	//animationの設定
 	// defoultのアニメーション
@@ -97,6 +97,11 @@ void GunEnemy::Init()
 //============================================================================================
 void GunEnemy::Update()
 {
+	if (bullet.GetBulletActive() == true)
+	{
+		bullet.Update();
+	}
+
 	switch (currentState)
 	{
 	case State::defoult:
@@ -111,12 +116,6 @@ void GunEnemy::Update()
 	default:
 		break;
 	}
-
-	hft::HFFLOAT3 pos = p_transform->position;
-
-	// 弾オブジェクト更新
-	bullet.Update(pos);
-	//bullet.Update(GetTransform());
 }
 
 
@@ -151,6 +150,7 @@ void GunEnemy::Shotting()
 	{
 		timer = 0;
 		currentState = State::defoult; 
+		bullet.SetPos(p_transform->position);
 		bullet.SetBulletActive(true); // 弾オブジェクトをアクティブに
 		std::cout << "弾オブジェクト発射!!\n";
 		GetComponent<SpriteAnimator>()->Stop(1);

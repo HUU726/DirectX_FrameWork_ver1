@@ -10,13 +10,13 @@ private:
 	BoxCollider2D* bodyColl = nullptr;
 
 	// 弾が消えてからの待機時間
-	int waittimer = 180;
+	int waittimer;
 
 	// 経過時間
-	int timer = 0;
+	int timer;
 
 	// 弾オブジェクトを作成するフレーム数
-	int shot = 10;
+	int shot;
 
 	enum State
 	{
