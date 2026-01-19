@@ -28,12 +28,12 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	blasttime = BulletObjectParam::blasttime;
 	currentState = State::defoult;
 	 
-	// 座標、方向を指定された数値で初期化
 	// マップの枠の数値を入れる
 	LeftTop = { -250.f,250.f };
 	RightBottom= { 250.f,-250.f };
 	//LeftTop = GetComponent<BaseMap>()->GetLefTopPos();
 	//RightBottom = GetComponent<BaseMap>()->GetRitBotPos();
+	 
 	// 座標の情報
 	p_transform->position = BulletObjectParam::position;
 	p_transform->scale = BulletObjectParam::scale;
