@@ -16,16 +16,16 @@ private:
 	hft::HFFLOAT2 RightBottom;
 
 	// 弾が存在する時にtrueにし、存在しない時にfalseにする
-	bool active = false;
+	bool active;
 
 	// 弾が進み続けるフレーム
-	int livetime = 300;
+	int livetime;
 
 	// 弾の進むスピード
-	float spead = 2.f;
+	float spead;
 
 	// 弾が炸裂してから消えるまでのフレーム
-	int blasttime = 30;
+	int blasttime;
 
 	// 経過時間
 	int timer = 0;

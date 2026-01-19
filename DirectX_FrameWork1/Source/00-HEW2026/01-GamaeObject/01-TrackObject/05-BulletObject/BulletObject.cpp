@@ -1,5 +1,5 @@
 #include"BulletObject.h"
-
+#include"BulletObjectParam.h"
 #include"../../../../01-MyLib/08-Scene/01-Scenes/TitleScene.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
@@ -22,6 +22,12 @@ void BulletObject::Init(){}
 void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 {
 	// パラメータ初期化
+	active = BulletObjectParam::active;
+	livetime = BulletObjectParam::livetime;
+	spead = BulletObjectParam::spead;
+	blasttime = BulletObjectParam::blasttime;
+	currentState = State::defoult;
+	 
 	// 座標、方向を指定された数値で初期化
 	// マップの枠の数値を入れる
 	LeftTop = { -250.f,250.f };
@@ -29,8 +35,8 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	//LeftTop = GetComponent<BaseMap>()->GetLefTopPos();
 	//RightBottom = GetComponent<BaseMap>()->GetRitBotPos();
 	// 座標の情報
-	p_transform->position = { 0.f,0.f,0.f };
-	p_transform->scale = { 20.0f,20.0f,-2.0f };
+	p_transform->position = BulletObjectParam::position;
+	p_transform->scale = BulletObjectParam::scale;
 
 	// 方向の情報
 	const hft::HFFLOAT2 RIGHTANGLE = { 1,0 };
@@ -43,7 +49,6 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	else if (NewAngle.x == LEFTANGLE.x && NewAngle.y == LEFTANGLE.y) { SetDirection(LEFT); }
 	else if (NewAngle.x == DOWNANGLE.x && NewAngle.y == DOWNANGLE.y) { SetDirection(DOWN); }
 	else { std::cout << "エラー\n"; }
-	currentState = State::defoult;
 	
 	// 当たり判定初期化
 	bodyColler = AddComponent<BoxCollider2D>();
@@ -53,7 +58,7 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	//画像の設定
 	{
 		//レンダラーの設定
-		GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
+		GetComponent<SpriteRenderer>()->LoadTexture(BulletObjectParam::BulletObjTexName);
 
 		//アニメーターの設定
 		SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));

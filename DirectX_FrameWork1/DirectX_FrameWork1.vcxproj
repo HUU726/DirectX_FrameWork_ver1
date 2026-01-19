@@ -228,6 +228,7 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemyParam.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObjectParam.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\TestEnemy\BomEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.h" />
