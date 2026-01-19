@@ -100,7 +100,7 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 //=======================================================================
 //Update
 //=======================================================================
-void BulletObject::Update(const hft::HFFLOAT3 NewPosition)
+void BulletObject::Update(const hft::HFFLOAT3& NewPosition)
 {
 	// íeÇ™ë∂ç›ÇµÇ»Ç¢Ç∆Ç´ç≈êVÇÃç¿ïWÇäiî[Çµë±ÇØÇÈ
 	if (GetBulletActive() != true)

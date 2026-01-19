@@ -56,7 +56,7 @@ public:
 	void Init() override;
 	void Init(const hft::HFFLOAT2& NewAngle);	// 方向指定
 	void Update() override;
-	void Update(const hft::HFFLOAT3 NewPosition);	// 座標指定
+	void Update(const hft::HFFLOAT3& NewPosition);	// 座標指定
 
 	void SetBulletActive(const bool& NewActive) { active = NewActive; }
 	bool GetBulletActive() { return active; }
