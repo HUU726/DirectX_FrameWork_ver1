@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include"BulletObject.h"
+#include"../05-BulletObject/BulletObject.h"
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 
 class GunEnemy : public CEnemy
