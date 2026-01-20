@@ -3,7 +3,7 @@
 
 namespace BiteEnemyParam
 {
-	const int hitstoptime = 10.0;	// ヒットストップ時間
+	const int hitstoptime = 10;	// ヒットストップ時間
 	const hft::HFFLOAT3 scale = { 50.f,50.f,0.f };		// サイズ
 	const hft::HFFLOAT3 position = { 0.0f,0.0f,-2.0f };	// 座標
 	const hft::HFFLOAT3 offset[4] = {{50.0f,0.0f,0.0f},		// 右向きのアタックマスの位置
