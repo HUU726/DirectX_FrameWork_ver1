@@ -338,6 +338,7 @@ void BiteEnemy::Spin()
 //==================================================================================
 void BiteEnemy::Dead()
 {
+	CEnemy::DownEnemyCount();
 	// “–‚½‚è”»’è’âŽ~
 	bodyCollider->SetIsActive(false);
 	attackCollider.col()->SetIsActive(false);

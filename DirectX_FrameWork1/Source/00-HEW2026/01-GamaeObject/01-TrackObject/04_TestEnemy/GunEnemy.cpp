@@ -1,3 +1,5 @@
+//	本体のタグは"Enemy"
+
 #include"GunEnemy.h"
 #include"GunEnemyParam.h"
 #include"../../../../01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
@@ -22,6 +24,8 @@ void GunEnemy::Init()
 		//マップ上どのマスにいるか設定
 		//SetLineIndex({1.f, 1.f});
 		currentState = State::defoult;
+
+		tag = GunEnemyParam::tag;
 
 		// 向きの調整
 		//hft::HFFLOAT2 AGL = angle;
@@ -59,12 +63,12 @@ void GunEnemy::Init()
 	// 右向き
 	{
 		// defoultのアニメーション
-		SpriteAnimation anim1(div, { 0,0 }, 6);
+		SpriteAnimation anim1(div, { 0,0 }, 12);
 		anim1.Active();
 		anim1.SetID(0);
 		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim1.SetPriority(0);
-		float flame = 10;
+		float flame = 12;
 		for (int i = 0; i < 6; i++)
 		{
 			anim1.GetCellRef(i).flame = flame;
@@ -72,7 +76,7 @@ void GunEnemy::Init()
 		p_spriteAnimator->AddAnimation(anim1);
 
 		// shottingのアニメーション
-		SpriteAnimation anim2(div, { 0,0 }, 6);
+		SpriteAnimation anim2(div, { 5,1 },6 );
 		anim2.Active();
 		anim2.SetID(1);
 		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -88,25 +92,25 @@ void GunEnemy::Init()
 	// 上向き
 	{
 		// defoultのアニメーション
-		SpriteAnimation anim1(div, { 0,0 }, 6);
+		SpriteAnimation anim1(div, { 0,3 }, 12);
 		anim1.Active();
 		anim1.SetID(2);
 		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim1.SetPriority(0);
-		float flame = 10;
-		for (int i = 0; i < 6; i++)
+		float flame = 12;
+		for (int i = 0; i < 12; i++)
 		{
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
 
 		// shottingのアニメーション
-		SpriteAnimation anim2(div, { 0,0 }, 6);
+		SpriteAnimation anim2(div, { 5,6 }, 6);
 		anim2.Active();
 		anim2.SetID(3);
 		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim2.SetPriority(0);
-		flame = 10;
+		flame = 13;
 		for (int i = 0; i < 6; i++)
 		{
 			anim2.GetCellRef(i).flame = flame;
@@ -117,20 +121,20 @@ void GunEnemy::Init()
 	// 左向き
 	{
 		// defoultのアニメーション
-		SpriteAnimation anim1(div, { 0,0 }, 6);
+		SpriteAnimation anim1(div, { 0,0 }, 12);
 		anim1.Active();
 		anim1.SetID(4);
 		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim1.SetPriority(0);
-		float flame = 10;
-		for (int i = 0; i < 6; i++)
+		float flame = 12;
+		for (int i = 0; i < 12; i++)
 		{
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
 
 		// shottingのアニメーション
-		SpriteAnimation anim2(div, { 0,0 }, 6);
+		SpriteAnimation anim2(div, { 5,1 }, 6);
 		anim2.Active();
 		anim2.SetID(5);
 		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -146,25 +150,25 @@ void GunEnemy::Init()
 	// 下向き
 	{
 		// defoultのアニメーション
-		SpriteAnimation anim1(div, { 0,0 }, 6);
+		SpriteAnimation anim1(div, { 4,1 }, 12);
 		anim1.Active();
 		anim1.SetID(6);
 		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim1.SetPriority(0);
-		float flame = 10;
-		for (int i = 0; i < 6; i++)
+		float flame = 12;
+		for (int i = 0; i < 12; i++)
 		{
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
 
 		// shottingのアニメーション
-		SpriteAnimation anim2(div, { 0,0 }, 6);
+		SpriteAnimation anim2(div, { 7,6 }, 6);
 		anim2.Active();
 		anim2.SetID(7);
 		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim2.SetPriority(0);
-		flame = 10;
+		flame = 13;
 		for (int i = 0; i < 6; i++)
 		{
 			anim2.GetCellRef(i).flame = flame;
@@ -173,13 +177,13 @@ void GunEnemy::Init()
 	}
 
 	// deadのアニメーション
-	SpriteAnimation anim3(div, { 0,0 }, 6);
+	SpriteAnimation anim3(div, { 4,4 }, 5);
 	anim3.Active();
 	anim3.SetID(8);
 	anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
 	anim3.SetPriority(0);
-	float flame = 10;
-	for (int i = 0; i < 6; i++)
+	float flame = 12;
+	for (int i = 0; i < 5; i++)
 	{
 		anim3.GetCellRef(i).flame = flame;
 	}
@@ -283,6 +287,11 @@ void GunEnemy::Dead()
 void GunEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 対象のオブジェクトと接触した際、Deadへ移行
+	GameObject* col = _p_col->GetGameObject();
 
-
+	if (col->GetTag() == "Object")
+	{
+		// deadへ
+		currentState = GunEnemy::dead;
+	}
 }
