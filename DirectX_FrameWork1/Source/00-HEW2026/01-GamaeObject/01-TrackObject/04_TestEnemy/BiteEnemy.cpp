@@ -46,52 +46,181 @@ void BiteEnemy::Init()
 
 	//animationの設定
 	{
-		// 通常状態のアニメーション
-		SpriteAnimation anim1(div, { 0,0 }, 6);
-		anim1.Active();
-		anim1.SetID(0);
-		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
-		anim1.SetPriority(0);
-		float flame = 10;
-		for (int i = 0; i < 6; i++)
+		// 右向き
 		{
-			anim1.GetCellRef(i).flame = flame;
-		}
-		p_spriteAnimator->AddAnimation(anim1);
+			// 通常状態のアニメーション
+			SpriteAnimation anim1(div, { 0,0 }, 6);
+			anim1.Active();
+			anim1.SetID(0);
+			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+			anim1.SetPriority(0);
+			float flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim1.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
 
-		// 攻撃状態のアニメーション
-		SpriteAnimation anim2(div, { 0,0 }, 6);
-		anim2.Active();
-		anim2.SetID(1);
-		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
-		anim2.SetPriority(0);
-		flame = 10;
-		for (int i = 0; i < 6; i++)
-		{
-			anim2.GetCellRef(i).flame = flame;
-		}
-		p_spriteAnimator->AddAnimation(anim2);
+			// 攻撃状態のアニメーション
+			SpriteAnimation anim2(div, { 0,0 }, 6);
+			anim2.Active();
+			anim2.SetID(1);
+			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim2.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim2.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim2);
 
-		// 回転状態のアニメーション
-		SpriteAnimation anim3(div, { 0,0 }, 6);
-		anim3.Active();
-		anim3.SetID(2);
-		anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
-		anim3.SetPriority(0);
-		flame = 10;
-		for (int i = 0; i < 6; i++)
-		{
-			anim3.GetCellRef(i).flame = flame;
+			// 回転状態のアニメーション
+			SpriteAnimation anim3(div, { 0,0 }, 6);
+			anim3.Active();
+			anim3.SetID(2);
+			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim3.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim3.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim3);
 		}
-		p_spriteAnimator->AddAnimation(anim3);
+		
+		// 上向き
+		{
+			// 通常状態のアニメーション
+			SpriteAnimation anim1(div, { 0,0 }, 6);
+			anim1.Active();
+			anim1.SetID(3);
+			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+			anim1.SetPriority(0);
+			float flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim1.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
+
+			// 攻撃状態のアニメーション
+			SpriteAnimation anim2(div, { 0,0 }, 6);
+			anim2.Active();
+			anim2.SetID(4);
+			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim2.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim2.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim2);
+
+			// 回転状態のアニメーション
+			SpriteAnimation anim3(div, { 0,0 }, 6);
+			anim3.Active();
+			anim3.SetID(5);
+			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim3.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim3.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim3);
+		}
+
+		// 左向き
+		{
+			// 通常状態のアニメーション
+			SpriteAnimation anim1(div, { 0,0 }, 6);
+			anim1.Active();
+			anim1.SetID(6);
+			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+			anim1.SetPriority(0);
+			float flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim1.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
+
+			// 攻撃状態のアニメーション
+			SpriteAnimation anim2(div, { 0,0 }, 6);
+			anim2.Active();
+			anim2.SetID(7);
+			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim2.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim2.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim2);
+
+			// 回転状態のアニメーション
+			SpriteAnimation anim3(div, { 0,0 }, 6);
+			anim3.Active();
+			anim3.SetID(8);
+			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim3.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim3.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim3);
+		}
+
+		// 下向き
+		{
+			// 通常状態のアニメーション
+			SpriteAnimation anim1(div, { 0,0 }, 6);
+			anim1.Active();
+			anim1.SetID(9);
+			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+			anim1.SetPriority(0);
+			float flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim1.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
+
+			// 攻撃状態のアニメーション
+			SpriteAnimation anim2(div, { 0,0 }, 6);
+			anim2.Active();
+			anim2.SetID(10);
+			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim2.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim2.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim2);
+
+			// 回転状態のアニメーション
+			SpriteAnimation anim3(div, { 0,0 }, 6);
+			anim3.Active();
+			anim3.SetID(11);
+			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim3.SetPriority(0);
+			flame = 10;
+			for (int i = 0; i < 6; i++)
+			{
+				anim3.GetCellRef(i).flame = flame;
+			}
+			p_spriteAnimator->AddAnimation(anim3);
+		}
 
 		// 死亡状態のアニメーション
 		SpriteAnimation anim4(div, { 0,0 }, 6);
 		anim4.Active();
-		anim4.SetID(3);
+		anim4.SetID(10);
 		anim4.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim4.SetPriority(0);
-		flame = 10;
+		float flame = 10;
 		for (int i = 0; i < 6; i++)
 		{
 			anim4.GetCellRef(i).flame = flame;
@@ -118,14 +247,19 @@ void BiteEnemy::Update()
 	switch (currentState)
 	{
 	case defoult1:
+		Defoult1();
 		break;
 	case defoult2:
+		Defoult2();
 		break;
 	case attack:
+		Attack();
 		break;
 	case spin:
+		Spin();
 		break;
 	case dead:
+		Dead();
 		break;
 	default:
 		std::cout << "状態エラー\n";
@@ -138,8 +272,8 @@ void BiteEnemy::Update()
 //==================================================================================
 void BiteEnemy::Defoult1()
 {
-	GetComponent<SpriteAnimator>()->Stop(2);
-	GetComponent<SpriteAnimator>()->Play(0);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_1)
 	{
 		currentState = BiteEnemy::attack;		// 攻撃へ
@@ -149,8 +283,8 @@ void BiteEnemy::Defoult1()
 
 void BiteEnemy::Defoult2()
 {
-	GetComponent<SpriteAnimator>()->Stop(2);
-	GetComponent<SpriteAnimator>()->Play(0);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_2)
 	{
 		currentState = BiteEnemy::spin;			// 回転へ
@@ -180,8 +314,8 @@ void BiteEnemy::Attack()
 //==================================================================================
 void BiteEnemy::Spin()
 {
-	GetComponent<SpriteAnimator>()->Stop(0);
-	GetComponent<SpriteAnimator>()->Play(2);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 2);
 	if (timer > attack)
 	{
 		currentState = BiteEnemy::defoult1;		// 通常状態へ
@@ -205,6 +339,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	/*
 	if (col->GetTag()=="a")
 	{
+		// アニメーションをストップ
 		//DeadMove();			// 死亡状態へ
 	}
 	*/
