@@ -354,7 +354,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 
 	// ƒ^ƒO‚ª“Á’è‚Ì‘ÎÛ‚Å‚ ‚ê‚Î–{‘Ì‚ğ€–Só‘Ô‚Ö
 	bool cheakHit = false;
-
+	//
 	/*
 	if (col->GetTag()=="a")
 	{
