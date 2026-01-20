@@ -5,10 +5,9 @@
 
 #define MAP_CENTER_POSX (0)
 #define MAP_CENTER_POSY (0)
-#define TILE_SCALEX (100.0f)
-#define TILE_SCALEY (100.0f)
-#define TILE_SCALEX_HALF (TILE_SCALEX / 2.0f)
-#define TILE_SCALEY_HALF (TILE_SCALEY / 2.0f)
+#define MAP_SIZE (600.0f)
+#define BASE_TILE_NUM (5.f)
+
 
 void Debug_TilePaintColor_FromXY(hft::HFFLOAT2 _index, GameObject* _obj, hft::HFFLOAT2 _moveVec)
 {
@@ -136,25 +135,26 @@ void BaseMap::SlideTileObject(SlideData& _data)
 		hft::HFFLOAT2 moveVec = { _data.moveVec.x,_data.moveVec.y * -1 };
 		p_trf->position += moveVec * _data.power;
 
+		float tileScaleHalf = tileScale / 2.0f;
 
-		if (p_trf->position.x > rightBottomPos.x + TILE_SCALEX || p_trf->position.x < leftTopPos.x - TILE_SCALEX)
+		if (p_trf->position.x > rightBottomPos.x + tileScale || p_trf->position.x < leftTopPos.x - tileScale)
 		{
 			_data.changeFlg = true;
 			_data.indexToChangeFlg = true;
 		}
 		else if (!_data.indexFlg &&
-			(p_trf->position.x > rightBottomPos.x + TILE_SCALEX_HALF || p_trf->position.x < leftTopPos.x - TILE_SCALEX_HALF))
+			(p_trf->position.x > rightBottomPos.x + tileScaleHalf || p_trf->position.x < leftTopPos.x - tileScaleHalf))
 		{
 			_data.indexFlg = true;
 		}
 
-		if (p_trf->position.y > leftTopPos.y + TILE_SCALEY || p_trf->position.y < rightBottomPos.y - TILE_SCALEY)
+		if (p_trf->position.y > leftTopPos.y + tileScale || p_trf->position.y < rightBottomPos.y - tileScale)
 		{
 			_data.changeFlg = true;
 			_data.indexToChangeFlg = true;
 		}
 		else if (!_data.indexFlg &&
-			(p_trf->position.y > leftTopPos.y + TILE_SCALEY_HALF || p_trf->position.y < rightBottomPos.y - TILE_SCALEY_HALF))
+			(p_trf->position.y > leftTopPos.y + tileScaleHalf || p_trf->position.y < rightBottomPos.y - tileScaleHalf))
 		{
 			_data.indexFlg = true;
 		}
@@ -249,8 +249,8 @@ void BaseMap::SetLineIndexToPosOfTile(hft::HFFLOAT2& _index, TrackObject& _obj)
 
 	_obj.SetLineIndex(_index);
 	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
-	pos.x = leftTopPos.x + _index.x * TILE_SCALEX;
-	pos.y = leftTopPos.y - _index.y * TILE_SCALEY;
+	pos.x = leftTopPos.x + _index.x * tileScale;
+	pos.y = leftTopPos.y - _index.y * tileScale;
 }
 
 void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft::HFFLOAT2& _index, TrackObject& _obj)
@@ -266,9 +266,10 @@ void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft:
 		_index.y = 1;
 
 	_obj.SetLineIndex(_index);
+	float tileScaleHalf = tileScale / 2.0f;
 	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
-	pos.x = leftTopPos.x + _index.x * TILE_SCALEX + (TILE_SCALEX_HALF * _moveVec.x * -1);
-	pos.y = leftTopPos.y - _index.y * TILE_SCALEY + (TILE_SCALEY_HALF * _moveVec.y);
+	pos.x = leftTopPos.x + _index.x * tileScale + (tileScaleHalf * _moveVec.x * -1);
+	pos.y = leftTopPos.y - _index.y * tileScale + (tileScaleHalf * _moveVec.y);
 }
 
 BaseMap::BaseMap()
@@ -417,6 +418,9 @@ void BaseMap::Init()
 
 void BaseMap::Init(const int& _width, const int& _height)
 {
+	scaleRaito = BASE_TILE_NUM / _width;
+	tileScale = MAP_SIZE / float(_width);
+	float tileScaleHalf = tileScale / 2.f;
 	width = _width + 2;
 	height = _height + 2;
 
@@ -426,22 +430,22 @@ void BaseMap::Init(const int& _width, const int& _height)
 		auto tileObject = new	TrackObject;
 		auto renderer = tileObject->GetComponent<SpriteRenderer>();
 		renderer->LoadTexture("Assets/01-Texture/99-Test/Tile.jpg");
-		tileObject->GetTransformPtr()->scale = { TILE_SCALEX,TILE_SCALEY };
+		tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
 		tileObjects.push_back(tileObject);
 	}
 
-	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * TILE_SCALEX) + TILE_SCALEX_HALF;
-	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * TILE_SCALEY) - TILE_SCALEY_HALF;
-	rightBottomPos.x = leftTopPos.x + ((width - 1) * TILE_SCALEX);
-	rightBottomPos.y = leftTopPos.y - ((height - 1) * TILE_SCALEY);
+	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * tileScale) + tileScaleHalf;
+	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * tileScale) - tileScaleHalf;
+	rightBottomPos.x = leftTopPos.x + ((width - 1) * tileScale);
+	rightBottomPos.y = leftTopPos.y - ((height - 1) * tileScale);
 
 	for (int y = 0; y < height; y++)
 	{
 		int index = y * width;
-		float posY = leftTopPos.y - (TILE_SCALEY * y);
+		float posY = leftTopPos.y - (tileScale * y);
 		for (int x = 0; x < width; x++)
 		{
-			float posX = leftTopPos.x + (TILE_SCALEX * x);
+			float posX = leftTopPos.x + (tileScale * x);
 			tileObjects.at(index)->GetTransformPtr()->position = { posX,posY,0 };
 			tileObjects.at(index)->SetLineIndex(hft::HFFLOAT2(x, y));
 			index++;
@@ -457,8 +461,8 @@ void BaseMap::Init(const int& _width, const int& _height)
 			covers.push_back(p_obj);
 		}
 
-		hft::HFFLOAT2 l_leftop = { leftTopPos.x + TILE_SCALEX_HALF, leftTopPos.y - TILE_SCALEY_HALF };
-		hft::HFFLOAT2 l_ritbot = { rightBottomPos.x - TILE_SCALEX_HALF,rightBottomPos.y + TILE_SCALEY_HALF };
+		hft::HFFLOAT2 l_leftop = { leftTopPos.x + tileScaleHalf, leftTopPos.y - tileScaleHalf };
+		hft::HFFLOAT2 l_ritbot = { rightBottomPos.x - tileScaleHalf,rightBottomPos.y + tileScaleHalf };
 
 		//ãƒJƒo[
 		{
@@ -504,30 +508,24 @@ void BaseMap::Init(const int& _width, const int& _height)
 	}
 
 	{
-		//TestObject* p_obj = new	TestObject;
-		//p_obj->SetLineIndex({ 3,3 });
-		//p_obj->Init();
-		//Transform* p_trf = p_obj->GetTransformPtr();
-		//p_trf->position.x = leftTopPos.x + (TILE_SCALEX * 3);
-		//p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 3);
-		//p_trf->position.z = -1;
-		//onMapTrackObjects.push_back(p_obj);
-
-		{
-			//TestObject* p_obj = new	TestObject;
-			PlayerObject* p_obj = new PlayerObject;
-			p_obj->SetLineIndex({ 3,3 });
-			p_obj->Init(this, &Input::GetInstance());
-			Transform* p_trf = p_obj->GetTransformPtr();
-			p_trf->position.x = leftTopPos.x + (TILE_SCALEX * 3);
-			p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 3);
-			p_trf->position.z = -1;
-			onMapTrackObjects.push_back(p_obj);
-		}
+		PlayerObject* p_obj = new PlayerObject;
+		p_obj->SetLineIndex({ 3,3 });
+		p_obj->Init(this, &Input::GetInstance());
+		Transform* p_trf = p_obj->GetTransformPtr();
+		p_trf->position.x = leftTopPos.x + (tileScale * 3);
+		p_trf->position.y = leftTopPos.y - (tileScale * 3);
+		p_trf->position.z = -1;
+		onMapTrackObjects.push_back(p_obj);
 	}
 
 	powerDownFlame = 60;
 	powerDownRatio = 0.8f;
+
+	for (auto& obj : onMapTrackObjects)
+	{
+		Transform* p_trf = obj->GetTransformPtr();
+		p_trf->scale = p_trf->scale * scaleRaito;
+	}
 }
 
 void BaseMap::Update()

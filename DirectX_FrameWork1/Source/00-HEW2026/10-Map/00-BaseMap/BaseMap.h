@@ -38,6 +38,10 @@ class BaseMap : public GameObject
 protected:
 	int width;	//横幅
 	int height;	//縦幅
+
+	float tileScale;
+	float scaleRaito;
+
 	hft::HFFLOAT2 leftTopPos;
 	hft::HFFLOAT2 rightBottomPos;
 
@@ -87,6 +91,7 @@ public:
 	/*** ゲッター ***/
 	const hft::HFFLOAT2& GetLefTopPos() { return leftTopPos; }
 	const hft::HFFLOAT2& GetRitBotPos() { return rightBottomPos; }
+	const float& GetScaleRatio() { return scaleRaito; }
 
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ
