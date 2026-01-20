@@ -7,6 +7,7 @@
 #include "../08-Scene/02-SceneManager/SceneManager.h"
 
 #include "../../../04-Input/Input.h"	//朝日奈担当の入力系クラス
+#include "../03-Sound/Fsound.h"
 
 System::System()
 {
@@ -32,9 +33,9 @@ void System::Init(HWND _hwnd)
 	ShapeTable3D::GetInstance().Init();	//3Dの形状保存てーむるを初期化
 	hft::PixelShaderTable::GetInstance().Init();	//ピクセルシェーダテーブルを初期化
 	hft::VertexShaderTable::GetInstance().Init();	//バーテックスシェーダーテーブルを初期化
-	SceneManager::GetInstance().Init();	//シーンマネージャーを初期化
 
-	
+	SoundManager::GetInstance().Init();	//サウンドマネージャーを初期化
+	SceneManager::GetInstance().Init();	//シーンマネージャーを初期化
 
 }
 void System::UnInit()
@@ -42,6 +43,13 @@ void System::UnInit()
 	rendererMng.UnInit();
 	compMngs.clear();
 	gameObjMng.Clear();
+
+	ShapeTable2D::GetInstance().ClearTable();
+	ShapeTable3D::GetInstance().ClearTable();
+	hft::PixelShaderTable::GetInstance().ClearTable();
+	hft::VertexShaderTable::GetInstance().ClearTable();
+	SceneManager::GetInstance().UnInit();
+	SoundManager::GetInstance().Uninit();
 }
 
 void System::GameLoopPipeline()

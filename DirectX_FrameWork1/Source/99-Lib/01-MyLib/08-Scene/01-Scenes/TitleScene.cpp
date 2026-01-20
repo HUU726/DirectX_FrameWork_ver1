@@ -17,9 +17,6 @@
 #include "../../101-Time/Time.h"
 
 
-
-
-
 TitleScene::~TitleScene()
 {
 
@@ -27,6 +24,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Init()
 {
+
 	{	//2DƒJƒƒ‰‰Šú‰»
 		Transform* p_trf = camera2D.GetTransformPtr();
 		p_trf->position = { 0.f,0.f,0.f,0.f };

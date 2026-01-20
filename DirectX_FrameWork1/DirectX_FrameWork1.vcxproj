@@ -188,7 +188,6 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.cpp" />
-    <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\sound.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\04-Texture\Texture.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\07-Component\02-Renderer\01-SpriteRenderer\SpriteRenderer.cpp" />
@@ -217,6 +216,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h" />
@@ -265,7 +265,6 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\00-IF_Renderer\IF_Renderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\01-Sprite2DRenderer\Sprite2DRenderer.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\02-Renderer\02-Mesh3DRenderer\Mesh3DRenderer.h" />
-    <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\sound.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\04-Texture\Texture.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\GameObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\07-Component\00-Component\Component.h" />
@@ -300,6 +299,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\TestEnemy\TestEnemy.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

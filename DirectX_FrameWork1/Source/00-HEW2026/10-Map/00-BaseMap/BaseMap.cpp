@@ -3,7 +3,6 @@
 #include "../../01-GamaeObject/01-TrackObject/00-TrackObject/TrackObject.h"
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
-
 #define MAP_CENTER_POSX (0)
 #define MAP_CENTER_POSY (0)
 #define TILE_SCALEX (100.0f)
@@ -75,7 +74,6 @@ void Debug_TilePaintColor_FromTile(int _index, std::vector<TrackObject*>& _objec
 
 void BaseMap::Slide()
 {
-	static int downFlame = 60;
 
 	for (auto& data : slideDatas)
 	{
@@ -88,9 +86,9 @@ void BaseMap::Slide()
 				data.power = 0;
 		}
 
-		if (data.cntFlame > downFlame)
+		if (data.cntFlame > powerDownFlame)
 		{
-			data.power *= 0.8;
+			data.power *= powerDownRatio;
 			data.cntFlame = 0;
 		}
 		else
@@ -483,10 +481,14 @@ void BaseMap::Init(const int& _width, const int& _height)
 		p_trf->position.z = -1;
 		onMapTrackObjects.push_back(p_obj);
 	}
+
+	powerDownFlame = 60;
+	powerDownRatio = 0.8f;
 }
 
 void BaseMap::Update()
 {
+
 	if (GetAsyncKeyState('P') & 0x0001)
 	{
 		SetSlideData(hft::HFFLOAT2(1, 3), hft::HFFLOAT2(-1, 0), 3);

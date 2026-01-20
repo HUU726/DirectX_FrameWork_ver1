@@ -21,7 +21,6 @@ void TestObject::Init()
 		animator->AddAnimation(anim);
 	}
 	animator->Play(0);
-
 }
 
 void TestObject::Update()
