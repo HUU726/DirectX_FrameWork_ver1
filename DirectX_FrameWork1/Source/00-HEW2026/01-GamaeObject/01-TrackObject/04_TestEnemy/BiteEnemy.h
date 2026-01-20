@@ -19,7 +19,7 @@ private:
 
 	enum State
 	{
-		defoult1,
+		defoult1 = 0,
 		defoult2,
 		attack,
 		spin,

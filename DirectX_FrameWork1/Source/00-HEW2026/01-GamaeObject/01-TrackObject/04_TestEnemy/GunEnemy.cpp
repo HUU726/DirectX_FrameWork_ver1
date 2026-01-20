@@ -283,16 +283,6 @@ void GunEnemy::Dead()
 void GunEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 対象のオブジェクトと接触した際、Deadへ移行
+
+
 }
-
-/*
-    GunEnemy();
-	void Init() override;
-	void Update() override;
-
-	void Defoult();
-	void Shotting();
-	void Dead();
-
-	void OnCollisionEnter(Collider* _p_col)
-*/

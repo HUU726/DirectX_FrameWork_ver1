@@ -272,6 +272,8 @@ void BiteEnemy::Update()
 //==================================================================================
 void BiteEnemy::Defoult1()
 {
+	std::cout << "通常状態1実行中\n";
+	std::cout << "現在の方向:" << GetDirection() << "\n";
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_1)
 	{
@@ -282,6 +284,7 @@ void BiteEnemy::Defoult1()
 
 void BiteEnemy::Defoult2()
 {
+	std::cout << "通常状態2実行中\n";
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_2)
@@ -296,11 +299,12 @@ void BiteEnemy::Defoult2()
 //==================================================================================
 void BiteEnemy::Attack()
 {
+	std::cout << "攻撃状態実行中\n";
 	attackCollider->SetOffset(offset[GetDirection()]);
-	GetComponent<SpriteAnimator>()->Stop(0);
-	GetComponent<SpriteAnimator>()->Play(1);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 1);
 	attackCollider->SetIsActive(true);			// 当たり判定をアクティブに
-	if (timer > attack)
+	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
 		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
@@ -313,15 +317,29 @@ void BiteEnemy::Attack()
 //==================================================================================
 void BiteEnemy::Spin()
 {
+	std::cout << "回転状態実行中\n";
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 2);
-	if (timer > attack)
+	if (timer > spinttime)
 	{
 		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
 		currentState = BiteEnemy::defoult1;		// 通常状態へ
 		SetDirection(GetDirection() + 1);		// 方向変換
-		if (GetDirection() <= 4) { SetDirection(0); }
+		if (GetDirection() >= 4) { SetDirection(0); }
 		timer = 0;
+	}
+}
+
+
+//==================================================================================
+// 状態の行動
+//==================================================================================
+void BiteEnemy::Dead()
+{
+	GetComponent<SpriteAnimator>()->Play(10);
+	if (timer > dead)
+	{
+		SetIsActive(false);
 	}
 }
 
@@ -336,11 +354,19 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 
 	// タグが特定の対象であれば本体を死亡状態へ
 	bool cheakHit = false;
+
 	/*
 	if (col->GetTag()=="a")
 	{
+		timer = 0;
+		// 当たり判定を削除
+		GetComponent<BoxCollider2D>()->SetIsActive(false);
+		attackCollider->SetIsActive(false);
 		// アニメーションをストップ
-		//DeadMove();			// 死亡状態へ
+		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
+		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
+		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
+		currentState = BiteEnemy::dead;			// 死亡状態へ
 	}
 	*/
 }
