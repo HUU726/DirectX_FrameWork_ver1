@@ -18,8 +18,6 @@
 
 #include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
 
-#include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
-#include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
 
 class TitleScene : public BaseScene
 {
@@ -34,8 +32,6 @@ private:
 	//TestAnimation2D testAnimation2D;
 
 	BaseMap map;
-	//GunEnemy gun;
-	BiteEnemy bite;
 public:
 	~TitleScene() override;
 

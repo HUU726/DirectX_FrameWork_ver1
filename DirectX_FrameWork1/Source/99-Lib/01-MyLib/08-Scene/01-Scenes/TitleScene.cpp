@@ -93,8 +93,6 @@ void TitleScene::Init()
 	}
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
 	//camera3D.GetComponent<Camera3D>()->SetTarget(&sqhereObject);
-	//gun.Init();
-	bite.Init();
 }
 
 
