@@ -103,4 +103,6 @@ public:
 
 	void Update() override;
 
+	// 範囲外でもなくスライド中でもなければTrue（安全）を返す
+	bool IsValidTarget(const hft::HFFLOAT2& _index);
 };

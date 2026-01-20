@@ -4,6 +4,7 @@
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
 
+
 #define MAP_CENTER_POSX (0)
 #define MAP_CENTER_POSY (0)
 #define TILE_SCALEX (100.0f)
@@ -382,8 +383,10 @@ void BaseMap::Init()
 }
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-#include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
+//#include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
+#include "../../01-GamaeObject/01-TrackObject/111-PlayerObject/PlayerObject.h"
 #include "../../../02-App/HF_Window.h"
+#include "../../../04-Input/Input.h"	//入力
 
 void BaseMap::Init(const int& _width, const int& _height)
 {
@@ -474,9 +477,10 @@ void BaseMap::Init(const int& _width, const int& _height)
 	}
 
 	{
-		TestObject* p_obj = new	TestObject;
+		//TestObject* p_obj = new	TestObject;
+		PlayerObject* p_obj = new PlayerObject;
 		p_obj->SetLineIndex({ 3,3 });
-		p_obj->Init();
+		p_obj->Init(this, &Input::GetInstance());
 		Transform* p_trf = p_obj->GetTransformPtr();
 		p_trf->position.x = leftTopPos.x + (TILE_SCALEX * 3);
 		p_trf->position.y = leftTopPos.y - (TILE_SCALEY * 3);
@@ -511,4 +515,35 @@ void BaseMap::Update()
 	//std::cout << "index X  :  " << onMapTrackObjects.at(0)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//std::cout << "index X  :  " << tileObjects.at(17)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Debug_TilePaintColor_FromTile(15, tileObjects);
+}
+
+// 範囲チェック ＆ スライド巻き込まれチェック
+bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
+{
+	// ---------------------------------------------------
+	// 範囲チェック
+	// ---------------------------------------------------
+
+	// 「1未満」または「width-2 より大きい」ならNG
+	if (_index.x < 1 || _index.x >= width - 1) return false;
+	if (_index.y < 1 || _index.y >= height - 1) return false;
+
+	// ---------------------------------------------------
+	// スライド中チェック
+	// ---------------------------------------------------
+	for (const auto& data : slideDatas)
+	{
+		if (data.moveVec.x != 0.0f)
+		{
+			if (static_cast<int>(data.anchorPos.y) == static_cast<int>(_index.y))
+				return false;
+		}
+		else if (data.moveVec.y != 0.0f)
+		{
+			if (static_cast<int>(data.anchorPos.x) == static_cast<int>(_index.x))
+				return false;
+		}
+	}
+
+	return true;
 }

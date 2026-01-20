@@ -213,6 +213,24 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\00-BaseScene\BaseScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\Arrow\Arrow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\PlayerObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\TuningFork.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\04-Input\Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\EffectFork.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -431,9 +449,6 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-Tile\TileObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\00-HEW2026\10-Map\00-BaseMap\BaseMap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -441,6 +456,24 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\99-Lib\01-MyLib\1000-Test\AsuiPlayer\AsuiPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\Arrow\Arrow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\PlayerObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\TuningFork.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\04-Input\Input.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\EffectFork.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

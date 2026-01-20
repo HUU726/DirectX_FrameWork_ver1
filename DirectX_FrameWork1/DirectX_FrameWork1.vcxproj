@@ -144,6 +144,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\Arrow\Arrow.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\PlayerObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\EffectFork.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\TuningFork.cpp" />
     <ClCompile Include="Source\04-Input\Input.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.cpp" />
@@ -217,6 +221,10 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\Arrow\Arrow.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\PlayerObject.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\TuningFork.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\111-PlayerObject\TuningFork\EffectFork.h" />
     <ClInclude Include="Source\04-Input\Input.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.h" />
