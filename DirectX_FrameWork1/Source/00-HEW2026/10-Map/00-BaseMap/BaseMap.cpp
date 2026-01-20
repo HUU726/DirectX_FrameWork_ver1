@@ -429,7 +429,7 @@ void BaseMap::Init(const int& _width, const int& _height)
 	{
 		auto tileObject = new	TrackObject;
 		auto renderer = tileObject->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/99-Test/Tile.jpg");
+		renderer->LoadTexture("Assets/01-Texture/01-Map/Tile.png");
 		tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
 		tileObjects.push_back(tileObject);
 	}
