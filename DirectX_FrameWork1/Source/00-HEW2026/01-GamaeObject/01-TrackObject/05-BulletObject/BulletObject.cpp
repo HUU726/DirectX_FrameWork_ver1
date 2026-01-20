@@ -51,6 +51,7 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	else { std::cout << "ƒGƒ‰[\n"; }
 	
 	// “–‚½‚è”»’è‰Šú‰»
+	bodyColler = BulletObjectParam::col;
 	bodyColler = AddComponent<BoxCollider2D>();
 	bodyColler->SetIsActive(false);
 

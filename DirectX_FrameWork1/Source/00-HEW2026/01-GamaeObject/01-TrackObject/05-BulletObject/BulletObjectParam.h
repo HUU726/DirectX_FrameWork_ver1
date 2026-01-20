@@ -5,7 +5,7 @@
 
 namespace BulletObjectParam
 {
-	const BoxCollider2D* col = nullptr;	// 自身の体の判定用のコライダー
+	BoxCollider2D* col = nullptr;	// 自身の体の判定用のコライダー
 	const bool active = false;	// 弾が存在する時にtrueにし、存在しない時にfalseにする
 	const int livetime = 300;	// 弾が進み続けるフレーム
 	const float spead = 2.f;	// 弾の進むスピード

@@ -224,6 +224,7 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemyParam.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BomEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.h" />
