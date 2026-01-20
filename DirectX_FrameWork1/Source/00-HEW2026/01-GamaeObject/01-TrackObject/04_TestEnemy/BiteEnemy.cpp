@@ -19,6 +19,7 @@ BiteEnemy::~BiteEnemy()
 void BiteEnemy::Init()
 {
 	timer = 0;	// タイマーの初期化
+	tag = BiteEnemyParam::tag;	// 本体のタグ:Bite
 	hitstoptime = BiteEnemyParam::hitstoptime;	// ヒットストップ時間
 	currentState = BiteEnemy::defoult1;
 	defoulttime_1 = BiteEnemyParam::defoult1;
@@ -41,7 +42,7 @@ void BiteEnemy::Init()
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
 
 	//アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(2, 3));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 7));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定
@@ -49,33 +50,33 @@ void BiteEnemy::Init()
 		// 右向き
 		{
 			// 通常状態のアニメーション
-			SpriteAnimation anim1(div, { 0,0 }, 6);
+			SpriteAnimation anim1(div, { 0,0 }, 10);
 			anim1.Active();
 			anim1.SetID(0);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 			anim1.SetPriority(0);
 			float flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				anim1.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim1);
 
 			// 攻撃状態のアニメーション
-			SpriteAnimation anim2(div, { 0,0 }, 6);
+			SpriteAnimation anim2(div, { 2,4 }, 6);
 			anim2.Active();
 			anim2.SetID(1);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
-			flame = 10;
-			for (int i = 0; i < 6; i++)
+			flame = 15;
+			for (int i = 0; i < 15; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim2);
 
 			// 回転状態のアニメーション
-			SpriteAnimation anim3(div, { 0,0 }, 6);
+			SpriteAnimation anim3(div, { 0,0 }, 0);
 			anim3.Active();
 			anim3.SetID(2);
 			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -91,26 +92,26 @@ void BiteEnemy::Init()
 		// 上向き
 		{
 			// 通常状態のアニメーション
-			SpriteAnimation anim1(div, { 0,0 }, 6);
+			SpriteAnimation anim1(div, { 2,1 }, 10);
 			anim1.Active();
 			anim1.SetID(3);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 			anim1.SetPriority(0);
 			float flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				anim1.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim1);
 
 			// 攻撃状態のアニメーション
-			SpriteAnimation anim2(div, { 0,0 }, 6);
+			SpriteAnimation anim2(div, { 7,1 }, 6);
 			anim2.Active();
 			anim2.SetID(4);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 12; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -133,33 +134,33 @@ void BiteEnemy::Init()
 		// 左向き
 		{
 			// 通常状態のアニメーション
-			SpriteAnimation anim1(div, { 0,0 }, 6);
+			SpriteAnimation anim1(div, { 0,0 }, 10);
 			anim1.Active();
 			anim1.SetID(6);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 			anim1.SetPriority(0);
 			float flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				anim1.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim1);
 
 			// 攻撃状態のアニメーション
-			SpriteAnimation anim2(div, { 0,0 }, 6);
+			SpriteAnimation anim2(div, { 2,4 }, 6);
 			anim2.Active();
 			anim2.SetID(7);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 15; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim2);
 
 			// 回転状態のアニメーション
-			SpriteAnimation anim3(div, { 0,0 }, 6);
+			SpriteAnimation anim3(div, { 0,0 }, 0);
 			anim3.Active();
 			anim3.SetID(8);
 			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -175,26 +176,26 @@ void BiteEnemy::Init()
 		// 下向き
 		{
 			// 通常状態のアニメーション
-			SpriteAnimation anim1(div, { 0,0 }, 6);
+			SpriteAnimation anim1(div, { 2,1 }, 10);
 			anim1.Active();
 			anim1.SetID(9);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 			anim1.SetPriority(0);
 			float flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				anim1.GetCellRef(i).flame = flame;
 			}
 			p_spriteAnimator->AddAnimation(anim1);
 
 			// 攻撃状態のアニメーション
-			SpriteAnimation anim2(div, { 0,0 }, 6);
+			SpriteAnimation anim2(div, { 3,5 }, 6);
 			anim2.Active();
 			anim2.SetID(10);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 12; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -215,7 +216,7 @@ void BiteEnemy::Init()
 		}
 
 		// 死亡状態のアニメーション
-		SpriteAnimation anim4(div, { 0,0 }, 6);
+		SpriteAnimation anim4(div, { 6,3 }, 4);
 		anim4.Active();
 		anim4.SetID(10);
 		anim4.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -231,11 +232,12 @@ void BiteEnemy::Init()
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
 	bodyCollider->SetIsActive(true);
-
+	
 	//攻撃のコライダーの設定
-	attackCollider = AddComponent<BoxCollider2D>();
-	attackCollider->SetOffset({ -50.f,0.0f,0.0f });
-	attackCollider->SetIsActive(false);
+	attackCollider.SetTag("Enemy");
+	attackCollider.col()->SetSize(bodyCollider->GetSize());
+	attackCollider.col()->SetOffset({ 50.f,0.0f,0.0f });
+	attackCollider.col()->SetIsActive(false);
 
 	std::cout << "BiteEnemyパラメータ完了\n";
 }
@@ -300,14 +302,14 @@ void BiteEnemy::Defoult2()
 void BiteEnemy::Attack()
 {
 	std::cout << "攻撃状態実行中\n";
-	attackCollider->SetOffset(offset[GetDirection()]);
+	attackCollider.col()->SetOffset(offset[GetDirection()]);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 1);
-	attackCollider->SetIsActive(true);			// 当たり判定をアクティブに
+	attackCollider.col()->SetIsActive(true);			// 当たり判定をアクティブに
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
+		attackCollider.col()->SetIsActive(false);			// 当たり判定を非アクティブに
 		timer = 0;
 	}
 }
@@ -336,9 +338,17 @@ void BiteEnemy::Spin()
 //==================================================================================
 void BiteEnemy::Dead()
 {
+	// 当たり判定停止
+	bodyCollider->SetIsActive(false);
+	attackCollider.col()->SetIsActive(false);
+	// アニメーション
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
 	GetComponent<SpriteAnimator>()->Play(10);
 	if (timer > dead)
 	{
+		std::cout << "BiteEnemy機能停止\n";
 		SetIsActive(false);
 	}
 }
@@ -352,21 +362,20 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 
-	// タグが特定の対象であれば本体を死亡状態へ
-	bool cheakHit = false;
-	//
-	/*
-	if (col->GetTag()=="a")
+	if (_p_col == bodyCollider)
 	{
-		timer = 0;
-		// 当たり判定を削除
-		GetComponent<BoxCollider2D>()->SetIsActive(false);
-		attackCollider->SetIsActive(false);
-		// アニメーションをストップ
-		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
-		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
-		currentState = BiteEnemy::dead;			// 死亡状態へ
+		// 本体がヒット
+		if (col->GetTag() == "Object")
+		{
+			timer = 0;
+			std::cout << "BIteEnemy本体にヒット\n";
+			currentState = BiteEnemy::dead;
+		}
 	}
-	*/
+	else if (_p_col == attackCollider.col())
+	{
+		// 攻撃がヒット
+		std::cout << "BiteEnemyの攻撃がヒット\n";
+		return;
+	}
 }
