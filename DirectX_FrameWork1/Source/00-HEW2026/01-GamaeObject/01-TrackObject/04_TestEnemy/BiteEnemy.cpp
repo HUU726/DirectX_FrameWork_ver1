@@ -272,7 +272,6 @@ void BiteEnemy::Update()
 //==================================================================================
 void BiteEnemy::Defoult1()
 {
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_1)
 	{
@@ -318,6 +317,7 @@ void BiteEnemy::Spin()
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 2);
 	if (timer > attack)
 	{
+		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
 		currentState = BiteEnemy::defoult1;		// ’Êíó‘Ô‚Ö
 		SetDirection(GetDirection() + 1);		// •ûŒü•ÏŠ·
 		if (GetDirection() <= 4) { SetDirection(0); }
