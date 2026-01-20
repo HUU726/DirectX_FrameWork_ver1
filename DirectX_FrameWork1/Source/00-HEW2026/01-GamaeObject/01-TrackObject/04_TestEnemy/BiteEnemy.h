@@ -46,7 +46,7 @@ public:
 
 
 	// •ûŒü‚ðƒZƒbƒg‚Ü‚½‚Í•Ô‚·
-	void SetDirection(const int& NewDirection) { direction = direction; }
+	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
 
 	/**

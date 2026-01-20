@@ -2,6 +2,11 @@
 #include"GunEnemyParam.h"
 #include"../../../../01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
+#define RIGHT 0
+#define UP 1
+#define LEFT 2
+#define DOWN 3
+
 GunEnemy::GunEnemy()
 {
 	
@@ -22,7 +27,17 @@ void GunEnemy::Init()
 		//hft::HFFLOAT2 AGL = angle;
 		hft::HFFLOAT2 AGL = { 1,0 };
 		SetAngle(AGL);
+		const hft::HFFLOAT2 RIGHTANGLE = { 1,0 };
+		const hft::HFFLOAT2 UPANGLE = { 0,1 };
+		const hft::HFFLOAT2 LEFTANGLE = { -1,0 };
+		const hft::HFFLOAT2 DOWNANGLE = { 0,-1 };
 
+		hft::HFFLOAT2 NewAngle = GetAngle();
+		if (NewAngle.x == RIGHTANGLE.x && NewAngle.y == RIGHTANGLE.y) { SetDirection(RIGHT); }
+		else if (NewAngle.x == UPANGLE.x && NewAngle.y == UPANGLE.y) { SetDirection(UP); }
+		else if (NewAngle.x == LEFTANGLE.x && NewAngle.y == LEFTANGLE.y) { SetDirection(LEFT); }
+		else if (NewAngle.x == DOWNANGLE.x && NewAngle.y == DOWNANGLE.y) { SetDirection(DOWN); }
+		else { std::cout << "エラー\n"; }
 		// タイマーの初期化
 		timer = 0;
 
@@ -41,39 +56,129 @@ void GunEnemy::Init()
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定
-	// defoultのアニメーション
-	SpriteAnimation anim1(div, { 0,0 }, 6);
-	anim1.Active();
-	anim1.SetID(0);
-	anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
-	anim1.SetPriority(0);
-	float flame = 10;
-	for (int i = 0; i < 6; i++)
+	// 右向き
 	{
-		anim1.GetCellRef(i).flame = flame;
-	}
-	p_spriteAnimator->AddAnimation(anim1);
+		// defoultのアニメーション
+		SpriteAnimation anim1(div, { 0,0 }, 6);
+		anim1.Active();
+		anim1.SetID(0);
+		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetPriority(0);
+		float flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim1.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim1);
 
-	// shottingのアニメーション
-	SpriteAnimation anim2(div, { 0,0 }, 6);
-	anim2.Active();
-	anim2.SetID(1);
-	anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
-	anim2.SetPriority(0);
-	flame = 10;
-	for (int i = 0; i < 6; i++)
-	{
-		anim2.GetCellRef(i).flame = flame;
+		// shottingのアニメーション
+		SpriteAnimation anim2(div, { 0,0 }, 6);
+		anim2.Active();
+		anim2.SetID(1);
+		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+		anim2.SetPriority(0);
+		flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim2.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim2);
 	}
-	p_spriteAnimator->AddAnimation(anim2);
+
+	// 上向き
+	{
+		// defoultのアニメーション
+		SpriteAnimation anim1(div, { 0,0 }, 6);
+		anim1.Active();
+		anim1.SetID(2);
+		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetPriority(0);
+		float flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim1.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim1);
+
+		// shottingのアニメーション
+		SpriteAnimation anim2(div, { 0,0 }, 6);
+		anim2.Active();
+		anim2.SetID(3);
+		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+		anim2.SetPriority(0);
+		flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim2.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim2);
+	}
+
+	// 左向き
+	{
+		// defoultのアニメーション
+		SpriteAnimation anim1(div, { 0,0 }, 6);
+		anim1.Active();
+		anim1.SetID(4);
+		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetPriority(0);
+		float flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim1.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim1);
+
+		// shottingのアニメーション
+		SpriteAnimation anim2(div, { 0,0 }, 6);
+		anim2.Active();
+		anim2.SetID(5);
+		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+		anim2.SetPriority(0);
+		flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim2.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim2);
+	}
+
+	// 下向き
+	{
+		// defoultのアニメーション
+		SpriteAnimation anim1(div, { 0,0 }, 6);
+		anim1.Active();
+		anim1.SetID(6);
+		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetPriority(0);
+		float flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim1.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim1);
+
+		// shottingのアニメーション
+		SpriteAnimation anim2(div, { 0,0 }, 6);
+		anim2.Active();
+		anim2.SetID(7);
+		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
+		anim2.SetPriority(0);
+		flame = 10;
+		for (int i = 0; i < 6; i++)
+		{
+			anim2.GetCellRef(i).flame = flame;
+		}
+		p_spriteAnimator->AddAnimation(anim2);
+	}
 
 	// deadのアニメーション
 	SpriteAnimation anim3(div, { 0,0 }, 6);
 	anim3.Active();
-	anim3.SetID(2);
+	anim3.SetID(8);
 	anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
 	anim3.SetPriority(0);
-	flame = 10;
+	float flame = 10;
 	for (int i = 0; i < 6; i++)
 	{
 		anim3.GetCellRef(i).flame = flame;
@@ -124,7 +229,7 @@ void GunEnemy::Update()
 //===============================================================================
 void GunEnemy::Defoult()
 {
-	GetComponent<SpriteAnimator>()->Play(0);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 2);
 	if (bullet.GetBulletActive() != true)
 	{
 		timer++;
@@ -144,8 +249,8 @@ void GunEnemy::Shotting()
 {
 	timer++;
 	std::cout << "シューティング\n";
-	GetComponent<SpriteAnimator>()->Stop(0);
-	GetComponent<SpriteAnimator>()->Play(1);
+	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 2 + 1);
+	GetComponent<SpriteAnimator>()->Play(GetDirection() * 2);
 	if (timer > 11)
 	{
 		timer = 0;
@@ -153,7 +258,7 @@ void GunEnemy::Shotting()
 		bullet.SetPos(p_transform->position);
 		bullet.SetBulletActive(true); // 弾オブジェクトをアクティブに
 		std::cout << "弾オブジェクト発射!!\n";
-		GetComponent<SpriteAnimator>()->Stop(1);
+		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 2 + 1);
 	}
 }
 
@@ -169,6 +274,7 @@ void GunEnemy::Dead()
 	// エネミー総数の減少
 	CEnemy::DownEnemyCount();
 	// 死亡アニメーションを再生する
+	GetComponent<SpriteAnimator>()->Play(8);
 
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	GetComponent<GameObject>()->SetIsActive(false);

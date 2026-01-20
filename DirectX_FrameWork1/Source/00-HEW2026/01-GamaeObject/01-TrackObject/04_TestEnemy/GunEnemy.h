@@ -15,6 +15,9 @@ private:
 	// 経過時間
 	int timer;
 
+	// 方向
+	int direction;
+
 	// 弾オブジェクトを作成するフレーム数
 	int shot;
 
@@ -29,6 +32,9 @@ private:
 	// 方向 /*(-1,0):左向き (0,1):上向き (1,0)右向き (0,-1):下向き*/
 	void SetAngle(hft::HFFLOAT2 NewAngle) { angle = NewAngle; }
 	hft::HFFLOAT2 GetAngle() { return angle; }
+	void SetDirection(const int& NewDirection) { direction = NewDirection; }
+	int GetDirection() { return direction; }
+
 
 	// 弾オブジェクト
 	BulletObject bullet;
