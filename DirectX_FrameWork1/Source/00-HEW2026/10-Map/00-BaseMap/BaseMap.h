@@ -96,6 +96,9 @@ public:
 	*/
 	void SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power);
 
+	// 範囲外でもなくスライド中でもなければTrue（安全）を返す
+	bool IsValidTarget(const hft::HFFLOAT2& _index);
+
 	void Init() override;
 	/**
 	* @brief	マップのサイズを初期化
