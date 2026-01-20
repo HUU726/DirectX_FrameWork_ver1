@@ -4,6 +4,8 @@
 #include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include "../01-Scenes/TitleScene.h"
 
+#include "../../03-Sound/Fsound.h"
+
 
 
 void SceneManager::Init()
@@ -49,6 +51,7 @@ void SceneManager::SetUpScene()
 {
 	curScene->Init();
 	GameObjectManager::GetInstance().SetUpObject();
+	SoundManager::GetInstance().SetUpSounds();
 }
 
 
@@ -60,6 +63,7 @@ void SceneManager::SetUpScene()
 */
 void SceneManager::UnloadScene()
 {
+	SoundManager::GetInstance().ReleaseSounds();
 	System::GetInstance().ClearManagersData();
 	curScene->UnInit();
 }

@@ -6,7 +6,7 @@
 class TestObject : public TrackObject
 {
 private:
-
+	int soundID;
 
 public:
 	TestObject() {}

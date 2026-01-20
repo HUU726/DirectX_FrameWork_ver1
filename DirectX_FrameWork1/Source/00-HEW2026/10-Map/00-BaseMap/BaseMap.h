@@ -44,8 +44,11 @@ protected:
 	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
 	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
-
 	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
+
+	int powerDownFlame;
+	float powerDownRatio;
+
 	std::vector<GameObject*> covers;
 
 	/**
