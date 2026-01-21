@@ -6,6 +6,7 @@
 namespace BulletObjectParam
 {
 	BoxCollider2D* col = nullptr;	// 自身の体の判定用のコライダー
+	const std::string tag = "Object";	// タグ
 	const bool active = false;	// 弾が存在する時にtrueにし、存在しない時にfalseにする
 	const int livetime = 300;	// 弾が進み続けるフレーム
 	const float spead = 2.f;	// 弾の進むスピード
@@ -13,5 +14,5 @@ namespace BulletObjectParam
 	const hft::HFFLOAT3 position = { 0.f,0.f,0.f };		// 座標
 	const hft::HFFLOAT3 scale = { 20.f,20.f,-2.0f };	// サイズ
 
-	const char* BulletObjTexName = "Assets/01-Texture/99-Test/daruma.jpg";	// テクスチャ
+	const char* BulletObjTexName = "Assets/01-Texture/03-Enemy/Bullet.png";	// テクスチャ
 }

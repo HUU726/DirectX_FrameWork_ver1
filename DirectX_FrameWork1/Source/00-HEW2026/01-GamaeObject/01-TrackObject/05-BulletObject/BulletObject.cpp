@@ -1,6 +1,8 @@
+// 弾オブジェクト::タグ:Object
+
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
-#include"../../../../01-MyLib/08-Scene/01-Scenes/TitleScene.h"
+#include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
@@ -19,9 +21,11 @@ void BulletObject::Init(){}
 //=================================================================
 //Init
 //=================================================================
-void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
+void BulletObject::Init(const hft::HFFLOAT2& NewAngle,BaseMap* map)
 {
 	// パラメータ初期化
+	//AddComponent<GameObject2D>();
+	tag = BulletObjectParam::tag;
 	active = BulletObjectParam::active;
 	livetime = BulletObjectParam::livetime;
 	spead = BulletObjectParam::spead;
@@ -33,10 +37,23 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	RightBottom= { 250.f,-250.f };
 	//LeftTop = GetComponent<BaseMap>()->GetLefTopPos();
 	//RightBottom = GetComponent<BaseMap>()->GetRitBotPos();
-	 
-	// 座標の情報
-	p_transform->position = BulletObjectParam::position;
-	p_transform->scale = BulletObjectParam::scale;
+	
+	if (map != nullptr)
+	{
+		float ratio_x = map->GetScaleRatio();
+		float ratio_y = ratio_x;
+
+		// 座標の情報
+		p_transform->position = BulletObjectParam::position;
+		p_transform->scale.x = BulletObjectParam::scale.x * ratio_x;
+		p_transform->scale.y = BulletObjectParam::scale.y * ratio_y;
+
+	}
+	else 
+	{
+		p_transform->position = BulletObjectParam::position;
+		p_transform->scale = BulletObjectParam::scale;
+	}
 
 	// 方向の情報
 	const hft::HFFLOAT2 RIGHTANGLE = { 1,0 };
@@ -51,7 +68,6 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 	else { std::cout << "エラー\n"; }
 	
 	// 当たり判定初期化
-	bodyColler = BulletObjectParam::col;
 	bodyColler = AddComponent<BoxCollider2D>();
 	bodyColler->SetIsActive(false);
 
@@ -62,36 +78,36 @@ void BulletObject::Init(const hft::HFFLOAT2& NewAngle)
 		GetComponent<SpriteRenderer>()->LoadTexture(BulletObjectParam::BulletObjTexName);
 
 		//アニメーターの設定
-		SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
+		SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(1, 1));
 		hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 
 		//animationの設定
 		// 通常
-		SpriteAnimation anim1(div, { 0,0 }, 9);
+		SpriteAnimation anim1(div, { 0,0 }, 1);
 		anim1.Active();
 		anim1.SetID(0);
 
 		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
 		anim1.SetPriority(0);
-		float flame = 10;
+		float flame = 1;
 
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
 
 		// 破裂
-		SpriteAnimation anim2(div, { 0,0 }, 9);
+		SpriteAnimation anim2(div, { 0,0 }, 1);
 		anim2.Active();
 		anim2.SetID(1);
 
 		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim2.SetPriority(0);
-		flame = 10;
+		flame = 1;
 
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			anim2.GetCellRef(i).flame = flame;
 		}
@@ -220,6 +236,11 @@ void BulletObject::CheakMyPos()
 //==================================================================================================
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
+	GameObject* col = _p_col->GetGameObject();
 	// 対象のオブジェクトにヒットした際、blastに移行
-	//	currentState = blast;
+	if (col->GetTag() == "Enemy" || col->GetTag() == "Player")
+	{
+		std::cout << "弾オブジェクトが何かにヒット\n";
+		currentState = blast;
+	}
 }
