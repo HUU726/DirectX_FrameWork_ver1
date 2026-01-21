@@ -413,6 +413,9 @@ void BaseMap::Init()
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
+#include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
+#include "../../01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h"
+#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BomEnemy.h"
 #include "../../../04-Input/Input.h"
 #include "../../../02-App/HF_Window.h"
 
@@ -516,6 +519,26 @@ void BaseMap::Init(const int& _width, const int& _height)
 		p_trf->position.y = leftTopPos.y - (tileScale * 3);
 		p_trf->position.z = -1;
 		onMapTrackObjects.push_back(p_obj);
+	}
+
+	//{
+	//	ThormObject* thorm = new ThormObject;
+	//	thorm->Init();
+	//}
+
+	//{
+	//	ConnectObject* connect = new ConnectObject;
+	//	connect->Init();
+	//}
+
+	{
+		BombEnemy* bom = new BombEnemy;
+		bom->Init();
+		Transform* p_trf = bom->GetTransformPtr();
+		p_trf->position.x = leftTopPos.x + (tileScale * 4);
+		p_trf->position.y = leftTopPos.y - (tileScale * 4);
+		p_trf->position.z = -1;
+		onMapTrackObjects.push_back(bom);
 	}
 
 	powerDownFlame = 60;

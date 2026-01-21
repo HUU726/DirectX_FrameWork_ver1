@@ -23,7 +23,7 @@ enum BomState
 
 class BoxCollider2D;
 
-class BomEnemy : public CEnemy
+class BombEnemy : public CEnemy
 
 {
 
@@ -41,7 +41,7 @@ private:
 
 	//自身の爆発用のゲームオブジェクト
 
-	BoxCollider2D* bomColl = nullptr;
+	GameObject2D* bomAttack = nullptr;
 
 	//自身の起爆時間
 
@@ -50,7 +50,7 @@ private:
 	int blastTime = 40;
 
 	int timer = 0;
-
+	
 	BomState currentState = BomState::stand;
 
 public:

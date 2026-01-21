@@ -9,24 +9,17 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
 
-void BomEnemy::Init()
-
+void BombEnemy::Init()
 {
-
 	//自身のタグ設定
-
 	tag = "Bom";
 
 	//サイズ設定
-
 	p_transform->scale = { 80.f, 80.f, 1.f };
 
 	//体のコライダー設定
-
 	bodyColl = AddComponent<BoxCollider2D>();
-
 	bodyColl->SetSize({ 80.f, 80.f, 1.f });
-
 	bodyColl->SetIsActive(false);
 
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
@@ -67,7 +60,6 @@ void BomEnemy::Init()
 	//検査用のデータ
 
 	{
-
 		//画像表示用のオブジェクトの初期値
 
 		searchRenderer = new GameObject2D;
@@ -91,24 +83,30 @@ void BomEnemy::Init()
 	}
 
 
-	//爆風判定用のコライダー
+	//爆風判定用のオブジェクトの初期設定
+	{
+		bomAttack = new GameObject2D;
+		bomAttack->Init();
+		bomAttack->SetTag("Enemy");
+		//bomAttack->SetIsRender(true);
+		bomAttack->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
+		bomAttack->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
 
-	bomColl = AddComponent<BoxCollider2D>();
 
-	bomColl->SetSize({ 280.f, 280.f, 1.f });
+		BoxCollider2D* coll = bomAttack->AddComponent<BoxCollider2D>();
+		coll->SetSize({ 280.f, 280.f, 1.f });
+		coll->SetIsActive(false);
 
-	bomColl->SetIsActive(false);
-
+		SpriteRenderer* renderer = bomAttack->AddComponent<SpriteRenderer>();
+		std::shared_ptr<Texture> tex = renderer->LoadTexture("Assets/01-Texture/03-Enemy/EnemyBom.png");
+	}
 }
 
-void BomEnemy::Update()
-
+void BombEnemy::Update()
 {
 
 	//現在の状態ごとに処理切り替え
-
 	switch (currentState)
-
 	{
 
 	case BomState::stand:
@@ -136,33 +134,29 @@ void BomEnemy::Update()
 		break;
 
 	default:
-
 		break;
 
 	}
 
+	//爆破用オブジェクトの座標を本体に合わせる
+	bomAttack->GetTransformPtr()->position = p_transform->position;
 }
 
-void BomEnemy::Stand()
-
+void BombEnemy::Stand()
 {
-
 	searchColl->SetIsActive(true);
 
 	bodyColl->SetIsActive(true);
 
-	bomColl->SetIsActive(false);
+	bomAttack->GetComponent<BoxCollider2D>()->SetIsActive(false);
+
 
 	//検査用オブジェクトの座標を本体に合わせる
-
 	searchRenderer->GetTransformPtr()->position = p_transform->position;
-
 }
 
-void BomEnemy::BlastWait()
-
+void BombEnemy::BlastWait()
 {
-
 	timer++;
 
 	searchColl->SetIsActive(false);
@@ -171,24 +165,17 @@ void BomEnemy::BlastWait()
 
 	bodyColl->SetIsActive(false);
 
-	bomColl->SetIsActive(false);
+	bomAttack->GetComponent<BoxCollider2D>()->SetIsActive(false);
 
 	//一定時間後に爆発状態に移行
-
 	if (timer >= blastWaitTime)
-
 	{
-
 		timer = 0;
-
 		currentState = BomState::blast;
-
 	}
-
 }
 
-void BomEnemy::Blast()
-
+void BombEnemy::Blast()
 {
 
 	timer++;
@@ -199,12 +186,12 @@ void BomEnemy::Blast()
 
 	bodyColl->SetIsActive(false);
 
-	bomColl->SetIsActive(true);
+	bomAttack->GetComponent<BoxCollider2D>()->SetIsActive(true);
+	bomAttack->SetIsRender(true);
+
 
 	//一定時間後に死亡状態に移行
-
 	if (timer >= blastTime)
-
 	{
 
 		timer = 0;
@@ -212,27 +199,26 @@ void BomEnemy::Blast()
 		currentState = BomState::dead;
 
 	}
-
 }
 
-void BomEnemy::Dead()
-
+void BombEnemy::Dead()
 {
-
 	//描画OFF、自身のコンポーネント全て非アクティブ化
 
 	bodyColl->SetIsActive(false);
 
-	bomColl->SetIsActive(false);
+	bomAttack->GetComponent<BoxCollider2D>()->SetIsActive(false);
+	bomAttack->SetIsRender(true);
 
+
+	//自身のコンポーネントを消す
 	GetComponent<SpriteRenderer>()->SetIsActive(false);
-
 	SetIsRender(false);
 
 }
 
 
-void BomEnemy::OnCollisionEnter(Collider* _p_col)
+void BombEnemy::OnCollisionEnter(Collider* _p_col)
 
 {
 
@@ -262,7 +248,7 @@ void BomEnemy::OnCollisionEnter(Collider* _p_col)
 
 	//爆弾の場合何もしない　爆風は普通のゲームオブジェクトとして扱う
 
-	if (auto* co = dynamic_cast<BomEnemy*>(obj))
+	if (auto* co = dynamic_cast<BombEnemy*>(obj))
 
 	{
 
@@ -295,13 +281,13 @@ void BomEnemy::OnCollisionEnter(Collider* _p_col)
 }
 
 
-void BomEnemy::OnCollisionExit(Collider* _p_col)
+void BombEnemy::OnCollisionExit(Collider* _p_col)
 
 {
 
 }
 
-void BomEnemy::OnCollisionStay(Collider* _p_col)
+void BombEnemy::OnCollisionStay(Collider* _p_col)
 
 {
 
