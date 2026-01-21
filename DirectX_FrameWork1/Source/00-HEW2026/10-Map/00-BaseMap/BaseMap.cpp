@@ -272,6 +272,7 @@ void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft:
 	pos.y = leftTopPos.y - _index.y * tileScale + (tileScaleHalf * _moveVec.y);
 }
 
+#include "../../../02-App/HF_Window.h"
 void BaseMap::CreateTiles()
 {
 	width = mapDataArray.size();
@@ -310,43 +311,82 @@ void BaseMap::CreateTiles()
 }
 
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
+//#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
+//#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
+#include "../../01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h"
 #include "../../../04-Input/Input.h"
 void BaseMap::CreateObjects()
 {
+	auto biteVec = biteEnemyVecs.begin();
+	auto gunVec = gunnEnemyVecs.begin();
+
 	int size = mapDataArray.size();
 	for (int y = 0; y < size; y++)
 	{
 		for (int x = 0; x < size; x++)
 		{
+
+			TrackObject* p_trackObj = nullptr;
+
 			const int& data = mapDataArray[x][y];
 			switch (data)
 			{
-			case 0:
+			case 0:	//ƒvƒŒƒCƒ„[
 				{
 					PlayerObject* p_obj = new PlayerObject;
-					p_obj->SetLineIndex({ float(x),float(y) });
 					p_obj->Init(this, &Input::GetInstance());
-					Transform* p_trf = p_obj->GetTransformPtr();
-					p_trf->position.x = leftTopPos.x + (tileScale * 3);
-					p_trf->position.y = leftTopPos.y - (tileScale * 3);
-					p_trf->position.z = -1;
-					onMapTrackObjects.push_back(p_obj);
+					p_trackObj = p_obj;
 				}
 				break;
-			case 1:
+			case 1:	//Šš‚Ý‚Â‚«“G
+				//{
+				//	++biteVec;
+				//	BiteEnemy* p_obj = new BiteEnemy;
+				//	p_obj->Init();
+				//	p_trackObj = p_obj;
+				//}
 				break;
-			case 2:
+			case 2:	//’eŒ‚‚¿“G
+				//{
+				//	++gunVec;
+				//	GunEnemy* p_obj = new GunEnemy;
+				//	p_obj->Init();
+				//	p_trackObj = p_obj;
+				//}
 				break;
-			case 3:
+			case 3:	//”š’e“I
+			{
+				
+			}
 				break;
-			case 4:
+			case 4:	//ƒRƒlƒNƒg
+				{
+					ConnectObject* p_obj = new ConnectObject;
+					p_obj->Init();
+					p_trackObj = p_obj;
+				}
 				break;
-			case 5:
+			case 5:	//ƒgƒQ
+				{
+					ThormObject* p_obj = new ThormObject;
+					p_obj->Init();
+					p_trackObj = p_obj;
+				}
 				break;
 			default:
 				break;
 			}
 
+			if (p_trackObj == nullptr)
+				continue;
+
+			p_trackObj->SetLineIndex({ float(x),float(y) });
+			Transform* p_trf = p_trackObj->GetTransformPtr();
+			p_trf->position.x = leftTopPos.x + (tileScale * x);
+			p_trf->position.y = leftTopPos.y - (tileScale * y);
+			p_trf->position.z = -1;
+			onMapTrackObjects.push_back(p_trackObj);
 
 		}
 
@@ -357,14 +397,31 @@ BaseMap::BaseMap()
 {
 	p_transform->position.x = MAP_CENTER_POSX;
 	p_transform->position.y = MAP_CENTER_POSY;
+
+	biteEnemyVecs.emplace_back(0);
+	gunnEnemyVecs.emplace_back(0);
+
+	//”wŒi“Ç‚Ýž‚Ý
+	{
+		BGImg = new GameObject2D;
+		auto renderer = BGImg->GetComponent<SpriteRenderer>();
+		renderer->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
+		auto p_trf = BGImg->GetTransformPtr();
+		p_trf->position.z = -10;
+		p_trf->scale = { SCREEN_WIDTH,SCREEN_HEIGHT,1 };
+	}
 }
 
 BaseMap::~BaseMap()
 {
-	for (int i = 0; i < tileObjects.size(); i++)
-	{
-		delete tileObjects.at(i);
-	}
+
+	for (auto& p_tile : tileObjects)
+		delete p_tile;
+
+	for (auto& p_obj : onMapTrackObjects)
+		delete p_obj;
+
+	delete BGImg;
 }
 
 
@@ -495,7 +552,6 @@ void BaseMap::Init()
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
-#include "../../../02-App/HF_Window.h"
 
 void BaseMap::Init(const int& _width, const int& _height)
 {
@@ -589,6 +645,14 @@ void BaseMap::Init(const int& _width, const int& _height)
 	}
 
 	{
+		PlayerObject* p_obj = new PlayerObject;
+		p_obj->SetLineIndex({ 3,3 });
+		p_obj->Init(this, &Input::GetInstance());
+		Transform* p_trf = p_obj->GetTransformPtr();
+		p_trf->position.x = leftTopPos.x + (tileScale * 3);
+		p_trf->position.y = leftTopPos.y - (tileScale * 3);
+		p_trf->position.z = -1;
+		onMapTrackObjects.push_back(p_obj);
 	}
 
 	powerDownFlame = 60;
