@@ -1,5 +1,3 @@
-//	本体のタグは"Enemy"
-
 #include"GunEnemy.h"
 #include"GunEnemyParam.h"
 #include"../../../../01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
@@ -9,6 +7,8 @@
 #define LEFT 2
 #define DOWN 3
 
+//	本体のタグは"Enemy"
+
 GunEnemy::GunEnemy()
 {
 	
@@ -17,16 +17,17 @@ GunEnemy::GunEnemy()
 //====================================================================================================
 //Init
 //====================================================================================================
-void GunEnemy::Init(BaseMap* map)
+void GunEnemy::Init(const int & direction)
 {
 	// パラメータ初期化
 	{
 		//マップ上どのマスにいるか設定
 		//SetLineIndex({1.f, 1.f});
-		currentState = State::defoult;
+		//currentState = State::defoult;
 
 		tag = GunEnemyParam::tag;
-
+		if (0 <= direction && direction < 4)SetDirection(direction);
+		else SetDirection(0);
 		// 向きの調整
 		//hft::HFFLOAT2 AGL = angle;
 		hft::HFFLOAT2 AGL = { 1,0 };
@@ -51,7 +52,7 @@ void GunEnemy::Init(BaseMap* map)
 			p_transform->position = GunEnemyParam::position;
 		}
 	}
-
+	/*
 	// レンダラーの設定
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(GunEnemyParam::biteenemyTexName);
 
@@ -194,11 +195,11 @@ void GunEnemy::Init(BaseMap* map)
 		bodyColl = AddComponent<BoxCollider2D>();
 		bodyColl->SetIsActive(true);
 	}
-
+	*/
 	std::cout << "GunEnemyパラメータ完了\n";
 
 	// 弾オブジェクト初期化
-	bullet.Init(GetAngle(), map);
+	//bullet.Init(GetAngle(), map);
 }
 
 //============================================================================================
@@ -206,6 +207,7 @@ void GunEnemy::Init(BaseMap* map)
 //============================================================================================
 void GunEnemy::Update()
 {
+	/*
 	if (bullet.GetBulletActive() == true)
 	{
 		bullet.Update();
@@ -225,9 +227,10 @@ void GunEnemy::Update()
 	default:
 		break;
 	}
+	*/
 }
 
-
+/*
 //===============================================================================
 // 弾が存在しないとき、待ち時間を超えるとshottingへ移行する
 //===============================================================================
@@ -283,7 +286,7 @@ void GunEnemy::Dead()
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	GetComponent<GameObject>()->SetIsActive(false);
 }
-
+*/
 void GunEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 対象のオブジェクトと接触した際、Deadへ移行
@@ -292,6 +295,6 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 	if (col->GetTag() == "Object")
 	{
 		// deadへ
-		currentState = GunEnemy::dead;
+		//currentState = GunEnemy::dead;
 	}
 }
