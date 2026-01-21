@@ -27,6 +27,7 @@ void BiteEnemy::Init()
 	attacktime = BiteEnemyParam::attack;
 	spinttime = BiteEnemyParam::spin;
 	deadtime = BiteEnemyParam::dead;
+	SetDirection(BiteEnemyParam::direction);
 	for (int i = 0; i < 4; i++)
 	{
 		offset[i] = BiteEnemyParam::offset[i];
@@ -69,7 +70,7 @@ void BiteEnemy::Init()
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 15;
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -111,7 +112,7 @@ void BiteEnemy::Init()
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 12; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -153,7 +154,7 @@ void BiteEnemy::Init()
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -195,7 +196,7 @@ void BiteEnemy::Init()
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim2.SetPriority(0);
 			flame = 10;
-			for (int i = 0; i < 12; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				anim2.GetCellRef(i).flame = flame;
 			}
@@ -218,11 +219,11 @@ void BiteEnemy::Init()
 		// 死亡状態のアニメーション
 		SpriteAnimation anim4(div, { 6,3 }, 4);
 		anim4.Active();
-		anim4.SetID(10);
+		anim4.SetID(12);
 		anim4.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim4.SetPriority(0);
 		float flame = 10;
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			anim4.GetCellRef(i).flame = flame;
 		}
@@ -233,10 +234,19 @@ void BiteEnemy::Init()
 	bodyCollider = AddComponent<BoxCollider2D>();
 	bodyCollider->SetIsActive(true);
 	
+	// 攻撃マスの位置を自身のサイズ分ずらす
+	const hft::HFFLOAT3 size = bodyCollider->GetSize();
+	offset[0] = { size.x,0.0f,0.0f };
+	offset[1] = { 0.0f,size.y,0.0f };
+	offset[2] = { -(size.x),0.0f,0.0f };
+	offset[3] = { 0.0f,size.y,0.0f };
+
+
 	//攻撃のコライダーの設定
+	attackCollider.Init();
 	attackCollider.SetTag("Enemy");
 	attackCollider.col()->SetSize(bodyCollider->GetSize());
-	attackCollider.col()->SetOffset({ 50.f,0.0f,0.0f });
+	attackCollider.col()->SetOffset({ size.x,0.0f,0.0f });
 	attackCollider.col()->SetIsActive(false);
 
 	std::cout << "BiteEnemyパラメータ完了\n";
@@ -302,6 +312,12 @@ void BiteEnemy::Defoult2()
 void BiteEnemy::Attack()
 {
 	std::cout << "攻撃状態実行中\n";
+	int dir = 0;
+	if (dir < 0 || dir >= 4)
+	{
+		dir = 0;
+		attackCollider.col()->SetOffset(offset[dir]);
+	}
 	attackCollider.col()->SetOffset(offset[GetDirection()]);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 1);
@@ -334,7 +350,7 @@ void BiteEnemy::Spin()
 
 
 //==================================================================================
-// 状態の行動
+// 死亡状態の行動
 //==================================================================================
 void BiteEnemy::Dead()
 {
@@ -346,7 +362,7 @@ void BiteEnemy::Dead()
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
-	GetComponent<SpriteAnimator>()->Play(10);
+	GetComponent<SpriteAnimator>()->Play(12);
 	if (timer > dead)
 	{
 		std::cout << "BiteEnemy機能停止\n";

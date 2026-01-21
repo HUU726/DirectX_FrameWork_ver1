@@ -4,8 +4,9 @@
 class Attackmass :public GameObject2D
 {
 private:
-	BoxCollider2D* attackcol = AddComponent<BoxCollider2D>();
+	BoxCollider2D* attackcol = nullptr;
 public:
+	void Init() { attackcol = AddComponent<BoxCollider2D>(); }
 	void SetTag(const std::string& NewTag) { tag = NewTag; }
 	BoxCollider2D* col() { return attackcol; }
 };
@@ -46,7 +47,6 @@ private:
 	GameObject2D object2D;	// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定
 	Attackmass attackCollider;	// 攻撃マス
-	//BoxCollider2D* attackCollider;	// 攻撃の判定
 public:
 	BiteEnemy();	
 	~BiteEnemy();				
