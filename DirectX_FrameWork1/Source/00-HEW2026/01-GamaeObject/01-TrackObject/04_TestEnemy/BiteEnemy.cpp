@@ -5,6 +5,8 @@
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
+class BoxCollider2D;
+
 BiteEnemy::BiteEnemy()
 {
 	
@@ -234,7 +236,7 @@ void BiteEnemy::Init()
 	bodyCollider = AddComponent<BoxCollider2D>();
 	bodyCollider->SetIsActive(true);
 	
-	// 攻撃マスの位置を自身のサイズ分ずらす
+	// 攻撃マスの位置を自身のサイズ分,ずらす
 	const hft::HFFLOAT3 size = bodyCollider->GetSize();
 	offset[0] = { size.x,0.0f,0.0f };
 	offset[1] = { 0.0f,size.y,0.0f };
@@ -242,12 +244,11 @@ void BiteEnemy::Init()
 	offset[3] = { 0.0f,size.y,0.0f };
 
 
-	//攻撃のコライダーの設定
-	attackCollider.Init();
-	attackCollider.SetTag("Enemy");
-	attackCollider.col()->SetSize(bodyCollider->GetSize());
-	attackCollider.col()->SetOffset({ size.x,0.0f,0.0f });
-	attackCollider.col()->SetIsActive(false);
+	//攻撃マスの設定
+	attackCollider = AddComponent<BoxCollider2D>();
+	attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
+	attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
+	attackCollider->SetIsActive(false);
 
 	std::cout << "BiteEnemyパラメータ完了\n";
 }
@@ -316,16 +317,16 @@ void BiteEnemy::Attack()
 	if (dir < 0 || dir >= 4)
 	{
 		dir = 0;
-		attackCollider.col()->SetOffset(offset[dir]);
+		attackCollider->SetOffset(offset[dir]);
 	}
-	attackCollider.col()->SetOffset(offset[GetDirection()]);
+	attackCollider->SetOffset(offset[GetDirection()]);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 1);
-	attackCollider.col()->SetIsActive(true);			// 当たり判定をアクティブに
+	attackCollider->SetIsActive(true);			// 当たり判定をアクティブに
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		attackCollider.col()->SetIsActive(false);			// 当たり判定を非アクティブに
+		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
 		timer = 0;
 	}
 }
@@ -357,7 +358,7 @@ void BiteEnemy::Dead()
 	CEnemy::DownEnemyCount();
 	// 当たり判定停止
 	bodyCollider->SetIsActive(false);
-	attackCollider.col()->SetIsActive(false);
+	attackCollider->SetIsActive(false);
 	// アニメーション
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
@@ -389,7 +390,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 			currentState = BiteEnemy::dead;
 		}
 	}
-	else if (_p_col == attackCollider.col())
+	else if (_p_col == attackCollider)
 	{
 		// 攻撃がヒット
 		std::cout << "BiteEnemyの攻撃がヒット\n";

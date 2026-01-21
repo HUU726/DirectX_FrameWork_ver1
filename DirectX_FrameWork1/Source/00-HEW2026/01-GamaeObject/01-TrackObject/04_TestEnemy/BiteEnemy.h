@@ -1,16 +1,6 @@
 #pragma once
 #include"Enemy.h"
 
-class Attackmass :public GameObject2D
-{
-private:
-	BoxCollider2D* attackcol = nullptr;
-public:
-	void Init() { attackcol = AddComponent<BoxCollider2D>(); }
-	void SetTag(const std::string& NewTag) { tag = NewTag; }
-	BoxCollider2D* col() { return attackcol; }
-};
-
 class BiteEnemy : public CEnemy
 {
 private:
@@ -29,7 +19,7 @@ private:
 
 	enum State
 	{
-		defoult1 = 0,
+		defoult1,
 		defoult2,
 		attack,
 		spin,
@@ -46,7 +36,7 @@ private:
 
 	GameObject2D object2D;	// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定
-	Attackmass attackCollider;	// 攻撃マス
+	BoxCollider2D* attackCollider;// 攻撃マスの判定
 public:
 	BiteEnemy();	
 	~BiteEnemy();				
