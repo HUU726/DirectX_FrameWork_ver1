@@ -2,8 +2,10 @@
 
 #include "../../../../01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
+#include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 
 class BoxCollider2D;
+class BaseMap;
 
 class BulletObject : public GameObject2D
 {
@@ -30,9 +32,6 @@ private:
 	// 経過時間
 	int timer = 0;
 
-	// 方向
-	hft::HFFLOAT2 Iangle;
-
 	enum State
 	{
 		defoult,
@@ -54,7 +53,7 @@ private:
 public:
 	BulletObject();
 	void Init() override;
-	void Init(const hft::HFFLOAT2& NewAngle);	// 方向指定
+	void Init(const hft::HFFLOAT2& NewAngle,BaseMap* Map);	// 方向指定,スケール調整
 	void Update() override;
 
 	void SetPos(const hft::HFFLOAT3& NewPosition) { p_transform->position = NewPosition; }// 座標指定

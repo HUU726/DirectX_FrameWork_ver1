@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include"../05-BulletObject/BulletObject.h"
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
+#include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 
 class GunEnemy : public CEnemy
 {
@@ -41,7 +42,8 @@ private:
 
 public:
 	GunEnemy();
-	void Init() override;
+	void Init() override {};
+	void Init(BaseMap* map);
 	void Update() override;
 
 	void Defoult();
