@@ -23,24 +23,33 @@ BiteEnemy::~BiteEnemy()
 // 初期化=============================================================
 void BiteEnemy::Init(const int& direction)
 {
-	timer = 0;	// タイマーの初期化
-	tag = BiteEnemyParam::tag;	// タグ:Enemy
+	timer = 0;									// タイマーの初期化
+	tag = BiteEnemyParam::tag;					// タグ:Enemy
 	anipos = BiteEnemyParam::anipos;
 	oldani = BiteEnemyParam::oldani;
 	hitstoptime = BiteEnemyParam::hitstoptime;	// ヒットストップ時間
-	currentState = BiteEnemy::defoult1;		// 通常状態からスタート
+	currentState = BiteEnemy::defoult1;			// 通常状態からスタート
 	defoulttime_1 = BiteEnemyParam::defoult1;	// 通常状態1でかかるフレーム
 	defoulttime_2 = BiteEnemyParam::defoult2;	// 通常状態2でかかるフレーム
 	attacktime = BiteEnemyParam::attack;		// 攻撃状態でかかるフレーム
 	spinttime = BiteEnemyParam::spin;			// 回転状態でかかるフレーム
 	deadtime = BiteEnemyParam::dead;			// 死亡状態でかかるフレーム
-	if (direction < 4 && direction >= 0) { SetDirection(direction); }	// 引数が範囲外の数値だった場合,右向きで初期化
+	
+	// 引数が範囲外の数値だった場合,右向きで初期化
+	if (direction < 4 && direction >= 0) { SetDirection(direction); }	
 	else { SetDirection(0); }
 	
-	if (direction == 0){ anipos = 0;}
-	else if (direction == 1) { anipos = 1;}
-	else if (direction == 2) { anipos = 2;}
-	else{ anipos = 3;}
+	// 行動シーケンス(// 通常→攻撃→通常→回転→...)
+	for (int i = 0; i < 4; i++)
+	{
+		Act[i] = BiteEnemyParam::Act[i];
+	}
+
+	// 方向による最初のアニメーション
+	if (GetDirection() == 0) { anipos = GetDirection(); }
+	else if (GetDirection() == 1) { anipos = GetDirection();}
+	else if (GetDirection() == 2) { anipos = GetDirection();}
+	else{ anipos = GetDirection();}
 
 	// 位置の設定
 	{
@@ -281,10 +290,10 @@ void BiteEnemy::Update()
 	switch (currentState)
 	{
 	case defoult1:Defoult1();break;
-	//case defoult2:Defoult2();break;
-	//case attack:Attack();break;
-	//case spin:Spin();break;
-	//case dead:Dead();break;
+	case defoult2:Defoult2();break;
+	case attack:Attack();break;
+	case spin:Spin();break;
+	case dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
 	
@@ -292,7 +301,7 @@ void BiteEnemy::Update()
 
 
 //==================================================================================
-// 通常状態の行動
+// 通常状態1の処理
 //==================================================================================
 void BiteEnemy::Defoult1()
 {
@@ -300,6 +309,96 @@ void BiteEnemy::Defoult1()
 	int dir = GetDirection();
 	////デバック用
 	std::cout << "通常状態1実行中\n";
+	std::cout << "現在の方向:" << GetDirection() << "\n";
+
+	if (changeState == true)
+	{
+		changeState = false;
+		if (anipos >= 4) { anipos = 0; }
+		// この状態に変わった際、一回のみ実行される
+		if (dir == 2)
+		{
+			// 方向によるアニメーションの反転あり
+		}
+		else
+		{
+			// 方向によるアニメーションの反転なし
+		}
+		// 再生されていたアニメーションをストップ
+		GetComponent<SpriteAnimator>()->Stop(oldani);
+	}
+	
+	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+
+	if (startState == true)
+	{
+		startState = false;
+		// 方向からアニメーションを決定する
+		
+	}
+	
+	if (timer >= defoulttime_1)
+	{
+		currentState = BiteEnemy::attack;
+		timer = 0;
+		changeState = true;
+		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
+		anipos++;
+	}
+	
+}
+
+
+//==================================================================================
+// 攻撃状態の処理
+//==================================================================================
+void BiteEnemy::Attack()
+{
+	// 方向を取得
+	int dir = GetDirection();
+	////デバック用
+	std::cout << "攻撃状態実行中\n";
+	std::cout << "現在の方向:" << GetDirection() << "\n";
+
+
+	if (changeState == true)
+	{
+		changeState = false;
+		// この状態に変わった際、一回のみ実行される
+		if (dir == 2)
+		{
+			// 方向によるアニメーションの反転あり
+		}
+		else
+		{
+			// 方向によるアニメーションの反転なし
+		}
+		
+		attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
+		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生されていたアニメーションをストップ
+		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+		attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
+	}
+	
+	if (timer > attacktime)
+	{
+		currentState = BiteEnemy::defoult2;		// 通常状態へ
+		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
+		timer = 0;
+		anipos++;
+		oldani = Act[anipos] + dir;
+	}
+}
+
+//==================================================================================
+// 通常状態2の処理
+//==================================================================================
+void BiteEnemy::Defoult2()
+{
+	// 方向を取得
+	int dir = GetDirection();
+	////デバック用
+	std::cout << "通常状態2実行中\n";
 	std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
@@ -317,87 +416,91 @@ void BiteEnemy::Defoult1()
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 	}
-	
-	if (startState == true)
+
+	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+
+	if (timer >= defoulttime_2)
 	{
-		startState = false;
-		// 方向からアニメーションを決定する
-		
-	}
-	GetComponent<SpriteAnimator>()->Play(12);
-	
-	if (timer >= defoulttime_1)
-	{
-		currentState = BiteEnemy::attack;
+		currentState = BiteEnemy::spin;
 		timer = 0;
 		changeState = true;
-		oldani = anipos;	// 現在のアニメーションIDを古いものとする
+		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
 		anipos++;
 	}
-	
 }
 
-/*
-//==================================================================================
-// 攻撃状態の行動
-//==================================================================================
-void BiteEnemy::Attack()
-{
-	std::cout << "攻撃状態実行中\n";
-	int dir = 0;
-	if (dir < 0 || dir >= 4)dir = 0;
-	attackCollider->SetOffset(offset[dir]);
-	attackCollider->SetOffset(offset[GetDirection()]);
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Play((GetDirection() * 3) + 1);
-	attackCollider->SetIsActive(true);			// 当たり判定をアクティブに
-	if (timer > attacktime)
-	{
-		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
-		timer = 0;
-	}
-}
+
 
 //==================================================================================
-// 回転状態の行動
+// 回転状態の処理
 //==================================================================================
 void BiteEnemy::Spin()
 {
+	// 方向を取得
+	int dir = GetDirection();
+	////デバック用
 	std::cout << "回転状態実行中\n";
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Play((GetDirection() * 3) + 2);
-	if (timer > spinttime)
+	std::cout << "現在の方向:" << GetDirection() << "\n";
+
+	if (changeState == true)
 	{
-		GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 2);
-		currentState = BiteEnemy::defoult1;		// 通常状態へ
-		SetDirection(GetDirection() + 1);		// 方向変換
-		if (GetDirection() >= 4) { SetDirection(0); }
+		changeState = false;
+		// この状態に変わった際、一回のみ実行される
+		if (dir == 2)
+		{
+			// 方向によるアニメーションの反転あり
+		}
+		else
+		{
+			// 方向によるアニメーションの反転なし
+		}
+		// 再生されていたアニメーションをストップ
+		GetComponent<SpriteAnimator>()->Stop(oldani);
+	}
+
+	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+
+	if (timer >= spinttime)
+	{
+		currentState = BiteEnemy::defoult1;
 		timer = 0;
+		changeState = true;
+		SetDirection(dir + 1);
+		if (dir == 3) { SetDirection(0); }
+		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
+		anipos++;
 	}
 }
 
 
 //==================================================================================
-// 死亡状態の行動
+// 死亡状態の処理
 //==================================================================================
 void BiteEnemy::Dead()
 {
-	CEnemy::DownEnemyCount();
-	// 当たり判定停止
-	bodyCollider->SetIsActive(false);
-	attackCollider->SetIsActive(false);
-	// アニメーション
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 1);
-	GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 2);
-	GetComponent<SpriteAnimator>()->Play(12);
-	if (timer > dead)
+	CEnemy::DownEnemyCount();			// エネミー総数の減少
+	
+	// 方向を取得
+	int dir = GetDirection();
+	////デバック用
+	std::cout << "死亡状態実行中\n";
+	std::cout << "現在の方向:" << GetDirection() << "\n";
+	if (changeState == true)
 	{
+		changeState = false;
+		// 再生されていたアニメーションをストップ
+		GetComponent<SpriteAnimator>()->Stop(Act[anipos] + dir);
+		GetComponent<SpriteAnimator>()->Play(12);
+	}
+
+	if (timer >= deadtime)
+	{
+		timer = 0;
 		std::cout << "BiteEnemy機能停止\n";
+		GetComponent<SpriteAnimator>()->SetIsActive(false);
 		SetIsActive(false);
 	}
-}*/
+}
 
 
 //@brief	コライダー同士が衝突した際の処理
@@ -414,13 +517,13 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		{
 			timer = 0;
 			std::cout << "BIteEnemy本体にヒット\n";
-			//currentState = BiteEnemy::dead;
+			currentState = BiteEnemy::dead;
+			changeState = true;
 		}
 	}
 	else if (_p_col == attackCollider)
 	{
 		// 攻撃がヒット
 		std::cout << "BiteEnemyの攻撃がヒット\n";
-		return;
 	}
 }
