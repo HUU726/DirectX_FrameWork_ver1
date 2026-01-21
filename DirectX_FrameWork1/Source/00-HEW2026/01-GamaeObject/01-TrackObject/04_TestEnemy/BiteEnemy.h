@@ -17,7 +17,7 @@ private:
 	int deadtime;		// 死亡状態のフレーム数
 	hft::HFFLOAT3 offset[4] = {};
 
-
+	/*
 	enum State
 	{
 		defoult1,
@@ -28,12 +28,13 @@ private:
 	};
 	State currentState;
 
+	
 	void Defoult1();
 	void Defoult2();
 	void Attack();
 	void Spin();
 	void Dead();
-
+	*/
 
 	GameObject2D object2D;	// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定

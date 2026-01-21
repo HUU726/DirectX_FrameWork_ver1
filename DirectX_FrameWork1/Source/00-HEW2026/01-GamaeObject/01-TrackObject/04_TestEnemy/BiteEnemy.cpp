@@ -5,7 +5,12 @@
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
+#define RIGHT 0:
+#define LEFT 2:
+
 class BoxCollider2D;
+
+// このエネミーのタグ:"Enemy"
 
 BiteEnemy::BiteEnemy()
 {
@@ -21,9 +26,9 @@ BiteEnemy::~BiteEnemy()
 void BiteEnemy::Init(const int& direction)
 {
 	timer = 0;	// タイマーの初期化
-	tag = BiteEnemyParam::tag;	// 本体のタグ:Bite
+	tag = BiteEnemyParam::tag;	// タグ:Bite
 	hitstoptime = BiteEnemyParam::hitstoptime;	// ヒットストップ時間
-	currentState = BiteEnemy::defoult1;
+	//currentState = BiteEnemy::defoult1;
 	defoulttime_1 = BiteEnemyParam::defoult1;
 	defoulttime_2 = BiteEnemyParam::defoult2;
 	attacktime = BiteEnemyParam::attack;
@@ -58,7 +63,7 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(priority);
 			for (int i = 0; i < flameCount; i++)
 			{
-				anim.GetCellRef(i).flame = flameCount; // ループは必ず flameCount
+				anim.GetCellRef(i).flame = flameCount;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		};
@@ -82,11 +87,11 @@ void BiteEnemy::Init(const int& direction)
 	// 死亡
 	AddAnimationSafe(10, { 5,3 }, 2, SPRITE_ANIM_TYPE::NORMAL);    // 全方向共通
 
-
+	p_spriteAnimator->SetIsActive(false);
 
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
-	bodyCollider->SetIsActive(true);
+	//bodyCollider->SetIsActive(true);
 	
 	// 攻撃マスの位置を自身のサイズ分,ずらす
 	const hft::HFFLOAT3 size = bodyCollider->GetSize();
@@ -107,7 +112,8 @@ void BiteEnemy::Init(const int& direction)
 // 更新===============================================================
 void BiteEnemy::Update()
 {
-	timer++;
+	timer = 0;
+	/*
 	switch (currentState)
 	{
 	case defoult1:
@@ -128,9 +134,10 @@ void BiteEnemy::Update()
 	default:
 		std::cout << "状態エラー\n";
 	}
+	*/
 }
 
-
+/*
 //==================================================================================
 // 通常状態の行動
 //==================================================================================
@@ -138,9 +145,14 @@ void BiteEnemy::Defoult1()
 {
 	std::cout << "通常状態1実行中\n";
 	std::cout << "現在の方向:" << GetDirection() << "\n";
+	// アニメーション変更
 	switch(GetDirection()){
-	case0: 
-	GetComponent<SpriteAnimator>()->Play();
+	case 0: GetComponent<SpriteAnimator>()->Play(0); break;
+	case 1: GetComponent<SpriteAnimator>()->Play(1); break;
+	case 2: GetComponent<SpriteAnimator>()->Play(0); break;
+	case 3: GetComponent<SpriteAnimator>()->Play(2); break;
+
+
 	if (timer > defoulttime_1)
 	{
 		currentState = BiteEnemy::attack;		// 攻撃へ
@@ -221,9 +233,9 @@ void BiteEnemy::Dead()
 	}
 }
 
-/**
-*@brief	コライダー同士が衝突した際の処理
-* @param	Collider2D* _p_col	2D用コライダーのポインタ
+
+//@brief	コライダー同士が衝突した際の処理
+// @param	Collider2D* _p_col	2D用コライダーのポインタ
 */
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
@@ -237,7 +249,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		{
 			timer = 0;
 			std::cout << "BIteEnemy本体にヒット\n";
-			currentState = BiteEnemy::dead;
+			//currentState = BiteEnemy::dead;
 		}
 	}
 	else if (_p_col == attackCollider)
