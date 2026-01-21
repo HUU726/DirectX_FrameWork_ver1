@@ -1,5 +1,6 @@
 #pragma once
 #include"Enemy.h"
+class BoxCollider2D;
 
 class BiteEnemy : public CEnemy
 {
