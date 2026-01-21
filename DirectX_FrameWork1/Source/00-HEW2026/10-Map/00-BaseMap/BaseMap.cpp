@@ -266,10 +266,91 @@ void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft:
 		_index.y = 1;
 
 	_obj.SetLineIndex(_index);
-	float tileScaleHalf = tileScale / 2.0f;
+	float tileScaleHalf = tileScale / 2.f;
 	hft::HFFLOAT4& pos = _obj.GetTransformPtr()->position;
 	pos.x = leftTopPos.x + _index.x * tileScale + (tileScaleHalf * _moveVec.x * -1);
 	pos.y = leftTopPos.y - _index.y * tileScale + (tileScaleHalf * _moveVec.y);
+}
+
+void BaseMap::CreateTiles()
+{
+	width = mapDataArray.size();
+	scaleRaito = BASE_TILE_NUM / width;
+	tileScale = MAP_SIZE / float(width);
+	
+	//ズラした時の隙間防止
+	width += 2;
+	height += 2;
+	
+	float tileScaleHalf = tileScale / 2.f;
+	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * tileScale) + tileScaleHalf;	//左端座標
+	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * tileScale) - tileScaleHalf;	//上端座標
+	rightBottomPos.x = leftTopPos.x + ((width - 1) * tileScale);					//右端座標
+	rightBottomPos.y = leftTopPos.y - ((height - 1) * tileScale);					//下端座標
+
+	for (int y = 0; y < height; y++)
+	{
+		int index = y * width;
+		float posY = leftTopPos.y - (tileScale * y);
+		for (int x = 0; x < width; x++)
+		{
+			auto tileObject = new	TrackObject;
+			auto renderer = tileObject->GetComponent<SpriteRenderer>();
+			renderer->LoadTexture("Assets/01-Texture/01-Map/Tile.png");
+			tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
+
+			float posX = leftTopPos.x + (tileScale * x);
+			tileObject->GetTransformPtr()->position = { posX,posY,0 };
+			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
+			tileObjects.push_back(tileObject);
+			index++;
+		}
+	}
+
+}
+
+#include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
+#include "../../../04-Input/Input.h"
+void BaseMap::CreateObjects()
+{
+	int size = mapDataArray.size();
+	for (int y = 0; y < size; y++)
+	{
+		for (int x = 0; x < size; x++)
+		{
+			const int& data = mapDataArray[x][y];
+			switch (data)
+			{
+			case 0:
+				{
+					PlayerObject* p_obj = new PlayerObject;
+					p_obj->SetLineIndex({ float(x),float(y) });
+					p_obj->Init(this, &Input::GetInstance());
+					Transform* p_trf = p_obj->GetTransformPtr();
+					p_trf->position.x = leftTopPos.x + (tileScale * 3);
+					p_trf->position.y = leftTopPos.y - (tileScale * 3);
+					p_trf->position.z = -1;
+					onMapTrackObjects.push_back(p_obj);
+				}
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			default:
+				break;
+			}
+
+
+		}
+
+	}
 }
 
 BaseMap::BaseMap()
@@ -408,12 +489,12 @@ bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
 
 void BaseMap::Init()
 {
+	CreateMap();
+
 }
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../01-GamaeObject/01-TrackObject/01-TestObject/TestObject.h"
-#include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
-#include "../../../04-Input/Input.h"
 #include "../../../02-App/HF_Window.h"
 
 void BaseMap::Init(const int& _width, const int& _height)
@@ -508,14 +589,6 @@ void BaseMap::Init(const int& _width, const int& _height)
 	}
 
 	{
-		PlayerObject* p_obj = new PlayerObject;
-		p_obj->SetLineIndex({ 3,3 });
-		p_obj->Init(this, &Input::GetInstance());
-		Transform* p_trf = p_obj->GetTransformPtr();
-		p_trf->position.x = leftTopPos.x + (tileScale * 3);
-		p_trf->position.y = leftTopPos.y - (tileScale * 3);
-		p_trf->position.z = -1;
-		onMapTrackObjects.push_back(p_obj);
 	}
 
 	powerDownFlame = 60;
