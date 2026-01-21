@@ -18,7 +18,7 @@ BiteEnemy::~BiteEnemy()
 }
 
 // 初期化=============================================================
-void BiteEnemy::Init()
+void BiteEnemy::Init(const int& direction)
 {
 	timer = 0;	// タイマーの初期化
 	tag = BiteEnemyParam::tag;	// 本体のタグ:Bite
@@ -29,7 +29,8 @@ void BiteEnemy::Init()
 	attacktime = BiteEnemyParam::attack;
 	spinttime = BiteEnemyParam::spin;
 	deadtime = BiteEnemyParam::dead;
-	SetDirection(BiteEnemyParam::direction);
+	if (direction < 4 && direction > 0)SetDirection(direction);
+	else SetDirection(0);
 	for (int i = 0; i < 4; i++)
 	{
 		offset[i] = BiteEnemyParam::offset[i];
@@ -44,7 +45,7 @@ void BiteEnemy::Init()
 	// レンダラーの設定
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
 	// アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 7));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(7, 8));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	// アニメーション登録用のヘルパー
@@ -63,28 +64,25 @@ void BiteEnemy::Init()
 		};
 
 	// 各方向ごとに登録
-	// 右向き
-	AddAnimationSafe(0, { 0,0 }, 10, SPRITE_ANIM_TYPE::LOOP);   // 通常
-	AddAnimationSafe(1, { 2,4 }, 6, SPRITE_ANIM_TYPE::NORMAL);  // 攻撃
-	AddAnimationSafe(2, { 0,0 }, 1, SPRITE_ANIM_TYPE::NORMAL);  // 回転
+	// 通常
+	AddAnimationSafe(0, { 0,0 }, 10, SPRITE_ANIM_TYPE::LOOP);   // 横向き
+	AddAnimationSafe(1, { 2,4 }, 10, SPRITE_ANIM_TYPE::LOOP);   // 上向き 														
+	AddAnimationSafe(2, { 4,3 }, 10, SPRITE_ANIM_TYPE::LOOP);	// 下向き										
+	// 攻撃
+	AddAnimationSafe(3, { 2,4 }, 9, SPRITE_ANIM_TYPE::NORMAL);  // 横向き
+	AddAnimationSafe(4, { 1,6 }, 6, SPRITE_ANIM_TYPE::NORMAL);  // 上向き 														
+	AddAnimationSafe(5, { 3,5 }, 6, SPRITE_ANIM_TYPE::NORMAL);	 // 下向き
 
-	// 上向き
-	AddAnimationSafe(3, { 2,1 }, 10, SPRITE_ANIM_TYPE::LOOP);
-	AddAnimationSafe(4, { 7,1 }, 6, SPRITE_ANIM_TYPE::NORMAL);
-	AddAnimationSafe(5, { 0,0 }, 1, SPRITE_ANIM_TYPE::NORMAL);
-
-	// 左向き
-	AddAnimationSafe(6, { 0,0 }, 10, SPRITE_ANIM_TYPE::LOOP);
-	AddAnimationSafe(7, { 2,4 }, 6, SPRITE_ANIM_TYPE::NORMAL);
-	AddAnimationSafe(8, { 0,0 }, 1, SPRITE_ANIM_TYPE::NORMAL);
-
-	// 下向き
-	AddAnimationSafe(9, { 2,1 }, 10, SPRITE_ANIM_TYPE::LOOP);
-	AddAnimationSafe(10, { 3,5 }, 6, SPRITE_ANIM_TYPE::NORMAL);
-	AddAnimationSafe(11, { 0,0 }, 1, SPRITE_ANIM_TYPE::NORMAL);
+	// 回転
+	AddAnimationSafe(6, { 1,1 }, 1, SPRITE_ANIM_TYPE::NORMAL);    // 右向き
+	AddAnimationSafe(7, { 5,3 }, 2, SPRITE_ANIM_TYPE::NORMAL);    // 上向き 														
+	AddAnimationSafe(8, { 2,5 }, 2, SPRITE_ANIM_TYPE::NORMAL);	  // 左向き
+	AddAnimationSafe(9, { 5,3 }, 1, SPRITE_ANIM_TYPE::NORMAL);    // 下向き 														
 
 	// 死亡
-	AddAnimationSafe(12, { 6,3 }, 4, SPRITE_ANIM_TYPE::NORMAL);
+	AddAnimationSafe(10, { 5,3 }, 2, SPRITE_ANIM_TYPE::NORMAL);    // 全方向共通
+
+
 
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
@@ -140,7 +138,9 @@ void BiteEnemy::Defoult1()
 {
 	std::cout << "通常状態1実行中\n";
 	std::cout << "現在の方向:" << GetDirection() << "\n";
-	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
+	switch(GetDirection()){
+	case0: 
+	GetComponent<SpriteAnimator>()->Play();
 	if (timer > defoulttime_1)
 	{
 		currentState = BiteEnemy::attack;		// 攻撃へ
@@ -151,7 +151,7 @@ void BiteEnemy::Defoult1()
 void BiteEnemy::Defoult2()
 {
 	std::cout << "通常状態2実行中\n";
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
+	GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 1);
 	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3);
 	if (timer > defoulttime_2)
 	{
@@ -171,7 +171,7 @@ void BiteEnemy::Attack()
 	attackCollider->SetOffset(offset[dir]);
 	attackCollider->SetOffset(offset[GetDirection()]);
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 1);
+	GetComponent<SpriteAnimator>()->Play((GetDirection() * 3) + 1);
 	attackCollider->SetIsActive(true);			// 当たり判定をアクティブに
 	if (timer > attacktime)
 	{
@@ -188,10 +188,10 @@ void BiteEnemy::Spin()
 {
 	std::cout << "回転状態実行中\n";
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Play(GetDirection() * 3 + 2);
+	GetComponent<SpriteAnimator>()->Play((GetDirection() * 3) + 2);
 	if (timer > spinttime)
 	{
-		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
+		GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 2);
 		currentState = BiteEnemy::defoult1;		// 通常状態へ
 		SetDirection(GetDirection() + 1);		// 方向変換
 		if (GetDirection() >= 4) { SetDirection(0); }
@@ -211,8 +211,8 @@ void BiteEnemy::Dead()
 	attackCollider->SetIsActive(false);
 	// アニメーション
 	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3);
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 1);
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 3 + 2);
+	GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 1);
+	GetComponent<SpriteAnimator>()->Stop((GetDirection() * 3) + 2);
 	GetComponent<SpriteAnimator>()->Play(12);
 	if (timer > dead)
 	{

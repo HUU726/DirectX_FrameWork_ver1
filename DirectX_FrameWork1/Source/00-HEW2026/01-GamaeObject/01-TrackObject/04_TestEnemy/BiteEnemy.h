@@ -7,7 +7,8 @@ private:
 	int timer;		// 経過フレーム数
 
 	// 敵の情報
-	int direction;		// 本体の向いている方向		(0:右方向 1:上方向 2:左方向 3:下方向)
+	int direction;		// 本体の現在向いている方向		(0:右方向 1:上方向 2:左方向 3:下方向)
+	int olddirection = 0;	// 前に本体が向いていた方向
 	int hitstoptime;	// ヒットストップがかかるフレーム数
 	int defoulttime_1;	// 通常状態1のフレーム数
 	int defoulttime_2;	// 通常状態2のフレーム数
@@ -41,7 +42,8 @@ public:
 	BiteEnemy();	
 	~BiteEnemy();				
 
-	void Init() override;		// 初期化処理
+	void Init() override {};		// 初期化処理
+	void Init(const int&);		// 方向で初期化
 	void Update() override;		// 更新処理
 
 
