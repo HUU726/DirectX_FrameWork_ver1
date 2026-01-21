@@ -45,7 +45,10 @@ protected:
 	hft::HFFLOAT2 leftTopPos;
 	hft::HFFLOAT2 rightBottomPos;
 
-	std::vector<std::vector<hft::HFFLOAT2>> mapDataArray;	//マップのデータに次元配列
+	std::vector<std::vector<int>> mapDataArray;		//マップのデータに次元配列
+	std::vector<int> biteEnemyVecs;
+	std::vector<int> gunnEnemyVecs;
+
 	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
 	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
@@ -54,6 +57,7 @@ protected:
 	float powerDownRatio;
 
 	std::vector<GameObject*> covers;
+	GameObject* BGImg;
 
 	/**
 	* @brief	ズラす処理
@@ -83,6 +87,19 @@ protected:
 	* @brief	行列番号からTrackObjectの座標調節を行う
 	*/
 	void SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft::HFFLOAT2& _index, TrackObject& _obj);
+
+	/**
+	* @brief	マップ初期状態作成
+	*/
+	virtual void CreateMap() {}
+	/*
+	* @brief	マップデータからタイルを作成
+	*/
+	void CreateTiles();
+	/**
+	* @brief	マップデータからオブジェクトを生成する
+	*/
+	void CreateObjects();
 
 public:
 	BaseMap();
