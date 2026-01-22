@@ -7,7 +7,7 @@ namespace ConnectObjectParam
 {
 	//本体のパラメータ
 	const hft::HFFLOAT3 mainBodyScale = { 80.f, 80.f, 1.f };
-	const char* mainBodyTexName = "Assets/01-Texture/99-Test/char01.png";
+	const char* mainBodyTexName = "Assets/01-Texture/03-Enemy/EighthNote_Under.png";
 
 	//検査用コライダーのパラメータ
 	const float searchCollCellSize = 100.f;
@@ -16,7 +16,7 @@ namespace ConnectObjectParam
 
 
 	//攻撃用オブジェクトのパラメータ
-	const char* emitAttackTexName = "Assets/01-Texture/99-Test/char01.png";
+	const char* emitAttackTexName = "Assets/01-Texture/99-Test/Connect_V.png";
 	const hft::HFFLOAT3 emitAttackVertRotation = { 0.f, 0.f, 90.f }; //横に繋がった時の画像の向き
 	const hft::HFFLOAT3 emitAttackHoriRotation = { 0.f, 0.f,  0.f }; //縦に繋がった時の画像の向き
 }

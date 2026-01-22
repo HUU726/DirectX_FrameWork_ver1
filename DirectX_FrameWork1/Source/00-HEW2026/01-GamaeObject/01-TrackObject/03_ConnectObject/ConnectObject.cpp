@@ -32,24 +32,24 @@ void ConnectObject::Init()
 			const char* texName = ConnectObjectParam::mainBodyTexName;
 			std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(texName);
 
-			SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
-			hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
+			//SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
+			//hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
-			{
-				SpriteAnimation anim(div, { 0,0 }, 9);
-				anim.SetID(0);
+			//{
+			//	SpriteAnimation anim(div, { 0,0 }, 9);
+			//	anim.SetID(0);
 
-				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-				anim.SetPriority(0);
-				float flame = 60;
+			//	anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+			//	anim.SetPriority(0);
+			//	float flame = 60;
 
-				for (int i = 0; i < 9; i++)
-				{
-					anim.GetCellRef(i).flame = flame;
-				}
+			//	for (int i = 0; i < 9; i++)
+			//	{
+			//		anim.GetCellRef(i).flame = flame;
+			//	}
 
-				p_spriteAnimator->AddAnimation(anim);
-			}
+			//	p_spriteAnimator->AddAnimation(anim);
+			//}
 		}
 
 		bodyCollider = AddComponent<BoxCollider2D>();
