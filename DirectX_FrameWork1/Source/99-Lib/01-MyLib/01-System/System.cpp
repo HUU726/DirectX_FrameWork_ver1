@@ -40,9 +40,12 @@ void System::Init(HWND _hwnd)
 }
 void System::UnInit()
 {
-	rendererMng.UnInit();
-	compMngs.clear();
-	gameObjMng.Clear();
+	{
+		rendererMng.UnInit();
+		std::vector<IF_ComponentManager*> swapCompMngs;
+		swapCompMngs.swap(compMngs);
+		gameObjMng.Clear();
+	}
 
 	ShapeTable2D::GetInstance().ClearTable();
 	ShapeTable3D::GetInstance().ClearTable();

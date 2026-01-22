@@ -36,7 +36,8 @@ void GameObjectManager::SetUpObject()
 }
 void GameObjectManager::Clear()
 {
-	gameObjects.clear();
+	std::vector<GameObject*> swapGameObjects;
+	swapGameObjects.swap(gameObjects);
 }
 
 void GameObjectManager::ClearWaitingQueue()

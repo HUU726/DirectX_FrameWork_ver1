@@ -115,6 +115,11 @@ HRESULT RendererManager::Init(HWND _hwnd)
 
 void RendererManager::UnInit()
 {
+	p_Device->Release();
+	p_DeviceContext->Release();
+	p_SwapChain->Release();
+	p_RenderTargetView->Release();
+	p_DepthStencilView->Release();
 }
 
 void RendererManager::ClearScreen()
