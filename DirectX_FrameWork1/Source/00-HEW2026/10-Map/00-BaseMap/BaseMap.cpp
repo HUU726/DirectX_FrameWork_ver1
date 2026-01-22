@@ -272,6 +272,17 @@ void BaseMap::SetLineIndexToPosOfTrackObject(const hft::HFFLOAT2& _moveVec, hft:
 	pos.y = leftTopPos.y - _index.y * tileScale + (tileScaleHalf * _moveVec.y);
 }
 
+
+void BaseMap::InitBiteEnemyVec(const std::vector<int>& _vec)
+{
+	biteEnemyVecs.insert(biteEnemyVecs.end(), _vec.begin(), _vec.end());
+}
+
+void BaseMap::InitGunEnemyVec(const std::vector<int>& _vec)
+{
+	gunEnemyVecs.insert(gunEnemyVecs.end(), _vec.begin(), _vec.end());
+}
+
 #include "../../../02-App/HF_Window.h"
 void BaseMap::CreateTiles()
 {
@@ -311,15 +322,15 @@ void BaseMap::CreateTiles()
 }
 
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
-//#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
-//#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
 #include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include "../../01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h"
 #include "../../../04-Input/Input.h"
 void BaseMap::CreateObjects()
 {
 	auto biteVec = biteEnemyVecs.begin();
-	auto gunVec = gunnEnemyVecs.begin();
+	auto gunVec = gunEnemyVecs.begin();
 
 	int size = mapDataArray.size();
 	for (int y = 0; y < size; y++)
@@ -332,42 +343,42 @@ void BaseMap::CreateObjects()
 			const int& data = mapDataArray[x][y];
 			switch (data)
 			{
-			case 0:	//ÉvÉåÉCÉÑÅ[
+			case PLAYER:
 				{
 					PlayerObject* p_obj = new PlayerObject;
 					p_obj->Init(this, &Input::GetInstance());
 					p_trackObj = p_obj;
 				}
 				break;
-			case 1:	//äöÇ›Ç¬Ç´ìG
-				//{
-				//	++biteVec;
-				//	BiteEnemy* p_obj = new BiteEnemy;
-				//	p_obj->Init();
-				//	p_trackObj = p_obj;
-				//}
+			case BITE_ENEMY:
+				{
+					++biteVec;
+					BiteEnemy* p_obj = new BiteEnemy;
+					p_obj->Init(*biteVec);
+					p_trackObj = p_obj;
+				}
 				break;
-			case 2:	//íeåÇÇøìG
-				//{
-				//	++gunVec;
-				//	GunEnemy* p_obj = new GunEnemy;
-				//	p_obj->Init();
-				//	p_trackObj = p_obj;
-				//}
+			case GUN_ENEMY:
+				{
+					++gunVec;
+					GunEnemy* p_obj = new GunEnemy;
+					p_obj->Init(*gunVec);
+					p_trackObj = p_obj;
+				}
 				break;
-			case 3:	//îöíeìI
+			case BOMB_ENEMY:
 			{
 				
 			}
 				break;
-			case 4:	//ÉRÉlÉNÉg
+			case CONNECT_OBJ:
 				{
 					ConnectObject* p_obj = new ConnectObject;
 					p_obj->Init();
 					p_trackObj = p_obj;
 				}
 				break;
-			case 5:	//ÉgÉQ
+			case THORM_OBJ:
 				{
 					ThormObject* p_obj = new ThormObject;
 					p_obj->Init();
@@ -399,7 +410,7 @@ BaseMap::BaseMap()
 	p_transform->position.y = MAP_CENTER_POSY;
 
 	biteEnemyVecs.emplace_back(0);
-	gunnEnemyVecs.emplace_back(0);
+	gunEnemyVecs.emplace_back(0);
 
 	//îwåiì«Ç›çûÇ›
 	{

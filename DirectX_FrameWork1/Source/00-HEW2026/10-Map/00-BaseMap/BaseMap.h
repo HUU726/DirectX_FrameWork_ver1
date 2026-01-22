@@ -45,9 +45,19 @@ protected:
 	hft::HFFLOAT2 leftTopPos;
 	hft::HFFLOAT2 rightBottomPos;
 
+	enum OBJECT_ID
+	{
+		PLAYER = 0,
+		BITE_ENEMY,
+		GUN_ENEMY,
+		BOMB_ENEMY,
+		CONNECT_OBJ,
+		THORM_OBJ,
+	};
+
 	std::vector<std::vector<int>> mapDataArray;		//マップのデータに次元配列
 	std::vector<int> biteEnemyVecs;
-	std::vector<int> gunnEnemyVecs;
+	std::vector<int> gunEnemyVecs;
 
 	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
@@ -92,6 +102,11 @@ protected:
 	* @brief	マップ初期状態作成
 	*/
 	virtual void CreateMap() {}
+	/**
+	* @brief	回転のあるオブジェクトの初期方向設定
+	*/
+	void InitBiteEnemyVec(const std::vector<int>& _vec);
+	void InitGunEnemyVec(const std::vector<int>& _vec);
 	/*
 	* @brief	マップデータからタイルを作成
 	*/
