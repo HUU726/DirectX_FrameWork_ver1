@@ -9,30 +9,31 @@ class GunEnemy : public CEnemy
 private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
-
 	// 弾が消えてからの待機時間
 	int waittimer;
-
 	// 経過時間
 	int timer;
-
 	// 方向
 	int direction;
-
+	// シーンが切り替わった時に一度だけ再生されるようにする
+	bool changeScene;
+	// 一度だけ再生されるようにする
+	bool startScene;
+	// 新しいアニメーションを再生するためのID格納用変数
+	int anipos;
+	// 古いアニメーションをストップさせるためのID格納用変数
+	int oldani;
 	// 弾オブジェクトを作成するフレーム数
-	int shot;
-	/*
+	int bulletcreateflame;
+	
 	enum State
 	{
 		defoult,
 		shotting,
-		dead,
+		dead
 	};
 	State currentState;
-	*/
-	// 方向 /*(-1,0):左向き (0,1):上向き (1,0)右向き (0,-1):下向き*/
-	void SetAngle(hft::HFFLOAT2 NewAngle) { angle = NewAngle; }
-	hft::HFFLOAT2 GetAngle() { return angle; }
+	
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
 
@@ -45,10 +46,28 @@ public:
 	void Init() override {};
 	void Init(const int&);
 	void Update() override;
-	/*
+	
 	void Defoult();
 	void Shotting();
 	void Dead();
-	*/
+	
 	void OnCollisionEnter(Collider* _p_col) override;
 };
+
+/*
+class ObjectManager
+{
+public:
+	template<class T, class... Args>
+	static T* Create(Args&&... args)
+	{
+		T* obj = new T(std::forward<Args>(args)...);
+		obj->InternalInitialize(); // Transform / Component 初期化
+		objects.push_back(obj);
+		return obj;
+	}
+
+private:
+	static inline std::vector<GameObject*> objects;
+};
+*/
