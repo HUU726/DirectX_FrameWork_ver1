@@ -322,9 +322,9 @@ void BaseMap::CreateTiles()
 }
 
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
-#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
-#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
-#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BombEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_Enemy/BiteEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_Enemy/GunEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_Enemy/BombEnemy.h"
 #include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include "../../01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h"
 #include "../../../04-Input/Input.h"

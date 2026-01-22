@@ -47,7 +47,7 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
     // プレイヤー自身の初期化
     auto renderer = GetComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations .png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");
 
     hft::HFFLOAT2 div = { 8.0f, 8.0f };
 

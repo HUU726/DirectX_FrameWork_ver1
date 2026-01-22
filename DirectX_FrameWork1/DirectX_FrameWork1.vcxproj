@@ -144,16 +144,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BombEnemy.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BombEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\03_ConnectObject\ConnectObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\Arrow\Arrow.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\PlayerObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\EffectFork.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\TuningFork.cpp" />
-    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemy.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.cpp" />
-    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\Enemy.cpp" />
-    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\GunEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\Map.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene.cpp" />
@@ -232,11 +232,11 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemyParam.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BombEnemy.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemyParam.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BombEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemyParam.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\GunEnemy.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\GunEnemyParam.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObjectParam.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\TestEnemy\BomEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObjectParam.h" />
@@ -246,8 +246,8 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\PlayerObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\EffectFork.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\TuningFork.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemy.h" />
-    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\Enemy.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemy.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.h" />
     <ClInclude Include="Source\00-HEW2026\10-Map\Map.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\Test_HewScene2.h" />
