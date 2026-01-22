@@ -39,7 +39,7 @@ private:
 
 	
 	// 弾オブジェクト
-	//BulletObject* bullet = nullptr;
+	BulletObject bullet;
 
 public:
 	GunEnemy();

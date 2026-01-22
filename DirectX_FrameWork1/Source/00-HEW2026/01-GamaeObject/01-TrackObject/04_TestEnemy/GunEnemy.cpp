@@ -196,11 +196,7 @@ void GunEnemy::Init(const int & direction)
 	std::cout << "GunEnemyパラメータ完了\n";
 
 	// 弾オブジェクト初期化
-	/*
-	bullet = Create<BulletObject>();
-	bullet->Init(GetDirection());
-	bullet->SetOwner(this);
-	*/
+	bullet.Init(GetDirection());
 }
 
 //============================================================================================
@@ -223,6 +219,10 @@ void GunEnemy::Update()
 		break;
 	}
 	
+	if (bullet.GetBulletActive())
+	{
+		bullet.Update();
+	}
 }
 
 
@@ -273,25 +273,28 @@ void GunEnemy::Defoult()
 //===============================================================================
 void GunEnemy::Shotting()
 {
-	timer++;											// タイマー更新
-	std::cout << "発射状態\n";
-	if (changeScene == true)
+	if (!bullet.GetBulletActive())
 	{
-		changeScene = false;
-		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
-		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
-	}
+		timer++;											// タイマー更新
+		std::cout << "発射状態\n";
+		if (changeScene == true)
+		{
+			changeScene = false;
+			GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
+			GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
+		}
 
-	// 弾が定められたフレームに生成される
-	if (timer >= bulletcreateflame)
-	{
-		timer = 0;
-		std::cout << "弾オブジェクト発射!!\n";
-		//bullet->SetPos(p_transform->position);		// 発射する直前の位置を送る
-		//bullet->SetIsActive(true);					// 弾オブジェクトをアクティブにする
-		changeScene = true;								// changeSceneを有効にする
-		oldani = anipos;								// 再生しているアニメーションを古いものとする
-		currentState = GunEnemy::defoult;				// defoultに移行	
+		// 弾が定められたフレームに生成される
+		if (timer >= bulletcreateflame)
+		{
+			timer = 0;
+			std::cout << "弾オブジェクト発射!!\n";
+			bullet.SetPos(p_transform->position);		// 発射する直前の位置を送る
+			bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
+			changeScene = true;								// changeSceneを有効にする
+			oldani = anipos;								// 再生しているアニメーションを古いものとする
+			currentState = GunEnemy::defoult;				// defoultに移行	
+		}
 	}
 }
 	/*
@@ -349,6 +352,7 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 	{
 		// deadへ
 		//currentState = GunEnemy::dead;
+		bullet.SetBulletActive(false);
 	}
 	*/
 }
