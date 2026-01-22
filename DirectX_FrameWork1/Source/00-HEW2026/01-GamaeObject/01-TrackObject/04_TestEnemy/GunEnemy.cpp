@@ -190,13 +190,13 @@ void GunEnemy::Init(const int & direction)
 
 	// 当たり判定初期化
 	{
-		bodyColl = AddComponent<BoxCollider2D>();
-		bodyColl->SetIsActive(true);
+		//bodyColl = AddComponent<BoxCollider2D>();
+		//bodyColl->SetIsActive(true);
 	}
-	std::cout << "GunEnemyパラメータ完了\n";
+	//std::cout << "GunEnemyパラメータ完了\n";
 
 	// 弾オブジェクト初期化
-	bullet.Init(GetDirection());
+	//bullet.Init(GetDirection());
 }
 
 //============================================================================================
@@ -218,11 +218,11 @@ void GunEnemy::Update()
 	default:
 		break;
 	}
-	
+	/*
 	if (bullet.GetBulletActive())
 	{
 		bullet.Update();
-	}
+	}*/
 }
 
 
@@ -261,7 +261,7 @@ void GunEnemy::Defoult()
 		currentState = GunEnemy::shotting;	// shottingへ移行
 	}
 	std::cout << timer << "\n";
-	std::cout << "通常状態\n";
+	//std::cout << "通常状態\n";
 }
 
 // 弾が非アクティブの時,実行
@@ -273,10 +273,30 @@ void GunEnemy::Defoult()
 //===============================================================================
 void GunEnemy::Shotting()
 {
+	timer++;											// タイマー更新
+	//std::cout << "発射状態\n";
+	if (changeScene == true)
+	{
+		changeScene = false;
+		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
+		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
+	}
+
+	if (timer >= bulletcreateflame)
+	{
+		timer = 0;
+		//std::cout << "弾オブジェクト発射!!\n";
+		//bullet.SetPos(p_transform->position);		// 発射する直前の位置を送る
+		//bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
+		changeScene = true;								// changeSceneを有効にする
+		oldani = anipos;								// 再生しているアニメーションを古いものとする
+		currentState = GunEnemy::defoult;				// defoultに移行	
+	}
+	/*
 	if (!bullet.GetBulletActive())
 	{
 		timer++;											// タイマー更新
-		std::cout << "発射状態\n";
+		//std::cout << "発射状態\n";
 		if (changeScene == true)
 		{
 			changeScene = false;
@@ -288,36 +308,15 @@ void GunEnemy::Shotting()
 		if (timer >= bulletcreateflame)
 		{
 			timer = 0;
-			std::cout << "弾オブジェクト発射!!\n";
-			bullet.SetPos(p_transform->position);		// 発射する直前の位置を送る
-			bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
+			//std::cout << "弾オブジェクト発射!!\n";
+			//bullet.SetPos(p_transform->position);		// 発射する直前の位置を送る
+			//bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
 			changeScene = true;								// changeSceneを有効にする
 			oldani = anipos;								// 再生しているアニメーションを古いものとする
 			currentState = GunEnemy::defoult;				// defoultに移行	
 		}
-	}
-}
-	/*
-	if (!bullet)return;
-	bullet->SetOwner(this);
-	bullet->SetPos(p_transform->position);
-	*/
-
-	/*
-	timer++;
-	std::cout << "シューティング\n";
-	GetComponent<SpriteAnimator>()->Stop(GetDirection() * 2 + 1);
-	GetComponent<SpriteAnimator>()->Play(GetDirection() * 2);
-	if (timer > 11)
-	{
-		timer = 0;
-		currentState = State::defoult; 
-		bullet->SetPos(p_transform->position);
-		bullet->SetIsActive(true); // 弾オブジェクトをアクティブに
-		bullet->SetBulletActive(true);
-		std::cout << "弾オブジェクト発射!!\n";
-		GetComponent<SpriteAnimator>()->Stop(GetDirection() * 2 + 1);
 	}*/
+}
 
 
 void GunEnemy::Dead()
@@ -338,8 +337,8 @@ void GunEnemy::Dead()
 	GetComponent<SpriteAnimator>()->Play(8);
 
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
-	GetComponent<GameObject>()->SetIsActive(false);
-	*/
+	GetComponent<GameObject>()->SetIsActive(false);*/
+	
 }
 
 void GunEnemy::OnCollisionEnter(Collider* _p_col)

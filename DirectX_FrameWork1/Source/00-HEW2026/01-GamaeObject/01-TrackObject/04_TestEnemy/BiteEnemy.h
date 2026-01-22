@@ -59,5 +59,5 @@ public:
 	* @brief	コライダー同士が衝突した際の処理
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
-	void OnCollisionEnter(Collider* _p_col) override;
+	void OnCollisionEnter(Collider* _p_col) override {};
 };

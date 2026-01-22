@@ -8,7 +8,7 @@
 
 class BoxCollider2D;
 
-// このエネミーのタグ:"Enemy"
+// このエネミーのタグ:"Bite"
 
 BiteEnemy::BiteEnemy()
 {
@@ -24,7 +24,7 @@ BiteEnemy::~BiteEnemy()
 void BiteEnemy::Init(const int& direction)
 {
 	timer = 0;									// タイマーの初期化
-	tag = BiteEnemyParam::tag;					// タグ:Enemy
+	tag = BiteEnemyParam::tag;					// タグ:Bite
 	anipos = BiteEnemyParam::anipos;
 	oldani = BiteEnemyParam::oldani;
 	hitstoptime = BiteEnemyParam::hitstoptime;	// ヒットストップ時間
@@ -260,22 +260,22 @@ void BiteEnemy::Init(const int& direction)
 	}
 	
 	// 本体のコライダーの設定
-	bodyCollider = AddComponent<BoxCollider2D>();
+	//bodyCollider = AddComponent<BoxCollider2D>();
 	
 	// 攻撃マスの位置を自身のサイズ分,ずらす
-	const hft::HFFLOAT3 size = bodyCollider->GetSize();
-	offset[0] = { size.x,0.0f,0.0f };
-	offset[1] = { 0.0f,size.y,0.0f };
-	offset[2] = { -(size.x),0.0f,0.0f };
-	offset[3] = { 0.0f,-(size.y),0.0f };
+	//const hft::HFFLOAT3 size = bodyCollider->GetSize();
+	//offset[0] = { size.x,0.0f,0.0f };
+	//offset[1] = { 0.0f,size.y,0.0f };
+	//offset[2] = { -(size.x),0.0f,0.0f };
+	//offset[3] = { 0.0f,-(size.y),0.0f };
 
 	//攻撃マスの設定
-	attackCollider = AddComponent<BoxCollider2D>();
-	attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
-	attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
-	attackCollider->SetIsActive(false);
+	//attackCollider = AddComponent<BoxCollider2D>();
+	//attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
+	//attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
+	//attackCollider->SetIsActive(false);
 
-	std::cout << "BiteEnemyパラメータ完了\n";
+	//std::cout << "BiteEnemyパラメータ完了\n";
 }
 
 // 更新===============================================================
@@ -304,8 +304,8 @@ void BiteEnemy::Defoult1()
 	// 方向を取得
 	int dir = GetDirection();
 	////デバック用
-	std::cout << "通常状態1実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
+	//std::cout << "通常状態1実行中\n";
+	//std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
@@ -352,8 +352,8 @@ void BiteEnemy::Attack()
 	// 方向を取得
 	int dir = GetDirection();
 	////デバック用
-	std::cout << "攻撃状態実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
+	//std::cout << "攻撃状態実行中\n";
+	//std::cout << "現在の方向:" << GetDirection() << "\n";
 
 
 	if (changeState == true)
@@ -369,18 +369,18 @@ void BiteEnemy::Attack()
 			// 方向によるアニメーションの反転なし
 		}
 		
-		attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
+		//attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
-		attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
-		std::cout << "攻撃コライダーアクティブ\n";
+		//attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
+		//std::cout << "攻撃コライダーアクティブ\n";
 	}
-	std::cout << attackCollider->GetOffset().x << "," << attackCollider->GetOffset().y << "," << attackCollider->GetOffset().z;
+	//std::cout << attackCollider->GetOffset().x << "," << attackCollider->GetOffset().y << "," << attackCollider->GetOffset().z;
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
-		std::cout << "攻撃コライダー非アクティブ\n";
+		//attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
+		//std::cout << "攻撃コライダー非アクティブ\n";
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -395,8 +395,8 @@ void BiteEnemy::Defoult2()
 	// 方向を取得
 	int dir = GetDirection();
 	////デバック用
-	std::cout << "通常状態2実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
+	//std::cout << "通常状態2実行中\n";
+	//std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
@@ -481,8 +481,8 @@ void BiteEnemy::Dead()
 	// 方向を取得
 	int dir = GetDirection();
 	////デバック用
-	std::cout << "死亡状態実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
+	//std::cout << "死亡状態実行中\n";
+	//std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
@@ -495,7 +495,7 @@ void BiteEnemy::Dead()
 	if (timer >= deadtime)
 	{
 		timer = 0;
-		std::cout << "BiteEnemy機能停止\n";
+		//std::cout << "BiteEnemy機能停止\n";
 		this->SetIsActive(false);
 		this->SetIsRender(false);
 
@@ -504,6 +504,7 @@ void BiteEnemy::Dead()
 
 //@brief	コライダー同士が衝突した際の処理
 // @param	Collider2D* _p_col	2D用コライダーのポインタ
+/*
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	std::cout << "ヒット\n";
@@ -530,4 +531,4 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		// 攻撃がヒット
 		std::cout << "BiteEnemyの攻撃がヒット\n";
 	}
-}
+}*/

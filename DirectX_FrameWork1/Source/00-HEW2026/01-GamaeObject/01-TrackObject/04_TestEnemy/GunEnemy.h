@@ -39,7 +39,7 @@ private:
 
 	
 	// 弾オブジェクト
-	BulletObject bullet;
+	//BulletObject bullet;
 
 public:
 	GunEnemy();
