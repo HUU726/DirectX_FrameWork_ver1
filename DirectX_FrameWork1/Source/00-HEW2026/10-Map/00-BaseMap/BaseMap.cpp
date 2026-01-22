@@ -301,20 +301,19 @@ void BaseMap::CreateTiles()
 
 	for (int y = 0; y < height; y++)
 	{
-		int index = y * width;
 		float posY = leftTopPos.y - (tileScale * y);
 		for (int x = 0; x < width; x++)
 		{
 			auto tileObject = new	TrackObject;
 			auto renderer = tileObject->GetComponent<SpriteRenderer>();
 			renderer->LoadTexture("Assets/01-Texture/01-Map/Tile.png");
-			tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
+			auto p_trf = tileObject->GetTransformPtr();
+			p_trf->scale = { tileScale,tileScale };
 
 			float posX = leftTopPos.x + (tileScale * x);
-			tileObject->GetTransformPtr()->position = { posX,posY,0 };
+			p_trf->position = { posX,posY,10 };
 			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
 			tileObjects.push_back(tileObject);
-			index++;
 		}
 	}
 
@@ -349,6 +348,7 @@ void BaseMap::CreateObjects()
 				{
 					PlayerObject* p_obj = new PlayerObject;
 					p_obj->Init(this, &Input::GetInstance());
+					p_obj->GetTransformPtr()->position.z = -1;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -357,6 +357,7 @@ void BaseMap::CreateObjects()
 					biteVec += 1;
 					BiteEnemy* p_obj = new BiteEnemy;
 					p_obj->Init(*biteVec);
+					p_obj->GetTransformPtr()->position.z = -2;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -365,18 +366,23 @@ void BaseMap::CreateObjects()
 					++gunVec;
 					GunEnemy* p_obj = new GunEnemy;
 					p_obj->Init(*gunVec);
+					p_obj->GetTransformPtr()->position.z = -3;
 					p_trackObj = p_obj;
 				}
 				break;
 			case BOMB_ENEMY:
-			{
-				
-			}
+				{
+					BombEnemy* p_obj = new BombEnemy;
+					p_obj->Init();
+					p_obj->GetTransformPtr()->position.z = -4;
+					p_trackObj = p_obj;
+				}
 				break;
 			case CONNECT_OBJ:
 				{
 					ConnectObject* p_obj = new ConnectObject;
 					p_obj->Init();
+					p_obj->GetTransformPtr()->position.z = -5;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -384,6 +390,7 @@ void BaseMap::CreateObjects()
 				{
 					ThormObject* p_obj = new ThormObject;
 					p_obj->Init();
+					p_obj->GetTransformPtr()->position.z = -6;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -398,7 +405,6 @@ void BaseMap::CreateObjects()
 			Transform* p_trf = p_trackObj->GetTransformPtr();
 			p_trf->position.x = leftTopPos.x + (tileScale * indexX);
 			p_trf->position.y = leftTopPos.y - (tileScale * indexY);
-			p_trf->position.z = -1;
 			p_trf->scale = p_trf->scale * scaleRaito;
 			onMapTrackObjects.push_back(p_trackObj);
 
@@ -412,6 +418,9 @@ BaseMap::BaseMap()
 	p_transform->position.x = MAP_CENTER_POSX;
 	p_transform->position.y = MAP_CENTER_POSY;
 
+	powerDownFlame = 35;
+	powerDownRatio = 0.8f;
+
 	biteEnemyVecs.emplace_back(0);
 	gunEnemyVecs.emplace_back(0);
 
@@ -421,7 +430,7 @@ BaseMap::BaseMap()
 		auto renderer = BGImg->GetComponent<SpriteRenderer>();
 		renderer->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
 		auto p_trf = BGImg->GetTransformPtr();
-		p_trf->position.z = 10;
+		p_trf->position.z = 50;
 		p_trf->scale = { SCREEN_WIDTH,SCREEN_HEIGHT,1 };
 	}
 }
@@ -589,7 +598,7 @@ void BaseMap::Init()
 			p_trf->scale.y = (SCREEN_HEIGHT / 2.f) - l_leftop.y;
 			p_trf->position.x = MAP_CENTER_POSX;
 			p_trf->position.y = l_leftop.y + (p_trf->scale.y / 2.f);
-			p_trf->position.z = -5;
+			p_trf->position.z = -50;
 		}
 		//下カバー
 		{
@@ -599,7 +608,7 @@ void BaseMap::Init()
 			p_trf->scale.y = l_ritbot.y - (-SCREEN_HEIGHT);
 			p_trf->position.x = MAP_CENTER_POSX;
 			p_trf->position.y = l_ritbot.y - (p_trf->scale.y / 2.f);
-			p_trf->position.z = -5;
+			p_trf->position.z = -50;
 		}
 		//右カバー
 		{
@@ -609,7 +618,7 @@ void BaseMap::Init()
 			p_trf->scale.y = SCREEN_HEIGHT;
 			p_trf->position.x = l_ritbot.x + (p_trf->scale.x / 2.f);
 			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -5;
+			p_trf->position.z = -50;
 		}
 		//左カバー
 		{
@@ -619,7 +628,7 @@ void BaseMap::Init()
 			p_trf->scale.y = SCREEN_HEIGHT;
 			p_trf->position.x = l_leftop.x - (p_trf->scale.x / 2.f);
 			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -5;
+			p_trf->position.z = -50;
 		}
 
 	}
@@ -636,16 +645,6 @@ void BaseMap::Init(const int& _width, const int& _height)
 	width = _width + 2;
 	height = _height + 2;
 
-	int tileNum = height * width;
-	for (int i = 0; i < tileNum; i++)
-	{
-		auto tileObject = new	TrackObject;
-		auto renderer = tileObject->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/01-Map/Tile.png");
-		tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
-		tileObjects.push_back(tileObject);
-	}
-
 	leftTopPos.x = MAP_CENTER_POSX - (width / 2.0f * tileScale) + tileScaleHalf;
 	leftTopPos.y = MAP_CENTER_POSY + (height / 2.0f * tileScale) - tileScaleHalf;
 	rightBottomPos.x = leftTopPos.x + ((width - 1) * tileScale);
@@ -653,14 +652,18 @@ void BaseMap::Init(const int& _width, const int& _height)
 
 	for (int y = 0; y < height; y++)
 	{
-		int index = y * width;
 		float posY = leftTopPos.y - (tileScale * y);
 		for (int x = 0; x < width; x++)
 		{
+			auto tileObject = new	TrackObject;
+			auto renderer = tileObject->GetComponent<SpriteRenderer>();
+			renderer->LoadTexture("Assets/01-Texture/01-Map/Tile.png");
+			tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
+
 			float posX = leftTopPos.x + (tileScale * x);
-			tileObjects.at(index)->GetTransformPtr()->position = { posX,posY,0 };
-			tileObjects.at(index)->SetLineIndex(hft::HFFLOAT2(x, y));
-			index++;
+			tileObject->GetTransformPtr()->position = { posX,posY,0 };
+			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
+			tileObjects.push_back(tileObject);
 		}
 	}
 
@@ -739,9 +742,6 @@ void BaseMap::Init(const int& _width, const int& _height)
 		p_trf->position.z = -1;
 		onMapTrackObjects.push_back(bom);
 	}
-
-	powerDownFlame = 60;
-	powerDownRatio = 0.8f;
 
 	for (auto& obj : onMapTrackObjects)
 	{

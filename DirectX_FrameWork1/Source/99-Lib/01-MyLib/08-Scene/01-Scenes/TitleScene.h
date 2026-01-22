@@ -32,7 +32,7 @@ private:
 	//TestEnemy testEnemy;
 	//TestAnimation2D testAnimation2D;
 
-	Map3 map;
+	Map1 map;
 public:
 	~TitleScene() override;
 
