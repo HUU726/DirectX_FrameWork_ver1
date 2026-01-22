@@ -670,6 +670,26 @@ void BaseMap::Init(const int& _width, const int& _height)
 		onMapTrackObjects.push_back(p_obj);
 	}
 
+	//{
+	//	ThormObject* thorm = new ThormObject;
+	//	thorm->Init();
+	//}
+
+	//{
+	//	ConnectObject* connect = new ConnectObject;
+	//	connect->Init();
+	//}
+
+	{
+		BombEnemy* bom = new BombEnemy;
+		bom->Init();
+		Transform* p_trf = bom->GetTransformPtr();
+		p_trf->position.x = leftTopPos.x + (tileScale * 4);
+		p_trf->position.y = leftTopPos.y - (tileScale * 4);
+		p_trf->position.z = -1;
+		onMapTrackObjects.push_back(bom);
+	}
+
 	powerDownFlame = 60;
 	powerDownRatio = 0.8f;
 
