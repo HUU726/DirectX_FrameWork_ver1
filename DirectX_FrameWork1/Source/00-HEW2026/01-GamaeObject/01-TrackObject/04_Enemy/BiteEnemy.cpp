@@ -260,20 +260,20 @@ void BiteEnemy::Init(const int& direction)
 	}
 	
 	// 本体のコライダーの設定
-	//bodyCollider = AddComponent<BoxCollider2D>();
+	bodyCollider = AddComponent<BoxCollider2D>();
 	
 	// 攻撃マスの位置を自身のサイズ分,ずらす
-	//const hft::HFFLOAT3 size = bodyCollider->GetSize();
-	//offset[0] = { size.x,0.0f,0.0f };
-	//offset[1] = { 0.0f,size.y,0.0f };
-	//offset[2] = { -(size.x),0.0f,0.0f };
-	//offset[3] = { 0.0f,-(size.y),0.0f };
+	const hft::HFFLOAT3 size = bodyCollider->GetSize();
+	offset[0] = { size.x,0.0f,0.0f };
+	offset[1] = { 0.0f,size.y,0.0f };
+	offset[2] = { -(size.x),0.0f,0.0f };
+	offset[3] = { 0.0f,-(size.y),0.0f };
 
 	//攻撃マスの設定
-	//attackCollider = AddComponent<BoxCollider2D>();
-	//attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
-	//attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
-	//attackCollider->SetIsActive(false);
+	attackCollider = AddComponent<BoxCollider2D>();
+	attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
+	attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
+	attackCollider->SetIsActive(false);
 
 	//std::cout << "BiteEnemyパラメータ完了\n";
 }
@@ -369,17 +369,17 @@ void BiteEnemy::Attack()
 			// 方向によるアニメーションの反転なし
 		}
 		
-		//attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
+		attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
-		//attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
+		attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
 		//std::cout << "攻撃コライダーアクティブ\n";
 	}
 	//std::cout << attackCollider->GetOffset().x << "," << attackCollider->GetOffset().y << "," << attackCollider->GetOffset().z;
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		//attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
+		attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
 		//std::cout << "攻撃コライダー非アクティブ\n";
 		timer = 0;
 		anipos++;
@@ -504,7 +504,6 @@ void BiteEnemy::Dead()
 
 //@brief	コライダー同士が衝突した際の処理
 // @param	Collider2D* _p_col	2D用コライダーのポインタ
-/*
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	std::cout << "ヒット\n";
@@ -531,4 +530,4 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		// 攻撃がヒット
 		std::cout << "BiteEnemyの攻撃がヒット\n";
 	}
-}*/
+}

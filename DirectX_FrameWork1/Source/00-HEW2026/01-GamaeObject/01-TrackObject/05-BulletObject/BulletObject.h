@@ -71,5 +71,5 @@ public:
 	void SetPos(const hft::HFFLOAT3& NewPosition) { p_transform->position = NewPosition; }// ç¿ïWéwíË
 	void Defoult();
 	void Blast();
-	//void OnCollisionEnter(Collider* _p_col) override;
+	void OnCollisionEnter(Collider* _p_col) override;
 };

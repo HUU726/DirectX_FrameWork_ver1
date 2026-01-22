@@ -110,27 +110,26 @@ void BulletObject::Defoult()
 
 	if (timer <= livetime)
 	{
-		UpdatePos();		// 座標更新
-		CheakMyPos();		// マップの枠から出ないかチェック
+		UpdatePos();										// 座標更新
+		CheakMyPos();										// マップの枠から出ないかチェック
 	}
 	if (timer > livetime)
 	{
-		timer = 0;	// フレーム数リセット
+		timer = 0;											// フレーム数リセット
 		startScene = true;
-		currentState = BulletObject::blast;	// 状態を移行
+		currentState = BulletObject::blast;					// 状態を移行
 	}
 }
 
 
 //===============================================================================================
-// フレーム数を超過した場合、初期化しする
+// フレーム数を超過した場合、初期化する
 //===============================================================================================
 void BulletObject::Blast()
 {
 	if (startScene == true)
 	{
 		startScene = false;
-		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定をアクティブ
 		GetComponent<SpriteAnimator>()->Stop(0);
 		this->SetIsRender(false);
 		std::cout << "弾オブジェクト破裂アニメーション\n";
@@ -205,7 +204,6 @@ void BulletObject::CheakMyPos()
 //==================================================================================================
 // OnCollisionEnterの処理
 //==================================================================================================
-/*
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
 	if (!_p_col)return;
@@ -221,4 +219,4 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 		std::cout << "弾オブジェクトが何かにヒット\n";
 		currentState = blast;
 	}
-}*/
+}
