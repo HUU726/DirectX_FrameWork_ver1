@@ -46,18 +46,18 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
     // プレイヤー自身の初期化
     auto renderer = GetComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/99-Test/char01.png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");
 
-    hft::HFFLOAT2 div = { 3.0f, 4.0f };
+    hft::HFFLOAT2 div = { 8.0f, 8.0f };
 
     auto animator = AddComponent<SpriteAnimator>(div);
 
     // 引数: 分割数, 開始位置(x,y), コマ数
     // 立ち状態のアニメーション作成 (ANIM_STAND = 0)
-    SpriteAnimation animStand(div, { 0.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+    SpriteAnimation animStand(div, { 0.0f, 0.0f }, 10);
+    for (int i = 0; i < 10; i++)
     {
-        animStand.GetCellRef(i).flame = 15;
+        animStand.GetCellRef(i).flame = 10;
     }
     animStand.SetType(SPRITE_ANIM_TYPE::LOOP);
     animStand.SetID(ANIM_STAND);
