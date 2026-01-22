@@ -2,7 +2,6 @@
 #include "../../../../99-Lib/01-MyLib/998-FH_Types/HF_FLOAT.h"
 
 //連結ブロックのパラメータ
-
 namespace ConnectObjectParam
 {
 	//本体のパラメータ

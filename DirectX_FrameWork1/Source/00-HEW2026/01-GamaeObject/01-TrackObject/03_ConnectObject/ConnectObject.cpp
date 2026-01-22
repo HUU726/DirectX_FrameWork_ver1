@@ -199,14 +199,16 @@ void ConnectObject::EmitAttackAtConnection(const hft::HFFLOAT3 tarPos)
 	//自身の座標からどの向きに繋がっているか
 	hft::HFFLOAT3 connectDir = GetConnectionAxis(myPos, tarPos);
 
-	//マスのサイズ
-	float cellSize = ConnectObjectParam::searchCollCellSize;
+	SpawnAttackObjects(tarPos, connectDir);
 
-	//間のマス数
-	int connectCellCount = GetContactTileDistance(myPos, tarPos, cellSize);
+	////マスのサイズ
+	//float cellSize = ConnectObjectParam::searchCollCellSize;
 
-	//間のオブジェクトを生成
-	SpawnAttackObjects(myPos, connectDir, connectCellCount, cellSize);
+	////間のマス数
+	//int connectCellCount = GetContactTileDistance(myPos, tarPos, cellSize);
+
+	////間のオブジェクトを生成
+	//SpawnAttackObjects(myPos, connectDir, connectCellCount, cellSize);
 }
 
 
@@ -249,6 +251,26 @@ int ConnectObject::GetContactTileDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3
 
 	//0.5を足して四捨五入。整数に近い値にする
 	return static_cast<int>(distance + 0.5f);
+}
+
+
+float ConnectObject::GetContactDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos)
+{
+	hft::HFFLOAT3 dir = tarPos - originPos;
+	hft::HFFLOAT3 connectDir = GetConnectionAxis(originPos, tarPos);
+
+	//浮動小数点の誤差を考慮して四捨五入
+	float distance;
+	if (connectDir.x != 0.0f)
+	{
+		distance = dir.x;
+	}
+	else
+	{
+		distance = dir.y;
+	}
+
+	return distance;
 }
 
 void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount,float cellSize)
@@ -322,14 +344,32 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 }
 
 
-void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir)
+void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir)
 {
-	//オブジェクトの生成位置
-	hft::HFFLOAT3 spawnPos = GetTransform().position;
 
 	//表示する画像の向き、縦と横の向きを切り替える
 	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackVertRotation;
-	if (connectDir.y <= 0) { texRotation = ConnectObjectParam::emitAttackHoriRotation; }
+	if (connectDir.y <= 0)
+	{
+		texRotation = ConnectObjectParam::emitAttackHoriRotation;
+	}
+
+	//自身の位置
+	hft::HFFLOAT3 myPos = GetTransform().position;
+	
+	//距離を計る
+	float distance = GetContactDistance(myPos, tarPos);
+	
+	//オブジェクトの生成位置
+	hft::HFFLOAT3 spawnPos;
+
+	//サイズを設定
+	hft::HFFLOAT2 size = { distance, 0.f };
+	if (connectDir.y <= 0)
+	{
+		size = { 0.f, distance };
+	}
+
 
 	//自身の座標から接触相手の座標までの間のマスに攻撃判定用オブジェクトを配置する
 	GameObject2D* attackObj = nullptr;
@@ -340,7 +380,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 	{
 		if (!obj->GetTransform().GetIsActive())
 		{
-			//ある場合はそれを生成位置に持ってくる
+			//ある場合はそのオブジェクトを使う
 			attackObj = obj;
 			foundUnused = true;
 			break;
@@ -351,12 +391,15 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 	if (!foundUnused)
 	{
 		attackObj = new GameObject2D;
-		attackObj->GetComponent<SpriteRenderer>()->;
+		attackObj->GetComponent<SpriteRenderer>()->LoadTexture(ConnectObjectParam::emitAttackTexName);
+		attackObj->AddComponent<BoxCollider2D>();
 	}
-	else
-	{
+	
+	//位置の設定
+	
 
-	}
+	//コライダーとレンダラーのサイズ設定
+
 }
 
 
