@@ -20,7 +20,7 @@ void TuningFork::Init()
     p_transform->scale = { 100.0f, 100.0f, 1.0f };
 
     auto renderer = GetComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/99-Test/char01.png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/TuningFork.png");
 
     // デフォルトはプレビュー用（半透明・非表示）
     renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 0.0f, 0.5f };

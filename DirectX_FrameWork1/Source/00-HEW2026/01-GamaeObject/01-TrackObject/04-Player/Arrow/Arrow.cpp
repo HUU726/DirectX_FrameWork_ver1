@@ -16,7 +16,7 @@ void Arrow::Init()
     p_transform->scale = { 100.0f, 100.0f, 1.0f };
 
     auto renderer = GetComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/99-Test/arrow.png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/Arrow.png");
 
     renderer->SetIsActive(false);
 }

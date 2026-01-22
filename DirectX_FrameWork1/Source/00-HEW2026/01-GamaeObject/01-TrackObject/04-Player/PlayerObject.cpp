@@ -5,6 +5,7 @@
 #include "../../../10-Map/00-BaseMap/BaseMap.h"
 
 #include "../../../../04-Input/Input.h"
+#include "../../../../99-Lib/01-MyLib/03-Sound/Fsound.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
@@ -42,11 +43,11 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     pMap = _pMap;
     pInput = _pInput;
 
-    p_transform->scale = { 100.0f, 100.0f, 1.0f };
+    p_transform->scale = { 200.0f, 200.0f, 1.0f };
 
     // プレイヤー自身の初期化
     auto renderer = GetComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations .png");
 
     hft::HFFLOAT2 div = { 8.0f, 8.0f };
 
@@ -94,23 +95,23 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     animator->AddAnimation(animSwingV);
 
     // 被弾 (ANIM_HIT = 4)
-    SpriteAnimation animHit(div, { 0.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+    SpriteAnimation animHit(div, { 2.0f, 1.0f }, 7);
+    for (int i = 0; i < 7; i++)
     {
-        animHit.GetCellRef(i).flame = 1;
+        animHit.GetCellRef(i).flame = 7;
     }
-    animHit.SetType(SPRITE_ANIM_TYPE::LOOP);
+    animHit.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animHit.SetID(ANIM_HIT);
     animator->AddAnimation(animHit);
 
-    // 被弾 (ANIM_DEAD = 5)
-    SpriteAnimation animDead(div, { 0.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+    // ミス (ANIM_DEAD = 5)
+    SpriteAnimation animDead(div, { 1.0f, 2.0f }, 7);
+    for (int i = 0; i < 7; i++)
     {
-        animDead.GetCellRef(i).flame = 0;
+        animDead.GetCellRef(i).flame = 7;
     }
-    animDead.SetType(SPRITE_ANIM_TYPE::LOOP);
-    animDead.SetID(ANIM_HIT);
+    animDead.SetType(SPRITE_ANIM_TYPE::NORMAL);
+    animDead.SetID(ANIM_DEAD);
     animator->AddAnimation(animDead);
 
     // 最初に立ち状態を再生しておく
@@ -131,6 +132,8 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 {
+    if (pInput->GetKeyTrigger(13)) { OnHit();};
+
     // 行動不能判定
     if (pMap)
     {
@@ -558,6 +561,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 
     case PLAYER_STATE::DEAD:
         animator->Stop(ANIM_DEAD);
+        break;
     }
 
     state = _nextState; //ステート更新

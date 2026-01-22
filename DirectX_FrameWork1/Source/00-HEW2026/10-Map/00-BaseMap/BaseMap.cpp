@@ -412,6 +412,7 @@ BaseMap::BaseMap()
 	biteEnemyVecs.emplace_back(0);
 	gunEnemyVecs.emplace_back(0);
 
+	/*
 	//”wŒi“Ç‚Ýž‚Ý
 	{
 		BGImg = new GameObject2D;
@@ -421,6 +422,7 @@ BaseMap::BaseMap()
 		p_trf->position.z = -10;
 		p_trf->scale = { SCREEN_WIDTH,SCREEN_HEIGHT,1 };
 	}
+	*/
 }
 
 BaseMap::~BaseMap()

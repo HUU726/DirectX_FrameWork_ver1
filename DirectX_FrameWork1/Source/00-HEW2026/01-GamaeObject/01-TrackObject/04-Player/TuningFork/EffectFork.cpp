@@ -10,7 +10,7 @@ void EffectFork::Init()
     p_transform->position.z = -5.0f; // 手前に表示
 
     auto renderer = AddComponent<SpriteRenderer>();
-    renderer->LoadTexture("Assets/01-Texture/99-Test/char01.png");
+    renderer->LoadTexture("Assets/01-Texture/02-Player/TuningFork.png");
 
     // 最初から実体（不透明）
     renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 0.0f, 1.0f };
