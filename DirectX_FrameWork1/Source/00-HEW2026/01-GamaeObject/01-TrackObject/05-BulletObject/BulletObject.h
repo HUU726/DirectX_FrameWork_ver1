@@ -4,6 +4,8 @@
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 
+// ƒ}ƒbƒv‚ª5~5‚Ì‚Éˆá˜aŠ´‚È‚¢‚æ‚¤‚É‚·‚é
+
 class BoxCollider2D;
 class BaseMap;
 
