@@ -27,31 +27,11 @@ void ConnectObject::Init()
 	{
 		p_transform->scale = ConnectObjectParam::mainBodyScale;
 
-		//スプライトレンダラー、アニメーターの設定
-		{
-			const char* texName = ConnectObjectParam::mainBodyTexName;
-			std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(texName);
+		//スプライトレンダラー
+		const char* texName = ConnectObjectParam::mainBodyTexName;
+		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(texName);
 
-			//SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
-			//hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
-
-			//{
-			//	SpriteAnimation anim(div, { 0,0 }, 9);
-			//	anim.SetID(0);
-
-			//	anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-			//	anim.SetPriority(0);
-			//	float flame = 60;
-
-			//	for (int i = 0; i < 9; i++)
-			//	{
-			//		anim.GetCellRef(i).flame = flame;
-			//	}
-
-			//	p_spriteAnimator->AddAnimation(anim);
-			//}
-		}
-
+		//コライダー
 		bodyCollider = AddComponent<BoxCollider2D>();
 	}
 
@@ -165,20 +145,6 @@ void ConnectObject::SearchConnectedState()
 
 			hft::HFFLOAT3 curDiff = myPos - connectTfmArray[trfIdx];
 			hft::HFFLOAT3 sameDiff = myPos - connectTfmArray[sameTfmIdx];
-
-			//float curDist = sqrtf(curDiff.x * curDiff.x + curDiff.y * curDiff.y);
-			//float sameDist = sqrtf(sameDiff.x * sameDiff.x + sameDiff.y * sameDiff.y);
-
-			//より遠い方を消す
-			//if (curDist > sameDist)
-			//{
-			//	deleteIdx[trfIdx] = true;
-			//}
-			//else
-			//{
-			//	deleteIdx[sameTfmIdx] = true;
-			//	connectDirIndexArray[dirIdx] = trfIdx;
-			//}
 
 			float curDistSq = curDiff.x * curDiff.x + curDiff.y * curDiff.y;
 			float sameDistSq = sameDiff.x * sameDiff.x + sameDiff.y * sameDiff.y;
@@ -324,7 +290,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 			attackObj->Init();
 
 			//レンダラーの設定
-			SpriteRenderer* renderer = attackObj->AddComponent<SpriteRenderer>();
+			SpriteRenderer* renderer = attackObj->GetComponent<SpriteRenderer>();
 			const char* texName = ConnectObjectParam::emitAttackTexName;
 			renderer->LoadTexture(texName);
 
@@ -352,6 +318,44 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 
 		//生成位置を次のマスに移動させる
 		spawnPos += tileStep;
+	}
+}
+
+
+void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir)
+{
+	//オブジェクトの生成位置
+	hft::HFFLOAT3 spawnPos = GetTransform().position;
+
+	//表示する画像の向き、縦と横の向きを切り替える
+	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackVertRotation;
+	if (connectDir.y <= 0) { texRotation = ConnectObjectParam::emitAttackHoriRotation; }
+
+	//自身の座標から接触相手の座標までの間のマスに攻撃判定用オブジェクトを配置する
+	GameObject2D* attackObj = nullptr;
+	bool foundUnused = false;
+
+	//既存の配列の中から非アクティブなものを探す
+	for (GameObject2D* obj : emitAttackObjects)
+	{
+		if (!obj->GetTransform().GetIsActive())
+		{
+			//ある場合はそれを生成位置に持ってくる
+			attackObj = obj;
+			foundUnused = true;
+			break;
+		}
+	}
+
+	//配列内から見つからなければ新規作成
+	if (!foundUnused)
+	{
+		attackObj = new GameObject2D;
+		attackObj->GetComponent<SpriteRenderer>()->;
+	}
+	else
+	{
+
 	}
 }
 

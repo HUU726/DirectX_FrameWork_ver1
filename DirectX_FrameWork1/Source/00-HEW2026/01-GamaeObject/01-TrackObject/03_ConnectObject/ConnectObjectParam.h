@@ -16,7 +16,7 @@ namespace ConnectObjectParam
 
 
 	//攻撃用オブジェクトのパラメータ
-	const char* emitAttackTexName = "Assets/01-Texture/99-Test/Connect_V.png";
+	const char* emitAttackTexName = "Assets/01-Texture/03-Enemy/Connect_V.png";
 	const hft::HFFLOAT3 emitAttackVertRotation = { 0.f, 0.f, 90.f }; //横に繋がった時の画像の向き
 	const hft::HFFLOAT3 emitAttackHoriRotation = { 0.f, 0.f,  0.f }; //縦に繋がった時の画像の向き
 }

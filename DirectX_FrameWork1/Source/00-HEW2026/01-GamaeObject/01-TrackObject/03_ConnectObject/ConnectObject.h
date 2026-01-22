@@ -58,6 +58,8 @@ public:
 	//自身の座標から接触相手の座標まで、縦横いずれかの向きで攻撃判定用オブジェクトを配置する
 	void SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount, float cellSize);
 
+	void SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir);
+
 	//自身の生成番号を取得
 	const int GetInstanceNumber() { return myInstanceNumber; }
 
