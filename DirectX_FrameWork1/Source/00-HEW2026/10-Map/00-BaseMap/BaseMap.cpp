@@ -397,6 +397,7 @@ void BaseMap::CreateObjects()
 			p_trf->position.x = leftTopPos.x + (tileScale * x);
 			p_trf->position.y = leftTopPos.y - (tileScale * y);
 			p_trf->position.z = -1;
+			p_trf->scale = p_trf->scale * scaleRaito;
 			onMapTrackObjects.push_back(p_trackObj);
 
 		}
@@ -418,7 +419,7 @@ BaseMap::BaseMap()
 		auto renderer = BGImg->GetComponent<SpriteRenderer>();
 		renderer->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
 		auto p_trf = BGImg->GetTransformPtr();
-		p_trf->position.z = -10;
+		p_trf->position.z = 10;
 		p_trf->scale = { SCREEN_WIDTH,SCREEN_HEIGHT,1 };
 	}
 }
@@ -431,6 +432,9 @@ BaseMap::~BaseMap()
 
 	for (auto& p_obj : onMapTrackObjects)
 		delete p_obj;
+
+	for (auto& cover : covers)
+		delete cover;
 
 	delete BGImg;
 }
@@ -676,6 +680,8 @@ void BaseMap::Init(const int& _width, const int& _height)
 	}
 }
 
+#include "../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
+#include "../../../99-Lib/01-MyLib/08-Scene/01-Scenes/GameScene.h"
 void BaseMap::Update()
 {
 
@@ -698,6 +704,8 @@ void BaseMap::Update()
 		SetSlideData(hft::HFFLOAT2(2, 3), hft::HFFLOAT2(0, 1), 6);
 	}
 
+	if (GetAsyncKeyState(VK_UP))
+		SceneManager::GetInstance().LoadScene<GameScene>();
 
 	Slide();
 	//std::cout << "index X  :  " << onMapTrackObjects.at(0)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

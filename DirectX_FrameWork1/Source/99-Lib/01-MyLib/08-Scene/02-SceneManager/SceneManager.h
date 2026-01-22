@@ -6,6 +6,7 @@ class SceneManager
 private:
 	std::unique_ptr<BaseScene> curScene;	//現在のシーン
 	std::unique_ptr<BaseScene> nextScene;	//次のシーン
+	bool nextFlg;
 
 	SceneManager() = default;
 	~SceneManager() = default;
@@ -17,16 +18,14 @@ public:
 		return instance;
 	}
 
-	bool GetNext() { return nextScene.get(); }
+	bool GetNext() { return nextFlg; }
 
 	void Init();
 	void UnInit();
 	
-	/**
-	* @brief	シーンをロード
-	* @param	std::unique_ptr<BaseScene>	_up_scene	ユニークポインタのシーン
-	*/
-	void LoadScene(std::unique_ptr<BaseScene> _uq_scene);
+	template<typename T>
+	void LoadScene();
+
 	void ChangeScene();	// シーン変更
 
 	void SetUpScene();	// シーンのセットアップ
@@ -34,3 +33,19 @@ public:
 
 };
 
+
+#include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
+#include "../../07-Component/03-Collider/99-ColliderManager/00-ColliderManager/ColliderManager.h"
+#include "../../07-Component/03-Collider/01-Collider2D/00-Collider2D/Collider2D.h"
+#include "../../07-Component/03-Collider/02-Collider3D/00-Collider3D/Collider3D.h"
+template<typename T>
+inline void SceneManager::LoadScene()
+{
+	{
+		GameObjectManager::GetInstance().ClearWaitingQueue();
+		ColliderManager<Collider2D>::GetInstance().ClearCollider();
+		ColliderManager<Collider3D>::GetInstance().ClearCollider();
+		nextScene = std::make_unique<T>();
+		nextFlg = true;
+	}
+}

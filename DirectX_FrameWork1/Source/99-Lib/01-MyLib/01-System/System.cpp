@@ -101,7 +101,9 @@ void System::BeforeRender_CompMngsAction()
 void System::RendererCompMngAction()
 {
 	rendererMng.ClearScreen();
-	compMngs[COMP_MNG_TYPES::COMP_RENDERER3D]->Action();
-	compMngs[COMP_MNG_TYPES::COMP_RENDERER2D]->Action();
+	if (compMngs[COMP_MNG_TYPES::COMP_RENDERER3D] != nullptr)
+		compMngs[COMP_MNG_TYPES::COMP_RENDERER3D]->Action();
+	if (compMngs[COMP_MNG_TYPES::COMP_RENDERER2D] != nullptr)
+		compMngs[COMP_MNG_TYPES::COMP_RENDERER2D]->Action();
 	rendererMng.SwapChain();
 }
