@@ -324,6 +324,7 @@ void BaseMap::CreateTiles()
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
 #include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BiteEnemy.h"
 #include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/GunEnemy.h"
+#include "../../01-GamaeObject/01-TrackObject/04_TestEnemy/BombEnemy.h"
 #include "../../01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include "../../01-GamaeObject/01-TrackObject/02_ThornObject/ThormObject.h"
 #include "../../../04-Input/Input.h"
@@ -562,7 +563,8 @@ bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
 void BaseMap::Init()
 {
 	CreateMap();
-
+	CreateTiles();
+	CreateObjects();
 }
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"

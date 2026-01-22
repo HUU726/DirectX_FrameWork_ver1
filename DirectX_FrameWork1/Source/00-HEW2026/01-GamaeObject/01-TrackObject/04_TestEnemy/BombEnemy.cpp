@@ -1,4 +1,4 @@
-#include "BomEnemy.h"
+#include "BombEnemy.h"
 
 #include "../03_ConnectObject/ConnectObject.h"
 
