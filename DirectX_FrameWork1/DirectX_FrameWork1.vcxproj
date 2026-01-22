@@ -154,7 +154,10 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\Enemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\GunEnemy.cpp" />
-    <ClCompile Include="Source\00-HEW2026\10-Map\Map1.cpp" />
+    <ClCompile Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\10-Map\Map.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene2.cpp" />
     <ClCompile Include="Source\04-Input\Input.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.cpp" />
@@ -245,7 +248,9 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\TuningFork.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\Enemy.h" />
-    <ClInclude Include="Source\00-HEW2026\10-Map\Map1.h" />
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.h" />
+    <ClInclude Include="Source\00-HEW2026\10-Map\Map.h" />
+    <ClInclude Include="Source\00-HEW2026\20-Scene\Test_HewScene2.h" />
     <ClInclude Include="Source\04-Input\Input.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\01-TestObject\TestObject.h" />

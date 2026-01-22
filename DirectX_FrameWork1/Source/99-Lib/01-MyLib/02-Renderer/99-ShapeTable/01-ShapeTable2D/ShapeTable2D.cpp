@@ -42,7 +42,8 @@ void ShapeTable2D::ClearTable()
 		it.second->p_vertexBuffer->Release();
 		it.second->p_indexBuffer->Release();
 	}
-	table.clear();
+	std::unordered_map<std::string, std::shared_ptr<hft::Polygon>> swapTable;
+	swapTable.swap(table);
 }
 
 

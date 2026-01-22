@@ -2,6 +2,8 @@
 
 #include "../../02-Renderer/98-RendererManager/RendererManager.h"
 #include "../../06-GameObject/999-GameObjectManager/GameObjectManager.h"
+
+//#include "../../../../00-HEW2026/20-Scene/Test_HewScene2.h"
 #include "../01-Scenes/TitleScene.h"
 
 #include "../../03-Sound/Fsound.h"
@@ -16,17 +18,7 @@ void SceneManager::Init()
 
 void SceneManager::UnInit()
 {
-}
-
-
-/**
-* @note		未初期化シーンをnextSceneにムーブ
-*			※この後ChangeSceneへ
-*/
-void SceneManager::LoadScene(std::unique_ptr<BaseScene> _uq_scene)
-{
-	if (_uq_scene != nullptr)
-		nextScene = std::move(_uq_scene);
+	UnloadScene();
 }
 
 /**
@@ -40,11 +32,14 @@ void SceneManager::ChangeScene()
 		UnloadScene();
 		curScene = std::move(nextScene);
 		SetUpScene();
+		nextFlg = false;
 	}
 	else
 	{
 		GameObjectManager::GetInstance().AddWaitToNow();
 	}
+
+	GameObjectManager::GetInstance().ClearDestroyQueue();
 }
 
 void SceneManager::SetUpScene()

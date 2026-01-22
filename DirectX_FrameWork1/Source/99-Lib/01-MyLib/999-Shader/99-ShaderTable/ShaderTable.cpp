@@ -43,7 +43,9 @@ namespace hft
 		{
 			it.second->Release();
 		}
-		table.clear();
+
+		std::unordered_map<std::string, std::shared_ptr<VertexShader>> swapTable;
+		swapTable.swap(table);
 	}
 
 	void VertexShaderTable::Init()
@@ -97,7 +99,9 @@ namespace hft
 		{
 			it.second->Release();
 		}
-		table.clear();
+
+		std::unordered_map<std::string, std::shared_ptr<PixelShader>> swapTable;
+		swapTable.swap(table);
 	}
 
 	void PixelShaderTable::Init()

@@ -312,7 +312,13 @@ void ShapeTable3D::AddShape(const std::shared_ptr<hft::Mesh> _sp_shape)
 
 void ShapeTable3D::ClearTable()
 {
-	table.clear();
+	for (auto& it : table)
+	{
+		it.second->p_vertexBuffer->Release();
+		it.second->p_indexBuffer->Release();
+	}
+	std::unordered_map<std::string, std::shared_ptr<hft::Mesh>> swapTable;
+	swapTable.swap(table);
 }
 
 void ShapeTable3D::Init()

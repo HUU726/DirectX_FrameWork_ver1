@@ -4,14 +4,12 @@
 
 #include "../10-Map/00-BaseMap/BaseMap.h"
 #include "../01-GamaeObject/100-Test/HewTestGameObject.h"
-#include "../../99-Lib/01-MyLib/06-GameObject/02-3DGameObject/02-Sqhere/SqhereObject.h"
 
 
-class Test_HewScene : public BaseScene
+class Test_HewScene2 : public BaseScene
 {
 private:
-	SqhereObject sqhere;
-	ObjectS1 obj;
+	ObjectS2 obj;
 
 public:
 	void Init() override;

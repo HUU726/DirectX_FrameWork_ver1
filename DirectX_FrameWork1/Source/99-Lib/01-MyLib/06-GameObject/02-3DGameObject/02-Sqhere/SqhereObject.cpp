@@ -6,7 +6,10 @@
 
 SqhereObject::SqhereObject()
 {
+	auto sp_shape = ShapeTable3D::GetInstance().GetShape("sqhere");
+	auto mesh = GetComponent<MeshRenderer>()->SetShape(sp_shape);
 
+	AddComponent<SqhereCollider3D>();
 }
 
 void SqhereObject::OnCollisionEnter(Collider* _p_collider)
@@ -25,10 +28,6 @@ void SqhereObject::OnCollisionExit(Collider* _p_collider)
 
 void SqhereObject::Init()
 {
-	auto sp_shape = ShapeTable3D::GetInstance().GetShape("sqhere");
-	auto mesh = GetComponent<MeshRenderer>()->SetShape(sp_shape);
-
-	AddComponent<SqhereCollider3D>();
 }
 
 void SqhereObject::Update()
