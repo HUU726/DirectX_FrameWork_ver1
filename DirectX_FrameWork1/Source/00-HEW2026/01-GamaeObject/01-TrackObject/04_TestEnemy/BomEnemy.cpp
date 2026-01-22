@@ -64,8 +64,6 @@ void BombEnemy::Init()
 		}
 
 		p_spriteAnimator->AddAnimation(anim);
-
-		//p_spriteAnimator->Play(BomState::blastWait);
 	}
 
 	//爆発時のアニメーション
@@ -85,8 +83,6 @@ void BombEnemy::Init()
 		}
 
 		p_spriteAnimator->AddAnimation(anim);
-
-		//p_spriteAnimator->Play(BomState::blast);
 	}
 
 
@@ -146,8 +142,6 @@ void BombEnemy::Init()
 			}
 
 			p_spriteAnimator->AddAnimation(anim);
-
-
 
 			bomAttackArray.push_back(bomAttack);
 		}
@@ -321,24 +315,25 @@ void BombEnemy::OnCollisionEnter(Collider* _p_col)
 	//接続先のオブジェクトを確認
 	GameObject* obj = _p_col->GetGameObject();
 
+	//タグがプレイヤーの場合起爆
+	if (obj->GetTag() == "Player" && currentState == stand)
+	{
+		currentState = BomState::blastWait;
+	}
+
+
 	//接続先が存在するか
 
 	if (!obj)
-
 	{
-
 		return;
-
 	}
 
 	//接続先が自身と同じ場合何もしない
 
 	if (obj == this)
-
 	{
-
 		return;
-
 	}
 
 	//爆弾の場合何もしない　爆風は普通のゲームオブジェクトとして扱う

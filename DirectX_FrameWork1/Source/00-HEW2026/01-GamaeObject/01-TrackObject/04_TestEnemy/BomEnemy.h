@@ -19,11 +19,8 @@ class BoxCollider2D;
 
 class BombEnemy : public CEnemy
 {
-
 private:
-
 	//自身の体の判定用のコライダー
-
 	BoxCollider2D* bodyColl = nullptr;
 
 	//自身の爆発範囲検知用のゲームオブジェクト
@@ -34,8 +31,6 @@ private:
 
 	//自身の爆発用のゲームオブジェクト
 	std::vector<GameObject2D*> bomAttackArray;
-
-	//GameObject2D* bomAttack = nullptr;
 
 
 	//自身の起爆時間
