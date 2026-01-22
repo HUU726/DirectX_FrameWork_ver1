@@ -34,7 +34,7 @@ void BiteEnemy::Init(const int& direction)
 	attacktime = BiteEnemyParam::attack;		// 攻撃状態でかかるフレーム
 	spinttime = BiteEnemyParam::spin;			// 回転状態でかかるフレーム
 	deadtime = BiteEnemyParam::dead;			// 死亡状態でかかるフレーム
-	
+
 	// 引数が範囲外の数値だった場合,右向きで初期化
 	if (direction < 4 && direction >= 0) { SetDirection(direction); }	
 	else { SetDirection(0); }
@@ -44,12 +44,6 @@ void BiteEnemy::Init(const int& direction)
 	{
 		Act[i] = BiteEnemyParam::Act[i];
 	}
-
-	// 方向による最初のアニメーション
-	if (GetDirection() == 0) { anipos = GetDirection(); }
-	else if (GetDirection() == 1) { anipos = GetDirection();}
-	else if (GetDirection() == 2) { anipos = GetDirection();}
-	else{ anipos = GetDirection();}
 
 	// 位置の設定
 	{
@@ -289,11 +283,11 @@ void BiteEnemy::Update()
 	
 	switch (currentState)
 	{
-	case defoult1:Defoult1();break;
-	case defoult2:Defoult2();break;
-	case attack:Attack();break;
-	case spin:Spin();break;
-	case dead:Dead();break;
+	case State::defoult1:Defoult1();break;
+	case State::defoult2:Defoult2();break;
+	case State::attack:Attack();break;
+	case State::spin:Spin();break;
+	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
 	
@@ -326,15 +320,16 @@ void BiteEnemy::Defoult1()
 		}
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
+		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
 	
-	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+	
 
 	if (startState == true)
 	{
 		startState = false;
 		// 方向からアニメーションを決定する
-		
+		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
 	
 	if (timer >= defoulttime_1)
