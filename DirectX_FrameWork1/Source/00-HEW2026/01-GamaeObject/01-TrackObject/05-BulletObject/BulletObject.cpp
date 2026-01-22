@@ -1,4 +1,6 @@
-// 弾オブジェクト::タグ:Object
+// 弾オブジェクト::タグ:Bullet
+
+// 当たり判定,ワープ
 
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
@@ -22,6 +24,11 @@ void BulletObject::Init(const int& NewDirection)
 	col->SetIsActive(false);
 	SetIsActive(false);
 	timer = 0;
+	active = BulletObjectParam::active;
+	livetime = BulletObjectParam::livetime;
+	spead = BulletObjectParam::spead;
+	blasttime = BulletObjectParam::blasttime;
+	startScene = BulletObjectParam::startScene;
 
 	// マップの枠の数値を入れる
 	LeftTop = { -250.f,250.f };
@@ -89,10 +96,6 @@ void BulletObject::Update()
 		case blast:Blast(); break;
 		}
 	}
-	else
-	{
-		timer = 0;
-	}
 }
 
 //===============================================================================================
@@ -105,6 +108,7 @@ void BulletObject::Defoult()
 	{
 		startScene = false;
 		GetComponent<BoxCollider2D>()->SetIsActive(true);	// 当たり判定をアクティブ
+		GetComponent<SpriteRenderer>()->SetIsActive(true);
 		GetComponent<SpriteAnimator>()->Play(0);
 	}
 
@@ -131,12 +135,13 @@ void BulletObject::Blast()
 	{
 		startScene = false;
 		GetComponent<SpriteAnimator>()->Stop(0);
-		this->SetIsRender(false);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
 		std::cout << "弾オブジェクト破裂アニメーション\n";
 		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
 	}
 	if (timer >= blasttime)
 	{
+		startScene = true;
 		currentState = BulletObject::defoult;
 		timer = 0;
 		SetBulletActive(false);
@@ -206,17 +211,23 @@ void BulletObject::CheakMyPos()
 //==================================================================================================
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
-	if (!_p_col)return;
-	GameObject* hit = _p_col->GetGameObject();
-	if (!hit)return;
-	if (hit == owner)return;
-	SetBulletActive(false);
-	
 	GameObject* col = _p_col->GetGameObject();
-	// 対象のオブジェクトにヒットした際、blastに移行
-	if (col->GetTag() == "Gun" || col->GetTag() == "Player"||col->GetTag()=="Bom"||col->GetTag()=="Thorn"||col->GetTag()=="Connect")
+
+	// 弾の出始め
+	if (col->GetTag() == "Gun" &&OneHit == true)
 	{
-		std::cout << "弾オブジェクトが何かにヒット\n";
-		currentState = blast;
+		OneHit = false;
+		std::cout << "1ヒット\n";
+	}
+
+	// 着弾
+	if (OneHit == false)
+	{
+		// 対象のオブジェクトにヒットした際、blastに移行
+		if (col->GetTag() == "Gun" || col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+		{
+			std::cout << "弾オブジェクトが何かにヒット\n";
+			OneHit = true;
+		}
 	}
 }

@@ -250,6 +250,8 @@ void GunEnemy::Defoult()
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
 
+	if (bullet.GetBulletActive() == true)return;
+	// 弾が非アクティブのときのコード
 	if (bullet.GetBulletActive() == false)
 	{
 		timer++;

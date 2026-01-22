@@ -12,8 +12,6 @@ class BaseMap;
 class BulletObject : public GameObject2D
 {
 private:
-	GameObject* owner = nullptr;		
-
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColler = nullptr;
 
@@ -38,6 +36,8 @@ private:
 
 	// シーンが切り替わると一度だけ実行される
 	bool startScene = true;
+	// 弾が出現した際、一度だけヒットを許容する
+	bool OneHit;
 
 	enum State
 	{
