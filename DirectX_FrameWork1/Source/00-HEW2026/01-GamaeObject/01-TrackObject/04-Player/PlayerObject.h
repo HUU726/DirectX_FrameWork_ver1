@@ -15,18 +15,21 @@ enum class PLAYER_STATE {
 class PlayerObject : public TrackObject
 {
 private:
+    // オブジェクトTAG = Player //
+
     // 攻撃アニメーションのタイミング定数
-    const int SLIDE_TIMING = 8;
-    const int ANIM_END_TIME = 20;
+    const int SLIDE_START_TIMING = 8;
+    const int SLIDE_END_TIMING = 20;
 
     BaseMap* pMap = nullptr;
     Input* pInput = nullptr;
 
-    int hitpoint;
-    float hammer_power;
-    const float max_hammer_power = 30.0f;
-    bool invincible;
-    float inv_time;
+    int hitpoint = 3;
+    int max_hitpoint = 3;
+    float hammer_power = 0.0f;
+    const float max_hammer_power = 30.0f; //めちゃつよなので後から変えてもよし
+    bool invincible = false;
+    float inv_time = 1.0f;
 
     PLAYER_STATE state;
     int animTimer;

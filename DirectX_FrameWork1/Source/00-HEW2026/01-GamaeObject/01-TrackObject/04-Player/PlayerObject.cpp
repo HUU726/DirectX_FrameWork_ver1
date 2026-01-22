@@ -21,15 +21,14 @@ enum ANIM_ID {
     ANIM_SWING_H = 2,
     ANIM_SWING_V = 3,
     ANIM_HIT = 4,
-    ANIM_DEAD =5
+    ANIM_DEAD = 5
 };
 
 PlayerObject::PlayerObject()
-    : hitpoint(3), hammer_power(0.0f), invincible(false), inv_time(0.0f)
-    , state(PLAYER_STATE::STAND), animTimer(0)
-    , pTuningFork(nullptr), pArrow(nullptr)
 {
-
+    tag = "Player";
+	state = PLAYER_STATE::STAND;
+	animTimer = 0;
 }
 
 PlayerObject::~PlayerObject()
@@ -408,7 +407,7 @@ void PlayerObject::UpdateRelease()
     // ---------------------------------------------------
     // 攻撃開始フレーム目：スライド実行＆中断チェック
     // ---------------------------------------------------
-    if (animTimer == SLIDE_TIMING)
+    if (animTimer == SLIDE_START_TIMING)
     {
         // 入力がなくなっていたり、後ろ入力になっていたら中断（キャンセル）
 
@@ -471,7 +470,7 @@ void PlayerObject::UpdateRelease()
     // ---------------------------------------------------
     // 終了判定
     // ---------------------------------------------------
-    if (animTimer > ANIM_END_TIME)
+    if (animTimer > SLIDE_END_TIMING)
     {
         ChangeState(PLAYER_STATE::STAND);
         std::cout << "STATE:PlayerRelease >> PlayerStand" << std::endl;
@@ -541,7 +540,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
     //今のステートのアニメーションを止める
     switch (state) {
     case PLAYER_STATE::STAND:
-        //animator->Stop(ANIM_STAND); 
+        //animator->Stop(ANIM_STAND);
         break;
 
     case PLAYER_STATE::CHARGE:
@@ -556,6 +555,9 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
         animator->Stop(ANIM_SWING_H);
         animator->Stop(ANIM_SWING_V);
         break;
+
+    case PLAYER_STATE::DEAD:
+        animator->Stop(ANIM_DEAD);
     }
 
     state = _nextState; //ステート更新
@@ -566,6 +568,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
     case PLAYER_STATE::STAND:   animator->Play(ANIM_STAND); break;
     case PLAYER_STATE::CHARGE:  animator->Play(ANIM_CHARGE); break;
     case PLAYER_STATE::HIT:     animator->Play(ANIM_HIT); break;
+    case PLAYER_STATE::DEAD:    animator->Play(ANIM_DEAD); break;
     default: break;
     }
 }
