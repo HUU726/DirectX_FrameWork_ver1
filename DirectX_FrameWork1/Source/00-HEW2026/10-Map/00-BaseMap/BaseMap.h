@@ -47,7 +47,7 @@ protected:
 
 	enum OBJECT_ID
 	{
-		PLAYER = 0,
+		PLAYER = 1,
 		BITE_ENEMY,
 		GUN_ENEMY,
 		BOMB_ENEMY,
