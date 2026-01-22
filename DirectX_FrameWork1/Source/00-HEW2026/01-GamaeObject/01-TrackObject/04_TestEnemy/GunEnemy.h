@@ -9,18 +9,22 @@ class GunEnemy : public CEnemy
 private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
-
 	// 弾が消えてからの待機時間
 	int waittimer;
-
 	// 経過時間
 	int timer;
-
 	// 方向
 	int direction;
-
+	// シーンが切り替わった時に一度だけ再生されるようにする
+	bool changeScene;
+	// 一度だけ再生されるようにする
+	bool startScene;
+	// 新しいアニメーションを再生するためのID格納用変数
+	int anipos;
+	// 古いアニメーションをストップさせるためのID格納用変数
+	int oldani;
 	// 弾オブジェクトを作成するフレーム数
-	int shot;
+	int bulletcreateflame;
 	
 	enum State
 	{
@@ -35,7 +39,7 @@ private:
 
 	
 	// 弾オブジェクト
-	BulletObject* bullet = nullptr;
+	//BulletObject* bullet = nullptr;
 
 public:
 	GunEnemy();
@@ -50,6 +54,7 @@ public:
 	void OnCollisionEnter(Collider* _p_col) override;
 };
 
+/*
 class ObjectManager
 {
 public:
@@ -65,4 +70,4 @@ public:
 private:
 	static inline std::vector<GameObject*> objects;
 };
-
+*/
