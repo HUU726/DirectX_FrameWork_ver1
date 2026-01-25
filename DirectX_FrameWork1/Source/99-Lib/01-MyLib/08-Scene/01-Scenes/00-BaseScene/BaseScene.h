@@ -17,6 +17,8 @@ protected:
 	CameraObject3D camera3D;	//3D用カメラオブジェクト
 	LightObject lightObject;	//ライトオブジェクト
 
+	void InitCamera();
+
 public:
 	BaseScene();
 	virtual ~BaseScene() {}
