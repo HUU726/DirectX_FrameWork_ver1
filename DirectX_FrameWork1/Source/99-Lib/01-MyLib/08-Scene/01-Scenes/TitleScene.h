@@ -23,21 +23,11 @@
 class TitleScene : public BaseScene
 {
 private:
-	//SqhereObject sqhereObject;
-	//PlaneObject planeObject;
-	//CubeObject cubeObject;
-
-	//GroundObject groundObject;
-	//TestPlayer testPlayer;
-	//TestEnemy testEnemy;
-	//TestAnimation2D testAnimation2D;
-
 	Map1 map;
+
 public:
 	~TitleScene() override;
 
 	void Init() override;
-
 	void UnInit() override;
-
 };

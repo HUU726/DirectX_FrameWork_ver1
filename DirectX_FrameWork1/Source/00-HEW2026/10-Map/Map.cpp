@@ -8,6 +8,16 @@
 //	{ 0,0,0,0,0 },
 //};
 
+
+// EMPTY		0
+// PLAYER		1
+// BITE_ENEMY	2
+// GUN_ENEMY	3
+// BOMB_ENEMY	4
+// CONNECT_OBJ	5
+// THORM_OBJ	6
+
+
 void Map1::CreateMap()
 {
 	width = 5;

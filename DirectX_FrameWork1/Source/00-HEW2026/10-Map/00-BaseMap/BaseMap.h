@@ -7,8 +7,6 @@
 
 class TrackObject;
 
-
-
 //ズラしに必要な情報
 struct SlideData
 {
@@ -38,12 +36,10 @@ class BaseMap : public GameObject
 protected:
 	int width;	//横幅
 	int height;	//縦幅
-
-	float tileScale;
-	float scaleRaito;
-
-	hft::HFFLOAT2 leftTopPos;
-	hft::HFFLOAT2 rightBottomPos;
+	float tileScale;	//タイル一片の長さ
+	float scaleRaito;	//ベースを 5×5 としたタイル一枚のサイズ割合
+	hft::HFFLOAT2 leftTopPos;		//マップ左上座標
+	hft::HFFLOAT2 rightBottomPos;	//マップ右下座標
 
 	enum OBJECT_ID
 	{
@@ -55,16 +51,16 @@ protected:
 		THORM_OBJ,
 	};
 
+	std::vector<int> biteEnemyVecs;	//噛みつき敵の初期方向
+	std::vector<int> gunEnemyVecs;	//大砲敵の初期方向
 	std::vector<std::vector<int>> mapDataArray;		//マップのデータに次元配列
-	std::vector<int> biteEnemyVecs;
-	std::vector<int> gunEnemyVecs;
-
-	std::vector<TrackObject*> tileObjects;			//マップに存在するタイルのポインタ
+	std::vector<TrackObject*> onMapTileObjects;		//マップに存在するタイルのポインタ
 	std::vector<TrackObject*> onMapTrackObjects;	//マップに存在するオブジェのポインタ
+
 	std::vector<SlideData> slideDatas;	//タイルをズラす時に使うデータ
 
-	int powerDownFlame;
-	float powerDownRatio;
+	int powerDownFlame;		//ズレのスピードが落ちるフレーム間隔
+	float powerDownRatio;	//ズレのスピードがどのくらい落ちるか
 
 	std::vector<GameObject*> covers;
 	GameObject* BGImg;

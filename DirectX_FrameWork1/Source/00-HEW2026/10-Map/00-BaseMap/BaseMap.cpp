@@ -111,7 +111,7 @@ void BaseMap::Slide()
 
 void BaseMap::SearchOnLineTiles(SlideData& _data)
 {
-	for (const auto& obj : tileObjects)
+	for (const auto& obj : onMapTileObjects)
 	{
 		if (_data.moveVec.x)
 		{
@@ -313,7 +313,7 @@ void BaseMap::CreateTiles()
 			float posX = leftTopPos.x + (tileScale * x);
 			p_trf->position = { posX,posY,10 };
 			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
-			tileObjects.push_back(tileObject);
+			onMapTileObjects.push_back(tileObject);
 		}
 	}
 
@@ -438,7 +438,7 @@ BaseMap::BaseMap()
 BaseMap::~BaseMap()
 {
 
-	for (auto& p_tile : tileObjects)
+	for (auto& p_tile : onMapTileObjects)
 		delete p_tile;
 
 	for (auto& p_obj : onMapTrackObjects)
@@ -663,7 +663,7 @@ void BaseMap::Init(const int& _width, const int& _height)
 			float posX = leftTopPos.x + (tileScale * x);
 			tileObject->GetTransformPtr()->position = { posX,posY,0 };
 			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
-			tileObjects.push_back(tileObject);
+			onMapTileObjects.push_back(tileObject);
 		}
 	}
 

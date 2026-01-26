@@ -155,6 +155,7 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\GunEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\Map.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\02_SelectScene.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.h" />
+    <ClInclude Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.h" />
     <ClInclude Include="Source\00-HEW2026\10-Map\Map.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\02_SelectScene.h" />
