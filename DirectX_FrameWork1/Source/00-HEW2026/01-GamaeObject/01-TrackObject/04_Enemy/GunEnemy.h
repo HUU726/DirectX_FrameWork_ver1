@@ -9,6 +9,8 @@ class GunEnemy : public CEnemy
 private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
+	// マップの情報
+	BaseMap* p_map = nullptr;
 	// 弾が消えてからの待機時間
 	int waittimer;
 	// 経過時間
@@ -39,12 +41,12 @@ private:
 
 	
 	// 弾オブジェクト
-	//BulletObject bullet;
+	BulletObject bullet;
 
 public:
 	GunEnemy();
 	void Init() override {};
-	void Init(const int&);
+	void Init(/*BaseMap* p_map,*/ const int& NewDirection);
 	void Update() override;
 	
 	void Defoult();
@@ -53,21 +55,3 @@ public:
 	
 	void OnCollisionEnter(Collider* _p_col) override;
 };
-
-/*
-class ObjectManager
-{
-public:
-	template<class T, class... Args>
-	static T* Create(Args&&... args)
-	{
-		T* obj = new T(std::forward<Args>(args)...);
-		obj->InternalInitialize(); // Transform / Component 初期化
-		objects.push_back(obj);
-		return obj;
-	}
-
-private:
-	static inline std::vector<GameObject*> objects;
-};
-*/

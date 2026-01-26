@@ -1,8 +1,7 @@
-// 弾オブジェクト::タグ:Object
+// 弾オブジェクト::タグ:Bullet
 
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
-#include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
@@ -11,27 +10,42 @@
 #define LEFT 2
 #define DOWN 3
 
+
 //=================================================================
-//Init
+//Init(引数::BaseMap(マップの情報) , int(どの方向を向いているか))
 //=================================================================
 void BulletObject::Init(const int& NewDirection)
 {
 	SetTag(BulletObjectParam::tag);
-	p_transform->scale = BulletObjectParam::scale;
-	auto col = AddComponent<BoxCollider2D>();
-	col->SetIsActive(false);
-	SetIsActive(false);
+	bodyColler = AddComponent<BoxCollider2D>();
+	bodyColler->SetIsActive(false);
 	timer = 0;
+	active = BulletObjectParam::active;
+	livetime = BulletObjectParam::livetime;
+	spead = BulletObjectParam::spead;
+	blasttime = BulletObjectParam::blasttime;
+	startScene = BulletObjectParam::startScene;
+	NotHittime = BulletObjectParam::NotHittime;
+	currentState = BulletObject::defoult;
+	//p_map = New_p_map;
 
-	// マップの枠の数値を入れる
+	// マップから情報を受け取る
 	LeftTop = { -250.f,250.f };
 	RightBottom= { 250.f,-250.f };
-	//LeftTop = GetComponent<BaseMap>()->GetLefTopPos();
-	//RightBottom = GetComponent<BaseMap>()->GetRitBotPos();
+
+	//LeftTop = p_map->GetLefTopPos();		// マップの端の数値(左と上)
+	//RightBottom = p_map->GetRitBotPos();	// マップの端の数値(右と下)
+	//float map_scele = p_map->GetScaleRatio();	// マップの大きさに合わせるためのレート(scaleに掛ける)
+
+	// サイズ更新(マップサイズに合わせたサイズにする)
+	//p_transform->scale.x *= map_scele;
+	//p_transform->scale.y *= map_scele;
+	//p_transform->scale.z *= map_scele;
 
 	// 方向の情報
 	SetDirection(NewDirection);
-	
+
+	AddComponent<SpriteRenderer>();
 	//画像の設定
 	{
 		//レンダラーの設定
@@ -44,10 +58,9 @@ void BulletObject::Init(const int& NewDirection)
 		//animationの設定
 		// 通常
 		SpriteAnimation anim1(div, { 0,0 }, 1);
-		anim1.InActive();
+		anim1.Active();
 		anim1.SetID(0);
-
-		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim1.SetPriority(0);
 		float flame = 1;
 
@@ -56,24 +69,8 @@ void BulletObject::Init(const int& NewDirection)
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
-
-		// 破裂
-		SpriteAnimation anim2(div, { 0,0 }, 1);
-		anim2.InActive();
-		anim2.SetID(1);
-
-		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
-		anim2.SetPriority(0);
-		flame = 1;
-
-		for (int i = 0; i < 1; i++)
-		{
-			anim2.GetCellRef(i).flame = flame;
-		}
-
-		p_spriteAnimator->AddAnimation(anim2);
 	}
-	std::cout << "弾調整完了\n";
+	GetComponent<SpriteRenderer>()->SetIsActive(false);	// 初期化で描写しない
 }
 
 //=======================================================================
@@ -85,13 +82,9 @@ void BulletObject::Update()
 	{
 		timer++;
 		switch (currentState) {
-		case defoult:Defoult(); break;
-		case blast:Blast(); break;
+		case defoult:Defoult(); break;		// 通常状態
+		case blast:Blast(); break;			// 破裂状態
 		}
-	}
-	else
-	{
-		timer = 0;
 	}
 }
 
@@ -100,48 +93,53 @@ void BulletObject::Update()
 //===============================================================================================
 void BulletObject::Defoult()
 {
-	std::cout << "Bullet出現\n";
 	if (startScene == true)
 	{
 		startScene = false;
+		NotHittime = 10;
 		GetComponent<BoxCollider2D>()->SetIsActive(true);	// 当たり判定をアクティブ
+		GetComponent<SpriteRenderer>()->SetIsActive(true);	// 描写をする
 		GetComponent<SpriteAnimator>()->Play(0);
+		//std::cout << "Bullet出現\n";
 	}
-
+	std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 	if (timer <= livetime)
 	{
-		UpdatePos();		// 座標更新
-		CheakMyPos();		// マップの枠から出ないかチェック
+		if (NotHittime > 0)
+		{
+			NotHittime--;// 発射直後の当たり判定を無効化
+		}
+		UpdatePos();										// 座標更新
+		CheakMyPos();										// マップの枠から出ないかチェック
 	}
 	if (timer > livetime)
 	{
-		timer = 0;	// フレーム数リセット
+		timer = 0;											// フレーム数リセット
 		startScene = true;
-		currentState = BulletObject::blast;	// 状態を移行
+		currentState = BulletObject::blast;					// 状態を移行
 	}
 }
 
 
 //===============================================================================================
-// フレーム数を超過した場合、初期化しする
+// フレーム数を超過した場合、初期化する
 //===============================================================================================
 void BulletObject::Blast()
 {
 	if (startScene == true)
 	{
 		startScene = false;
-		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定をアクティブ
 		GetComponent<SpriteAnimator>()->Stop(0);
-		this->SetIsRender(false);
-		std::cout << "弾オブジェクト破裂アニメーション\n";
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
 		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
+		NotHittime = 10;
 	}
 	if (timer >= blasttime)
 	{
+		startScene = true;
 		currentState = BulletObject::defoult;
 		timer = 0;
 		SetBulletActive(false);
-		std::cout << "弾オブジェクトを消滅\n";
 	}
 }
 
@@ -157,19 +155,19 @@ void BulletObject::UpdatePos()
 	{
 	case RIGHT:
 		p_transform->position.x = NowPos.x + spead * 1.0f; 
-		std::cout << "右方向に更新\n";
+		//std::cout << "右方向に更新\n";
 		break;
 	case UP:
 		 p_transform->position.y = NowPos.y + spead * 1.0f; 
-		 std::cout << "上方向に更新\n";
+		 //std::cout << "上方向に更新\n";
 		break;
 	case LEFT:
 		p_transform->position.x = NowPos.x - spead * 1.0f; 
-		std::cout << "左方向に更新\n";
+		//std::cout << "左方向に更新\n";
 		break;
 	case DOWN:
 		p_transform->position.y = NowPos.y - spead * 1.0f; 
-		std::cout << "下方向に更新\n";
+		//std::cout << "下方向に更新\n";
 		break;
 	default:
 		std::cout << "弾オブジェクト座標更新エラー\n";
@@ -179,23 +177,22 @@ void BulletObject::UpdatePos()
 //================================================================================================
 // 方向別にマップの枠組みから出ないようにする(上方向ならTopと比較、右方向ならRightと比較..)
 //================================================================================================
-
 void BulletObject::CheakMyPos()
 {
 	// 枠組みから超えるようなら反対側の座標を代入する
 	switch (GetDirection())
 	{
 	case RIGHT:
-		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; std::cout << "ワープ\n"; }
+		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; /*std::cout << "ワープ\n";*/ }
 		break;
 	case UP:
-		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; std::cout << "ワープ\n"; }
+		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; /*std::cout << "ワープ\n"; */ }
 		break;
 	case LEFT:
-		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; std::cout << "ワープ\n"; }
+		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; /*std::cout << "ワープ\n";*/ }
 		break;
 	case DOWN:
-		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; std::cout << "ワープ\n"; }
+		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; /*std::cout << "ワープ\n"; */ }
 		break;
 	default:
 		std::cout << "座標チェックエラー\n";
@@ -205,20 +202,29 @@ void BulletObject::CheakMyPos()
 //==================================================================================================
 // OnCollisionEnterの処理
 //==================================================================================================
-/*
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
-	if (!_p_col)return;
-	GameObject* hit = _p_col->GetGameObject();
-	if (!hit)return;
-	if (hit == owner)return;
-	SetBulletActive(false);
-	
+	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	// 対象のオブジェクトにヒットした際、blastに移行
-	if (col->GetTag() == "Gun" || col->GetTag() == "Player"||col->GetTag()=="Bom"||col->GetTag()=="Thorn"||col->GetTag()=="Connect")
+	std::string tag = col->GetTag();
+
+	// 接触相手が弾の場合何もなし
+	if (col == dynamic_cast<BulletObject*>(col))
 	{
-		std::cout << "弾オブジェクトが何かにヒット\n";
-		currentState = blast;
+		return;
 	}
-}*/
+
+	// 発射直後の当たり判定を無効化
+	if (tag == "Player" || tag == "Bom" || tag == "Thorn" || tag == "Connect" || tag == "Bite")
+	{
+		//std::cout << tag << "にヒット\n";
+		currentState = BulletObject::blast;
+	}
+
+	//	発射直後で無ければ,発射元に接触した場合消滅する
+	if (tag == "Gun" && NotHittime == 0)
+	{
+		//std::cout << tag << "にヒット\n";
+		currentState = BulletObject::blast;
+	}
+}
