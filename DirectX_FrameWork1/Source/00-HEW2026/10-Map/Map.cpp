@@ -20,6 +20,7 @@
 
 void Map1::CreateMap()
 {
+	id = 1;
 	width = 5;
 	height = 5;
 
@@ -36,6 +37,7 @@ void Map1::CreateMap()
 
 void Map2::CreateMap()
 {
+	id = 2;
 	width = 5;
 	height = 5;
 
@@ -52,6 +54,7 @@ void Map2::CreateMap()
 
 void Map3::CreateMap()
 {
+	id = 3;
 	width = 5;
 	height = 5;
 
@@ -69,6 +72,7 @@ void Map3::CreateMap()
 
 void Map4::CreateMap()
 {
+	id = 4;
 	width = 5;
 	height = 5;
 
@@ -86,6 +90,7 @@ void Map4::CreateMap()
 
 void Map5::CreateMap()
 {
+	id = 5;
 	width = 7;
 	height = 7;
 
@@ -104,6 +109,7 @@ void Map5::CreateMap()
 
 void Map6::CreateMap()
 {
+	id = 6;
 	width = 7;
 	height = 7;
 
@@ -123,6 +129,7 @@ void Map6::CreateMap()
 
 void Map7::CreateMap()
 {
+	id = 7;
 	width = 7;
 	height = 7;
 
@@ -142,6 +149,7 @@ void Map7::CreateMap()
 
 void Map8::CreateMap()
 {
+	id = 8;
 	width = 7;
 	height = 7;
 
@@ -161,6 +169,7 @@ void Map8::CreateMap()
 
 void Map9::CreateMap()
 {
+	id = 9;
 	width = 7;
 	height = 7;
 
@@ -180,6 +189,7 @@ void Map9::CreateMap()
 
 void Map10::CreateMap()
 {
+	id = 10;
 	width = 7;
 	height = 7;
 
