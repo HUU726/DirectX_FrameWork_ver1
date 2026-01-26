@@ -446,7 +446,7 @@ void GunEnemy::Defoult()
 			currentState = GunEnemy::shotting;	// shotting‚ÖˆÚs
 		}
 	}
-	std::cout << timer << "\n";
+	//std::cout << timer << "\n";
 	//std::cout << "’Êíó‘Ô\n";
 }
 

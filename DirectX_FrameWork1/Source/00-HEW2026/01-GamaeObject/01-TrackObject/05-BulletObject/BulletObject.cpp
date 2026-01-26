@@ -1,7 +1,5 @@
 // 弾オブジェクト::タグ:Bullet
 
-// 当たり判定,ワープ
-
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
@@ -33,6 +31,7 @@ void BulletObject::Init(const int& NewDirection)
 	// マップから情報を受け取る
 	LeftTop = { -250.f,250.f };
 	RightBottom= { 250.f,-250.f };
+
 	//LeftTop = p_map->GetLefTopPos();		// マップの端の数値(左と上)
 	//RightBottom = p_map->GetRitBotPos();	// マップの端の数値(右と下)
 	//float map_scele = p_map->GetScaleRatio();	// マップの大きさに合わせるためのレート(scaleに掛ける)
@@ -209,8 +208,17 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	GameObject* col = _p_col->GetGameObject();
 	std::string tag = col->GetTag();
 	// 発射直後の当たり判定を無効化
-	if (tag == "Gun")
+	if (tag == "Player")
 	{
+		std::cout << tag << "にヒット\n";
+		currentState = BulletObject::blast;
+	}
+
+
+	if (tag == "Gun" && NotHittime == 0)
+	{
+		std::cout << "NotHittime:" << NotHittime << "\n";
+		std::cout << tag << "\n";
 		std::cout << "ヒット\n";
 	}
 

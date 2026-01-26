@@ -391,9 +391,6 @@ void BiteEnemy::Spin()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	std::cout << "回転状態実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
