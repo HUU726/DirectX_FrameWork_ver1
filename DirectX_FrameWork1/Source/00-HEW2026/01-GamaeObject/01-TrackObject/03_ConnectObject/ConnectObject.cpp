@@ -354,7 +354,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	//オブジェクトの生成位置を計る
 	float middleDistance = distance / 2;
 	hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
-	spawnPos.z = -4;
+	//spawnPos.z = -4;
 
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
