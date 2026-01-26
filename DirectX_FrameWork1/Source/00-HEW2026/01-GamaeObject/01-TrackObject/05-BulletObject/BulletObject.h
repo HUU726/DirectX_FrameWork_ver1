@@ -14,9 +14,6 @@ private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColler = nullptr;
 
-	// この弾を撃った敵の当たり判定をもらうポインタ
-	Collider* _owner = nullptr;
-
 	// マップの情報
 	BaseMap* p_map = nullptr;
 
@@ -52,7 +49,7 @@ private:
 	};
 	State currentState;
 
-	// Angleから方向の情報をDirectionへ
+	// 方向の情報を値として格納する変数
 	int direction;	// 0:右 1:上 2:左 3:下
 	
 	// 方向の種類によって、自身の位置を加算する
@@ -64,7 +61,7 @@ private:
 public:
 	BulletObject() = default;
 	void Init() override {};
-	void Init(/*BaseMap* p_map ,*/ BoxCollider2D* _owner, const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
+	void Init(/*BaseMap* p_map ,*/const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
 	void Update() override;
 
 	void SetTag(const std::string&) { tag = "Bullet"; }

@@ -16,12 +16,11 @@
 //=================================================================
 //Init
 //=================================================================
-void BulletObject::Init(BoxCollider2D* my_owner, const int& NewDirection)
+void BulletObject::Init(const int& NewDirection)
 {
 	SetTag(BulletObjectParam::tag);
-	auto col = AddComponent<BoxCollider2D>();
-	col->SetIsActive(false);
-	SetIsActive(false);
+	bodyColler = AddComponent<BoxCollider2D>();
+	bodyColler->SetIsActive(false);
 	timer = 0;
 	active = BulletObjectParam::active;
 	livetime = BulletObjectParam::livetime;
@@ -29,7 +28,6 @@ void BulletObject::Init(BoxCollider2D* my_owner, const int& NewDirection)
 	blasttime = BulletObjectParam::blasttime;
 	startScene = BulletObjectParam::startScene;
 	NotHittime = BulletObjectParam::NotHittime;
-	_owner = my_owner;
 	//p_map = New_p_map;
 
 	// マップから情報を受け取る
@@ -61,8 +59,7 @@ void BulletObject::Init(BoxCollider2D* my_owner, const int& NewDirection)
 		SpriteAnimation anim1(div, { 0,0 }, 1);
 		anim1.InActive();
 		anim1.SetID(0);
-
-		anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
+		anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim1.SetPriority(0);
 		float flame = 1;
 
@@ -71,24 +68,8 @@ void BulletObject::Init(BoxCollider2D* my_owner, const int& NewDirection)
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
-
-		// 破裂
-		SpriteAnimation anim2(div, { 0,0 }, 1);
-		anim2.InActive();
-		anim2.SetID(1);
-
-		anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
-		anim2.SetPriority(0);
-		flame = 1;
-
-		for (int i = 0; i < 1; i++)
-		{
-			anim2.GetCellRef(i).flame = flame;
-		}
-
-		p_spriteAnimator->AddAnimation(anim2);
 	}
-	std::cout << "弾調整完了\n";
+	GetComponent<SpriteRenderer>()->SetIsActive(false);	// 初期化で描写しない
 }
 
 //=======================================================================
@@ -100,8 +81,8 @@ void BulletObject::Update()
 	{
 		timer++;
 		switch (currentState) {
-		case defoult:Defoult(); break;
-		case blast:Blast(); break;
+		case defoult:Defoult(); break;		// 通常状態
+		case blast:Blast(); break;			// 破裂状態
 		}
 	}
 }
@@ -111,17 +92,22 @@ void BulletObject::Update()
 //===============================================================================================
 void BulletObject::Defoult()
 {
-	std::cout << "Bullet出現\n";
 	if (startScene == true)
 	{
 		startScene = false;
+		NotHittime = 10;
 		GetComponent<BoxCollider2D>()->SetIsActive(true);	// 当たり判定をアクティブ
-		GetComponent<SpriteRenderer>()->SetIsActive(true);
+		GetComponent<SpriteRenderer>()->SetIsActive(true);	// 描写をする
 		GetComponent<SpriteAnimator>()->Play(0);
+		//std::cout << "Bullet出現\n";
 	}
 
 	if (timer <= livetime)
 	{
+		if (NotHittime > 0)
+		{
+			NotHittime--;// 発射直後の当たり判定を無効化
+		}
 		UpdatePos();										// 座標更新
 		CheakMyPos();										// マップの枠から出ないかチェック
 	}
@@ -144,7 +130,7 @@ void BulletObject::Blast()
 		startScene = false;
 		GetComponent<SpriteAnimator>()->Stop(0);
 		GetComponent<SpriteRenderer>()->SetIsActive(false);
-		std::cout << "弾オブジェクト破裂アニメーション\n";
+		//std::cout << "弾オブジェクト破裂アニメーション\n";
 		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
 	}
 	if (timer >= blasttime)
@@ -152,8 +138,9 @@ void BulletObject::Blast()
 		startScene = true;
 		currentState = BulletObject::defoult;
 		timer = 0;
+		NotHittime = 10;
 		SetBulletActive(false);
-		std::cout << "弾オブジェクトを消滅\n";
+		//std::cout << "弾オブジェクトを消滅\n";
 	}
 }
 
@@ -169,19 +156,19 @@ void BulletObject::UpdatePos()
 	{
 	case RIGHT:
 		p_transform->position.x = NowPos.x + spead * 1.0f; 
-		std::cout << "右方向に更新\n";
+		//std::cout << "右方向に更新\n";
 		break;
 	case UP:
 		 p_transform->position.y = NowPos.y + spead * 1.0f; 
-		 std::cout << "上方向に更新\n";
+		 //std::cout << "上方向に更新\n";
 		break;
 	case LEFT:
 		p_transform->position.x = NowPos.x - spead * 1.0f; 
-		std::cout << "左方向に更新\n";
+		//std::cout << "左方向に更新\n";
 		break;
 	case DOWN:
 		p_transform->position.y = NowPos.y - spead * 1.0f; 
-		std::cout << "下方向に更新\n";
+		//std::cout << "下方向に更新\n";
 		break;
 	default:
 		std::cout << "弾オブジェクト座標更新エラー\n";
@@ -191,23 +178,22 @@ void BulletObject::UpdatePos()
 //================================================================================================
 // 方向別にマップの枠組みから出ないようにする(上方向ならTopと比較、右方向ならRightと比較..)
 //================================================================================================
-
 void BulletObject::CheakMyPos()
 {
 	// 枠組みから超えるようなら反対側の座標を代入する
 	switch (GetDirection())
 	{
 	case RIGHT:
-		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; std::cout << "ワープ\n"; }
+		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; /*std::cout << "ワープ\n";*/ }
 		break;
 	case UP:
-		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; std::cout << "ワープ\n"; }
+		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; /*std::cout << "ワープ\n"; */ }
 		break;
 	case LEFT:
-		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; std::cout << "ワープ\n"; }
+		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; /*std::cout << "ワープ\n";*/ }
 		break;
 	case DOWN:
-		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; std::cout << "ワープ\n"; }
+		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; /*std::cout << "ワープ\n"; */ }
 		break;
 	default:
 		std::cout << "座標チェックエラー\n";
@@ -219,19 +205,17 @@ void BulletObject::CheakMyPos()
 //==================================================================================================
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
+	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	Collider* owner = _owner;
-	// 対象のオブジェクトにヒットした際、blastに移行
-	if (col->GetTag() == "Gun" || col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+	std::string tag = col->GetTag();
+	// 発射直後の当たり判定を無効化
+	if (tag == "Gun")
 	{
-		// 時間内であれば発射をしたエネミーを当たる標的に含めない
-		if (/*_p_col == owner && */ NotHittime > 0)
-		{
-
-		}
-		else
-		{
-			std::cout << "弾オブジェクトが何かにヒット\n";
-		}
+		std::cout << "ヒット\n";
 	}
+
+	
+	if (col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect" || col->GetTag() == "Bite")
+	{ }
+	// currentState=BulletObject::blust;
 }

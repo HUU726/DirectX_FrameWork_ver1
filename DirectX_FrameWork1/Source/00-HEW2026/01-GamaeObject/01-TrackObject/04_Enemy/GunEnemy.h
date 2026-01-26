@@ -55,21 +55,3 @@ public:
 	
 	void OnCollisionEnter(Collider* _p_col) override;
 };
-
-/*
-class ObjectManager
-{
-public:
-	template<class T, class... Args>
-	static T* Create(Args&&... args)
-	{
-		T* obj = new T(std::forward<Args>(args)...);
-		obj->InternalInitialize(); // Transform / Component ‰Šú‰»
-		objects.push_back(obj);
-		return obj;
-	}
-
-private:
-	static inline std::vector<GameObject*> objects;
-};
-*/

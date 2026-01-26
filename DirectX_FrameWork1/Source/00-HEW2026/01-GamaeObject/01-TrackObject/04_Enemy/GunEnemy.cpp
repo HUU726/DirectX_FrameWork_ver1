@@ -197,7 +197,8 @@ void GunEnemy::Init(const int& direction)
 	// マップの情報
 	//p_map = New_p_map;
 	// 弾オブジェクト初期化
-	bullet.Init(bodyColl, GetDirection());	//	方向、当たり判定、マップの情報
+	bullet.Init(GetDirection());		// デバック用
+	//bullet.Init(p_map,GetDirection());	//	マップの情報,方向
 }
 /*void GunEnemy::Init(BaseMap* New_p_map, const int& direction)
 {
@@ -446,7 +447,7 @@ void GunEnemy::Defoult()
 		}
 	}
 	std::cout << timer << "\n";
-	std::cout << "通常状態\n";
+	//std::cout << "通常状態\n";
 }
 
 //===============================================================================
@@ -455,7 +456,7 @@ void GunEnemy::Defoult()
 void GunEnemy::Shotting()
 {
 	timer++;											// タイマー更新
-	std::cout << "発射状態\n";
+	//std::cout << "発射状態\n";
 	if (changeScene == true)
 	{
 		changeScene = false;
@@ -466,7 +467,7 @@ void GunEnemy::Shotting()
 	if (timer >= bulletcreateflame)
 	{
 		timer = 0;
-		std::cout << "弾オブジェクト発射!!\n";
+		//std::cout << "弾オブジェクト発射!!\n";
 		bullet.SetPos(p_transform->position);		// 発射する直前の位置を送る
 		bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
 		changeScene = true;								// changeSceneを有効にする
@@ -477,7 +478,7 @@ void GunEnemy::Shotting()
 	if (!bullet.GetBulletActive())
 	{
 		timer++;											// タイマー更新
-		std::cout << "発射状態\n";
+		//std::cout << "発射状態\n";
 		if (changeScene == true)
 		{
 			changeScene = false;
@@ -531,7 +532,7 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 	if (col->GetTag() == "Object")
 	{
 		// deadへ
-		//currentState = GunEnemy::dead;
+		currentState = GunEnemy::dead;
 		bullet.SetBulletActive(false);
 	}
 }

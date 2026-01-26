@@ -4,7 +4,7 @@
 
 namespace GunEnemyParam
 {
-	const std::string tag = "Gun";	// タグ:"Enemy"
+	const std::string tag = "Gun";	// タグ:"Gun"
 	const int waittimer = 180;	// 弾が消えてからの待機時間
 	const int bulletcreateflame = 50;		// シューティングのフレーム数
 	const bool changeScene = false;			// シーンが切り替わった時に一度だけ再生されるようにする
