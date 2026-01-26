@@ -457,7 +457,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 	if (col->GetTag() == "Object" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
 		timer = 0;
-		std::cout << "BIteEnemy本体にヒット\n";
+		//std::cout << "BIteEnemy本体にヒット\n";
 		oldani = anipos;
 		currentState = BiteEnemy::dead;
 		changeState = true;
@@ -467,5 +467,5 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
-
+	
 }
