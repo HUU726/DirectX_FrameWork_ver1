@@ -14,7 +14,7 @@
 //=================================================================
 //Init(引数::BaseMap(マップの情報) , int(どの方向を向いているか))
 //=================================================================
-void BulletObject::Init(const int& NewDirection)
+void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 {
 	SetTag(BulletObjectParam::tag);
 	bodyColler = AddComponent<BoxCollider2D>();
@@ -27,20 +27,25 @@ void BulletObject::Init(const int& NewDirection)
 	startScene = BulletObjectParam::startScene;
 	NotHittime = BulletObjectParam::NotHittime;
 	currentState = BulletObject::defoult;
-	//p_map = New_p_map;
+	p_map = New_p_map;
 
 	// マップから情報を受け取る
-	LeftTop = { -250.f,250.f };
-	RightBottom= { 250.f,-250.f };
+	if (New_p_map == nullptr)
+	{
+		LeftTop = { -250.f,250.f };
+		RightBottom = { 250.f,-250.f };
+	}
+	else
+	{
+		LeftTop = p_map->GetLefTopPos();		// マップの端の数値(左と上)
+		RightBottom = p_map->GetRitBotPos();	// マップの端の数値(右と下)
+		float map_scele = p_map->GetScaleRatio();	// マップの大きさに合わせるためのレート(scaleに掛ける)
 
-	//LeftTop = p_map->GetLefTopPos();		// マップの端の数値(左と上)
-	//RightBottom = p_map->GetRitBotPos();	// マップの端の数値(右と下)
-	//float map_scele = p_map->GetScaleRatio();	// マップの大きさに合わせるためのレート(scaleに掛ける)
-
-	// サイズ更新(マップサイズに合わせたサイズにする)
-	//p_transform->scale.x *= map_scele;
-	//p_transform->scale.y *= map_scele;
-	//p_transform->scale.z *= map_scele;
+		// サイズ更新(マップサイズに合わせたサイズにする)
+		p_transform->scale.x *= map_scele;
+		p_transform->scale.y *= map_scele;
+		p_transform->scale.z *= map_scele;
+	}
 
 	// 方向の情報
 	SetDirection(NewDirection);

@@ -19,8 +19,7 @@ GunEnemy::GunEnemy()
 //====================================================================================================
 //Init
 //====================================================================================================
-//void GunEnemy::Init(BaseMap* p_map , const int& direction)
-void GunEnemy::Init(const int& direction)
+void GunEnemy::Init(BaseMap* New_p_map , const int& direction)
 {
 	// タイマーの初期化
 	timer = 0;
@@ -196,10 +195,10 @@ void GunEnemy::Init(const int& direction)
 	//std::cout << "GunEnemyパラメータ完了\n";
 
 	// マップの情報
-	//p_map = New_p_map;
+	p_map = New_p_map;
 	// 弾オブジェクト初期化
-	bullet.Init(GetDirection());		// デバック用
-	//bullet.Init(p_map,GetDirection());	//	マップの情報,方向
+	//bullet.Init(GetDirection());		// デバック用
+	bullet.Init(p_map,GetDirection());	//	マップの情報,方向
 }
 
 //============================================================================================

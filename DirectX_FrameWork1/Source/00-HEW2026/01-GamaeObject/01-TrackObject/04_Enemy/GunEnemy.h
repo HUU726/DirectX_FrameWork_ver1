@@ -46,7 +46,7 @@ private:
 public:
 	GunEnemy();
 	void Init() override {};
-	void Init(/*BaseMap* p_map,*/ const int& NewDirection);
+	void Init(BaseMap* p_map,const int& NewDirection);
 	void Update() override;
 	
 	void Defoult();
