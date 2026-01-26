@@ -23,7 +23,7 @@
 class TitleScene : public BaseScene
 {
 private:
-	Map1 map;
+	Map5 map;
 
 public:
 	~TitleScene() override;
