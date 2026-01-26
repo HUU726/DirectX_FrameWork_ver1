@@ -1,7 +1,6 @@
 #include"GunEnemy.h"
 #include"GunEnemyParam.h"
 #include"../../../../01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-#include"../../../../01-MyLib/08-Scene/01-Scenes/TitleScene.h"
 
 #define RIGHT 0
 #define UP 1
@@ -20,7 +19,7 @@ GunEnemy::GunEnemy()
 //====================================================================================================
 //Init
 //====================================================================================================
-void GunEnemy::Init(const int & direction)
+void GunEnemy::Init(BaseMap* New_p_map,const int & direction)
 {
 	// タイマーの初期化
 	timer = 0;
@@ -194,9 +193,11 @@ void GunEnemy::Init(const int & direction)
 		bodyColl->SetIsActive(true);
 	}
 	//std::cout << "GunEnemyパラメータ完了\n";
-
+	
+	// マップの情報
+	p_map = New_p_map;
 	// 弾オブジェクト初期化
-	bullet.Init(GetDirection());
+	bullet.Init(p_map, bodyColl, GetDirection());	//	方向、当たり判定、マップの情報
 }
 
 //============================================================================================

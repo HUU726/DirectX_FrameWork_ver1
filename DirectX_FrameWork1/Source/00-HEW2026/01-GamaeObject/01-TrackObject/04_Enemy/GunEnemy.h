@@ -9,6 +9,8 @@ class GunEnemy : public CEnemy
 private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
+	// マップの情報
+	BaseMap* p_map = nullptr;
 	// 弾が消えてからの待機時間
 	int waittimer;
 	// 経過時間
@@ -44,7 +46,7 @@ private:
 public:
 	GunEnemy();
 	void Init() override {};
-	void Init(const int&);
+	void Init(BaseMap* p_map, const int& NewDirection);
 	void Update() override;
 	
 	void Defoult();

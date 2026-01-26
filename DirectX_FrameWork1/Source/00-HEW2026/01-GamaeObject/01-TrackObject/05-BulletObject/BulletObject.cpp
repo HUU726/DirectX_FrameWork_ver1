@@ -4,7 +4,6 @@
 
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
-#include"../../../../00-HEW2026/10-Map/00-BaseMap/BaseMap.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
@@ -13,13 +12,13 @@
 #define LEFT 2
 #define DOWN 3
 
+
 //=================================================================
 //Init
 //=================================================================
-void BulletObject::Init(const int& NewDirection)
+void BulletObject::Init(BaseMap* New_p_map, BoxCollider2D* my_owner, const int& NewDirection)
 {
 	SetTag(BulletObjectParam::tag);
-	p_transform->scale = BulletObjectParam::scale;
 	auto col = AddComponent<BoxCollider2D>();
 	col->SetIsActive(false);
 	SetIsActive(false);
@@ -29,16 +28,25 @@ void BulletObject::Init(const int& NewDirection)
 	spead = BulletObjectParam::spead;
 	blasttime = BulletObjectParam::blasttime;
 	startScene = BulletObjectParam::startScene;
+	NotHittime = BulletObjectParam::NotHittime;
+	_owner = my_owner;
+	p_map = New_p_map;
 
-	// マップの枠の数値を入れる
-	LeftTop = { -250.f,250.f };
-	RightBottom= { 250.f,-250.f };
-	//LeftTop = GetComponent<BaseMap>()->GetLefTopPos();
-	//RightBottom = GetComponent<BaseMap>()->GetRitBotPos();
+	// マップから情報を受け取る
+	//LeftTop = { -250.f,250.f };
+	//RightBottom= { 250.f,-250.f };
+	LeftTop = p_map->GetLefTopPos();		// マップの端の数値(左と上)
+	RightBottom = p_map->GetRitBotPos();	// マップの端の数値(右と下)
+	float map_scele = p_map->GetScaleRatio();	// マップの大きさに合わせるためのレート(scaleに掛ける)
+
+	// サイズ更新(マップサイズに合わせたサイズにする)
+	p_transform->scale.x *= map_scele;
+	p_transform->scale.y *= map_scele;
+	p_transform->scale.z *= map_scele;
 
 	// 方向の情報
 	SetDirection(NewDirection);
-	
+
 	//画像の設定
 	{
 		//レンダラーの設定
@@ -212,22 +220,18 @@ void BulletObject::CheakMyPos()
 void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
 	GameObject* col = _p_col->GetGameObject();
-
-	// 弾の出始め
-	if (col->GetTag() == "Gun" &&OneHit == true)
+	Collider* owner = _owner;
+	// 対象のオブジェクトにヒットした際、blastに移行
+	if (col->GetTag() == "Gun" || col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
-		OneHit = false;
-		std::cout << "1ヒット\n";
-	}
+		// 時間内であれば発射をしたエネミーを当たる標的に含めない
+		if (/*_p_col == owner && */ NotHittime > 0)
+		{
 
-	// 着弾
-	if (OneHit == false)
-	{
-		// 対象のオブジェクトにヒットした際、blastに移行
-		if (col->GetTag() == "Gun" || col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+		}
+		else
 		{
 			std::cout << "弾オブジェクトが何かにヒット\n";
-			OneHit = true;
 		}
 	}
 }
