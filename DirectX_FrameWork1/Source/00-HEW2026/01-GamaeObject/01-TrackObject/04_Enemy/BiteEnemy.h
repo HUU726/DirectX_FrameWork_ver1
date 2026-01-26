@@ -1,18 +1,28 @@
 #pragma once
+#include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include"Enemy.h"
+
 class BoxCollider2D;
 
 // 攻撃判定のクラス
 class AttackMass : public GameObject2D
 {
-public:
-	AttackMass() { tag = "Enemy"; }
-	BoxCollider2D* attackCollider = nullptr;	// 攻撃の判定
-	void Update(hft::HFFLOAT3 NewPosition) { p_transform->position = NewPosition; }	// 座標を常に更新
+private:
+	GameObject2D* attackRenderer;	// 画像表示用
+	BoxCollider2D* attackCollider;	// 攻撃の判定
+	bool Fg = false;				// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
+public:			
+	void Init() override;
+	void Update(hft::HFFLOAT3 NewPos, const int& NewDirection);	// 座標を常に更新
+	void SetFg(const bool& NewFg) { Fg = NewFg; }				// Fgをセット 
+	/*
+	void SetIsTrigger(const bool& NewSet) { attackCollider->SetIsTrigger(NewSet); }		// デバック用(当たり判定のON,OFF)
+	void SetIsActive(const bool& NewSet) { attackRenderer->SetIsRender(NewSet); }		// デバック用(描写のON,OFF)
+	*/
 	void OnCollisionEnter(Collider* _p_col) override;
-	
 };
 
+// 噛みつく敵(本体と攻撃判定でタグを変えるため)// 変えないと攻撃判定で爆弾を作動させたりしてしまう
 class BiteEnemy : public CEnemy
 {
 private:

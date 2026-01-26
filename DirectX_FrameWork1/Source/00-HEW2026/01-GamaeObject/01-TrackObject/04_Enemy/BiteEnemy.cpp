@@ -271,11 +271,19 @@ void BiteEnemy::Init(const int& direction)
 	offset[3] = { 0.0f,(size.y * -1),0.0f };
 
 	//攻撃マスの設定
+	attackCollider.Init();
+	/*
 	attackCollider.attackCollider = AddComponent<BoxCollider2D>();
 	attackCollider.attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
 	attackCollider.attackCollider->SetOffset(offset[GetDirection()]);
 	attackCollider.attackCollider->SetIsActive(true);
 	attackCollider.attackCollider->SetIsTrigger(false);
+
+	// ===== デバッグ用：攻撃判定の可視化 =====
+	attackCollider.attackform = attackCollider.AddComponent<SpriteRenderer>();
+	attackCollider.attackform->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");   // プレイヤーの画像
+	attackCollider.attackform->SetIsActive(false);
+	*/
 }
 
 // 更新===============================================================
@@ -292,7 +300,7 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
-	attackCollider.Update(p_transform->position);
+	attackCollider.Update(p_transform->position, GetDirection());
 }
 
 
@@ -341,16 +349,20 @@ void BiteEnemy::Attack()
 	if (changeState == true)
 	{
 		changeState = false;	
-		attackCollider.attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
-		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生されていたアニメーションをストップ
+		//attackCollider.SetOffset(offset[dir]);			// 攻撃マスの位置を調整
+		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
-		attackCollider.attackCollider->SetIsTrigger(true);				// 当たり判定をアクティブに
+		attackCollider.SetFg(true);							// デバック用
+		//attackCollider.SetIsTrigger(true);				// デバック用(当たり判定)
+		//attackCollider.SetIsActive(true);					// デバック用(描写用)
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
-		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		attackCollider.attackCollider->SetIsTrigger(false);			// 当たり判定を非アクティブに
+		currentState = BiteEnemy::defoult2;					// 通常状態へ
+		attackCollider.SetFg(false);							// デバック用
+		//attackCollider.SetIsTrigger(false);					// デバック用(当たり判定)
+		//attackCollider.SetIsActive(false);					// デバック用(描写用)
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -382,8 +394,6 @@ void BiteEnemy::Defoult2()
 	}
 }
 
-
-
 //==================================================================================
 // 回転状態の処理
 //==================================================================================
@@ -413,7 +423,6 @@ void BiteEnemy::Spin()
 		anipos++;
 	}
 }
-
 
 //==================================================================================
 // 死亡状態の処理
@@ -454,6 +463,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 	}
 
 	// 対象オブジェクトの場合、deadへ移行
+	/*
 	if (col->GetTag() == "Bullet" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
 		timer = 0;
@@ -461,8 +471,72 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 		oldani = anipos;
 		currentState = BiteEnemy::dead;
 		changeState = true;
-		attackCollider.attackCollider->SetIsTrigger(false);		// 攻撃判定を消す
+		attackCollider.SetIsTrigger(false);		// 攻撃判定を消す
+	}*/
+
+}
+
+void AttackMass::Init()
+{
+	attackRenderer = new GameObject2D;
+	// パラメータ初期化
+	tag = "Enemy";
+	p_transform->position = { 0.0f,0.0f,0.0f };
+	p_transform->scale = { 50.f,50.f,1.f };
+	// 当たり判定の追加
+	attackCollider = AddComponent<BoxCollider2D>();
+	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさは本体のサイズと同じ
+	attackCollider->SetSize(p_size);
+	// レンダラーの設定
+	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	//SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
+	//renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	SetFg(false);
+
+	/*
+			//レンダラー設定
+		searchRenderer = new GameObject2D;
+		searchRenderer->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
+		searchRenderer->GetTransformPtr()->position.z = -4;
+		searchRenderer->SetIsRender(false);
+
+		SpriteRenderer* renderer = searchRenderer->GetComponent<SpriteRenderer>();
+		renderer->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
+
+		//コライダー設定
+		searchColl = AddComponent<BoxCollider2D>();
+		searchColl->SetSize({ 280.f, 280.f, 1.f });
+		searchColl->SetIsActive(true);
+	*/
+}
+
+void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
+{
+	p_transform->position = NewPos;
+	switch (direction) {
+	case 0:p_transform->position.x += 75; break;
+	case 1:p_transform->position.y += 75; break;
+	case 2:p_transform->position.x -= 75; break;
+	case 3:p_transform->position.y -= 75; break;
 	}
+
+	if (Fg == true)
+	{
+		//std::cout << attackCollider->GetIsTrigger()<<"\n";
+		//std::cout << attackRenderer->GetIsActive() << "\n";
+		attackCollider->SetIsTrigger(true);
+		attackRenderer->SetIsActive(true);
+	}
+	else
+	{
+		//std::cout << attackCollider->GetIsTrigger() << "\n";
+		//std::cout << attackRenderer->GetIsActive() << "\n";
+		attackCollider->SetIsTrigger(false);
+		attackRenderer->SetIsActive(false);
+	}
+
+	// デバック用
+	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 }
 
 void AttackMass::OnCollisionEnter(Collider* _p_col)
@@ -473,5 +547,4 @@ void AttackMass::OnCollisionEnter(Collider* _p_col)
 	{
 		//std::cout << "攻撃判定にヒット\n";
 	}
-	
 }
