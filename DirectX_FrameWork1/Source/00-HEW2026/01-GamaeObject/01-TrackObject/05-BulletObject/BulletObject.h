@@ -64,7 +64,7 @@ private:
 public:
 	BulletObject() = default;
 	void Init() override {};
-	void Init(BaseMap* p_map, BoxCollider2D* _owner, const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
+	void Init(/*BaseMap* p_map ,*/ BoxCollider2D* _owner, const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
 	void Update() override;
 
 	void SetTag(const std::string&) { tag = "Bullet"; }
