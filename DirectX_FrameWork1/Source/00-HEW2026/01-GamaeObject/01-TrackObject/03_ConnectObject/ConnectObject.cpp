@@ -271,7 +271,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 
 	//オブジェクトの生成位置。初期値は自身の位置から1マス分進んだところ
 	hft::HFFLOAT3 spawnPos = originPos + tileStep;
-	spawnPos.z = -1;
+	spawnPos.z = p_transform->position.z;
 
 	//表示する画像の向き、縦と横の向きを切り替える
 	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackVertRotation;
