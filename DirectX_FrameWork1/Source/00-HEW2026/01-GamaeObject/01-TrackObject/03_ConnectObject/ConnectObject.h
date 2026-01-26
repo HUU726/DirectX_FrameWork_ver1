@@ -99,11 +99,11 @@ public:
 
 
 	//デバッグ用の処理
-	void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
-	void debug_SetstartPos()
-	{
-		debug_startPos = GetComponent<Transform>()->position;
-	}
+	//void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
+	//void debug_SetstartPos()
+	//{
+	//	debug_startPos = GetComponent<Transform>()->position;
+	//}
 
-	void debug_Move();
+	//void debug_Move();
 };
