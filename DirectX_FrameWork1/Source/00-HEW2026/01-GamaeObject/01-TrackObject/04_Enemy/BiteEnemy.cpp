@@ -292,7 +292,7 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
-	attackCollider.Update();
+	attackCollider.Update(p_transform->position);
 }
 
 
@@ -346,6 +346,7 @@ void BiteEnemy::Attack()
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 		attackCollider.attackCollider->SetIsTrigger(true);				// 当たり判定をアクティブに
 	}
+	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;		// 通常状態へ
@@ -369,7 +370,6 @@ void BiteEnemy::Defoult2()
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 	}
-
 	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 
 	if (timer >= defoulttime_2)
@@ -454,7 +454,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 	}
 
 	// 対象オブジェクトの場合、deadへ移行
-	if (col->GetTag() == "Object" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+	if (col->GetTag() == "Bullet" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
 		timer = 0;
 		//std::cout << "BIteEnemy本体にヒット\n";
@@ -467,5 +467,11 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
+	// 接触相手の情報を取得
+	GameObject* col = _p_col->GetGameObject();
+	if (col->GetTag() == "Player")
+	{
+		//std::cout << "攻撃判定にヒット\n";
+	}
 	
 }

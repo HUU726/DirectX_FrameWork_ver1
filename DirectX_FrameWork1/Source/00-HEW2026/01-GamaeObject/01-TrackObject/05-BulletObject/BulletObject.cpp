@@ -217,14 +217,14 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// ”­ŽË’¼Œã‚Ì“–‚½‚è”»’è‚ð–³Œø‰»
 	if (tag == "Player" || tag == "Bom" || tag == "Thorn" || tag == "Connect" || tag == "Bite")
 	{
-		std::cout << tag << "‚Éƒqƒbƒg\n";
+		//std::cout << tag << "‚Éƒqƒbƒg\n";
 		currentState = BulletObject::blast;
 	}
 
 	//	”­ŽË’¼Œã‚Å–³‚¯‚ê‚Î,”­ŽËŒ³‚ÉÚG‚µ‚½ê‡Á–Å‚·‚é
 	if (tag == "Gun" && NotHittime == 0)
 	{
-		std::cout << tag << "‚Éƒqƒbƒg\n";
+		//std::cout << tag << "‚Éƒqƒbƒg\n";
 		currentState = BulletObject::blast;
 	}
 }

@@ -8,12 +8,7 @@ class AttackMass : public GameObject2D
 public:
 	AttackMass() { tag = "Enemy"; }
 	BoxCollider2D* attackCollider = nullptr;	// UŒ‚‚Ì”»’è
-	/*
-	void Init() { attackCollider = AddComponent<BoxCollider2D>(); }
-	void SetSize(const hft::HFFLOAT3 size) { attackCollider->SetSize(size); }
-	void SetOffset(const hft::HFFLOAT3 offset) { attackCollider->SetOffset(offset); }
-	void SetIsTrigger(const bool NewTrigger) { attackCollider->SetIsTrigger(NewTrigger); }
-	*/
+	void Update(hft::HFFLOAT3 NewPosition) { p_transform->position = NewPosition; }	// À•W‚ğí‚ÉXV
 	void OnCollisionEnter(Collider* _p_col) override;
 	
 };
