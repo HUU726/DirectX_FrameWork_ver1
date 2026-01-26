@@ -12,7 +12,7 @@
 
 
 //=================================================================
-//Init
+//Init(引数::BaseMap(マップの情報) , int(どの方向を向いているか))
 //=================================================================
 void BulletObject::Init(const int& NewDirection)
 {
@@ -26,6 +26,7 @@ void BulletObject::Init(const int& NewDirection)
 	blasttime = BulletObjectParam::blasttime;
 	startScene = BulletObjectParam::startScene;
 	NotHittime = BulletObjectParam::NotHittime;
+	currentState = BulletObject::defoult;
 	//p_map = New_p_map;
 
 	// マップから情報を受け取る
@@ -44,6 +45,7 @@ void BulletObject::Init(const int& NewDirection)
 	// 方向の情報
 	SetDirection(NewDirection);
 
+	AddComponent<SpriteRenderer>();
 	//画像の設定
 	{
 		//レンダラーの設定
@@ -56,7 +58,7 @@ void BulletObject::Init(const int& NewDirection)
 		//animationの設定
 		// 通常
 		SpriteAnimation anim1(div, { 0,0 }, 1);
-		anim1.InActive();
+		anim1.Active();
 		anim1.SetID(0);
 		anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim1.SetPriority(0);
@@ -100,7 +102,7 @@ void BulletObject::Defoult()
 		GetComponent<SpriteAnimator>()->Play(0);
 		//std::cout << "Bullet出現\n";
 	}
-
+	std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 	if (timer <= livetime)
 	{
 		if (NotHittime > 0)
@@ -129,17 +131,15 @@ void BulletObject::Blast()
 		startScene = false;
 		GetComponent<SpriteAnimator>()->Stop(0);
 		GetComponent<SpriteRenderer>()->SetIsActive(false);
-		//std::cout << "弾オブジェクト破裂アニメーション\n";
 		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
+		NotHittime = 10;
 	}
 	if (timer >= blasttime)
 	{
 		startScene = true;
 		currentState = BulletObject::defoult;
 		timer = 0;
-		NotHittime = 10;
 		SetBulletActive(false);
-		//std::cout << "弾オブジェクトを消滅\n";
 	}
 }
 
@@ -207,23 +207,24 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 	std::string tag = col->GetTag();
+
+	// 接触相手が弾の場合何もなし
+	if (col == dynamic_cast<BulletObject*>(col))
+	{
+		return;
+	}
+
 	// 発射直後の当たり判定を無効化
-	if (tag == "Player")
+	if (tag == "Player" || tag == "Bom" || tag == "Thorn" || tag == "Connect" || tag == "Bite")
 	{
 		std::cout << tag << "にヒット\n";
 		currentState = BulletObject::blast;
 	}
 
-
+	//	発射直後で無ければ,発射元に接触した場合消滅する
 	if (tag == "Gun" && NotHittime == 0)
 	{
-		std::cout << "NotHittime:" << NotHittime << "\n";
-		std::cout << tag << "\n";
-		std::cout << "ヒット\n";
+		std::cout << tag << "にヒット\n";
+		currentState = BulletObject::blast;
 	}
-
-	
-	if (col->GetTag() == "Player" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect" || col->GetTag() == "Bite")
-	{ }
-	// currentState=BulletObject::blust;
 }
