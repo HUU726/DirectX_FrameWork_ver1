@@ -226,6 +226,7 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	{
 		//std::cout << tag << "‚Éƒqƒbƒg\n";
 		currentState = BulletObject::blast;
+		startScene = true;
 	}
 
 	//	”­ŽË’¼Œã‚Å–³‚¯‚ê‚Î,”­ŽËŒ³‚ÉÚG‚µ‚½ê‡Á–Å‚·‚é
@@ -233,5 +234,6 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	{
 		std::cout << tag << "‚Éƒqƒbƒg\n";
 		currentState = BulletObject::blast;
+		startScene = true;
 	}
 }
