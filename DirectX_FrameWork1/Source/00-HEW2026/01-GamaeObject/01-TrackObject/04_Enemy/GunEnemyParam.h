@@ -11,6 +11,7 @@ namespace GunEnemyParam
 	const bool startScene = true;			// 一度だけ再生される
 	const int anipos = 0;					// 新しいアニメーションを再生するためのID格納用変数
 	const int oldani = 0;					// 古いアニメーションをストップさせるためのID格納用変数
+	const int deadtime = 30;				// 死亡状態が終わる時間
 	const hft::HFFLOAT3 scale = { 130.f,130.f, 50.f };		// サイズ
 	const hft::HFFLOAT3 position = { 0.0f,0.0f, -2.0f };	// 位置
 	const char* biteenemyTexName = "Assets/01-Texture/03-Enemy/EnemyTamateki.png";	// テクスチャ

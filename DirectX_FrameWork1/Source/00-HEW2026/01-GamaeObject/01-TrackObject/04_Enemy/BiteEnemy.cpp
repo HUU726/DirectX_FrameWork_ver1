@@ -262,16 +262,19 @@ void BiteEnemy::Init(const int& direction)
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
-	bodyCollider->SetSize(p_size);
+	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
 	// 攻撃マスの判定を自身のサイズ分,ずらす
+	/*
 	const hft::HFFLOAT3 size = bodyCollider->GetSize();
 	offset[0] = { size.x,0.0f,0.0f };
 	offset[1] = { 0.0f,size.y,0.0f };
 	offset[2] = { (size.x * -1),0.0f,0.0f };
 	offset[3] = { 0.0f,(size.y * -1),0.0f };
+	*/
 
 	//攻撃マスの設定
 	attackCollider.Init();
+
 	/*
 	attackCollider.attackCollider = AddComponent<BoxCollider2D>();
 	attackCollider.attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
@@ -463,17 +466,19 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 	}
 
 	// 対象オブジェクトの場合、deadへ移行
-	/*
-	if (col->GetTag() == "Bullet" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+	
+	
+	if (col->GetTag() == "Bullet" || col->GetTag() == "DamageObject" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
 		timer = 0;
+		std::cout << col->GetTag()<<"\n";
 		//std::cout << "BIteEnemy本体にヒット\n";
 		oldani = anipos;
 		currentState = BiteEnemy::dead;
 		changeState = true;
-		attackCollider.SetIsTrigger(false);		// 攻撃判定を消す
-	}*/
-
+		attackCollider.SetFg(false);		// 攻撃判定を消す
+	}
+	
 }
 
 void AttackMass::Init()
@@ -482,16 +487,17 @@ void AttackMass::Init()
 	// パラメータ初期化
 	tag = "Enemy";
 	p_transform->position = { 0.0f,0.0f,0.0f };
-	p_transform->scale = { 50.f,50.f,1.f };
+	p_transform->scale = { 70.f,70.f,1.f };
 	// 当たり判定の追加
 	attackCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさは本体のサイズと同じ
 	attackCollider->SetSize(p_size);
 	// レンダラーの設定
-	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	std::shared_ptr<Texture> tex = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	SetFg(false);
 	//SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
 	//renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	SetFg(false);
+	
 
 	/*
 			//レンダラー設定
@@ -510,6 +516,7 @@ void AttackMass::Init()
 	*/
 }
 
+//	
 void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 {
 	p_transform->position = NewPos;
@@ -539,12 +546,13 @@ void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 }
 
+// 攻撃マスのOnCillisionEnter
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	if (col->GetTag() == "Player")
+	if (col->GetTag() == "Bom")
 	{
-		//std::cout << "攻撃判定にヒット\n";
+		std::cout << "攻撃判定にヒット\n";
 	}
 }

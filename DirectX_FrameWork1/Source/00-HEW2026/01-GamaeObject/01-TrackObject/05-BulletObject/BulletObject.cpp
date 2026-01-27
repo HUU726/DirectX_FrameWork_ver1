@@ -85,6 +85,7 @@ void BulletObject::Update()
 {
 	if (GetBulletActive())
 	{
+		//std::cout << "LeftTop::" << LeftTop.x << LeftTop.y << "\n";	// デバック用
 		timer++;
 		switch (currentState) {
 		case defoult:Defoult(); break;		// 通常状態
@@ -188,16 +189,16 @@ void BulletObject::CheakMyPos()
 	switch (GetDirection())
 	{
 	case RIGHT:
-		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; /*std::cout << "ワープ\n";*/ }
+		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; std::cout << "ワープ\n"; }
 		break;
 	case UP:
-		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; /*std::cout << "ワープ\n"; */ }
+		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; std::cout << "ワープ\n"; }
 		break;
 	case LEFT:
-		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; /*std::cout << "ワープ\n";*/ }
+		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; std::cout << "ワープ\n"; }
 		break;
 	case DOWN:
-		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; /*std::cout << "ワープ\n"; */ }
+		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; std::cout << "ワープ\n"; }
 		break;
 	default:
 		std::cout << "座標チェックエラー\n";
@@ -229,7 +230,7 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	//	発射直後で無ければ,発射元に接触した場合消滅する
 	if (tag == "Gun" && NotHittime == 0)
 	{
-		//std::cout << tag << "にヒット\n";
+		std::cout << tag << "にヒット\n";
 		currentState = BulletObject::blast;
 	}
 }
