@@ -26,6 +26,7 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 	blasttime = BulletObjectParam::blasttime;
 	startScene = BulletObjectParam::startScene;
 	NotHittime = BulletObjectParam::NotHittime;
+	p_transform->scale = BulletObjectParam::scale;
 	currentState = BulletObject::defoult;
 	p_map = New_p_map;
 

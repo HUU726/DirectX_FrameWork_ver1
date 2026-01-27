@@ -221,12 +221,7 @@ void GunEnemy::Update()
 	default:
 		break;
 	}
-	
-	
-	if (bullet.GetBulletActive())
-	{
-		bullet.Update();
-	}
+
 }
 
 

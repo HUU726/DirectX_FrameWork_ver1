@@ -493,27 +493,11 @@ void AttackMass::Init()
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさは本体のサイズと同じ
 	attackCollider->SetSize(p_size);
 	// レンダラーの設定
-	std::shared_ptr<Texture> tex = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	SetFg(false);
-	//SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
-	//renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	
-
-	/*
-			//レンダラー設定
-		searchRenderer = new GameObject2D;
-		searchRenderer->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
-		searchRenderer->GetTransformPtr()->position.z = -4;
-		searchRenderer->SetIsRender(false);
-
-		SpriteRenderer* renderer = searchRenderer->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
-
-		//コライダー設定
-		searchColl = AddComponent<BoxCollider2D>();
-		searchColl->SetSize({ 280.f, 280.f, 1.f });
-		searchColl->SetIsActive(true);
-	*/
+	//std::shared_ptr<Texture> tex1 = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	//SetFg(false);
+	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
+	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	GetComponent<SpriteRenderer>()->SetIsActive(false);
 }
 
 //	
@@ -531,7 +515,7 @@ void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 	{
 		//std::cout << attackCollider->GetIsTrigger()<<"\n";
 		//std::cout << attackRenderer->GetIsActive() << "\n";
-		attackCollider->SetIsTrigger(true);
+		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
 		attackRenderer->SetIsActive(true);
 	}
 	else
