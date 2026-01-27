@@ -367,7 +367,7 @@ void BaseMap::CreateObjects()
 				{
 					++gunVec;
 					GunEnemy* p_obj = new GunEnemy;
-					p_obj->Init(*gunVec);
+					p_obj->Init(this, *gunVec);
 					p_obj->GetTransformPtr()->position.z = -3;
 					p_trackObj = p_obj;
 				}
