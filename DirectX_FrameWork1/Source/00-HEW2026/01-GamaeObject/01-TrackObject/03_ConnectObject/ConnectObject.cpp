@@ -27,31 +27,11 @@ void ConnectObject::Init()
 	{
 		p_transform->scale = ConnectObjectParam::mainBodyScale;
 
-		//スプライトレンダラー、アニメーターの設定
-		{
-			const char* texName = ConnectObjectParam::mainBodyTexName;
-			std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(texName);
+		//スプライトレンダラー
+		const char* texName = ConnectObjectParam::mainBodyTexName;
+		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(texName);
 
-			SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
-			hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
-
-			{
-				SpriteAnimation anim(div, { 0,0 }, 9);
-				anim.SetID(0);
-
-				anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-				anim.SetPriority(0);
-				float flame = 60;
-
-				for (int i = 0; i < 9; i++)
-				{
-					anim.GetCellRef(i).flame = flame;
-				}
-
-				p_spriteAnimator->AddAnimation(anim);
-			}
-		}
-
+		//コライダー
 		bodyCollider = AddComponent<BoxCollider2D>();
 	}
 
@@ -83,7 +63,7 @@ void ConnectObject::Update()
 	SearchConnectedState();
 
 	//デバッグ用の座標移動
-	debug_Move();
+	//debug_Move();
 }
 
 void ConnectObject::ResetAttackObjectsActive()
@@ -166,20 +146,6 @@ void ConnectObject::SearchConnectedState()
 			hft::HFFLOAT3 curDiff = myPos - connectTfmArray[trfIdx];
 			hft::HFFLOAT3 sameDiff = myPos - connectTfmArray[sameTfmIdx];
 
-			//float curDist = sqrtf(curDiff.x * curDiff.x + curDiff.y * curDiff.y);
-			//float sameDist = sqrtf(sameDiff.x * sameDiff.x + sameDiff.y * sameDiff.y);
-
-			//より遠い方を消す
-			//if (curDist > sameDist)
-			//{
-			//	deleteIdx[trfIdx] = true;
-			//}
-			//else
-			//{
-			//	deleteIdx[sameTfmIdx] = true;
-			//	connectDirIndexArray[dirIdx] = trfIdx;
-			//}
-
 			float curDistSq = curDiff.x * curDiff.x + curDiff.y * curDiff.y;
 			float sameDistSq = sameDiff.x * sameDiff.x + sameDiff.y * sameDiff.y;
 
@@ -233,14 +199,7 @@ void ConnectObject::EmitAttackAtConnection(const hft::HFFLOAT3 tarPos)
 	//自身の座標からどの向きに繋がっているか
 	hft::HFFLOAT3 connectDir = GetConnectionAxis(myPos, tarPos);
 
-	//マスのサイズ
-	float cellSize = ConnectObjectParam::searchCollCellSize;
-
-	//間のマス数
-	int connectCellCount = GetContactTileDistance(myPos, tarPos, cellSize);
-
-	//間のオブジェクトを生成
-	SpawnAttackObjects(myPos, connectDir, connectCellCount, cellSize);
+	SpawnAttackObjects(tarPos, connectDir);
 }
 
 
@@ -285,6 +244,26 @@ int ConnectObject::GetContactTileDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3
 	return static_cast<int>(distance + 0.5f);
 }
 
+
+float ConnectObject::GetContactDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos)
+{
+	hft::HFFLOAT3 dir = tarPos - originPos;
+	hft::HFFLOAT3 connectDir = GetConnectionAxis(originPos, tarPos);
+
+	//浮動小数点の誤差を考慮して四捨五入
+	float distance;
+	if (connectDir.x != 0.0f)
+	{
+		distance = dir.x;
+	}
+	else
+	{
+		distance = dir.y;
+	}
+
+	return distance;
+}
+
 void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount,float cellSize)
 {
 	//1マス配置ごとの座標の移動量
@@ -292,7 +271,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 
 	//オブジェクトの生成位置。初期値は自身の位置から1マス分進んだところ
 	hft::HFFLOAT3 spawnPos = originPos + tileStep;
-	spawnPos.z = -1;
+	spawnPos.z = p_transform->position.z;
 
 	//表示する画像の向き、縦と横の向きを切り替える
 	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackVertRotation;
@@ -324,7 +303,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 			attackObj->Init();
 
 			//レンダラーの設定
-			SpriteRenderer* renderer = attackObj->AddComponent<SpriteRenderer>();
+			SpriteRenderer* renderer = attackObj->GetComponent<SpriteRenderer>();
 			const char* texName = ConnectObjectParam::emitAttackTexName;
 			renderer->LoadTexture(texName);
 
@@ -353,6 +332,85 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 co
 		//生成位置を次のマスに移動させる
 		spawnPos += tileStep;
 	}
+}
+
+
+void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir)
+{
+
+	//表示する画像の向き、縦と横の向きを切り替える
+	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackHoriRotation;
+	if (connectDir.y <= 0)
+	{
+		texRotation = ConnectObjectParam::emitAttackVertRotation;
+	}
+
+	//自身の位置
+	hft::HFFLOAT3 myPos = GetTransform().position;
+	
+	//距離を計る
+	float distance = GetContactDistance(myPos, tarPos);
+	
+	//オブジェクトの生成位置を計る
+	float middleDistance = distance / 2;
+	hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
+	//spawnPos.z = -4;
+
+	//コライダーのサイズを設定
+	float collThickness = ConnectObjectParam::emitAttackCollThickness;
+	hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
+	if (connectDir.y <= 0)
+	{
+		collSize = { distance, collThickness, 0.f};
+	}
+
+	//テクスチャのサイズを設定
+	float texThickNess = ConnectObjectParam::emitAttacktTexThickness;
+	hft::HFFLOAT3 texSize = { texThickNess, distance, 0.f };
+	if (connectDir.y <= 0)
+	{
+		texSize = { distance, texThickNess, 0.f };
+	}
+
+
+	//自身の座標から接触相手の座標までの間のマスに攻撃判定用オブジェクトを配置する
+	GameObject2D* attackObj = nullptr;
+	bool foundUnused = false;
+
+	//既存の配列の中から非アクティブなものを探す
+	for (GameObject2D* obj : emitAttackObjects)
+	{
+		if (!obj->GetTransform().GetIsActive())
+		{
+			//ある場合はそのオブジェクトを使う
+			attackObj = obj;
+			foundUnused = true;
+			break;
+		}
+	}
+
+	//配列内から見つからなければ新規作成して配列に格納
+	if (!foundUnused)
+	{
+		attackObj = new GameObject2D;
+		attackObj->Init();
+		attackObj->SetTag("Enemy");
+		attackObj->GetComponent<SpriteRenderer>()->LoadTexture(ConnectObjectParam::emitAttackTexName);
+		attackObj->AddComponent<BoxCollider2D>();
+		emitAttackObjects.push_back(attackObj);
+	}
+	
+	//アクティブ化
+	attackObj->SetIsActive(true);
+	attackObj->SetIsRender(true);
+
+	//位置、サイズ、回転角度、タグの設定
+	attackObj->GetTransformPtr()->position = spawnPos;
+	attackObj->GetTransformPtr()->scale	   = texSize;
+	attackObj->GetTransformPtr()->rotation = texRotation;
+
+	//コライダーのサイズの設定
+	attackObj->GetComponent<BoxCollider2D>()->SetSize(collSize);
 }
 
 
@@ -414,15 +472,15 @@ void ConnectObject::OnCollisionStay(Collider* _p_col)
 	
 }
 
-void ConnectObject::debug_Move()
-{
-	GetComponent<Transform>()->position += debug_moveDir;
-
-	hft::HFFLOAT3 dir = debug_startPos - GetComponent<Transform>()->position;
-	float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
-
-	if (length > 500)
-	{
-		GetComponent<Transform>()->position = debug_startPos;
-	}
-}
+//void ConnectObject::debug_Move()
+//{
+//	GetComponent<Transform>()->position += debug_moveDir;
+//
+//	hft::HFFLOAT3 dir = debug_startPos - GetComponent<Transform>()->position;
+//	float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
+//
+//	if (length > 500)
+//	{
+//		GetComponent<Transform>()->position = debug_startPos;
+//	}
+//}

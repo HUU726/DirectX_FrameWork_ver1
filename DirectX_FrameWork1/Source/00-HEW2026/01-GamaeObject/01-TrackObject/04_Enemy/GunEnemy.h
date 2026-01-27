@@ -25,7 +25,9 @@ private:
 	int oldani;
 	// 弾オブジェクトを作成するフレーム数
 	int bulletcreateflame;
-	
+	// 死亡状態が終了する時間
+	int deadtime;
+
 	enum State
 	{
 		defoult,
@@ -39,35 +41,16 @@ private:
 
 	
 	// 弾オブジェクト
-	//BulletObject bullet;
+	BulletObject bullet;
 
 public:
 	GunEnemy();
 	void Init() override {};
-	void Init(const int&);
+	void Init(BaseMap* p_map,const int& NewDirection);
 	void Update() override;
 	
 	void Defoult();
 	void Shotting();
 	void Dead();
-	
 	void OnCollisionEnter(Collider* _p_col) override;
 };
-
-/*
-class ObjectManager
-{
-public:
-	template<class T, class... Args>
-	static T* Create(Args&&... args)
-	{
-		T* obj = new T(std::forward<Args>(args)...);
-		obj->InternalInitialize(); // Transform / Component 初期化
-		objects.push_back(obj);
-		return obj;
-	}
-
-private:
-	static inline std::vector<GameObject*> objects;
-};
-*/

@@ -8,8 +8,19 @@
 //	{ 0,0,0,0,0 },
 //};
 
+
+// EMPTY		0
+// PLAYER		1
+// BITE_ENEMY	2
+// GUN_ENEMY	3
+// BOMB_ENEMY	4
+// CONNECT_OBJ	5
+// THORM_OBJ	6
+
+
 void Map1::CreateMap()
 {
+	id = 1;
 	width = 5;
 	height = 5;
 
@@ -18,7 +29,7 @@ void Map1::CreateMap()
 		{ 0,0,0,5,0 },
 		{ 0,0,1,0,0 },
 		{ 2,0,0,2,0 },
-		{ 0,1,0,0,5 },
+		{ 0,0,0,0,5 },
 	};
 
 	InitBiteEnemyVec({ 0,2,2 });
@@ -26,6 +37,7 @@ void Map1::CreateMap()
 
 void Map2::CreateMap()
 {
+	id = 2;
 	width = 5;
 	height = 5;
 
@@ -42,6 +54,7 @@ void Map2::CreateMap()
 
 void Map3::CreateMap()
 {
+	id = 3;
 	width = 5;
 	height = 5;
 
@@ -59,66 +72,75 @@ void Map3::CreateMap()
 
 void Map4::CreateMap()
 {
+	id = 4;
 	width = 5;
 	height = 5;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
+		{ 3,0,0,5,3 },
+		{ 0,3,0,0,0 },
 		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 5,3,0,0,0 },
+		{ 5,0,2,0,2 },
 	};
 
-	InitBiteEnemyVec({ 0,1,2,3 });
-	InitGunEnemyVec({ 2,1,3 });
+	InitBiteEnemyVec({ 2,2 });
+	InitGunEnemyVec({ 1,2,2,0 });
 }
 
 void Map5::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 5;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,0,0,2,0,0,0 },
+		{ 0,0,0,0,2,0,0 },
+		{ 0,2,0,5,0,0,0 },
+		{ 0,0,0,0,0,0,2 },
+		{ 0,0,4,0,0,0,0 },
+		{ 0,0,0,0,0,4,0 },
+		{ 5,0,1,0,0,0,0 },
 	};
 
-	InitBiteEnemyVec({ 0,1,2,3 });
-	InitGunEnemyVec({ 2,1,3 });
+	InitBiteEnemyVec({ 3,1,2,2 });
 }
 
 void Map6::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 6;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,3,0,4,0,3,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 4,0,2,0,2,0,0 },
+		{ 0,0,0,0,0,0,3 },
+		{ 0,0,1,0,0,0,0 },
+		{ 3,5,0,0,0,4,0 },
+		{ 0,0,4,0,0,5,5 },
 	};
 
-	InitBiteEnemyVec({ 0,1,2,3 });
-	InitGunEnemyVec({ 2,1,3 });
+	InitBiteEnemyVec({ 3,2 });
+	InitGunEnemyVec({ 3,1,1,0 });
 }
 
 void Map7::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 7;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
 	};
 
 	InitBiteEnemyVec({ 0,1,2,3 });
@@ -127,15 +149,18 @@ void Map7::CreateMap()
 
 void Map8::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 8;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
 	};
 
 	InitBiteEnemyVec({ 0,1,2,3 });
@@ -144,15 +169,18 @@ void Map8::CreateMap()
 
 void Map9::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 9;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
 	};
 
 	InitBiteEnemyVec({ 0,1,2,3 });
@@ -161,15 +189,18 @@ void Map9::CreateMap()
 
 void Map10::CreateMap()
 {
-	width = 5;
-	height = 5;
+	id = 10;
+	width = 7;
+	height = 7;
 
 	mapDataArray = {
-		{ 0,2,0,0,1 },
-		{ 0,1,0,0,0 },
-		{ 0,0,1,0,0 },
-		{ 2,0,0,0,2 },
-		{ 0,1,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
 	};
 
 	InitBiteEnemyVec({ 0,1,2,3 });

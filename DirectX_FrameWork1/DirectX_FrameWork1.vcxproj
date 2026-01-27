@@ -155,7 +155,12 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\GunEnemy.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.cpp" />
+    <ClCompile Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\Map.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\02_SelectScene.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\03_GameScene.cpp" />
+    <ClCompile Include="Source\00-HEW2026\20-Scene\04_ResultScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene2.cpp" />
     <ClCompile Include="Source\04-Input\Input.cpp" />
@@ -230,6 +235,9 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.cpp" />
+    <ClCompile Include="Source\00-HEW2026\02-UI\UI.cpp" />
+    <ClCompile Include="Source\00-HEW2026\02-UI\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemyParam.h" />
@@ -249,7 +257,12 @@
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\BiteEnemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_Enemy\Enemy.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\100-Test\HewTestGameObject.h" />
+    <ClInclude Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.h" />
     <ClInclude Include="Source\00-HEW2026\10-Map\Map.h" />
+    <ClInclude Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.h" />
+    <ClInclude Include="Source\00-HEW2026\20-Scene\02_SelectScene.h" />
+    <ClInclude Include="Source\00-HEW2026\20-Scene\03_GameScene.h" />
+    <ClInclude Include="Source\00-HEW2026\20-Scene\04_ResultScene.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\Test_HewScene2.h" />
     <ClInclude Include="Source\04-Input\Input.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\00-TrackObject\TrackObject.h" />
@@ -329,6 +342,9 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.h" />
+    <ClInclude Include="Source\00-HEW2026\02-UI\UI.h" />
+    <ClInclude Include="Source\00-HEW2026\02-UI\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\99-Lib\01-MyLib\999-Shader\01-2D\01-Sprite2DShader\PS_Sprite2D.hlsl">

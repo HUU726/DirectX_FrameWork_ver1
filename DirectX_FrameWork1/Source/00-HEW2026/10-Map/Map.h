@@ -3,7 +3,6 @@
 #include "../10-Map/00-BaseMap/BaseMap.h"
 
 
-
 class Map1 : public BaseMap
 {
 	void CreateMap() override;

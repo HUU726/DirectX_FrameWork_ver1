@@ -25,22 +25,8 @@ TitleScene::~TitleScene()
 void TitleScene::Init()
 {
 
-	{	//2Dカメラ初期化
-		Transform* p_trf = camera2D.GetTransformPtr();
-		p_trf->position = { 0.f,0.f,0.f,0.f };
-
-		Sprite2DRenderer::GetInstance().SetCamera(camera2D.GetComponent<Camera2D>());
-	}
-
-	{	//3Dカメラ初期化
-		Transform* p_trf = camera3D.GetTransformPtr();
-		p_trf->position = {0.f,0.f,-500.f,0.f};
-
-		Mesh3DRenderer::GetInstance().SetCamera(camera3D.GetComponent<Camera3D>());
-	}
-
 	{	//マップテスト
-		map.Init(7, 7);
+		map.Init();
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);

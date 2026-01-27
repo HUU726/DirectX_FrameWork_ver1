@@ -260,22 +260,12 @@ void BiteEnemy::Init(const int& direction)
 	}
 	
 	// 本体のコライダーの設定
-	//bodyCollider = AddComponent<BoxCollider2D>();
-	
-	// 攻撃マスの位置を自身のサイズ分,ずらす
-	//const hft::HFFLOAT3 size = bodyCollider->GetSize();
-	//offset[0] = { size.x,0.0f,0.0f };
-	//offset[1] = { 0.0f,size.y,0.0f };
-	//offset[2] = { -(size.x),0.0f,0.0f };
-	//offset[3] = { 0.0f,-(size.y),0.0f };
+	bodyCollider = AddComponent<BoxCollider2D>();
+	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
+	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
 
 	//攻撃マスの設定
-	//attackCollider = AddComponent<BoxCollider2D>();
-	//attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
-	//attackCollider->SetOffset({ size.x,0.0f,0.0f });		// 初期は右に出現させる
-	//attackCollider->SetIsActive(false);
-
-	//std::cout << "BiteEnemyパラメータ完了\n";
+	attackCollider.Init();
 }
 
 // 更新===============================================================
@@ -292,7 +282,6 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
-	
 }
 
 
@@ -303,35 +292,22 @@ void BiteEnemy::Defoult1()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	//std::cout << "通常状態1実行中\n";
-	//std::cout << "現在の方向:" << GetDirection() << "\n";
-
 	if (changeState == true)
 	{
 		changeState = false;
 		if (anipos >= 4) { anipos = 0; }
-		// この状態に変わった際、一回のみ実行される
-		if (dir == 0)
-		{
-			// 方向によるアニメーションの反転あり
-		}
-		else
-		{
-			// 方向によるアニメーションの反転なし
-		}
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
-
+	// 最初に再生するアニメーション(この書き方をするのは古いアニメーションが無いため)
 	if (startState == true)
 	{
 		startState = false;
 		// 方向からアニメーションを決定する
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
-	
+	// 時間を超えた場合
 	if (timer >= defoulttime_1)
 	{
 		currentState = BiteEnemy::attack;
@@ -339,8 +315,7 @@ void BiteEnemy::Defoult1()
 		changeState = true;
 		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
 		anipos++;
-	}
-	
+	}	
 }
 
 
@@ -351,36 +326,26 @@ void BiteEnemy::Attack()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	//std::cout << "攻撃状態実行中\n";
-	//std::cout << "現在の方向:" << GetDirection() << "\n";
-
 
 	if (changeState == true)
 	{
-		changeState = false;
-		// この状態に変わった際、一回のみ実行される
-		if (dir == 0)
-		{
-			// 方向によるアニメーションの反転あり
-		}
-		else
-		{
-			// 方向によるアニメーションの反転なし
-		}
-		
-		//attackCollider->SetOffset(offset[dir]);			// 攻撃マスの位置を調整
-		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生されていたアニメーションをストップ
+		changeState = false;	
+		//attackCollider.SetOffset(offset[dir]);			// 攻撃マスの位置を調整
+		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
-		//attackCollider->SetIsActive(true);				// 当たり判定をアクティブに
-		//std::cout << "攻撃コライダーアクティブ\n";
+		//================================================================
+		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
+		//================================================================
+		//================================================================
+		// (変更予定)座標はSetFgがtrueの時、常に送り続ける
+		//================================================================
+		attackCollider.SetFg(true);							// デバック用
 	}
-	//std::cout << attackCollider->GetOffset().x << "," << attackCollider->GetOffset().y << "," << attackCollider->GetOffset().z;
+	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
-		currentState = BiteEnemy::defoult2;		// 通常状態へ
-		//attackCollider->SetIsActive(false);			// 当たり判定を非アクティブに
-		//std::cout << "攻撃コライダー非アクティブ\n";
+		currentState = BiteEnemy::defoult2;					// 通常状態へ
+		attackCollider.SetFg(false);						// デバック用
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -394,26 +359,12 @@ void BiteEnemy::Defoult2()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	//std::cout << "通常状態2実行中\n";
-	//std::cout << "現在の方向:" << GetDirection() << "\n";
-
 	if (changeState == true)
 	{
 		changeState = false;
-		// この状態に変わった際、一回のみ実行される
-		if (dir == 0)
-		{
-			// 方向によるアニメーションの反転あり
-		}
-		else
-		{
-			// 方向によるアニメーションの反転なし
-		}
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 	}
-
 	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 
 	if (timer >= defoulttime_2)
@@ -426,8 +377,6 @@ void BiteEnemy::Defoult2()
 	}
 }
 
-
-
 //==================================================================================
 // 回転状態の処理
 //==================================================================================
@@ -435,22 +384,10 @@ void BiteEnemy::Spin()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	std::cout << "回転状態実行中\n";
-	std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
 		changeState = false;
-		// この状態に変わった際、一回のみ実行される
-		if (dir == 0)
-		{
-			// 方向によるアニメーションの反転あり
-		}
-		else
-		{
-			// 方向によるアニメーションの反転なし
-		}
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 
@@ -470,7 +407,6 @@ void BiteEnemy::Spin()
 	}
 }
 
-
 //==================================================================================
 // 死亡状態の処理
 //==================================================================================
@@ -480,9 +416,6 @@ void BiteEnemy::Dead()
 	
 	// 方向を取得
 	int dir = GetDirection();
-	////デバック用
-	//std::cout << "死亡状態実行中\n";
-	//std::cout << "現在の方向:" << GetDirection() << "\n";
 
 	if (changeState == true)
 	{
@@ -495,40 +428,91 @@ void BiteEnemy::Dead()
 	if (timer >= deadtime)
 	{
 		timer = 0;
-		//std::cout << "BiteEnemy機能停止\n";
 		this->SetIsActive(false);
 		this->SetIsRender(false);
-
 	}
 }
 
 //@brief	コライダー同士が衝突した際の処理
 // @param	Collider2D* _p_col	2D用コライダーのポインタ
-/*
-void BiteEnemy::OnCollisionEnter(Collider* _p_col)
+void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 {
-	std::cout << "ヒット\n";
-
-
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 
-	if (_p_col == bodyCollider)
+	if (bodyCollider == _p_col)
 	{
-		// 本体がヒット
-		if (col->GetTag() == "Object"||col->GetTag()=="Bom"||col->GetTag()=="Thorn"||col->GetTag()=="Connect")
-		{
-			timer = 0;
-			std::cout << "BIteEnemy本体にヒット\n";
-			oldani = anipos;
-			currentState = BiteEnemy::dead;
-			changeState = true;
-			if (attackCollider->GetIsActive())attackCollider->SetIsActive(false);		// 攻撃判定が出ていたら消す
-		}
+
 	}
-	else if (_p_col == attackCollider)
+
+	// 対象オブジェクトの場合、deadへ移行
+	
+	
+	if (col->GetTag() == "Bullet" || col->GetTag() == "DamageObject" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
-		// 攻撃がヒット
-		std::cout << "BiteEnemyの攻撃がヒット\n";
+		timer = 0;
+		std::cout << col->GetTag()<<"\n";
+		//std::cout << "BIteEnemy本体にヒット\n";
+		oldani = anipos;
+		currentState = BiteEnemy::dead;
+		changeState = true;
+		attackCollider.SetFg(false);		// 攻撃判定を消す
 	}
-}*/
+	
+}
+
+void AttackMass::Init()
+{
+	attackRenderer = new GameObject2D;
+	// パラメータ初期化
+	tag = "Enemy";
+	p_transform->position = { 0.0f,0.0f,0.0f };
+	p_transform->scale = { 70.f,70.f,1.f };
+	// 当たり判定の追加
+	attackCollider = AddComponent<BoxCollider2D>();
+	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさは本体のサイズと同じ
+	attackCollider->SetSize(p_size);
+	// レンダラーの設定
+	//std::shared_ptr<Texture> tex1 = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	//SetFg(false);
+	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
+	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	GetComponent<SpriteRenderer>()->SetIsActive(false);
+}
+
+//	
+void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
+{
+	p_transform->position = NewPos;
+	switch (direction) {
+	case 0:p_transform->position.x += 75; break;
+	case 1:p_transform->position.y += 75; break;
+	case 2:p_transform->position.x -= 75; break;
+	case 3:p_transform->position.y -= 75; break;
+	}
+
+	if (Fg == true)
+	{
+		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
+		GetComponent<SpriteRenderer>()->SetIsActive(true);
+	}
+	else
+	{
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
+	}
+
+	// デバック用
+	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
+}
+
+// 攻撃マスのOnCillisionEnter
+void AttackMass::OnCollisionEnter(Collider* _p_col)
+{
+	// 接触相手の情報を取得
+	GameObject* col = _p_col->GetGameObject();
+	if (col->GetTag() == "Bom")
+	{
+		std::cout << "攻撃判定にヒット\n";
+	}
+}
