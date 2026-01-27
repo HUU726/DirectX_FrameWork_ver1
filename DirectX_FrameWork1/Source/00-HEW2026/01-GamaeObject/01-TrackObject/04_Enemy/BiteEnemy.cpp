@@ -460,23 +460,25 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
 	// 爆弾の処理
-	if (tag == "Enemy")
 	{
 		// 嚙みつく敵の攻撃判定と同じタグを使用しているため,キャストで型を確認する
 		TrackObject* ptr = dynamic_cast<BombEnemy*>(col);
 		// 爆弾の型ではない場合, ptr に nullptr が格納される
-		if (ptr == nullptr)return;
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				// デバック用
+				// std::cout << "BIteEnemy本体に爆弾がヒット\n";
 
-
-		// デバック用
-		// std::cout << "BIteEnemy本体に爆弾がヒット\n";
-
-		// 処理
-		timer = 0;							// タイマー初期化
-		oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-		currentState = BiteEnemy::dead;		// 死亡状態へ移行
-		changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
-		attackCollider.SetFg(false);		// 攻撃判定を消す
+				// 処理
+				timer = 0;							// タイマー初期化
+				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
+				currentState = BiteEnemy::dead;		// 死亡状態へ移行
+				changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
+				attackCollider.SetFg(false);		// 攻撃判定を消す
+			}
+		}
 	}
 	
 	// 連結ブロックの処理
@@ -524,7 +526,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 //*  本体とOnCollisionEnterの処理と攻撃判定のOnCollisionEnterの処理が被ってしまうため、攻撃判定をクラスにして本体に持たせてます
 //*
 
-// このオブジェクトのタグ:Enemy
+// このオブジェクトのタグ:"Enemy"
 // 
 //===================================================================================
 // 攻撃判定の初期化
