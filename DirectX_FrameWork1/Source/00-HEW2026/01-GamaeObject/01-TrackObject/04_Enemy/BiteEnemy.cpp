@@ -303,7 +303,7 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "ó‘ÔƒGƒ‰[\n";
 	}
-	attackCollider.Update(p_transform->position, GetDirection());
+	//attackCollider.Update(p_transform->position, GetDirection());
 }
 
 
