@@ -255,6 +255,12 @@
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\05-BulletObject\BulletObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\00-HEW2026\10-Map\Map1.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\01-Main\main.h">
@@ -522,6 +528,27 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04_TestEnemy\BiteEnemyParam.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\Arrow\Arrow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\PlayerObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\EffectFork.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\04-Player\TuningFork\TuningFork.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\00-HEW2026\10-Map\Map1.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
