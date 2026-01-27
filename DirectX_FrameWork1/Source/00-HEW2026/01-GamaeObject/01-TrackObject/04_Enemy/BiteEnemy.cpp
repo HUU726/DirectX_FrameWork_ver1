@@ -488,15 +488,18 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		// 連結する敵の型ではない場合, ptr に nullptr が格納される
 		if (ptr != nullptr)
 		{
-			// デバック用
-		// std::cout << "BIteEnemy本体に連結ブロックがヒット\n";
+			if (tag == "Enemy")
+			{
+				// デバック用
+				// std::cout << "BIteEnemy本体に連結ブロックがヒット\n";
 
-		// 処理
-			timer = 0;							// タイマー初期化
-			oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-			currentState = BiteEnemy::dead;		// 死亡状態へ移行
-			changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
-			attackCollider.SetFg(false);		// 攻撃判定を消す
+				// 処理
+				timer = 0;							// タイマー初期化
+				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
+				currentState = BiteEnemy::dead;		// 死亡状態へ移行
+				changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
+				attackCollider.SetFg(false);		// 攻撃判定を消す
+			}
 		}
 	}
 
