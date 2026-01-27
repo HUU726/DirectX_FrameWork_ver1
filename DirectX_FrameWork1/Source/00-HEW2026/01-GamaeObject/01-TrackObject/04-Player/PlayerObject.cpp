@@ -11,6 +11,8 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 #define CHARGE_THRESHOLD 0.2f
 #define TILE_SIZE 100.0f
@@ -18,11 +20,13 @@
 
 enum ANIM_ID {
     ANIM_STAND = 0,
-    ANIM_CHARGE = 1,
-    ANIM_SWING_H = 2,
-    ANIM_SWING_V = 3,
-    ANIM_HIT = 4,
-    ANIM_DEAD = 5
+    ANIM_CHARGE,
+	ANIM_CHARGE_LOOP,
+    ANIM_ATTACK_FRONT, // 正面
+    ANIM_ATTACK_RIGHT, // 右方向
+    ANIM_ATTACK_LEFT,  // 左方向
+    ANIM_HIT,
+    ANIM_DEAD
 };
 
 PlayerObject::PlayerObject()
@@ -40,6 +44,9 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 {
+    //マウス入力モードで開始
+	mouseMode = true;
+    
     pMap = _pMap;
     pInput = _pInput;
 
@@ -58,57 +65,77 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     SpriteAnimation animStand(div, { 0.0f, 0.0f }, 10);
     for (int i = 0; i < 10; i++)
     {
-        animStand.GetCellRef(i).flame = 10;
+        animStand.GetCellRef(i).flame = 6;
     }
     animStand.SetType(SPRITE_ANIM_TYPE::LOOP);
     animStand.SetID(ANIM_STAND);
     animator->AddAnimation(animStand);
 
-    // 溜め状態 (ANIM_CHARGE = 1)
-    SpriteAnimation animCharge(div, { 0.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+    // 溜め状態 (ANIM_CHARGE)
+    SpriteAnimation animCharge(div, { 0.0f, 3.0f }, 16);
+    for (int i = 0; i < 16; i++)
     {
-        animCharge.GetCellRef(i).flame = 60;
+        animCharge.GetCellRef(i).flame = chargeflame;
     }
     animCharge.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animCharge.SetID(ANIM_CHARGE);
     animator->AddAnimation(animCharge);
 
-    // 横振り (ANIM_SWING_H = 2)
-    SpriteAnimation animSwingH(div, { 1.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+	// 溜め状態ループ (ANIM_CHARGE_LOOP)
+	SpriteAnimation animChargeLoop(div, { 3.0f, 4.0f }, 5);
+    for(int i = 0; i < 5; i++)
     {
-        animSwingH.GetCellRef(i).flame = 3;
-    }
-    animSwingH.SetType(SPRITE_ANIM_TYPE::NORMAL);
-    animSwingH.SetID(ANIM_SWING_H);
-    animator->AddAnimation(animSwingH);
+        animChargeLoop.GetCellRef(i).flame = 3;
+	}
+	animChargeLoop.SetType(SPRITE_ANIM_TYPE::LOOP);
+	animChargeLoop.SetID(ANIM_CHARGE_LOOP);
+	animator->AddAnimation(animChargeLoop);
 
-    // 縦振り (ANIM_SWING_V = 3)
-    SpriteAnimation animSwingV(div, { 1.0f, 0.0f }, 3);
-    for (int i = 0; i < 3; i++)
+    // 正面攻撃 (ANIM_ATTACK_FRONT)
+    SpriteAnimation animFront(div, { 0.0f, 5.0f }, 4);
+    for (int i = 0; i < 4; i++) 
+    { 
+        animFront.GetCellRef(i).flame = 3;
+    }
+    animFront.SetType(SPRITE_ANIM_TYPE::NORMAL);
+    animFront.SetID(ANIM_ATTACK_FRONT);
+    animator->AddAnimation(animFront);
+
+    // 右攻撃 (ANIM_ATTACK_RIGHT)
+    SpriteAnimation animRight(div, { 0.0f, 7.0f }, 4);
+    for (int i = 0; i < 4; i++)
     {
-        animSwingV.GetCellRef(i).flame = 3;
+        animRight.GetCellRef(i).flame = 3;
     }
-    animSwingV.SetType(SPRITE_ANIM_TYPE::NORMAL);
-    animSwingV.SetID(ANIM_SWING_V);
-    animator->AddAnimation(animSwingV);
+    animRight.SetType(SPRITE_ANIM_TYPE::NORMAL);
+    animRight.SetID(ANIM_ATTACK_RIGHT);
+    animator->AddAnimation(animRight);
 
-    // 被弾 (ANIM_HIT = 4)
+    // 左攻撃 (ANIM_ATTACK_LEFT)
+    SpriteAnimation animLeft(div, { 6.0f, 6.0f }, 4);
+    for (int i = 0; i < 4; i++)
+    {
+        animLeft.GetCellRef(i).flame = 3;
+    }
+    animLeft.SetType(SPRITE_ANIM_TYPE::NORMAL);
+    animLeft.SetID(ANIM_ATTACK_LEFT);
+    animator->AddAnimation(animLeft);
+
+    // 被弾 (ANIM_HIT)
     SpriteAnimation animHit(div, { 2.0f, 1.0f }, 7);
     for (int i = 0; i < 7; i++)
     {
-        animHit.GetCellRef(i).flame = 7;
+        animHit.GetCellRef(i).flame = 4;
     }
     animHit.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animHit.SetID(ANIM_HIT);
     animator->AddAnimation(animHit);
 
-    // ミス (ANIM_DEAD = 5)
+    // ミス (ANIM_DEAD)
     SpriteAnimation animDead(div, { 1.0f, 2.0f }, 7);
     for (int i = 0; i < 7; i++)
     {
-        animDead.GetCellRef(i).flame = 7;
+        animDead.GetCellRef(i).flame = 6;
     }
     animDead.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animDead.SetID(ANIM_DEAD);
@@ -128,11 +155,34 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     pArrow = new Arrow();
     pArrow->Init();
 
+	// サウンド読み込み
+    SE_LAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_MAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_SAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_Charge = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_Hit = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_Dead = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
 }
 
 void PlayerObject::Update()
-{
+{ 
     if (pInput->GetKeyTrigger(13)) { OnHit();};
+
+    hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
+    float stickMagSq = stick.x * stick.x + stick.y * stick.y;
+
+    if (stickMagSq > 0.1f)
+    {
+        controllerMode = true;
+        mouseMode = false;
+    }
+    else if (pInput->GetMouseTrigger(Button::Mouse::Left))
+    {
+        controllerMode = false;
+        mouseMode = true;
+    }
+    //std::cout << "ControllerMode:" << controllerMode << " MouseMode:" << mouseMode << std::endl;
+
 
     // 行動不能判定
     if (pMap)
@@ -187,21 +237,55 @@ void PlayerObject::Update()
 
 void PlayerObject::UpdateStand()
 {
+    // コントローラー入力チェック
     hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
-    if ((stick.x * stick.x + stick.y * stick.y) > 0.1f)
+    float stickMagSq = stick.x * stick.x + stick.y * stick.y;
+
+    // マウス入力チェック（プレイヤー基準）
+    // ---------------------------------------------------
+    float mx = (float)pInput->GetMouseCenterX();
+    float my = (float)pInput->GetMouseCenterY();
+
+    float centerX = p_transform->position.x - 28.0f;
+    float centerY = p_transform->position.y - 140.0f;
+
+    // マウス位置 - 中心位置 = 相対ベクトル
+    float relX = mx - centerX;
+    float relY = my - centerY;
+
+    float mouseMagSq = relX * relX + relY * relY;
+    // ---------------------------------------------------
+
+    // スティック入力がある or マウスがプレイヤーからある程度離れているなら
+    if (stickMagSq > 0.1f || mouseMagSq > 10.0f)
     {
         ChangeState(PLAYER_STATE::SELECT);
-        std::cout << "STATE:PlayerStand >> PlayerSecect" << std::endl;
+        std::cout << "STATE:PlayerStand >> PlayerSelect" << std::endl;
     }
 }
 
 void PlayerObject::UpdateSelect()
 {
+    // ---------------------------------------------------
+    // 向きの決定 (コントローラー優先)
+    // ---------------------------------------------------
     hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
-    float magSq = stick.x * stick.x + stick.y * stick.y;
+    float stickMagSq = stick.x * stick.x + stick.y * stick.y;
 
-    // 向き変更
-    if (magSq > 0.25f)
+    // マウス座標取得（絶対座標：ドラッグ開始位置の記録用）
+    float rawMx = (float)pInput->GetMouseCenterX();
+    float rawMy = (float)pInput->GetMouseCenterY();
+
+    float centerX = p_transform->position.x - 28.0f;
+    float centerY = p_transform->position.y - 140.0f;
+
+    float relMx = rawMx - centerX;
+    float relMy = rawMy - centerY;
+
+    float mouseMagSq = relMx * relMx + relMy * relMy;
+
+    // コントローラー入力がある場合
+    if (stickMagSq > 0.25f && controllerMode)
     {
         if (std::abs(stick.x) > std::abs(stick.y)) {
             angle.x = (stick.x > 0) ? 0.0f : 180.0f;
@@ -210,43 +294,81 @@ void PlayerObject::UpdateSelect()
             angle.x = (stick.y > 0) ? 90.0f : 270.0f;
         }
     }
-
-    // ---------------------------------------------------
-    // 判定：音叉を表示する予定のマス（プレイヤーの隣）をチェック
-    // ---------------------------------------------------
-    bool isTargetValid = false;
-
-    // 自分の位置
-    hft::HFFLOAT2 myIndex = GetLineIndex();
-    // 向いている方向
-    hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
-
-    hft::HFFLOAT2 targetIndex = {
-            myIndex.x + dirVec.x,
-            myIndex.y + dirVec.y
-    };
-
-    if (pMap)
+    // マウス操作の場合：一番近い有効なマスを選択する
+    else if (mouseMode)
     {
-        // マップに対して「ターゲットのマス(targetIndex)」が有効か聞く
-        isTargetValid = pMap->IsValidTarget(targetIndex);
+        float playerScreenX = -28.0f;
+        float playerScreenY = -140.0f;
+
+        // マウスの「プレイヤーからの相対位置」
+        float relMx = rawMx - playerScreenX;
+        float relMy = rawMy - playerScreenY;
+
+        // 最短距離の有効マスを探す
+        float minDistance = 10000000.0f; // とりあえず大きな値
+        bool found = false;
+        float bestAngle = angle.x;
+
+        // 4方向 (右, 上, 左, 下) の角度リスト
+        float checkAngles[] = { 0.0f, 90.0f, 180.0f, 270.0f };
+
+        for (float a : checkAngles)
+        {
+            hft::HFFLOAT2 dir = GetVecFromAngle(a);
+
+            // その方向のマスが有効かチェック
+            hft::HFFLOAT2 currentIdx = GetLineIndex();
+            hft::HFFLOAT2 targetIdx = { currentIdx.x + dir.x, currentIdx.y + dir.y };
+
+            if (pMap && pMap->IsValidTarget(targetIdx))
+            {
+                // そのマスの中心座標（プレイヤーからの相対位置）を計算
+                float tileRelX = dir.x * TILE_SIZE;
+                float tileRelY = dir.y * TILE_SIZE;
+
+                // マウスカーソルとの距離を計算
+                float dx = relMx - tileRelX;
+                float dy = relMy - tileRelY;
+
+                float distSq = dx * dx + dy * dy;
+
+                // これまでで一番近ければ採用
+                if (distSq < minDistance)
+                {
+                    minDistance = distSq;
+                    bestAngle = a;
+                    found = true;
+                }
+            }
+        }
+
+        // 有効な候補が見つかったら、その方向を向く
+        if (found)
+        {
+            angle.x = bestAngle;
+        }
+
     }
 
     // ---------------------------------------------------
-    // 音叉表示の制御
+    // 音叉プレビュー表示
     // ---------------------------------------------------
+    bool isTargetValid = false;
+    hft::HFFLOAT2 myIndex = GetLineIndex();
+    hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
+    hft::HFFLOAT2 targetIndex = { myIndex.x + dirVec.x, myIndex.y + dirVec.y };
+
+    if (pMap) isTargetValid = pMap->IsValidTarget(targetIndex);
+
     if (pTuningFork)
     {
-        // ターゲットが有効な場合のみ表示
         if (isTargetValid)
         {
-            // 画面上の座標計算
             hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
             hft::HFFLOAT2 targetPos = {
                  myPos.x + (dirVec.x * TILE_SIZE),
                  myPos.y - (dirVec.y * TILE_SIZE)
             };
-
             pTuningFork->SetLineIndex(targetIndex);
             pTuningFork->GetTransformPtr()->position.x = targetPos.x;
             pTuningFork->GetTransformPtr()->position.y = targetPos.y;
@@ -254,93 +376,232 @@ void PlayerObject::UpdateSelect()
         }
         else
         {
-            // 無効（壁の外 or スライド中）なら隠す
             pTuningFork->Hide();
         }
     }
 
     // ---------------------------------------------------
-    // 遷移判定
+    // チャージ開始判定
     // ---------------------------------------------------
-    if (pInput->GetButtonPress(Button::XBox::X))
+
+    // コントローラー (Xボタン)
+    if (pInput->GetButtonPress(Button::XBox::X) && controllerMode)
     {
-        // ターゲットが有効、かつ入力が十分ならチャージへ
-        if (isTargetValid && magSq > CHARGE_THRESHOLD * CHARGE_THRESHOLD)
+        if (isTargetValid && stickMagSq > CHARGE_THRESHOLD * CHARGE_THRESHOLD)
         {
+            mouseMode = false;
             ChangeState(PLAYER_STATE::CHARGE);
-            std::cout << "STATE:PlayerSelect >> PlayerCharge";
+            std::cout << "STATE: Select >> Charge (Controller)" << std::endl;
         }
     }
-    else if (magSq < 0.01f)
+    // マウス (左クリック)
+    else if (pInput->GetMouseTrigger(Button::Mouse::Left) && mouseMode)
+    {
+        if (isTargetValid)
+        {
+            mouseMode = true;
+
+            // ドラッグ計算用には絶対座標を使う
+            dragStartPos.x = rawMx;
+            dragStartPos.y = rawMy;
+
+            ChangeState(PLAYER_STATE::CHARGE);
+            std::cout << "STATE: Select >> Charge (Mouse)" << std::endl;
+        }
+    }
+    else if (stickMagSq < 0.01f && controllerMode)
     {
         ChangeState(PLAYER_STATE::STAND);
         if (pTuningFork) pTuningFork->Hide();
-        std::cout << "STATE:PlayerSelect >> PlayerStand";
     }
 }
 
 void PlayerObject::UpdateCharge()
 {
-    hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
-    float mag = std::sqrt(stick.x * stick.x + stick.y * stick.y);
-
-    // キャンセル判定
-    if (mag < CHARGE_THRESHOLD)
+    animTimer++;
+    if (!isChargeLoop)
     {
-        hammer_power = 0.0f;
-        if (!pInput->GetButtonPress(Button::XBox::X)) {
-            ChangeState(PLAYER_STATE::SELECT);
-            std::cout << "STATE:PlayerCharge >> PlayerSecect" << std::endl;
+        const int CHARGE_START_DURATION = 16 * chargeflame;
+
+        // 開始アニメが終わったらループに切り替え
+        if (animTimer >= CHARGE_START_DURATION - 1)
+        {
+            GetComponent<SpriteAnimator>()->Play(ANIM_CHARGE_LOOP);
+            isChargeLoop = true;
         }
-        if (pArrow) pArrow->Hide(); // 隠すだけ
-        return;
     }
 
-    // パワー計算
-    hammer_power = mag * max_hammer_power;
-    if (hammer_power > max_hammer_power) hammer_power = max_hammer_power;
+    // 計算用変数
+    hft::HFFLOAT2 aimVector = { 0, 0 }; // 狙っている方向ベクトル(矢印用)
+    bool isReleased = false;           // 発射判定
+    bool isCanceled = false;           // キャンセル判定
 
-    // 矢印表示の制御
-    if (pArrow && pTuningFork)
+	//SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
+
+    // ===================================================
+    // マウス操作
+    // ===================================================
+    if (mouseMode)
     {
-        float angle = 0.0f;
+        float mx = (float)pInput->GetMouseCenterX();
+        float my = (float)pInput->GetMouseCenterY();
 
-        // 90度で固定
-        if (std::abs(stick.x) > std::abs(stick.y)) {
-            angle = (stick.x > 0) ? 0.0f : 180.0f; // 右 or 左
-        }
-        else {
-            angle = (stick.y > 0) ? 90.0f : 270.0f;
-        }
+        float pullX = dragStartPos.x - mx;
+        float pullY = dragStartPos.y - my;
+        float mag = std::sqrt(pullX * pullX + pullY * pullY);
 
-        // 後ろ向き判定
-        // 矢印の角度とプレイヤーの向き(this->angle.x)の差をチェック
-        float angleDiff = std::abs(angle - this->angle.x);
-        // 360度ループ対策 (例: 0度と270度の差は90度)
-        if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
+        aimVector = { pullX, pullY };
 
-        // 差がほぼ180度（真後ろ）なら表示しない
-        if (std::abs(angleDiff - 180.0f) < 1.0f)
+        // --- パワー計算 ---
+
+        const float MAX_DRAG_DIST = 200.0f;
+
+        float basePower = (mag / MAX_DRAG_DIST) * limit_hammer_power;
+
+        if (basePower > limit_hammer_power) basePower = limit_hammer_power;
+
+        if (basePower >= limit_hammer_power * 0.9f)
         {
-            pArrow->Hide();
+            chargeTimer++;
+            float bonusPower = chargeTimer * charge_speed;
+
+            // 基本(20) + ボーナス で計算
+            hammer_power = basePower + bonusPower;
         }
         else
         {
-            // それ以外（正面・横）なら表示
+            chargeTimer = 0;
+            hammer_power = basePower;
+        }
+
+        // マウス判定
+        if (pInput->GetMouseRelease(Button::Mouse::Left))
+        {
+            if (hammer_power < 1.0f) isCanceled = true;
+            else isReleased = true;
+        }
+    }
+    // ===================================================
+    // コントローラー操作
+    // ===================================================
+    else
+    {
+        hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
+        float mag = std::sqrt(stick.x * stick.x + stick.y * stick.y);
+
+        aimVector = { -stick.x, stick.y };
+
+        // --- パワー計算 ---
+
+        // 基本パワー (スティック 0~1.0 -> 0~20)
+        float basePower = mag * charge_speed;
+        if (basePower > limit_hammer_power) basePower = limit_hammer_power;
+
+        // チャージボーナス
+        if (mag > 0.9f)
+        {
+            chargeTimer++;
+            float bonusPower = chargeTimer * charge_speed;
+            hammer_power = basePower + bonusPower;
+        }
+        else
+        {
+            chargeTimer = 0;
+            hammer_power = basePower;
+        }
+
+        // 判定
+        if (mag < CHARGE_THRESHOLD) isCanceled = true;
+        if (!pInput->GetButtonPress(Button::XBox::X)) isReleased = true;
+    }
+
+    // 方向保存処理
+    if (std::abs(aimVector.x) > std::abs(aimVector.y)) {
+        attackDirection.x = (aimVector.x > 0) ? -1.0f : 1.0f;
+        attackDirection.y = 0.0f;
+    }
+    else {
+        attackDirection.x = 0.0f;
+        attackDirection.y = (aimVector.y > 0) ? -1.0f : 1.0f;
+    }
+
+    // ===================================================
+    // 共通処理
+    // ===================================================
+
+    if (hammer_power > max_hammer_power) hammer_power = max_hammer_power;
+
+    // キャンセル処理
+    if (isCanceled)
+    {
+        chargeTimer = 0;
+        hammer_power = 0.0f;
+        ChangeState(PLAYER_STATE::SELECT);
+        if (pArrow) pArrow->Hide();
+        std::cout << "Action: Canceled" << std::endl;
+        return;
+    }
+
+    // 発射処理
+    if (isReleased)
+    {
+        ChangeState(PLAYER_STATE::RELEASE);
+        std::cout << "STATE: Charge >> Release" << std::endl;
+        return;
+    }
+
+    // 矢印表示
+    if (pArrow && pTuningFork)
+    {
+        float shotAngle = 0.0f;
+
+        // aimVector から角度(90度刻み)を算出
+        if (std::abs(aimVector.x) > std::abs(aimVector.y)) {
+            shotAngle = (aimVector.x > 0) ? 0.0f : 180.0f;
+        }
+        else {
+            shotAngle = (aimVector.y > 0) ? 270.0f : 90.0f;
+        }
+
+        // 後ろ向き判定
+        float angleDiff = std::abs(shotAngle - this->angle.x);
+        if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
+
+        if (angleDiff < 1.0f)
+        {
+            pArrow->Hide();
+            hammer_power = 0.0f;
+            chargeTimer = 0;
+        }
+        else
+        {
+            // パワー比率 (0.0 ～ 1.0)
             float ratio = hammer_power / max_hammer_power;
+
+            float shakeAngle = 0.0f;
+
+            // パワーが半分(0.5)を超えたら震え始める
+            if (ratio > 0.5f)
+            {
+                // 震えの強さ係数 (0.5を超えた分だけ強くなる)
+                // 最大パワー時で 1.0 になる計算: (1.0 - 0.5) * 2 = 1.0
+                float shakeStrength = (ratio - 0.5f) * 2.0f;
+
+                // ランダムなノイズ (-1.0 ～ 1.0) を生成
+                float noise = (float)(rand() % 200 - 100) / 100.0f;
+
+                // ブレさせる
+                shakeAngle = noise * 1.5f * shakeStrength;
+            }
+
+
             hft::HFFLOAT2 targetPos = {
                 pTuningFork->GetTransformPtr()->position.x,
                 pTuningFork->GetTransformPtr()->position.y
             };
-            pArrow->UpdateTransform(targetPos, angle, ratio);
-        }
-    }
 
-    // 発動判定
-    if (!pInput->GetButtonPress(Button::XBox::X))
-    {
-        ChangeState(PLAYER_STATE::RELEASE);
-        std::cout << "STATE:PlayerCharge >> PlayerReleace" << std::endl;
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+        }
     }
 }
 
@@ -348,110 +609,54 @@ void PlayerObject::UpdateRelease()
 {
     animTimer++;
 
-    hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
-
     // ---------------------------------------------------
-    // 1フレーム目：入力チェック & アニメ開始
+    // 1フレーム目：アニメ開始
     // ---------------------------------------------------
     if (animTimer == 1)
     {
-        // スティック入力がない場合は攻撃キャンセル
-        if (std::abs(stick.x) <= 0.1f && std::abs(stick.y) <= 0.1f)
-        {
-            ChangeState(PLAYER_STATE::STAND);
+        hft::HFFLOAT2 moveVec = attackDirection;
+        hft::HFFLOAT2 faceDir = GetVecFromAngle(angle.x);
 
-            // 演出を消して終了
+        // バックステップ（真後ろ）判定
+        if (moveVec.x == -faceDir.x && moveVec.y == -faceDir.y)
+        {
+            // キャンセル処理...
+            ChangeState(PLAYER_STATE::STAND);
             if (pTuningFork) pTuningFork->Hide();
             if (pArrow) pArrow->Hide();
             hammer_power = 0.0f;
             return;
         }
 
-        // 移動ベクトル計算
-        hft::HFFLOAT2 moveVec = { 0, 0 };
-        if (std::abs(stick.x) > std::abs(stick.y)) {
-            moveVec.x = (stick.x > 0) ? 1.0f : -1.0f;
-        }
-        else {
-            moveVec.y = (stick.y > 0) ? -1.0f : 1.0f;
-        }
+        float cross = faceDir.x * moveVec.y - faceDir.y * moveVec.x;
 
-        // 逆方向（バック）判定
-        hft::HFFLOAT2 playerDir = GetVecFromAngle(angle.x);
-        if (moveVec.x == -playerDir.x && moveVec.y == -playerDir.y)
+        if (std::abs(cross) < 0.1f)
         {
-            // 後ろ入力なら攻撃中止
-            ChangeState(PLAYER_STATE::STAND);
-            std::cout << "Action: Cancel (Backward Input)" << std::endl;
-
-            if (pTuningFork) pTuningFork->Hide();
-            if (pArrow) pArrow->Hide();
-            hammer_power = 0.0f;
-            return;
+            // 正面 (Front)
+            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_FRONT);
         }
-
-        // アニメーション分岐（縦・横）
-        if (moveVec.x == playerDir.x && moveVec.y == playerDir.y)
+        else if (cross > 0.0f)
         {
-            GetComponent<SpriteAnimator>()->Play(ANIM_SWING_V);
-            std::cout << "Anim:SwingV (Forward)" << std::endl;
+            // 右方向 (Right)
+            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_RIGHT);
         }
         else
         {
-            GetComponent<SpriteAnimator>()->Play(ANIM_SWING_H);
-            std::cout << "Anim:SwingH (Side)" << std::endl;
+            // 左方向 (Left)
+            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_LEFT);
         }
 
-        // 演出用オブジェクトを隠す
         if (pTuningFork) pTuningFork->Hide();
         if (pArrow) pArrow->Hide();
     }
 
     // ---------------------------------------------------
-    // 攻撃開始フレーム目：スライド実行＆中断チェック
+    // 攻撃実行タイミング
     // ---------------------------------------------------
     if (animTimer == SLIDE_START_TIMING)
     {
-        // 入力がなくなっていたり、後ろ入力になっていたら中断（キャンセル）
+        hft::HFFLOAT2 moveVec = attackDirection;
 
-        bool isNeutral = (std::abs(stick.x) <= 0.1f && std::abs(stick.y) <= 0.1f);
-        bool isBackStep = false;
-
-        hft::HFFLOAT2 moveVec = { 0, 0 };
-
-        if (!isNeutral)
-        {
-            // 入力方向を計算
-            if (std::abs(stick.x) > std::abs(stick.y)) {
-                moveVec.x = (stick.x > 0) ? 1.0f : -1.0f;
-            }
-            else {
-                moveVec.y = (stick.y > 0) ? -1.0f : 1.0f;
-            }
-
-            // バックステップ判定
-            hft::HFFLOAT2 playerDirMap = GetVecFromAngle(angle.x);
-            if (moveVec.x == -playerDirMap.x && moveVec.y == -playerDirMap.y) {
-                isBackStep = true;
-            }
-        }
-
-        // 中断判定
-        if (isNeutral || isBackStep)
-        {
-            // アニメーションごと強制キャンセルして立ちに戻す
-            ChangeState(PLAYER_STATE::STAND);
-            std::cout << "Action: Cancel (Input Lost or Invalid)" << std::endl;
-
-            // アニメも立ちに戻す（一応明示的に）
-            auto animator = GetComponent<SpriteAnimator>();
-            animator->Play(ANIM_STAND);
-
-            hammer_power = 0.0f;
-            return;
-        }
-
-        // ここまで来たらスライド実行
         if (pMap)
         {
             hft::HFFLOAT2 anchorIdx = GetTargetIndex();
@@ -460,6 +665,29 @@ void PlayerObject::UpdateRelease()
                 if (anchorIdx.x >= 0 && anchorIdx.y >= 0) {
                     pMap->SetSlideData(anchorIdx, moveVec, hammer_power);
                     if (pTuningFork) pTuningFork->PlayHitEffect();
+
+                    float ratio = hammer_power / max_hammer_power;
+
+                    int playId = -1;
+
+                    if (ratio >= 0.8f)
+                    {
+                        playId = SE_LAttack; // 強 (80% ～ 100%)
+                    }
+                    else if (ratio >= 0.4f)
+                    {
+                        playId = SE_MAttack;    // 中 (40% ～ 79%)
+                    }
+                    else
+                    {
+                        playId = SE_SAttack;   // 弱 (0% ～ 39%)
+                    }
+
+                    if (playId != -1)
+                    {
+                        SoundManager::GetInstance().Play(playId);
+                    }
+
                     std::cout << "Action: Slide!" << std::endl;
                 }
             }
@@ -476,10 +704,6 @@ void PlayerObject::UpdateRelease()
     if (animTimer > SLIDE_END_TIMING)
     {
         ChangeState(PLAYER_STATE::STAND);
-        std::cout << "STATE:PlayerRelease >> PlayerStand" << std::endl;
-
-        auto animator = GetComponent<SpriteAnimator>();
-        animator->Play(ANIM_STAND);
     }
 }
 
@@ -505,6 +729,7 @@ void PlayerObject::OnHit()
 
         // ステート変更
         ChangeState(PLAYER_STATE::HIT);
+        SoundManager::GetInstance().Play(SE_Hit);
         std::cout << "STATE: PlayerHit" << std::endl;
     }
 }
@@ -512,6 +737,7 @@ void PlayerObject::OnHit()
 void PlayerObject::OnDead()
 {
     ChangeState(PLAYER_STATE::DEAD);
+    SoundManager::GetInstance().Play(SE_Dead);
     std::cout << "STATE: PlayerDEAD" << std::endl;
 
     // ここにゲームオーバー処理などを追加
@@ -548,6 +774,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 
     case PLAYER_STATE::CHARGE:
         animator->Stop(ANIM_CHARGE);
+		animator->Stop(ANIM_CHARGE_LOOP);
         break;
 
     case PLAYER_STATE::HIT:
@@ -555,8 +782,9 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
         break;
 
     case PLAYER_STATE::RELEASE:
-        animator->Stop(ANIM_SWING_H);
-        animator->Stop(ANIM_SWING_V);
+        animator->Stop(ANIM_ATTACK_FRONT);
+		animator->Stop(ANIM_ATTACK_RIGHT);
+		animator->Stop(ANIM_ATTACK_LEFT);
         break;
 
     case PLAYER_STATE::DEAD:
@@ -566,6 +794,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 
     state = _nextState; //ステート更新
     animTimer = 0;
+    isChargeLoop = false;
 
     //次ステートのアニメーション再生
     switch (state) {

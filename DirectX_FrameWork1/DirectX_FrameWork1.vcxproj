@@ -235,6 +235,7 @@
     <ClCompile Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.cpp" />
     <ClCompile Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.cpp" />
     <ClCompile Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.cpp" />
+    <ClCompile Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\02-UI\UI.cpp" />
     <ClCompile Include="Source\00-HEW2026\02-UI\UIManager.cpp" />
   </ItemGroup>
@@ -341,6 +342,7 @@
     <ClInclude Include="Source\99-Lib\01-MyLib\06-GameObject\02-3DGameObject\02-Sqhere\SqhereObject.h" />
     <ClInclude Include="Source\00-HEW2026\01-GamaeObject\01-TrackObject\02_ThornObject\ThormObject.h" />
     <ClInclude Include="Source\99-Lib\01-MyLib\03-Sound\Fsound.h" />
+    <ClInclude Include="Source\99-Lib\01-MyLib\08-Scene\01-Scenes\StageSelectScene.h" />
     <ClInclude Include="Source\00-HEW2026\02-UI\UI.h" />
     <ClInclude Include="Source\00-HEW2026\02-UI\UIManager.h" />
   </ItemGroup>
