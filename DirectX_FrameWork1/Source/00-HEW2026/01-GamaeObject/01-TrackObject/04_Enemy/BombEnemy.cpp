@@ -1,6 +1,10 @@
 #include "BombEnemy.h"
+#include "BiteEnemy.h"
+#include "../04-Player/PlayerObject.h"
 
 #include "../03_ConnectObject/ConnectObject.h"
+#include "GunEnemy.h"
+
 
 #include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 
@@ -101,7 +105,9 @@ void BombEnemy::Init()
 
 		//コライダー設定
 		searchColl = AddComponent<BoxCollider2D>();
-		searchColl->SetSize({ 280.f, 280.f, 1.f });
+		//searchColl->SetSize({ 280.f, 280.f, 1.f });
+		hft::HFFLOAT3 seachSize = p_transform->scale * 2;
+		searchColl->SetSize(seachSize);
 		searchColl->SetIsActive(true);
 	}
 
@@ -314,51 +320,21 @@ void BombEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	//接続先のオブジェクトを確認
 	GameObject* obj = _p_col->GetGameObject();
+	if (!obj) { return; }
 
-	//タグがプレイヤーの場合起爆
-	if (obj->GetTag() == "Player" && currentState == stand)
+	ConnectObject* connectPtr = dynamic_cast<ConnectObject*>(obj);
+	BiteEnemy* bitePtr = dynamic_cast<BiteEnemy*>(obj);
+	PlayerObject* playerPtr = dynamic_cast<PlayerObject*>(obj);
+	GunEnemy* gunPtr = dynamic_cast<GunEnemy*>(obj);
+
+	//起爆する対象のobjectがあるか検査
+	bool isHitBlastObj = (connectPtr || bitePtr || playerPtr || gunPtr);
+
+	if (isHitBlastObj && currentState == stand)
 	{
 		currentState = BomState::blastWait;
-	}
-
-
-	//接続先が存在するか
-
-	if (!obj)
-	{
 		return;
 	}
-
-	//接続先が自身と同じ場合何もしない
-
-	if (obj == this)
-	{
-		return;
-	}
-
-	//爆弾の場合何もしない　爆風は普通のゲームオブジェクトとして扱う
-
-	if (auto* co = dynamic_cast<BombEnemy*>(obj))
-	{
-		return;
-	}
-
-
-	//連結オブジェクトの場合何もしない
-
-	if (auto* co = dynamic_cast<ConnectObject*>(obj))
-	{
-		return;
-	}
-
-
-	//普通のゲームオブジェクト2Dだった場合（爆風、連結オブジェクトの間、弾,トゲ等）
-
-	if (obj && currentState == stand)
-	{
-		currentState = BomState::blastWait;
-	}
-
 }
 
 
