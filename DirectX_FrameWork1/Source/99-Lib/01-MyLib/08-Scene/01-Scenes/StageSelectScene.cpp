@@ -204,8 +204,7 @@ public:
             //SceneManager::GetInstance().LoadScene(std::make_unique<GameScene>(currentIdx));
             
             //テスト用とりあえずタイトルへ
-            std::unique_ptr<BaseScene> nextScene = std::make_unique<TitleScene>();
-            SceneManager::GetInstance().LoadScene(std::move(nextScene));
+            SceneManager::GetInstance().LoadScene<TitleScene>();
         }
     }
 };
