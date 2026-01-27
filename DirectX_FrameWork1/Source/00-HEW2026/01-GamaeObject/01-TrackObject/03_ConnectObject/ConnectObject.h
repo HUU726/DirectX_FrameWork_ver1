@@ -55,15 +55,20 @@ public:
 	//接触相手の座標から自身の座標まで、何マス分あるか検知。マスのサイズは外部から指定する
 	int GetContactTileDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos, float cellSize);
 
+	////接触相手の座標から自身の座標までの距離を測定。XYどちらかの軸
+	float GetContactDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos);
+
 	//自身の座標から接触相手の座標まで、縦横いずれかの向きで攻撃判定用オブジェクトを配置する
 	void SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount, float cellSize);
+
+	void SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir);
 
 	//自身の生成番号を取得
 	const int GetInstanceNumber() { return myInstanceNumber; }
 
 	//本体部分のコライダーを取得
-	const BoxCollider2D* GetBodyCollider() 
-	{ 
+	const BoxCollider2D* GetBodyCollider()
+	{
 		if (bodyCollider)
 		{
 			return bodyCollider;
@@ -94,11 +99,11 @@ public:
 
 
 	//デバッグ用の処理
-	void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
-	void debug_SetstartPos()
-	{
-		debug_startPos = GetComponent<Transform>()->position;
-	}
+	//void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
+	//void debug_SetstartPos()
+	//{
+	//	debug_startPos = GetComponent<Transform>()->position;
+	//}
 
-	void debug_Move();
+	//void debug_Move();
 };
