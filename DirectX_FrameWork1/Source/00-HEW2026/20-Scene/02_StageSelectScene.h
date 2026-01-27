@@ -1,7 +1,7 @@
 #pragma once
-#include "00-BaseScene/BaseScene.h"
+#include "../../99-Lib/01-MyLib/08-Scene/01-Scenes/00-BaseScene/BaseScene.h"
 
-class StageSelectScene : public BaseScene
+class Hew_StageSelectScene : public BaseScene
 {
 private:
     GameObject* pLogic = nullptr;
