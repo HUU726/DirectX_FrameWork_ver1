@@ -263,30 +263,9 @@ void BiteEnemy::Init(const int& direction)
 	bodyCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
 	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
-	// 攻撃マスの判定を自身のサイズ分,ずらす
-	/*
-	const hft::HFFLOAT3 size = bodyCollider->GetSize();
-	offset[0] = { size.x,0.0f,0.0f };
-	offset[1] = { 0.0f,size.y,0.0f };
-	offset[2] = { (size.x * -1),0.0f,0.0f };
-	offset[3] = { 0.0f,(size.y * -1),0.0f };
-	*/
 
 	//攻撃マスの設定
 	attackCollider.Init();
-
-	/*
-	attackCollider.attackCollider = AddComponent<BoxCollider2D>();
-	attackCollider.attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
-	attackCollider.attackCollider->SetOffset(offset[GetDirection()]);
-	attackCollider.attackCollider->SetIsActive(true);
-	attackCollider.attackCollider->SetIsTrigger(false);
-
-	// ===== デバッグ用：攻撃判定の可視化 =====
-	attackCollider.attackform = attackCollider.AddComponent<SpriteRenderer>();
-	attackCollider.attackform->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");   // プレイヤーの画像
-	attackCollider.attackform->SetIsActive(false);
-	*/
 }
 
 // 更新===============================================================
@@ -303,7 +282,6 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
-	//attackCollider.Update(p_transform->position, GetDirection());
 }
 
 
@@ -355,17 +333,19 @@ void BiteEnemy::Attack()
 		//attackCollider.SetOffset(offset[dir]);			// 攻撃マスの位置を調整
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+		//================================================================
+		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
+		//================================================================
+		//================================================================
+		// (変更予定)座標はSetFgがtrueの時、常に送り続ける
+		//================================================================
 		attackCollider.SetFg(true);							// デバック用
-		//attackCollider.SetIsTrigger(true);				// デバック用(当たり判定)
-		//attackCollider.SetIsActive(true);					// デバック用(描写用)
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;					// 通常状態へ
-		attackCollider.SetFg(false);							// デバック用
-		//attackCollider.SetIsTrigger(false);					// デバック用(当たり判定)
-		//attackCollider.SetIsActive(false);					// デバック用(描写用)
+		attackCollider.SetFg(false);						// デバック用
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -513,17 +493,13 @@ void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 
 	if (Fg == true)
 	{
-		//std::cout << attackCollider->GetIsTrigger()<<"\n";
-		//std::cout << attackRenderer->GetIsActive() << "\n";
 		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
-		attackRenderer->SetIsActive(true);
+		GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
-		//std::cout << attackCollider->GetIsTrigger() << "\n";
-		//std::cout << attackRenderer->GetIsActive() << "\n";
-		attackCollider->SetIsTrigger(false);
-		attackRenderer->SetIsActive(false);
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
 
 	// デバック用

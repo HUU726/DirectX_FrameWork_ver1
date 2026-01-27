@@ -13,12 +13,15 @@ private:
 	bool Fg = false;				// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
 public:			
 	void Init() override;
+	//void Update() override;
 	void Update(hft::HFFLOAT3 NewPos, const int& NewDirection);	// 座標を常に更新
+	
+
 	void SetFg(const bool& NewFg) { Fg = NewFg; }				// Fgをセット 
-	/*
-	void SetIsTrigger(const bool& NewSet) { attackCollider->SetIsTrigger(NewSet); }		// デバック用(当たり判定のON,OFF)
-	void SetIsActive(const bool& NewSet) { attackRenderer->SetIsRender(NewSet); }		// デバック用(描写のON,OFF)
-	*/
+	bool GetFg() { return &Fg; }								// Fgを返す
+	//void SendPos(const hft:FLOAT3& NewPos){};
+
+
 	void OnCollisionEnter(Collider* _p_col) override;
 };
 
