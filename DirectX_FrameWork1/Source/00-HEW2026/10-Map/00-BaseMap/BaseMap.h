@@ -34,6 +34,7 @@ struct SlideData
 class BaseMap : public GameObject
 {
 protected:
+	int id;
 	int width;	//‰¡•
 	int height;	//c•
 	float tileScale;	//ƒ^ƒCƒ‹ˆê•Ğ‚Ì’·‚³

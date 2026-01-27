@@ -133,6 +133,7 @@ void BaseMap::SlideTileObject(SlideData& _data)
 	{
 		Transform* p_trf = obj->GetTransformPtr();
 		hft::HFFLOAT2 moveVec = { _data.moveVec.x,_data.moveVec.y * -1 };
+		float posZ = p_trf->position.z;
 		p_trf->position += moveVec * _data.power;
 
 		float tileScaleHalf = tileScale / 2.0f;
@@ -158,6 +159,8 @@ void BaseMap::SlideTileObject(SlideData& _data)
 		{
 			_data.indexFlg = true;
 		}
+
+		p_trf->position.z = posZ;
 	}
 
 	if ((_data.indexFlg && _data.indexToChangeFlg) || _data.changeFlg)
@@ -178,7 +181,6 @@ void BaseMap::SlideTileObject(SlideData& _data)
 				if (!_data.objects.size())
 					_data.indexToChangeFlg = false;
 			}
-
 		}
 	}
 
@@ -777,6 +779,12 @@ void BaseMap::Update()
 		SceneManager::GetInstance().LoadScene<GameScene>();
 
 	Slide();
+
+	for (const auto& obj : onMapTrackObjects)
+	{
+		std::cout << obj->GetTransform().position.z << std::endl;
+	}
+
 	//std::cout << "index X  :  " << onMapTrackObjects.at(0)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//std::cout << "index X  :  " << tileObjects.at(17)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Debug_TilePaintColor_FromTile(15, tileObjects);

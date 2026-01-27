@@ -7,15 +7,15 @@
 // マップが5×5の時に違和感ないようにする
 
 class BoxCollider2D;
-class BaseMap;
 
 class BulletObject : public GameObject2D
 {
 private:
-	GameObject* owner = nullptr;		
-
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColler = nullptr;
+
+	// マップの情報
+	BaseMap* p_map = nullptr;
 
 	// マップの端
 	hft::HFFLOAT2 LeftTop;
@@ -38,6 +38,9 @@ private:
 
 	// シーンが切り替わると一度だけ実行される
 	bool startScene = true;
+	
+	// 弾が撃たれてから、ヒット判定に本体を含めない時間
+	int NotHittime;
 
 	enum State
 	{
@@ -46,7 +49,7 @@ private:
 	};
 	State currentState;
 
-	// Angleから方向の情報をDirectionへ
+	// 方向の情報を値として格納する変数
 	int direction;	// 0:右 1:上 2:左 3:下
 	
 	// 方向の種類によって、自身の位置を加算する
@@ -58,7 +61,7 @@ private:
 public:
 	BulletObject() = default;
 	void Init() override {};
-	void Init(const int& NewDirection);	// 方向指定,スケール調整
+	void Init(BaseMap* p_map,const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
 	void Update() override;
 
 	void SetTag(const std::string&) { tag = "Bullet"; }
@@ -71,5 +74,5 @@ public:
 	void SetPos(const hft::HFFLOAT3& NewPosition) { p_transform->position = NewPosition; }// 座標指定
 	void Defoult();
 	void Blast();
-	//void OnCollisionEnter(Collider* _p_col) override;
+	void OnCollisionEnter(Collider* _p_col) override;
 };
