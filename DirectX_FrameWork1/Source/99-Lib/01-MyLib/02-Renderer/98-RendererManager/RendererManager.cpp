@@ -10,6 +10,7 @@
 *												インクルード
 ***************************************************************************************************************************/
 #include "RendererManager.h"
+#include "../../../../02-App/Application.h"
 #include "../../../../02-App/HF_Window.h"
 
 #include <d3dcompiler.h>
@@ -35,13 +36,16 @@ RendererManager::RendererManager()
 */
 HRESULT RendererManager::Init(HWND _hwnd)
 {
+	HF_Window* p_window = Application::GetInstance().GetWindowPtr();
+
+
 	HRESULT hr = S_OK; // HRESULT型→Windowsプログラムで関数実行の成功/失敗を受け取る
 
 	// デバイス、スワップチェーン作成
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferCount = 1;                       // バックバッファの数（ダブルバッファ）
-	swapChainDesc.BufferDesc.Width = SCREEN_WIDTH;       // バッファの幅をウィンドウサイズに合わせる
-	swapChainDesc.BufferDesc.Height = SCREEN_HEIGHT;     // バッファの高さをウィンドウサイズに合わせる
+	swapChainDesc.BufferDesc.Width = p_window->GetWidth();       // バッファの幅をウィンドウサイズに合わせる
+	swapChainDesc.BufferDesc.Height = p_window->GetHeight();     // バッファの高さをウィンドウサイズに合わせる
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // バッファのピクセルフォーマット
 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60; // リフレッシュレートを設定(Hz)
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -78,8 +82,8 @@ HRESULT RendererManager::Init(HWND _hwnd)
 	// ※（デプスバッファ = 深度バッファ = Zバッファ）→奥行を判定して前後関係を正しく描画できる
 	ID3D11Texture2D* depthStencil{};
 	D3D11_TEXTURE2D_DESC textureDesc{};
-	textureDesc.Width = SCREEN_WIDTH;   // バッファの幅をスワップチェーンに合わせる
-	textureDesc.Height = SCREEN_HEIGHT; // バッファの高さをスワップチェーンに合わせる
+	textureDesc.Width = p_window->GetWidth();   // バッファの幅をスワップチェーンに合わせる
+	textureDesc.Height = p_window->GetHeight(); // バッファの高さをスワップチェーンに合わせる
 	textureDesc.MipLevels = 1;                            // ミップレベルは1（ミップマップは使用しない）
 	textureDesc.ArraySize = 1;                            // テクスチャの配列サイズ（通常1）
 	textureDesc.Format = DXGI_FORMAT_D16_UNORM;           // フォーマットは16ビットの深度バッファを使用
@@ -100,12 +104,13 @@ HRESULT RendererManager::Init(HWND _hwnd)
 	if (FAILED(hr)) return hr;
 	depthStencil->Release();
 
+
 	// ビューポートを作成（→画面分割などに使う、描画領域の指定のこと）
-	CRect rect;
+	CRect rect(0, 0, 0, 0);
 	GetClientRect(_hwnd, &rect);
 	D3D11_VIEWPORT viewport;
-	viewport.Width = (FLOAT)rect.Width();   // ビューポートの幅
-	viewport.Height = (FLOAT)rect.Height(); // ビューポートの高さ
+	viewport.Width = (FLOAT)p_window->GetWidth();   // ビューポートの幅
+	viewport.Height = (FLOAT)p_window->GetHeight(); // ビューポートの高さ
 	viewport.MinDepth = 0.0f;               // 深度範囲の最小値
 	viewport.MaxDepth = 1.0f;               // 深度範囲の最大値
 	viewport.TopLeftX = 0;                  // ビューポートの左上隅のX座標

@@ -111,11 +111,11 @@ HRESULT Sprite2DRenderer::InitState()
 	if (FAILED(hr)) return hr;
 	p_DeviceContext->RSSetState(p_RRState);
 
-	// 震度テストを無効にする
+	//デプスステンシルステート作成
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	ZeroMemory(&dsDesc, sizeof(dsDesc));
-	dsDesc.DepthEnable = TRUE;	//震度テストを有効にする
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthEnable = FALSE;	//震度テストを有効にする
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	hr = this->p_Device->CreateDepthStencilState(&dsDesc, &this->p_DSState);
 	if (FAILED(hr)) return hr;
