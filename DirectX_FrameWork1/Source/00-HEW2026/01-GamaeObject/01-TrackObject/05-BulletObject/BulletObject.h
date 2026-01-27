@@ -64,7 +64,7 @@ public:
 	void Init(BaseMap* p_map,const int& NewDirection);	// ƒ}ƒbƒvî•ñ,”­ËŒ³‚Ì“–‚½‚è”»’è,•ûŒü
 	void Update() override;
 
-	void SetTag(const std::string&) { tag = "Bullet"; }
+	void SetTag(const std::string& NewTag) { tag = NewTag; }
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
 	void SetBulletActive(const bool& NewActive) { active = NewActive; }

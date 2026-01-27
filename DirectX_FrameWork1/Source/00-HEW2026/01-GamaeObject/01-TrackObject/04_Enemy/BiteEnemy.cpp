@@ -262,28 +262,10 @@ void BiteEnemy::Init(const int& direction)
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
-	bodyCollider->SetSize(p_size);
-	// 攻撃マスの判定を自身のサイズ分,ずらす
-	const hft::HFFLOAT3 size = bodyCollider->GetSize();
-	offset[0] = { size.x,0.0f,0.0f };
-	offset[1] = { 0.0f,size.y,0.0f };
-	offset[2] = { (size.x * -1),0.0f,0.0f };
-	offset[3] = { 0.0f,(size.y * -1),0.0f };
+	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
 
 	//攻撃マスの設定
 	attackCollider.Init();
-	/*
-	attackCollider.attackCollider = AddComponent<BoxCollider2D>();
-	attackCollider.attackCollider->SetSize(bodyCollider->GetSize());	// 本体と同じサイズ
-	attackCollider.attackCollider->SetOffset(offset[GetDirection()]);
-	attackCollider.attackCollider->SetIsActive(true);
-	attackCollider.attackCollider->SetIsTrigger(false);
-
-	// ===== デバッグ用：攻撃判定の可視化 =====
-	attackCollider.attackform = attackCollider.AddComponent<SpriteRenderer>();
-	attackCollider.attackform->LoadTexture("Assets/01-Texture/02-Player/Ritu_animations.png");   // プレイヤーの画像
-	attackCollider.attackform->SetIsActive(false);
-	*/
 }
 
 // 更新===============================================================
@@ -300,7 +282,6 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
-	attackCollider.Update(p_transform->position, GetDirection());
 }
 
 
@@ -352,17 +333,19 @@ void BiteEnemy::Attack()
 		//attackCollider.SetOffset(offset[dir]);			// 攻撃マスの位置を調整
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
+		//================================================================
+		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
+		//================================================================
+		//================================================================
+		// (変更予定)座標はSetFgがtrueの時、常に送り続ける
+		//================================================================
 		attackCollider.SetFg(true);							// デバック用
-		//attackCollider.SetIsTrigger(true);				// デバック用(当たり判定)
-		//attackCollider.SetIsActive(true);					// デバック用(描写用)
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
 		currentState = BiteEnemy::defoult2;					// 通常状態へ
-		attackCollider.SetFg(false);							// デバック用
-		//attackCollider.SetIsTrigger(false);					// デバック用(当たり判定)
-		//attackCollider.SetIsActive(false);					// デバック用(描写用)
+		attackCollider.SetFg(false);						// デバック用
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -463,17 +446,19 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ヒットした相手のコライダー
 	}
 
 	// 対象オブジェクトの場合、deadへ移行
-	/*
-	if (col->GetTag() == "Bullet" || col->GetTag() == "Bom" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+	
+	
+	if (col->GetTag() == "Bullet" || col->GetTag() == "DamageObject" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
 	{
 		timer = 0;
+		std::cout << col->GetTag()<<"\n";
 		//std::cout << "BIteEnemy本体にヒット\n";
 		oldani = anipos;
 		currentState = BiteEnemy::dead;
 		changeState = true;
-		attackCollider.SetIsTrigger(false);		// 攻撃判定を消す
-	}*/
-
+		attackCollider.SetFg(false);		// 攻撃判定を消す
+	}
+	
 }
 
 void AttackMass::Init()
@@ -482,34 +467,20 @@ void AttackMass::Init()
 	// パラメータ初期化
 	tag = "Enemy";
 	p_transform->position = { 0.0f,0.0f,0.0f };
-	p_transform->scale = { 50.f,50.f,1.f };
+	p_transform->scale = { 70.f,70.f,1.f };
 	// 当たり判定の追加
 	attackCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさは本体のサイズと同じ
 	attackCollider->SetSize(p_size);
 	// レンダラーの設定
-	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	//SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
-	//renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	SetFg(false);
-
-	/*
-			//レンダラー設定
-		searchRenderer = new GameObject2D;
-		searchRenderer->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
-		searchRenderer->GetTransformPtr()->position.z = -4;
-		searchRenderer->SetIsRender(false);
-
-		SpriteRenderer* renderer = searchRenderer->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
-
-		//コライダー設定
-		searchColl = AddComponent<BoxCollider2D>();
-		searchColl->SetSize({ 280.f, 280.f, 1.f });
-		searchColl->SetIsActive(true);
-	*/
+	//std::shared_ptr<Texture> tex1 = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	//SetFg(false);
+	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
+	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
+	GetComponent<SpriteRenderer>()->SetIsActive(false);
 }
 
+//	
 void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 {
 	p_transform->position = NewPos;
@@ -522,29 +493,26 @@ void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
 
 	if (Fg == true)
 	{
-		//std::cout << attackCollider->GetIsTrigger()<<"\n";
-		//std::cout << attackRenderer->GetIsActive() << "\n";
-		attackCollider->SetIsTrigger(true);
-		attackRenderer->SetIsActive(true);
+		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
+		GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
-		//std::cout << attackCollider->GetIsTrigger() << "\n";
-		//std::cout << attackRenderer->GetIsActive() << "\n";
-		attackCollider->SetIsTrigger(false);
-		attackRenderer->SetIsActive(false);
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
 
 	// デバック用
 	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 }
 
+// 攻撃マスのOnCillisionEnter
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	if (col->GetTag() == "Player")
+	if (col->GetTag() == "Bom")
 	{
-		//std::cout << "攻撃判定にヒット\n";
+		std::cout << "攻撃判定にヒット\n";
 	}
 }

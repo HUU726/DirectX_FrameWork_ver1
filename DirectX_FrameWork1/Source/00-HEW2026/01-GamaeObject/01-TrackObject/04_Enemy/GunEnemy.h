@@ -9,8 +9,6 @@ class GunEnemy : public CEnemy
 private:
 	// 自身の体の判定用のコライダー
 	BoxCollider2D* bodyColl = nullptr;
-	// マップの情報
-	BaseMap* p_map = nullptr;
 	// 弾が消えてからの待機時間
 	int waittimer;
 	// 経過時間
@@ -27,7 +25,9 @@ private:
 	int oldani;
 	// 弾オブジェクトを作成するフレーム数
 	int bulletcreateflame;
-	
+	// 死亡状態が終了する時間
+	int deadtime;
+
 	enum State
 	{
 		defoult,
@@ -52,6 +52,5 @@ public:
 	void Defoult();
 	void Shotting();
 	void Dead();
-	
 	void OnCollisionEnter(Collider* _p_col) override;
 };
