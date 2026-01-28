@@ -179,7 +179,7 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-    if (pInput->GetKeyTrigger(13)) { OnHit();};
+	//if (pInput->GetKeyTrigger(13)) { OnHit();}; // デバッグ用被弾テスト
 
     // 無敵時間更新
     if (invincible)
