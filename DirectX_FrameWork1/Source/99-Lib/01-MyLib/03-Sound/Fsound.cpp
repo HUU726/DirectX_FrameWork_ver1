@@ -20,7 +20,6 @@
 
 void SoundManager::SetUpSounds()
 {
-
 	for (int i = 0; i < sourceVoices.size(); i++)
 	{
 		if (params[i].start)

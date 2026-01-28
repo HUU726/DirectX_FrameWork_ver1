@@ -3,6 +3,7 @@
 #include "./IF_ComponentManager.h"
 
 #include <vector>
+#include <algorithm>
 #include "../../01-System/System.h"
 
 
