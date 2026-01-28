@@ -16,13 +16,13 @@ class BoxCollider2D;
 // コンストラクタ
 BiteEnemy::BiteEnemy()
 {
-	bodyCollider = nullptr;
+	//bodyCollider = nullptr;
 }
 
 // デストラクタ
 BiteEnemy::~BiteEnemy()
 {
-	if (attackCollider) { delete attackCollider; attackCollider = nullptr; }
+	if (!attackCollider) { delete attackCollider; attackCollider = nullptr; }
 }
 
 //==================================================================================
@@ -279,7 +279,7 @@ void BiteEnemy::Init(const int& direction)
 	}
 	
 	// 本体のコライダーの設定
-	bodyCollider = AddComponent<BoxCollider2D>();
+	auto bodyCollider = AddComponent<BoxCollider2D>();
 	//hft::HFFLOAT3 p_size = { 100.f,100.f,1.f };
 	bodyCollider->SetSize(p_transform->scale);					// 本体のサイズ分当たり判定をとる
 	bodyCollider->SetIsActive(true);

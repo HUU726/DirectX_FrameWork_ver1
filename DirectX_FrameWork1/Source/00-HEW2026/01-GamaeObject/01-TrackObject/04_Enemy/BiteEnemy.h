@@ -11,7 +11,6 @@ private:
 	bool Fg;						// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
 	int direction;					// 噛みつく敵と同じ仕様の変数
 	hft::HFFLOAT3 acceptPos;		// 受け取る座標
-	//BoxCollider2D* attackCollider;	// 攻撃の判定
 public:
 	void Init() override;
 	void Update() override;
@@ -20,7 +19,6 @@ public:
 	bool GetFg() { return Fg; }												// Fgを返す
 
 	void SendPos(const hft::HFFLOAT3 NewPos) { acceptPos = NewPos; }		// 座標を送る用
-	
 	hft::HFFLOAT3 ReturnPos() { return p_transform->position; };			// 更新された座標を返す用
 
 	void SendDir(const int& NewDir) { direction = NewDir; }					// 方向を送る用
@@ -67,8 +65,8 @@ private:
 	void Spin();
 	void Dead();
 
-	GameObject2D object2D;			// 本体のアニメーション
-	BoxCollider2D* bodyCollider;	// 本体の判定
+	//GameObject2D object2D;			// 本体のアニメーション
+	//BoxCollider2D* bodyCollider;	// 本体の判定
 	AttackMass* attackCollider;		// 攻撃の判定
 public:
 	BiteEnemy();					
