@@ -21,6 +21,21 @@ void Arrow::Init()
     renderer->SetIsActive(false);
 }
 
+void Arrow::Init(float _scaleRatio)
+{
+    scaleRatio = _scaleRatio;
+
+    p_transform->position.z = -3.0f;
+
+    // ”ä—¦‚ðŠ|‚¯‚é
+    p_transform->scale = { 100.0f * scaleRatio, 100.0f * scaleRatio, 1.0f };
+
+    auto renderer = GetComponent<SpriteRenderer>();
+    renderer->LoadTexture("Assets/01-Texture/02-Player/Arrow.png");
+
+    renderer->SetIsActive(false);
+}
+
 void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio)
 {
     auto renderer = GetComponent<SpriteRenderer>();
@@ -40,7 +55,7 @@ void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _rati
     // _ratio (0.0`1.0) ‚É‰ž‚¶‚ÄA’·‚³‚ð•Ï‚¦‚é
     float scaleVal = 0.5f + _ratio; // Å¬0.5”{ ` Å‘å1.5”{
 
-    pTrf->scale = { 100.0f * scaleVal, 50.0f, 1.0f };
+    pTrf->scale = { 100.0f * scaleVal * scaleRatio, 50.0f * scaleRatio, 1.0f };
 }
 
 void Arrow::Hide()

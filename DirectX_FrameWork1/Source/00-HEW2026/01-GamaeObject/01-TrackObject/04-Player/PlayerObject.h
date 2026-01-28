@@ -19,7 +19,7 @@ private:
 
     // 攻撃アニメーションのタイミング定数
     const int SLIDE_START_TIMING = 9;
-    const int SLIDE_END_TIMING = 60;
+    const int SLIDE_END_TIMING = 30;
 
     BaseMap* pMap = nullptr;
     Input* pInput = nullptr;
@@ -36,7 +36,11 @@ private:
     bool isChargeLoop = false;
 
     bool invincible = false;
-    float inv_time = 1.0f;
+    float inv_time = 2.0f;
+	float inv_cnt = 0.0f;
+
+    bool isDead = false;
+    const int DEAD_ANIM_END = 42;
 
     // チャージ中に決定した攻撃方向を保存しておく変数
     hft::HFFLOAT2 attackDirection = { 0, 0 };
@@ -59,11 +63,14 @@ private:
     TuningFork* pTuningFork = nullptr;
     Arrow* pArrow = nullptr;
 
+    float tileSize = 100.0f;
+
     void UpdateStand();
     void UpdateSelect();
     void UpdateCharge();
     void UpdateRelease();
     void UpdateDamage();
+    void UpdateDead();
 
     void OnHit();
     void OnDead();
@@ -82,7 +89,16 @@ public:
     void Update() override;
     void OnCollisionEnter(Collider* _p_col) override;
 
-    // ゲッター
+    // ゲッター //
     PLAYER_STATE GetPlayerState() { return state; }
+
     int GetPlayerHP() { return hitpoint; }
+	int GetPlayerMaxHP() { return max_hitpoint; }
+
+	bool GetIsInvincible() { return invincible; } // 無敵状態かどうか
+	bool GetIsDead() { return isDead; }           // 死亡状態かどうか
+
+	float GetHammerPower() { return hammer_power; }             //現在のハンマーパワー
+	float GetMaxHammerPower() { return max_hammer_power; }      //ハンマーパワーの最大値
+	float GetLimitHammerPower() { return limit_hammer_power; }  //引っ張りで溜められる最大パワー
 };
