@@ -19,7 +19,7 @@ private:
 
     // 攻撃アニメーションのタイミング定数
     const int SLIDE_START_TIMING = 9;
-    const int SLIDE_END_TIMING = 60;
+    const int SLIDE_END_TIMING = 30;
 
     BaseMap* pMap = nullptr;
     Input* pInput = nullptr;

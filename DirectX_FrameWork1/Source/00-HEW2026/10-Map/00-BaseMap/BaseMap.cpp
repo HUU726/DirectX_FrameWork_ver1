@@ -560,12 +560,29 @@ bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
 		if (data.moveVec.x != 0.0f)
 		{
 			if (static_cast<int>(data.anchorPos.y) == static_cast<int>(_index.y))
+			{
+				std::cout << "can't select : reason...target is sliding now." << std::endl;
 				return false;
+			}
 		}
 		else if (data.moveVec.y != 0.0f)
 		{
 			if (static_cast<int>(data.anchorPos.x) == static_cast<int>(_index.x))
+			{
+				std::cout << "can't select : reason...target is sliding now." << std::endl;
 				return false;
+			}
+		}
+	}
+
+	hft::HFFLOAT2 objline;
+	for (const auto& obj : onMapTrackObjects)
+	{
+		objline = obj->GetLineIndex();
+		if (_index == objline && obj->GetTag() != "TuningFork" && obj->GetTag() != "Player")
+		{
+			std::cout << "can't select : reason...Tag: " << obj->GetTag() << std::endl;
+			return false;
 		}
 	}
 

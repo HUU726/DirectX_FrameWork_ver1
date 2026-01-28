@@ -37,9 +37,6 @@ void EffectFork::Setup(const hft::HFFLOAT2& _startPos)
 
 void EffectFork::Update()
 {
-    // 親クラス更新
-    GameObject2D::Update();
-
     // 飛ぶ処理
     p_transform->position.y += flySpeed;
     p_transform->rotation.z += rotateSpeed;

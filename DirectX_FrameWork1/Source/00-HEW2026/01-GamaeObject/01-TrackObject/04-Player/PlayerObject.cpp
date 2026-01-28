@@ -97,16 +97,18 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     { 
         animFront.GetCellRef(i).flame = 3;
     }
+    animFront.GetCellRef(3).flame = 15;
     animFront.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animFront.SetID(ANIM_ATTACK_FRONT);
     animator->AddAnimation(animFront);
 
     // 右攻撃 (ANIM_ATTACK_RIGHT)
-    SpriteAnimation animRight(div, { 0.0f, 7.0f }, 4);
+    SpriteAnimation animRight(div, { 7.0f, 5.0f }, 4);
     for (int i = 0; i < 4; i++)
     {
         animRight.GetCellRef(i).flame = 3;
     }
+    animRight.GetCellRef(3).flame = 15;
     animRight.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animRight.SetID(ANIM_ATTACK_RIGHT);
     animator->AddAnimation(animRight);
@@ -117,6 +119,7 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     {
         animLeft.GetCellRef(i).flame = 3;
     }
+    animLeft.GetCellRef(3).flame = 15;
     animLeft.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animLeft.SetID(ANIM_ATTACK_LEFT);
     animator->AddAnimation(animLeft);
@@ -166,7 +169,7 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-    if (pInput->GetKeyTrigger(13)) { OnHit();};
+    //if (pInput->GetKeyTrigger(13)) { OnHit();};
 
     hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
     float stickMagSq = stick.x * stick.x + stick.y * stick.y;
@@ -192,11 +195,15 @@ void PlayerObject::Update()
         // 「有効なマスに乗っていない（＝動いている or 範囲外）」なら操作不能
         if (!pMap->IsValidTarget(myIndex))
         {
-            if (state != PLAYER_STATE::STAND) ChangeState(PLAYER_STATE::STAND);
+            if (state != PLAYER_STATE::STAND && state != PLAYER_STATE::RELEASE)
+            {
+                ChangeState(PLAYER_STATE::STAND);
+            }
 
             if (pTuningFork) pTuningFork->Hide();
             if (pArrow) pArrow->Hide();
-            return;
+
+            if (state != PLAYER_STATE::RELEASE) return;
         }
     }
 
@@ -246,14 +253,14 @@ void PlayerObject::UpdateStand()
     float mx = (float)pInput->GetMouseCenterX();
     float my = (float)pInput->GetMouseCenterY();
 
-    float centerX = p_transform->position.x - 28.0f;
-    float centerY = p_transform->position.y - 140.0f;
-
     // マウス位置 - 中心位置 = 相対ベクトル
-    float relX = mx - centerX;
-    float relY = my - centerY;
+    float relX = mx;
+    float relY = my;
+
+    // relY = my + 28.0f; // 補正したい場合のみ
 
     float mouseMagSq = relX * relX + relY * relY;
+
     // ---------------------------------------------------
 
     // スティック入力がある or マウスがプレイヤーからある程度離れているなら
@@ -276,14 +283,6 @@ void PlayerObject::UpdateSelect()
     float rawMx = (float)pInput->GetMouseCenterX();
     float rawMy = (float)pInput->GetMouseCenterY();
 
-    float centerX = p_transform->position.x - 28.0f;
-    float centerY = p_transform->position.y - 140.0f;
-
-    float relMx = rawMx - centerX;
-    float relMy = rawMy - centerY;
-
-    float mouseMagSq = relMx * relMx + relMy * relMy;
-
     // コントローラー入力がある場合
     if (stickMagSq > 0.25f && controllerMode)
     {
@@ -294,65 +293,75 @@ void PlayerObject::UpdateSelect()
             angle.x = (stick.y > 0) ? 90.0f : 270.0f;
         }
     }
-    // マウス操作の場合：一番近い有効なマスを選択する
+    // マウス操作の場合
     else if (mouseMode)
     {
-        float playerScreenX = -28.0f;
-        float playerScreenY = -140.0f;
+        // -------------------------------------------------------------
+        // ★座標変換の魔法（ここを修正）
+        // -------------------------------------------------------------
 
-        // マウスの「プレイヤーからの相対位置」
-        float relMx = rawMx - playerScreenX;
-        float relMy = rawMy - playerScreenY;
+        // 1. マウスの絶対座標（画面中央が 0,0）
+        //    例：画面右端なら +600, 左端なら -600
+        float mouseWorldX = rawMx;
+        float mouseWorldY = rawMy;
 
-        // 最短距離の有効マスを探す
-        float minDistance = 10000000.0f; // とりあえず大きな値
-        bool found = false;
-        float bestAngle = angle.x;
+        // 2. プレイヤーの絶対座標（画面中央が 0,0）
+        //    移動すると値が変わる（例：右のマスに行くと +100）
+        float playerWorldX = p_transform->position.x;
+        float playerWorldY = p_transform->position.y;
 
-        // 4方向 (右, 上, 左, 下) の角度リスト
-        float checkAngles[] = { 0.0f, 90.0f, 180.0f, 270.0f };
+        // 3. 「プレイヤーから見た」マウスの位置（相対ベクトル）
+        //    式：ベクトル = 終点(マウス) - 始点(プレイヤー)
+        float relMx = mouseWorldX - playerWorldX;
+        float relMy = mouseWorldY - playerWorldY;
 
-        for (float a : checkAngles)
+        // 4. 見た目の中心補正（任意）
+        //    プレイヤーの座標は「足元」なので、判定基準を「お腹」あたりに上げる
+        //    これをしないと、自キャラの「顔」をクリックした時に「上判定」にならず「下判定」になりがちです
+        //relMy += 50.0f; // お腹のあたりを中心にする（数値は調整してください）
+
+
+        // -------------------------------------------------------------
+        // 以下、判定ロジック（そのまま）
+        // -------------------------------------------------------------
+        float distSq = relMx * relMx + relMy * relMy;
+
+        // 半径20px以上離れていたら判定する
+        if (distSq > 4.0f)
         {
-            hft::HFFLOAT2 dir = GetVecFromAngle(a);
+            float targetAngle = angle.x;
 
-            // その方向のマスが有効かチェック
+            // XとYの「絶対値」を比べて、横長エリアか縦長エリアかを判定
+            // これで×印のエリア分けになります
+            if (std::abs(relMx) > std::abs(relMy))
+            {
+                // 横長のエリアにいる（右か左）
+                targetAngle = (relMx > 0) ? 0.0f : 180.0f;
+            }
+            else
+            {
+                // 縦長のエリアにいる（上か下）
+                // ※Inputの仕様上、画面座標Yは上がマイナス
+                targetAngle = (relMy < 0) ? 90.0f : 270.0f;
+            }
+
+            // 有効判定
+            hft::HFFLOAT2 dir = GetVecFromAngle(targetAngle);
             hft::HFFLOAT2 currentIdx = GetLineIndex();
             hft::HFFLOAT2 targetIdx = { currentIdx.x + dir.x, currentIdx.y + dir.y };
 
             if (pMap && pMap->IsValidTarget(targetIdx))
             {
-                // そのマスの中心座標（プレイヤーからの相対位置）を計算
-                float tileRelX = dir.x * TILE_SIZE;
-                float tileRelY = dir.y * TILE_SIZE;
-
-                // マウスカーソルとの距離を計算
-                float dx = relMx - tileRelX;
-                float dy = relMy - tileRelY;
-
-                float distSq = dx * dx + dy * dy;
-
-                // これまでで一番近ければ採用
-                if (distSq < minDistance)
-                {
-                    minDistance = distSq;
-                    bestAngle = a;
-                    found = true;
-                }
+                angle.x = targetAngle;
             }
         }
-
-        // 有効な候補が見つかったら、その方向を向く
-        if (found)
-        {
-            angle.x = bestAngle;
-        }
-
     }
 
     // ---------------------------------------------------
     // 音叉プレビュー表示
     // ---------------------------------------------------
+    pTuningFork->SetAlpha(0.5f); //プレビュー用に半透明にする
+
     bool isTargetValid = false;
     hft::HFFLOAT2 myIndex = GetLineIndex();
     hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
@@ -372,6 +381,7 @@ void PlayerObject::UpdateSelect()
             pTuningFork->SetLineIndex(targetIndex);
             pTuningFork->GetTransformPtr()->position.x = targetPos.x;
             pTuningFork->GetTransformPtr()->position.y = targetPos.y;
+            pTuningFork->GetTransformPtr()->position.z = -10;
             pTuningFork->GetComponent<SpriteRenderer>()->SetIsActive(true);
         }
         else
@@ -418,6 +428,8 @@ void PlayerObject::UpdateSelect()
 
 void PlayerObject::UpdateCharge()
 {
+    pTuningFork->SetAlpha(1.0f); //実体化
+
     animTimer++;
     if (!isChargeLoop)
     {
@@ -601,7 +613,20 @@ void PlayerObject::UpdateCharge()
             };
 
             pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+            pArrow->GetTransformPtr()->position.z = -11;
         }
+    }
+
+    int currentAngle = (int)(angle.x + 0.5f) % 360;
+    // 右を向いている時 (0度)
+    if (currentAngle == 0)
+    {
+		if (p_transform->scale.x < 0) p_transform->scale.x *= -1; // 右向きに補正
+    }
+    // 左を向いている時 (180度)
+    else if (currentAngle == 180)
+    {
+		if (p_transform->scale.x > 0) p_transform->scale.x *= -1; // 左向きに補正
     }
 }
 
@@ -628,22 +653,51 @@ void PlayerObject::UpdateRelease()
             return;
         }
 
-        float cross = faceDir.x * moveVec.y - faceDir.y * moveVec.x;
+        auto animator = GetComponent<SpriteAnimator>();
 
-        if (std::abs(cross) < 0.1f)
+        // 今の向きを整数(0, 90, 180, 270)で取得して扱いやすくする
+        int currentAngle = (int)(angle.x + 0.5f) % 360;
+
+        // 右を向いている時 (0度)
+        if (currentAngle == 0)
         {
-            // 正面 (Front)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_FRONT);
+            if (moveVec.x > 0.5f)       animator->Play(ANIM_ATTACK_FRONT); // 右(正面)
+            else if (moveVec.y < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 上
+            else if (moveVec.y > 0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_RIGHT); // 下
+            }
         }
-        else if (cross > 0.0f)
+        // 上を向いている時 (90度)
+        else if (currentAngle == 90)
         {
-            // 右方向 (Right)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_RIGHT);
+            if (moveVec.y < -0.5f)      animator->Play(ANIM_ATTACK_LEFT); // 上(正面)
+            else if (moveVec.x < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 左
+            else if (moveVec.x > 0.5f) {
+                p_transform->scale.x *= -1; //左右反転
+                animator->Play(ANIM_ATTACK_LEFT); // 右
+            }
         }
-        else
+        // 左を向いている時 (180度)
+        else if (currentAngle == 180)
         {
-            // 左方向 (Left)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_LEFT);
+            if (p_transform->scale.x > 0) p_transform->scale.x *= -1; // 左向きに補正
+            if (moveVec.x < -0.5f)      animator->Play(ANIM_ATTACK_FRONT); // 左(正面)
+            else if (moveVec.y > 0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_RIGHT); // 下
+            }
+            else if (moveVec.y < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 上
+        }
+        // 下を向いている時 (270度)
+        else if (currentAngle == 270)
+        {
+            if (moveVec.y > 0.5f)       animator->Play(ANIM_ATTACK_RIGHT); // 下(正面)
+            else if (moveVec.x > 0.5f)  animator->Play(ANIM_ATTACK_FRONT); // 右
+            else if (moveVec.x < -0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_FRONT); // 左
+            }
         }
 
         if (pTuningFork) pTuningFork->Hide();
@@ -795,6 +849,9 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
     state = _nextState; //ステート更新
     animTimer = 0;
     isChargeLoop = false;
+
+	p_transform->rotation.z = 0.0f; // 傾きをリセット
+	if (p_transform->scale.x < 0.0f) p_transform->scale.x *= -1; // 左右反転をリセット
 
     //次ステートのアニメーション再生
     switch (state) {

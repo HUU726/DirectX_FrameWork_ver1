@@ -2,14 +2,14 @@
 
 #include "../../../../../99-Lib/01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 
-class EffectFork : public GameObject2D
+class EffectFork : public GameObject
 {
 private:
     float flySpeed;
     float rotateSpeed;
 
 public:
-    EffectFork() : flySpeed(15.0f), rotateSpeed(20.0f) {}
+    EffectFork() : flySpeed(5.0f), rotateSpeed(20.0f) {}
     ~EffectFork() {}
 
     void Init() override;   // âÊëúì«Ç›çûÇ›Ç»Ç«

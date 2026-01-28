@@ -21,4 +21,6 @@ public:
     void Hide();
 
     void PlayHitEffect();
+
+    void SetAlpha(float a);
 };

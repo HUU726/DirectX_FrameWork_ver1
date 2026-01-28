@@ -59,6 +59,7 @@ void TuningFork::ShowAt(const hft::HFFLOAT2& _index)
 void TuningFork::Hide()
 {
     GetComponent<SpriteRenderer>()->SetIsActive(false);
+    SetAlpha(0.5f);
 }
 
 void TuningFork::PlayHitEffect()
@@ -91,4 +92,10 @@ void TuningFork::PlayHitEffect()
 
     // 自分（プレビュー）は隠れる
     Hide();
+}
+
+void TuningFork::SetAlpha(float a)
+{
+    auto renderer = GetComponent<SpriteRenderer>();
+    renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 0.0f, a };
 }
