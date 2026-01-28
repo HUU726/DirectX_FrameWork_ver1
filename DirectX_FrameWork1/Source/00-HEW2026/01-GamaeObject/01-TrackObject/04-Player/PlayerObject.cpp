@@ -179,27 +179,25 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-	//if (pInput->GetKeyTrigger(13)) { OnHit();}; // デバッグ用被弾テスト
+	if (pInput->GetKeyTrigger(13)) { OnHit();}; // デバッグ用被弾テスト
 
     // 無敵時間更新
     if (invincible)
     {
         auto renderer = GetComponent<SpriteRenderer>();
 
-		std::cout << "Invincible Time:" << inv_cnt << std::endl;
         inv_cnt -= 1.0f / 60.0f;
         if (inv_cnt <= 0.0f)
         {
             invincible = false;
-			std::cout << "Invincible OFF" << std::endl;
-            renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+            //renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+			renderer->SetIsActive(true);
         }
         else
         {
-			std::cout << "Invincible ON" << std::endl;
-            float alpha = (int)(inv_cnt * 4) % 2 == 0 ? 0.5f : 1.0f;
-			std::cout << "Alpha:" << alpha << std::endl;
-            renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, alpha };
+            float alpha = (int)(inv_cnt * 8) % 2 == 0 ? 0.0f : 1.0f;
+            //renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, alpha };
+			renderer->SetIsActive(alpha);
         }
     }
 
