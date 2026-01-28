@@ -16,23 +16,26 @@
 #define LEFT 2
 #define DOWN 3
 
+// コンストラクタ
+BulletObject::BulletObject()
+{
+	
+}
 
 //=================================================================
-//Init(引数::BaseMap(マップの情報) , int(どの方向を向いているか))
+// 弾オブジェクトの初期化処理(引数::BaseMap(マップの情報) , int(どの方向を向いているか))
 //=================================================================
 void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 {
 	
-	timer = 0;									// タイマー初期化
-	SetTag(BulletObjectParam::tag);				// タグの初期化
-	active = BulletObjectParam::active;			// 弾が存在するか否か
-	livetime = BulletObjectParam::livetime;		// 弾が画面にでている時間
-	spead = BulletObjectParam::spead;			// 弾のスピード
-	blasttime = BulletObjectParam::blasttime;	// 破裂してから消える時間
-	startScene = BulletObjectParam::startScene;	// 開始時に一度だけ再生される
-	NotHittime = BulletObjectParam::NotHittime;	// 発射時に本体に当たらない時間
-	currentState = BulletObject::defoult;		// 最初にとる行動
-	p_map = New_p_map;							// マップ情報の渡し
+	timer = 0;										// タイマー初期化
+	SetTag(BulletObjectParam::tag);					// タグの初期化
+	active = BulletObjectParam::active;				// 弾が存在するか否か
+	livetime = BulletObjectParam::livetime;			// 弾が画面にでている時間
+	spead = BulletObjectParam::spead;				// 弾のスピード
+	startTrigger = BulletObjectParam::startTrigger;	// 開始時に一度だけ再生される
+	NotHittime = BulletObjectParam::NotHittime;		// 発射時に本体に当たらない時間
+	p_map = New_p_map;								// マップ情報の渡し
 
 	// マップから情報を受け取る
 	if (New_p_map == nullptr)
@@ -53,7 +56,7 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 	}
 
 	// 方向の情報
-	SetDirection(NewDirection);
+	direction = NewDirection;
 
 	// 位置の設定
 	{
@@ -61,7 +64,7 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 		p_transform->position = BulletObjectParam::position;	// 座標の初期化
 	}
 
-	//画像の設定
+	// 画像の設定
 	{
 		//レンダラーの設定
 		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BulletObjectParam::BulletObjTexName);
@@ -73,7 +76,7 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 		//animationの設定
 		// 通常
 		SpriteAnimation anim1(div, { 0,0 }, 1);
-		anim1.Active();
+		anim1.InActive();
 		anim1.SetID(0);
 		anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
 		anim1.SetPriority(0);
@@ -84,82 +87,52 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 			anim1.GetCellRef(i).flame = flame;
 		}
 		p_spriteAnimator->AddAnimation(anim1);
+		p_spriteAnimator->Play(0);
+		p_spriteAnimator->SetIsActive(false);
 	}
-	//GetComponent<SpriteRenderer>()->SetIsActive(false);	// 初期化で描写しない
 
 	// 本体のコライダー設定
-	bodyCollider = AddComponent<BoxCollider2D>();
+	auto bodyCollider = AddComponent<BoxCollider2D>();
 	bodyCollider->Init();
-	hft::HFFLOAT3 p_size = p_transform->scale;			// サイズ分当たり判定をとる
+	hft::HFFLOAT3 p_size = p_transform->scale;					// サイズ分当たり判定をとる
 	bodyCollider->SetSize(p_size);
 	bodyCollider->SetIsActive(false);
 }
 
 //=======================================================================
-//Update
+// 弾オブジェクトの更新処理
 //=======================================================================
 void BulletObject::Update()
 {
-	if (GetBulletActive())
-	{
-		timer++;
-		switch (currentState) {
-		case defoult:Defoult(); break;		// 通常状態
-		case blast:Blast(); break;			// 破裂状態
-		}
-	}
-}
+	// 弾が存在しないとき、処理を終了する
+	if (GetBulletActive() == false)return;
 
-//===============================================================================================
-// フレーム数を超えるまで座標を更新し、フレーム数を超過した場合Blastへ移行する
-//===============================================================================================
-void BulletObject::Defoult()
-{
-	if (startScene == true)
+	// 処理がシンプルなので状態で分けずにここに書いてます
+	//-----------------------------------------------------------------------------------
+	timer++;												// フレーム更新
+	// 一回実行する処理
+	if (startTrigger == true)
 	{
-		startScene = false;
-		NotHittime = 10;
+		startTrigger = false;
 		GetComponent<BoxCollider2D>()->SetIsActive(true);	// 当たり判定をアクティブ
 		GetComponent<SpriteRenderer>()->SetIsActive(true);	// 描写をする
-		GetComponent<SpriteAnimator>()->Play(0);
+		GetComponent<SpriteAnimator>()->Play(0);			// 再生するアニメーションIDは0
 	}
-	if (timer <= livetime)
-	{
-		if (NotHittime > 0)
-		{
-			NotHittime--;// 発射直後の当たり判定を無効化
-		}
-		UpdatePos();										// 座標更新
-		CheakMyPos();										// マップの枠から出ないかチェック
-	}
-	if (timer > livetime)
-	{
-		timer = 0;											// フレーム数リセット
-		startScene = true;
-		currentState = BulletObject::blast;					// 状態を移行
-	}
-}
+	
+	if (NotHittime > 0) { NotHittime--; }					// 弾を発射したオブジェクトに当たらない時間の減少
+	UpdatePos();											// 座標の更新
+	CheakMyPos();											// 端に到達してないか確認
 
-
-//===============================================================================================
-// フレーム数を超過した場合、初期化する
-//===============================================================================================
-void BulletObject::Blast()
-{
-	if (startScene == true)
+	// 存在できる時間を超過した場合の処理
+	if (timer >= livetime)
 	{
-		startScene = false;
-		GetComponent<SpriteAnimator>()->Stop(0);
-		GetComponent<SpriteRenderer>()->SetIsActive(false);
+		timer = 0;											// タイマーを元に戻す
+		GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0
+		GetComponent<SpriteRenderer>()->SetIsActive(false);	// 描写をしない
 		GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
-		NotHittime = 10;
-	}
-	if (timer >= blasttime)
-	{
-		startScene = true;
-		currentState = BulletObject::defoult;
-		timer = 0;
-		SetBulletActive(false);
+		NotHittime = 10;									// 値のリセット
+		startTrigger = true;								// 次回発射される時に実行されるようにする
+		SetBulletActive(false);								// 自らの行動を非アクティブ
 	}
 }
 
@@ -171,24 +144,11 @@ void BulletObject::UpdatePos()
 	// 今の弾オブジェクトの座標取得
 	const hft::HFFLOAT3 NowPos = p_transform->position;
 
-	switch (GetDirection())
-	{
-	case RIGHT:
-		p_transform->position.x = NowPos.x + spead * 1.0f; 
-		//std::cout << "右方向に更新\n";
-		break;
-	case UP:
-		 p_transform->position.y = NowPos.y + spead * 1.0f; 
-		 //std::cout << "上方向に更新\n";
-		break;
-	case LEFT:
-		p_transform->position.x = NowPos.x - spead * 1.0f; 
-		//std::cout << "左方向に更新\n";
-		break;
-	case DOWN:
-		p_transform->position.y = NowPos.y - spead * 1.0f; 
-		//std::cout << "下方向に更新\n";
-		break;
+	switch (direction){
+	case RIGHT:	p_transform->position.x = NowPos.x + spead * 1.0f; break;
+	case UP:	p_transform->position.y = NowPos.y + spead * 1.0f; break;
+	case LEFT:	p_transform->position.x = NowPos.x - spead * 1.0f; break;
+	case DOWN:	p_transform->position.y = NowPos.y - spead * 1.0f; break;
 	default:
 		std::cout << "弾オブジェクト座標更新エラー\n";
 	}
@@ -199,21 +159,13 @@ void BulletObject::UpdatePos()
 //================================================================================================
 void BulletObject::CheakMyPos()
 {
-	// 枠組みから超えるようなら反対側の座標を代入する
-	switch (GetDirection())
+	// マップの端から超えるようなら反対側の座標を代入する
+	switch (direction)
 	{
-	case RIGHT:
-		if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x; std::cout << "ワープ\n"; }
-		break;
-	case UP:
-		if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y; std::cout << "ワープ\n"; }
-		break;
-	case LEFT:
-		if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x; std::cout << "ワープ\n"; }
-		break;
-	case DOWN:
-		if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y; std::cout << "ワープ\n"; }
-		break;
+	case RIGHT:	if (RightBottom.x < (p_transform->position.x)) { this->p_transform->position.x = LeftTop.x;}break;
+	case UP:	if (LeftTop.y < (p_transform->position.y)) { this->p_transform->position.y = RightBottom.y;}break;
+	case LEFT:	if (LeftTop.x > (p_transform->position.x)) { this->p_transform->position.x = RightBottom.x;}break;
+	case DOWN:	if (RightBottom.y > (p_transform->position.y)) { this->p_transform->position.y = LeftTop.y;}break;
 	default:
 		std::cout << "座標チェックエラー\n";
 	}
@@ -238,6 +190,11 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	if (Hit == false)return;
 	if (tag == "Gun" && NotHittime > 0)return;
 	//	発射直後で無ければ,発射元に接触した場合消滅する
-	currentState = BulletObject::blast;
-	startScene = true;
+	timer = 0;											// タイマーを元に戻す
+	GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0
+	GetComponent<SpriteRenderer>()->SetIsActive(false);	// 描写をしない
+	GetComponent<BoxCollider2D>()->SetIsActive(false);	// 当たり判定を非アクティブ
+	NotHittime = 10;									// 値のリセット
+	startTrigger = true;								// 次回発射される時に実行されるようにする
+	SetBulletActive(false);								// 自らの行動を非アクティブ
 }

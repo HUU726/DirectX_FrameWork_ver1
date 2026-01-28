@@ -5,16 +5,13 @@
 
 namespace BulletObjectParam
 {
-	BoxCollider2D* col = nullptr;			// 自身の体の判定用のコライダー
 	const std::string tag = "DamageObject";	// タグ
 	const bool active = false;				// 弾が存在する時にtrueにし、存在しない時にfalseにする
 	const int livetime = 300;				// 弾が進み続けるフレーム
 	const float spead = 3.f;				// 弾の進むスピード
-	const int blasttime = 30;				// 弾が炸裂してから消えるまでのフレーム
-	const bool startScene = true;			// シーンが切り替わると一度だけ実行される
-	const bool OneHit = true;				// 弾を撃つ際に当たり判定を肩代わり
+	const bool startTrigger = true;			// アクティブになると一度だけ実行される
 	const int NotHittime = 10;				// 弾が撃たれてから、ヒット判定に本体を含めない時間
-	const hft::HFFLOAT3 position = { -1000.f,-1000.f,-2.f };		// 座標
-	const hft::HFFLOAT3 scale = { 20.f,20.f,1.0f };					// サイズ
+	const hft::HFFLOAT3 position = { 0.f,0.f,-2.f };		// 座標
+	const hft::HFFLOAT3 scale = { 30.f,30.f,1.0f };					// サイズ
 	const char* BulletObjTexName = "Assets/01-Texture/03-Enemy/Bullet.png";	// テクスチャ
 }
