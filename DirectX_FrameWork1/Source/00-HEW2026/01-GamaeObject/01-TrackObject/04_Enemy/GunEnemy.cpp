@@ -206,8 +206,8 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 
 	// マップの情報
 	// 弾オブジェクト初期化
-	bullet.Init(_p_map, GetDirection());		//	マップの情報,方向
-	bullet.SetBulletActive(false);
+	//bullet.Init(_p_map, GetDirection());		//	マップの情報,方向
+	//bullet.SetBulletActive(false);
 }
 
 //============================================================================================
@@ -230,7 +230,6 @@ void GunEnemy::Update()
 		break;
 	}
 }
-
 
 //===============================================================================
 // 弾が存在しないとき、または待ち時間を超えないとき、待ち時間を超えるとshottingへ移行する
@@ -256,10 +255,10 @@ void GunEnemy::Defoult()
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
 
-	if (bullet.GetBulletActive() == true)return;
+	//if (bullet.GetBulletActive() == true)return;
 	// 弾が非アクティブのときのコード
 
-	if (bullet.GetBulletActive() == false)
+	//if (bullet.GetBulletActive() == false)
 	{
 		timer++;
 		if (waittimer <= timer)
@@ -298,12 +297,12 @@ void GunEnemy::Shotting()
 			GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 		}
 	}
-	if (timer >= bulletcreateflame && !bullet.GetBulletActive())
+	//if (timer >= bulletcreateflame && !bullet.GetBulletActive())
 	{
 		timer = 0;
 		std::cout << "弾オブジェクト発射!!\n";
-		bullet.SetPos(p_transform->position);		// 発射する直前の自身の位置を送る
-		bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
+		//bullet.SetPos(p_transform->position);		// 発射する直前の自身の位置を送る
+		//bullet.SetBulletActive(true);					// 弾オブジェクトをアクティブにする
 		changeScene = true;								// changeSceneを有効にする
 		oldani = anipos;								// 再生しているアニメーションを古いものとする
 		currentState = GunEnemy::defoult;				// defoultに移行
@@ -324,7 +323,7 @@ void GunEnemy::Dead()
 		GetComponent<SpriteRenderer>()->SetIsActive(false);
 
 		// 弾オブジェクトの停止
-		bullet.SetBulletActive(false);
+		//bullet.SetBulletActive(false);
 
 		// エネミー総数の減少
 		CEnemy::DownEnemyCount();

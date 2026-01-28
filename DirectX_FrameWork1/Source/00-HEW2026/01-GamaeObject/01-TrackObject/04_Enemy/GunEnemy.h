@@ -35,7 +35,7 @@ private:
 	GameObject2D object2D;				// 本体のアニメーション
 	BoxCollider2D* bodyColl = nullptr;	// 自身の体の判定用のコライダー
 	
-	BulletObject bullet;				// 弾オブジェクト
+	// BulletObject bullet;				// 弾オブジェクト
 public:
 	GunEnemy();
 	void Init() override {};

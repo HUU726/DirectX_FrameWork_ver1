@@ -320,6 +320,8 @@ void BiteEnemy::Defoult1()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
+		//if (dir == 2) { p_transform->rotation.y = 180; }
+		//else { p_transform->rotation.y = 0; }
 		if (anipos >= 4) { anipos = 0; }
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
@@ -328,6 +330,8 @@ void BiteEnemy::Defoult1()
 	// 最初に再生するアニメーション(この書き方をするのは古いアニメーションが無いため)
 	if (startTrigger == true)
 	{
+		//if (dir == 2) { p_transform->rotation.y = 180; }
+		//else { p_transform->rotation.y = 0; }
 		startTrigger = false;
 		// 方向からアニメーションを決定する
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
