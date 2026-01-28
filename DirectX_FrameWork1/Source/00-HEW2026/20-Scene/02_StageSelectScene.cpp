@@ -1,25 +1,27 @@
-#include "StageSelectScene.h"
+#include "02_StageSelectScene.h"
 
-#include "../../06-GameObject/GameObject.h"
-#include "../../../../04-Input/Input.h"
-#include "../../03-Sound/Fsound.h"
-#include "../02-SceneManager/SceneManager.h"
-#include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-#include "../../07-Component/02-Renderer/02-MeshRenderer/MeshRenderer.h"
+#include "../../99-Lib/01-MyLib/06-GameObject/GameObject.h"
+#include "../../04-Input/Input.h"
+#include "../../99-Lib/01-MyLib/03-Sound/Fsound.h"
+#include "../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
+#include "../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+#include "../../99-Lib/01-MyLib/07-Component/02-Renderer/02-MeshRenderer/MeshRenderer.h"
 
-#include "../../07-Component/04-Camera/01-Camera2D/Camera2D.h"
-#include "../../07-Component/04-Camera/02-Camera3D/Camera3D.h"
+#include "../../99-Lib/01-MyLib/07-Component/04-Camera/01-Camera2D/Camera2D.h"
+#include "../../99-Lib/01-MyLib/07-Component/04-Camera/02-Camera3D/Camera3D.h"
 
-#include "../../02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
-#include "../../07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+#include "../../99-Lib/01-MyLib/02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
+#include "../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
-#include "../../02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
+#include "../../99-Lib/01-MyLib/02-Renderer/99-ShapeTable/02-ShapeTable3D/ShapeTable3D.h"
 
-#include "../../101-Time/Time.h"
+#include "../../99-Lib/01-MyLib/101-Time/Time.h"
 
+
+#include "../10-Map/99-MapDataManager/MapDataManager.h"
 // 次のシーン（ゲーム本編）をインクルード
-#include "GameScene.h" 
-#include "TitleScene.h"
+#include "03_GameScene.h"
+#include "01_Hew_TitleScene.h"
 
 class SimpleObject : public GameObject
 {
@@ -203,8 +205,8 @@ public:
             //選んだ番号(currentIdx)を渡して遷移
             //SceneManager::GetInstance().LoadScene(std::make_unique<GameScene>(currentIdx));
             
-            //テスト用とりあえずタイトルへ
-            SceneManager::GetInstance().LoadScene<TitleScene>();
+            MapDataManager::GetInstance().SetMapID(currentIdx);
+            SceneManager::GetInstance().LoadScene<Hew_GameScene>();
         }
     }
 };
@@ -213,7 +215,7 @@ public:
 // ステージセレクトシーン本体
 // ============================================================================
 
-void StageSelectScene::Init()
+void Hew_StageSelectScene::Init()
 {
     {	//2Dカメラ初期化
         Transform* p_trf = camera2D.GetTransformPtr();
@@ -234,7 +236,7 @@ void StageSelectScene::Init()
     pLogic->Init();
 }
 
-void StageSelectScene::UnInit()
+void Hew_StageSelectScene::UnInit()
 {
     if (pLogic)
     {

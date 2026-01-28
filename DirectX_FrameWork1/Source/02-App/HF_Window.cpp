@@ -2,6 +2,11 @@
 
 #include "Application.h"
 
+#include <Windows.h>
+#include <ShellScalingApi.h>
+#pragma comment(lib, "Shcore.lib")
+
+
 
 // 関数のプロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -13,6 +18,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 */
 void HF_Window::InitClass()
 {
+	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+
 	// ウィンドウクラス情報をまとめる
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);
@@ -36,29 +43,37 @@ void HF_Window::InitClass()
 */
 void HF_Window::InitWindow()
 {
+
+	HMONITOR hMonitor = MonitorFromPoint({ 0,0 }, MONITOR_DEFAULTTOPRIMARY);
+	MONITORINFO mi = { sizeof(MONITORINFO) };
+	GetMonitorInfo(hMonitor, &mi);
+
+	width = mi.rcMonitor.right - mi.rcMonitor.left;
+	height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
 	// ウィンドウの情報をまとめる
 	hWnd = CreateWindowEx(0,	// 拡張ウィンドウスタイル
 		CLASS_NAME,				// ウィンドウクラスの名前
 		WINDOW_NAME,			// ウィンドウの名前
-		WS_OVERLAPPEDWINDOW,	// ウィンドウスタイル
-		CW_USEDEFAULT,			// ウィンドウの左上Ｘ座標
-		CW_USEDEFAULT,			// ウィンドウの左上Ｙ座標 
-		SCREEN_WIDTH,			// ウィンドウの幅
-		SCREEN_HEIGHT,			// ウィンドウの高さ
+		WS_POPUP | WS_VISIBLE,	// ウィンドウスタイル    WS_OVERLAPPEDWINDOW フレーム付きウィンドウ    WS_POPUP | WS_VISIBLE ボーダーレスウィンドウ
+		0,		// ウィンドウの左上Ｘ座標
+		0,		// ウィンドウの左上Ｙ座標 
+		width/2,					// ウィンドウの幅
+		height/2,					// ウィンドウの高さ
 		NULL,					// 親ウィンドウのハンドル
 		NULL,					// メニューハンドルまたは子ウィンドウID
 		Application::GetInstance().GetHInstance(),	// インスタンスハンドル
 		NULL);					// ウィンドウ作成データ
 
-	// ウィンドウのサイズを修正
-	RECT rc1, rc2;
-	GetWindowRect(hWnd, &rc1);	//ウィンドウの短形領域を取得
-	GetClientRect(hWnd, &rc2);	//クライアントの短形領域を取得
-	int sx = SCREEN_WIDTH;
-	int sy = SCREEN_HEIGHT;
-	sx += ((rc1.right - rc1.left) - (rc2.right - rc2.left));
-	sy += ((rc1.bottom - rc1.top) - (rc2.bottom - rc2.top));
-	SetWindowPos(hWnd, NULL, 0, 0, sx, sy, (SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE));
+	SetWindowPos(
+		hWnd,
+		HWND_TOP,
+		0,
+		0,
+		width,
+		height,
+		SWP_FRAMECHANGED
+	);
 
 	// 指定されたウィンドウの表示状態を設定(ウィンドウを表示)
 	ShowWindow(hWnd, Application::GetInstance().GetNCmdShow());

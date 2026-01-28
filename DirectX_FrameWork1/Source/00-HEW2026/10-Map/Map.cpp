@@ -18,9 +18,9 @@
 // THORM_OBJ	6
 
 
-void Map1::CreateMap()
+void Map0::CreateMap()
 {
-	id = 1;
+	id = MAP_ID::MAP0;
 	width = 5;
 	height = 5;
 
@@ -35,9 +35,9 @@ void Map1::CreateMap()
 	InitBiteEnemyVec({ 0,2,2 });
 }
 
-void Map2::CreateMap()
+void Map1::CreateMap()
 {
-	id = 2;
+	id = MAP_ID::MAP1;
 	width = 5;
 	height = 5;
 
@@ -52,9 +52,9 @@ void Map2::CreateMap()
 	InitBiteEnemyVec({ 2,1,0,1,2 });
 }
 
-void Map3::CreateMap()
+void Map2::CreateMap()
 {
-	id = 3;
+	id = MAP_ID::MAP2;
 	width = 5;
 	height = 5;
 
@@ -70,9 +70,9 @@ void Map3::CreateMap()
 	InitGunEnemyVec({ 2,2,1 });
 }
 
-void Map4::CreateMap()
+void Map3::CreateMap()
 {
-	id = 4;
+	id = MAP_ID::MAP3;
 	width = 5;
 	height = 5;
 
@@ -88,9 +88,9 @@ void Map4::CreateMap()
 	InitGunEnemyVec({ 1,2,2,0 });
 }
 
-void Map5::CreateMap()
+void Map4::CreateMap()
 {
-	id = 5;
+	id = MAP_ID::MAP4;
 	width = 7;
 	height = 7;
 
@@ -107,9 +107,9 @@ void Map5::CreateMap()
 	InitBiteEnemyVec({ 3,1,2,2 });
 }
 
-void Map6::CreateMap()
+void Map5::CreateMap()
 {
-	id = 6;
+	id = MAP_ID::MAP5;
 	width = 7;
 	height = 7;
 
@@ -127,9 +127,29 @@ void Map6::CreateMap()
 	InitGunEnemyVec({ 3,1,1,0 });
 }
 
+void Map6::CreateMap()
+{
+	id = MAP_ID::MAP6;
+	width = 7;
+	height = 7;
+
+	mapDataArray = {
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0 },
+	};
+
+	InitBiteEnemyVec({ 0,1,2,3 });
+	InitGunEnemyVec({ 2,1,3 });
+}
+
 void Map7::CreateMap()
 {
-	id = 7;
+	id = MAP_ID::MAP7;
 	width = 7;
 	height = 7;
 
@@ -149,7 +169,7 @@ void Map7::CreateMap()
 
 void Map8::CreateMap()
 {
-	id = 8;
+	id = MAP_ID::MAP8;
 	width = 7;
 	height = 7;
 
@@ -169,27 +189,7 @@ void Map8::CreateMap()
 
 void Map9::CreateMap()
 {
-	id = 9;
-	width = 7;
-	height = 7;
-
-	mapDataArray = {
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-		{ 0,0,0,0,0,0,0 },
-	};
-
-	InitBiteEnemyVec({ 0,1,2,3 });
-	InitGunEnemyVec({ 2,1,3 });
-}
-
-void Map10::CreateMap()
-{
-	id = 10;
+	id = MAP_ID::MAP9;
 	width = 7;
 	height = 7;
 

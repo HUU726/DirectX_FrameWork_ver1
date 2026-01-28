@@ -20,7 +20,6 @@
 
 void SoundManager::SetUpSounds()
 {
-
 	for (int i = 0; i < sourceVoices.size(); i++)
 	{
 		if (params[i].start)
@@ -42,6 +41,19 @@ void SoundManager::ReleaseSounds()
 			sourceVoices[i]->DestroyVoice();			// オーディオグラフからソースボイスを削除
 			delete[]  dataBuffers[i];
 		}
+	}
+
+	{
+		std::vector<SoundManager::PARAM> swapParams;
+		std::vector<WAVEFORMATEXTENSIBLE> swapWfx;
+		std::vector<XAUDIO2_BUFFER> swapBuffer;
+		std::vector<BYTE*> swapDataBuffer;
+		std::vector<IXAudio2SourceVoice*> swapSourceVoice;
+
+		swapParams.swap(params);
+		swapWfx.swap(wfxs);
+		swapBuffer.swap(buffers);
+		swapDataBuffer.swap(dataBuffers);
 	}
 }
 

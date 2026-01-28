@@ -1,13 +1,13 @@
 #pragma once
 #include "../00-TrackObject/TrackObject.h"
 
+#include "../../../../99-Lib/01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 
 //朝日奈担当トゲオブジェクトクラス
 //Thormオブジェクト側は当たり判定と影のアニメーションを行う
 //トゲ本体のアニメーション用として内部にmainBodyオブジェクトを持つ
 
 
-class GameObject2D;
 class ThormObject : public TrackObject
 {
 private:

@@ -3,7 +3,9 @@
 #include "../../99-CompMng/ComponentManager.h"
 #include "../../../06-GameObject/GameObject.h"
 #include "../../../02-Renderer/01-Sprite2DRenderer/Sprite2DRenderer.h"
+#include "../../../../../02-App/Application.h"
 #include "../../../../../02-App/HF_Window.h"
+
 
 /**
 * @brief	目標から前・上・右を割り出す
@@ -85,8 +87,9 @@ std::vector<DirectX::XMVECTOR> Camera2D::DeriveForwardToTarget()
 
 Camera2D::Camera2D()
 {
-	width = SCREEN_WIDTH;
-	height = SCREEN_HEIGHT;
+	HF_Window* p_window = Application::GetInstance().GetWindowPtr();
+	width = p_window->GetWidth();
+	height = p_window->GetHeight();
 	nearClip = -100.0f;
 	farClip = 100.0f;
 	p_target = nullptr;

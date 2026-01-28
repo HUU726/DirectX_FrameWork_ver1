@@ -5,6 +5,7 @@
 
 //#include "../../../../00-HEW2026/20-Scene/Test_HewScene2.h"
 #include "../01-Scenes/TitleScene.h"
+#include "../../../../00-HEW2026/20-Scene/02_StageSelectScene.h"
 
 #include "../../03-Sound/Fsound.h"
 
@@ -12,7 +13,7 @@
 
 void SceneManager::Init()
 {
-	curScene = std::make_unique<TitleScene>();
+	curScene = std::make_unique<Hew_StageSelectScene>();
 	SetUpScene();
 }
 
@@ -44,6 +45,7 @@ void SceneManager::ChangeScene()
 
 void SceneManager::SetUpScene()
 {
+	nextFlg  = false;
 	curScene->Init();
 	GameObjectManager::GetInstance().SetUpObject();
 	SoundManager::GetInstance().SetUpSounds();

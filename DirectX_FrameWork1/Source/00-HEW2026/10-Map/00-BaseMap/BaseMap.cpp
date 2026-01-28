@@ -285,6 +285,7 @@ void BaseMap::InitGunEnemyVec(const std::vector<int>& _vec)
 	gunEnemyVecs.insert(gunEnemyVecs.end(), _vec.begin(), _vec.end());
 }
 
+#include "../../../02-App/Application.h"
 #include "../../../02-App/HF_Window.h"
 void BaseMap::CreateTiles()
 {
@@ -313,12 +314,24 @@ void BaseMap::CreateTiles()
 			p_trf->scale = { tileScale,tileScale };
 
 			float posX = leftTopPos.x + (tileScale * x);
-			p_trf->position = { posX,posY,10 };
+			p_trf->position = { posX,posY,99 };
 			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
 			onMapTileObjects.push_back(tileObject);
 		}
 	}
 
+	//背景読み込み
+	{
+		HF_Window* p_window = Application::GetInstance().GetWindowPtr();
+		float width = p_window->GetWidth();
+		float height = p_window->GetHeight();
+		BGImg = new GameObject2D;
+		auto renderer = BGImg->GetComponent<SpriteRenderer>();
+		renderer->LoadTexture("Assets/01-Texture/01-Map/Background.png");
+		auto p_trf = BGImg->GetTransformPtr();
+		p_trf->position.z = -99;
+		p_trf->scale = { width,height,1 };
+	}
 }
 
 #include "../../01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
@@ -350,7 +363,7 @@ void BaseMap::CreateObjects()
 				{
 					PlayerObject* p_obj = new PlayerObject;
 					p_obj->Init(this, &Input::GetInstance());
-					p_obj->GetTransformPtr()->position.z = -1;
+					p_obj->GetTransformPtr()->position.z = -30;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -359,7 +372,7 @@ void BaseMap::CreateObjects()
 					biteVec += 1;
 					BiteEnemy* p_obj = new BiteEnemy;
 					p_obj->Init(*biteVec);
-					p_obj->GetTransformPtr()->position.z = -2;
+					p_obj->GetTransformPtr()->position.z = -20;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -368,7 +381,7 @@ void BaseMap::CreateObjects()
 					++gunVec;
 					GunEnemy* p_obj = new GunEnemy;
 					p_obj->Init(this, *gunVec);
-					p_obj->GetTransformPtr()->position.z = -3;
+					p_obj->GetTransformPtr()->position.z = -30;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -376,7 +389,7 @@ void BaseMap::CreateObjects()
 				{
 					BombEnemy* p_obj = new BombEnemy;
 					p_obj->Init();
-					p_obj->GetTransformPtr()->position.z = -4;
+					p_obj->GetTransformPtr()->position.z = -40;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -384,7 +397,7 @@ void BaseMap::CreateObjects()
 				{
 					ConnectObject* p_obj = new ConnectObject;
 					p_obj->Init();
-					p_obj->GetTransformPtr()->position.z = -5;
+					p_obj->GetTransformPtr()->position.z = -50;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -392,7 +405,7 @@ void BaseMap::CreateObjects()
 				{
 					ThormObject* p_obj = new ThormObject;
 					p_obj->Init();
-					p_obj->GetTransformPtr()->position.z = -6;
+					p_obj->GetTransformPtr()->position.z = -60;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -425,16 +438,6 @@ BaseMap::BaseMap()
 
 	biteEnemyVecs.emplace_back(0);
 	gunEnemyVecs.emplace_back(0);
-
-	//背景読み込み
-	{
-		BGImg = new GameObject2D;
-		auto renderer = BGImg->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
-		auto p_trf = BGImg->GetTransformPtr();
-		p_trf->position.z = 50;
-		p_trf->scale = { SCREEN_WIDTH,SCREEN_HEIGHT,1 };
-	}
 }
 
 BaseMap::~BaseMap()
@@ -445,9 +448,6 @@ BaseMap::~BaseMap()
 
 	for (auto& p_obj : onMapTrackObjects)
 		delete p_obj;
-
-	for (auto& cover : covers)
-		delete cover;
 
 	delete BGImg;
 }
@@ -577,63 +577,6 @@ void BaseMap::Init()
 	CreateMap();
 	CreateTiles();
 	CreateObjects();
-
-	//マップの四方を囲むカバー
-	{
-		float tileScaleHalf = tileScale / 2.0f;
-
-		for (int i = 0; i < 4; i++)
-		{
-			GameObject2D* p_obj = new GameObject2D;
-			p_obj->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
-			covers.push_back(p_obj);
-		}
-
-		hft::HFFLOAT2 l_leftop = { leftTopPos.x + tileScaleHalf, leftTopPos.y - tileScaleHalf };
-		hft::HFFLOAT2 l_ritbot = { rightBottomPos.x - tileScaleHalf,rightBottomPos.y + tileScaleHalf };
-
-		//上カバー
-		{
-			auto& cover = covers.at(0);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = l_ritbot.x - l_leftop.x;
-			p_trf->scale.y = (SCREEN_HEIGHT / 2.f) - l_leftop.y;
-			p_trf->position.x = MAP_CENTER_POSX;
-			p_trf->position.y = l_leftop.y + (p_trf->scale.y / 2.f);
-			p_trf->position.z = -50;
-		}
-		//下カバー
-		{
-			auto& cover = covers.at(1);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = l_ritbot.x - l_leftop.x;
-			p_trf->scale.y = l_ritbot.y - (-SCREEN_HEIGHT);
-			p_trf->position.x = MAP_CENTER_POSX;
-			p_trf->position.y = l_ritbot.y - (p_trf->scale.y / 2.f);
-			p_trf->position.z = -50;
-		}
-		//右カバー
-		{
-			auto& cover = covers.at(2);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_ritbot.x;
-			p_trf->scale.y = SCREEN_HEIGHT;
-			p_trf->position.x = l_ritbot.x + (p_trf->scale.x / 2.f);
-			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -50;
-		}
-		//左カバー
-		{
-			auto& cover = covers.at(3);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_leftop.x;
-			p_trf->scale.y = SCREEN_HEIGHT;
-			p_trf->position.x = l_leftop.x - (p_trf->scale.x / 2.f);
-			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -50;
-		}
-
-	}
 }
 
 #include "../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
@@ -663,65 +606,10 @@ void BaseMap::Init(const int& _width, const int& _height)
 			tileObject->GetTransformPtr()->scale = { tileScale,tileScale };
 
 			float posX = leftTopPos.x + (tileScale * x);
-			tileObject->GetTransformPtr()->position = { posX,posY,0 };
+			tileObject->GetTransformPtr()->position = { posX,posY,99 };
 			tileObject->SetLineIndex(hft::HFFLOAT2(x, y));
 			onMapTileObjects.push_back(tileObject);
 		}
-	}
-
-	//マップの四方を囲むカバー
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			GameObject2D* p_obj = new GameObject2D;
-			p_obj->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/field.jpg");
-			covers.push_back(p_obj);
-		}
-
-		hft::HFFLOAT2 l_leftop = { leftTopPos.x + tileScaleHalf, leftTopPos.y - tileScaleHalf };
-		hft::HFFLOAT2 l_ritbot = { rightBottomPos.x - tileScaleHalf,rightBottomPos.y + tileScaleHalf };
-
-		//上カバー
-		{
-			auto& cover = covers.at(0);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = l_ritbot.x - l_leftop.x;
-			p_trf->scale.y = (SCREEN_HEIGHT / 2.f) - l_leftop.y;
-			p_trf->position.x = MAP_CENTER_POSX;
-			p_trf->position.y = l_leftop.y + (p_trf->scale.y / 2.f);
-			p_trf->position.z = -5;
-		}
-		//下カバー
-		{
-			auto& cover = covers.at(1);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = l_ritbot.x - l_leftop.x;
-			p_trf->scale.y = l_ritbot.y - (-SCREEN_HEIGHT);
-			p_trf->position.x = MAP_CENTER_POSX;
-			p_trf->position.y = l_ritbot.y - (p_trf->scale.y / 2.f);
-			p_trf->position.z = -5;
-		}
-		//右カバー
-		{
-			auto& cover = covers.at(2);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_ritbot.x;
-			p_trf->scale.y = SCREEN_HEIGHT;
-			p_trf->position.x = l_ritbot.x + (p_trf->scale.x / 2.f);
-			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -5;
-		}
-		//左カバー
-		{
-			auto& cover = covers.at(3);
-			auto p_trf = cover->GetTransformPtr();
-			p_trf->scale.x = (SCREEN_WIDTH / 2.f) - l_leftop.x;
-			p_trf->scale.y = SCREEN_HEIGHT;
-			p_trf->position.x = l_leftop.x - (p_trf->scale.x / 2.f);
-			p_trf->position.y = MAP_CENTER_POSY;
-			p_trf->position.z = -5;
-		}
-
 	}
 
 	{
@@ -756,36 +644,10 @@ void BaseMap::Init(const int& _width, const int& _height)
 #include "../../../99-Lib/01-MyLib/08-Scene/01-Scenes/GameScene.h"
 void BaseMap::Update()
 {
-
-	if (GetAsyncKeyState('P') & 0x0001)
-	{
-		SetSlideData(hft::HFFLOAT2(1, 3), hft::HFFLOAT2(-1, 0), 3);
-	}
-	if (GetAsyncKeyState('O') & 0x0001)
-	{
-		SetSlideData(hft::HFFLOAT2(1, 2), hft::HFFLOAT2(1, 0), 2.5);
-	}
-
-	if (GetAsyncKeyState('U') & 0x0001)
-	{
-		SetSlideData(hft::HFFLOAT2(3, 4), hft::HFFLOAT2(0, -1), 6);
-	}
-	if (GetAsyncKeyState('Y') & 0x0001)
-	{
-		SetSlideData(hft::HFFLOAT2(2, 3), hft::HFFLOAT2(0, 1), 6);
-	}
-
-	if (GetAsyncKeyState(VK_UP))
-		SceneManager::GetInstance().LoadScene<GameScene>();
-
 	Slide();
 
 	for (const auto& obj : onMapTrackObjects)
 	{
 		std::cout << obj->GetTransform().position.z << std::endl;
 	}
-
-	//std::cout << "index X  :  " << onMapTrackObjects.at(0)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//std::cout << "index X  :  " << tileObjects.at(17)->GetLineIndex().x << std::endl;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Debug_TilePaintColor_FromTile(15, tileObjects);
 }

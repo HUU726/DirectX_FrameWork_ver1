@@ -3,6 +3,28 @@
 #include "../10-Map/00-BaseMap/BaseMap.h"
 
 
+enum MAP_ID
+{
+	MAP0 = 0,
+	MAP1,
+	MAP2,
+	MAP3,
+	MAP4,
+	MAP5,
+	MAP6,
+	MAP7,
+	MAP8,
+	MAP9,
+	MAP10,
+	MAX_ID,
+};
+
+
+class Map0 : public BaseMap
+{
+	void CreateMap() override;
+};
+
 class Map1 : public BaseMap
 {
 	void CreateMap() override;
@@ -44,11 +66,6 @@ class Map8 : public BaseMap
 };
 
 class Map9 : public BaseMap
-{
-	void CreateMap() override;
-};
-
-class Map10 : public BaseMap
 {
 	void CreateMap() override;
 };

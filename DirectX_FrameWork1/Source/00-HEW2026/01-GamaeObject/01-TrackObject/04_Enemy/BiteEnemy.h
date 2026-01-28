@@ -8,20 +8,23 @@ class BoxCollider2D;
 class AttackMass : public GameObject2D
 {
 private:
-	GameObject2D* attackRenderer;	// 画像表示用
+	GameObject2D* attackRenderer;	// 画像表示用(デバック用)
 	BoxCollider2D* attackCollider;	// 攻撃の判定
-	bool Fg = false;				// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
-public:			
+	bool Fg;						// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
+	int direction;					// 噛みつく敵と同じ仕様の変数
+	hft::HFFLOAT3 acceptPos;		// 受け取る座標
+public:
+	//AttackMass();
 	void Init() override;
-	//void Update() override;
-	void Update(hft::HFFLOAT3 NewPos, const int& NewDirection);	// 座標を常に更新
-	
+	void Update() override;
 
 	void SetFg(const bool& NewFg) { Fg = NewFg; }				// Fgをセット 
-	bool GetFg() { return &Fg; }								// Fgを返す
-	//void SendPos(const hft:FLOAT3& NewPos){};
+	bool GetFg() { return Fg; }									// Fgを返す
 
-
+	void SendPos(const hft::HFFLOAT3 NewPos) { acceptPos = NewPos; }		// 座標を送る用
+	void SendDir(const int& NewDir) { direction = NewDir; }								// 方向を送る用
+	//void UpdateOffset();													// 方向による当たり判定のずらし
+	void UpdatePos();
 	void OnCollisionEnter(Collider* _p_col) override;
 };
 
@@ -33,18 +36,16 @@ private:
 	
 	// 敵の情報
 	int direction;		// 本体の現在向いている方向		(0:右方向 1:上方向 2:左方向 3:下方向)
-	int hitstoptime;	// ヒットストップがかかるフレーム数
 	int defoulttime_1;	// 通常状態1のフレーム数
 	int defoulttime_2;	// 通常状態2のフレーム数
 	int attacktime;		// 攻撃状態のフレーム数
 	int spinttime;		// 回転状態のフレーム数
 	int deadtime;		// 死亡状態のフレーム数
-	hft::HFFLOAT3 offset[4] = {};	// 攻撃マスの位置
 	int anipos;			// 次のアニメーションを再生するための変数
 	int oldani;			// 前のアニメーションをストップするための変数
 	int Act[4];
-	bool changeState = false;	// アニメーションを一回実行するための変数
-	bool startState = true;	// 始めのアニメーション
+	bool changeTrigger;	// アニメーションを一回実行するための変数
+	bool startTrigger;	// 始めのアニメーション
 
 	enum State
 	{
@@ -63,17 +64,15 @@ private:
 	void Spin();
 	void Dead();
 
-	GameObject2D object2D;	// 本体のアニメーション
+	GameObject2D object2D;			// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定
-	AttackMass attackCollider;						// 攻撃の判定
+	AttackMass attackCollider;		// 攻撃の判定
 public:
-	BiteEnemy();	
-	~BiteEnemy();				
+	BiteEnemy();					
 
 	void Init() override {};		// 初期化処理
 	void Init(const int&);		// 方向で初期化
 	void Update() override;		// 更新処理
-
 
 	// 方向をセットまたは返す
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }

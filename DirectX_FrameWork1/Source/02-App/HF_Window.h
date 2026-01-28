@@ -28,6 +28,8 @@ public:
 	/*** ÉQÉbÉ^Å[ ***/
 	HWND GetHWND();
 	MSG GetMsg();
+	float GetWidth() { return width; }
+	float GetHeight() { return height; }
 
 	void Init();
 	bool Update();

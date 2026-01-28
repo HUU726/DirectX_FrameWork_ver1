@@ -8,7 +8,6 @@ class Hew_GameScene : public BaseScene
 {
 private:
 
-
 public:
 
 	void Init() override;

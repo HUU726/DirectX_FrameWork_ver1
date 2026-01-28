@@ -20,9 +20,6 @@ ThormObject::~ThormObject()
 
 void ThormObject::Init()
 {
-	//マップ上どのマスにいるか設定
-	//SetLineIndex({1.f, 1.f});
-
 	//タイマーを初期化
 	timer = 0;
 
@@ -44,7 +41,7 @@ void ThormObject::Init()
 		hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 		//animationの設定
-		SpriteAnimation anim(div, { 0,0 }, 2);
+		SpriteAnimation anim(div, { 0,0 }, 1);
 		anim.Active();
 		anim.SetID(0);
 
@@ -89,26 +86,26 @@ void ThormObject::Init()
 			//レンダラーの設定
 			mainBodyObj.GetComponent<SpriteRenderer>()->LoadTexture(ThormObjectParam::thormTexName);
 
-			//アニメーターの設定
-			SpriteAnimator* p_spriteAnimator = mainBodyObj.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
-			hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
+			////アニメーターの設定
+			//SpriteAnimator* p_spriteAnimator = mainBodyObj.AddComponent<SpriteAnimator>(hft::HFFLOAT2(3, 3));
+			//hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
-			//animationの設定
-			SpriteAnimation anim(div, { 0,0 }, 9);
-			anim.Active();
-			anim.SetID(0);
+			////animationの設定
+			//SpriteAnimation anim(div, { 0,0 }, 9);
+			//anim.Active();
+			//anim.SetID(0);
 
-			anim.SetType(SPRITE_ANIM_TYPE::LOOP);
-			anim.SetPriority(0);
-			float flame = 10;
+			//anim.SetType(SPRITE_ANIM_TYPE::LOOP);
+			//anim.SetPriority(0);
+			//float flame = 10;
 
-			for (int i = 0; i < 9; i++)
-			{
-				anim.GetCellRef(i).flame = flame;
-			}
+			//for (int i = 0; i < 9; i++)
+			//{
+			//	anim.GetCellRef(i).flame = flame;
+			//}
 
 
-			p_spriteAnimator->AddAnimation(anim);
+			//p_spriteAnimator->AddAnimation(anim);
 		}
 	}
 }
@@ -162,9 +159,10 @@ void ThormObject::ThormAnimation(const State state)
 		hft::HFFLOAT3 diff = bodyTrf->position - shadowTrf.position;
 		float currentDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
 		
-		//一定距離内まで落ちていたら何もしない
+		//一定距離内まで落ちていたら拡大率を0にする
 		if (currentDistance <= distanceHold)
 		{
+			bodyTrf->scale = { 0.f, 0.f, 1.f };
 			return;
 		}
 
@@ -175,7 +173,7 @@ void ThormObject::ThormAnimation(const State state)
 		bodyTrf->position.y += thormFallSpeed;
 
 		//拡大率を縮小
-		bodyTrf->scale -= hft::HFFLOAT3(scaleDownSpeed, scaleDownSpeed, 0.f);
+		bodyTrf->scale -= hft::HFFLOAT3(scaleDownSpeed, scaleDownSpeed, 1.f);
 
 		//画像を描画する
 		mainBodyObj.SetIsRender(true);
@@ -183,7 +181,7 @@ void ThormObject::ThormAnimation(const State state)
 	else if(state == Attack)
 	{
 		//攻撃状態になったらスケールを変更する
-		bodyTrf->scale = { 0.f, 0.f, 0.f };
+		bodyTrf->scale = { 0.f, 0.f, 1.f };
 
 		SpriteAnimator* anim = GetComponent<SpriteAnimator>();
 		anim->Stop(0);

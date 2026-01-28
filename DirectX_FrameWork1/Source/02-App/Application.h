@@ -36,6 +36,7 @@ public:
 	}
 	HINSTANCE GetHInstance() const { return hInstance; }
 	int GetNCmdShow() const { return nCmdShow; }
+	HF_Window* GetWindowPtr() { return p_window; }
 
 	/**
 	* @brief	アプリケーションを継続できるかどうか
