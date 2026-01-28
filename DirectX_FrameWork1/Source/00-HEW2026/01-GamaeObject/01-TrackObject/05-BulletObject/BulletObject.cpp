@@ -4,6 +4,12 @@
 #include"BulletObjectParam.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+#include"../02_ThornObject/ThormObject.h"
+#include"../03_ConnectObject/ConnectObject.h"
+#include"../04-Player/PlayerObject.h"
+#include"../04_Enemy/BiteEnemy.h"
+#include"../04_Enemy/GunEnemy.h"
+#include"../04_Enemy/BombEnemy.h"
 
 #define RIGHT 0
 #define UP 1
@@ -109,7 +115,7 @@ void BulletObject::Defoult()
 		GetComponent<SpriteAnimator>()->Play(0);
 		//std::cout << "Bullet出現\n";
 	}
-	std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
+	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 	if (timer <= livetime)
 	{
 		if (NotHittime > 0)
@@ -220,6 +226,72 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	{
 		return;
 	}
+
+	// 噛みつく敵
+	{
+		TrackObject* ptr = dynamic_cast<BiteEnemy*>(col);
+		if (ptr != nullptr)
+		{
+			if (tag == "Bite")
+			{
+				currentState = BulletObject::blast;
+				startScene = true;
+			}
+		}
+	}
+	// 弾を撃つ敵
+	{
+		TrackObject* ptr = dynamic_cast<GunEnemy*>(col);
+		if (ptr != nullptr)
+		{
+			//	発射直後で無ければ,発射元に接触した場合消滅する
+			if (tag == "Gun" && NotHittime == 0)
+			{
+				std::cout << tag << "にヒット\n";
+				currentState = BulletObject::blast;
+				startScene = true;
+			}
+		}
+	}
+	// 爆弾
+	{
+		TrackObject* ptr = dynamic_cast<BombEnemy*>(col);
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				currentState = BulletObject::blast;
+				startScene = true;
+			}
+		}
+	}
+	// 落下トゲ
+	{
+		TrackObject* ptr = dynamic_cast<ThormObject*>(col);
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				currentState = BulletObject::blast;
+				startScene = true;
+			}
+		}
+	}
+	// 連結ブロック
+	{
+		TrackObject* ptr = dynamic_cast<ConnectObject*>(col);
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				currentState = BulletObject::blast;
+				startScene = true;
+			}
+		}
+	}
+
+	
+
 
 	// 発射直後の当たり判定を無効化
 	if (tag == "Player" || tag == "Bom" || tag == "Thorn" || tag == "Connect" || tag == "Bite")

@@ -1,7 +1,8 @@
-﻿#include "DirectX_FrameWork1/Source/99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
+﻿#include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include"../../01-TrackObject/04_Enemy/BombEnemy.h"
+#include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
 #include"../../01-TrackObject/02_ThornObject/ThormObject.h"
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 
@@ -276,9 +277,11 @@ void BiteEnemy::Init(const int& direction)
 	bodyCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
 	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
+	bodyCollider->SetIsActive(true);
 
 	//攻撃マスの初期化
 	attackCollider.Init();
+	attackCollider.SetFg(false);
 }
 
 
@@ -288,7 +291,6 @@ void BiteEnemy::Init(const int& direction)
 void BiteEnemy::Update()
 {
 	timer++;	// タイマー更新
-	
 	switch (currentState)
 	{
 	case State::defoult1:Defoult1();break;
@@ -345,7 +347,7 @@ void BiteEnemy::Attack()
 	//================================================================
 	// (変更予定)座標は常に送り続ける
 	//================================================================
-	attackCollider.SendPos(p_transform->position);		
+	attackCollider.SendPos(p_transform->position);
 
 	if (changeTrigger == true)
 	{
@@ -356,7 +358,7 @@ void BiteEnemy::Attack()
 		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
 		//================================================================
 		attackCollider.SendDir(direction);
-		attackCollider.UpdateOffset();
+		//attackCollider.UpdateOffset();
 		attackCollider.SetFg(true);							// デバック用
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
@@ -432,6 +434,8 @@ void BiteEnemy::Spin()
 void BiteEnemy::Dead()
 {
 	CEnemy::DownEnemyCount();			// エネミー総数の減少
+	// 方向を取得
+	int dir = GetDirection();
 
 	if (changeTrigger == true)
 	{
@@ -445,7 +449,6 @@ void BiteEnemy::Dead()
 	{
 		timer = 0;
 		GetComponent<SpriteAnimator>()->Stop(12);
-		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
 		this->SetIsRender(false);		// 描写停止
 		this->SetIsActive(false);		// 活動停止
 	}
@@ -461,70 +464,22 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	std::string other_tag = col->GetTag();		// タグ
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	// 爆弾の処理
+	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
+	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
+	TrackObject* thorm = dynamic_cast<ThormObject*>(col);
+	bool Hit = (bomb || connect || thorm);
+	if (Hit == false)return;
+
+	// 処理
+	if (other_tag == "Bom" || other_tag == "Enemy")
 	{
-		// 嚙みつく敵の攻撃判定と同じタグを使用しているため,キャストで型を確認する
-		TrackObject* ptr = dynamic_cast<BombEnemy*>(col);
-		// 爆弾の型ではない場合, ptr に nullptr が格納される
-		if (ptr != nullptr)
-		{
-			if (tag == "Enemy")
-			{
-				// デバック用
-				// std::cout << "BIteEnemy本体に爆弾がヒット\n";
-
-				// 処理
-				timer = 0;							// タイマー初期化
-				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-				currentState = BiteEnemy::dead;		// 死亡状態へ移行
-				changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
-				attackCollider.SetFg(false);		// 攻撃判定を消す
-			}
-		}
+		timer = 0;							// タイマー初期化
+		oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
+		currentState = BiteEnemy::dead;		// 死亡状態へ移行
+		changeTrigger = true;				// 死亡状態の一度だけ処理されるのをアクティブに
+		attackCollider.SetFg(false);		// 攻撃判定を消す
+		GetComponent<BoxCollider2D>()->SetIsActive(false);		// 自身の当たり判定を消す
 	}
-	
-	// 連結ブロックの処理
-	{
-		// キャストで相手の型を確認する
-		TrackObject* ptr = dynamic_cast<ConnectObject*>(col);
-		// 連結する敵の型ではない場合, ptr に nullptr が格納される
-		if (ptr != nullptr)
-		{
-			if (tag == "Enemy")
-			{
-				// デバック用
-				// std::cout << "BIteEnemy本体に連結ブロックがヒット\n";
-
-				// 処理
-				timer = 0;							// タイマー初期化
-				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-				currentState = BiteEnemy::dead;		// 死亡状態へ移行
-				changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
-				attackCollider.SetFg(false);		// 攻撃判定を消す
-			}
-		}
-	}
-
-	// 落下トゲの処理
-	{
-		// キャストで相手の型を確認する
-		TrackObject* ptr = dynamic_cast<ThormObject*>(col);
-		// 連結する敵の型ではない場合, ptr に nullptr が格納される
-		if (ptr != nullptr)
-		{
-			// デバック用
-		// std::cout << "BIteEnemy本体に落下トゲがヒット\n";
-
-		// 処理
-			timer = 0;							// タイマー初期化
-			oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-			currentState = BiteEnemy::dead;		// 死亡状態へ移行
-			changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
-			attackCollider.SetFg(false);		// 攻撃判定を消す
-		}
-	}
-
-	/// タグ不要なら、また変えるかも.....
 }
 
 //*
@@ -548,16 +503,17 @@ void AttackMass::Init()
 	// 当たり判定の追加
 	attackCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさはサイズと同じ
-	attackCollider->SetSize(p_size);
+	attackCollider->SetSize(p_size);				//
+	attackCollider->SetIsActive(false);				// 判定を出さない												// 当たり判定を出さない
 	this->SetIsRender(false);						// 攻撃判定を描写しない
 
-	/* デバック用
+	//デバック用
 	// レンダラーの設定
 	attackRenderer = new GameObject2D;
 	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
 	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 	GetComponent<SpriteRenderer>()->SetIsActive(false);
-	*/
+	
 }
 
 //===================================================================================
@@ -568,14 +524,14 @@ void AttackMass::Update()
 	// フラグがtrueであればアクティブ
 	if (GetFg() == true)
 	{
-		UpdateOffset();
-		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
+		UpdatePos();		// 方向による判定の座標更新
+		GetComponent<BoxCollider2D>()->SetIsActive(true);
 		// デバック用
 		//GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
-		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
+		GetComponent<BoxCollider2D>()->SetIsActive(false);
 		// デバック用
 		//GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
@@ -587,12 +543,19 @@ void AttackMass::Update()
 //===================================================================================
 // 方向によって、攻撃判定の位置を変える関数
 //===================================================================================
-void AttackMass::UpdateOffset()
+void AttackMass::UpdatePos()
 {
-	hft::HFFLOAT3 Offset[4] = { {50.f,0.f,0.f},{0.f,50.f,0.f},{-50.f,0.f,0.f}, {0.f,-50.f,0.f} };
-	GetComponent<BoxCollider2D>()->SetOffset(Offset[direction]);
+	// 中心となる座標を更新
+	p_transform->position = acceptPos;
+	switch (direction) {
+	case 0:p_transform->position.x = acceptPos.x + 100; break;
+	case 1:p_transform->position.y = acceptPos.y + 100; break;
+	case 2:p_transform->position.x = acceptPos.x - 100; break;
+	case 3:p_transform->position.y = acceptPos.y - 100; break;
+	}
+
 	// デバック用
-	//hft::HFFLOAT3 ShowOff = GetComponent<BoxCollider2D>()->GetOffset();
+	//hft::HFFLOAT3 ShowOff = p_transform->position;
 	//std::cout << "===========================================================================\n";
 	//std::cout << "X座標:" << ShowOff.x << "Y座標:" << ShowOff.y << "Z座標:" << ShowOff.z << "\n";
 }
@@ -602,12 +565,13 @@ void AttackMass::UpdateOffset()
 //===================================================================================
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
-	//*ほぼデバック用
-	
 	// 接触相手の情報を取得
-	//GameObject* col = _p_col->GetGameObject();
-	/*
-	std::cout << "----------------攻撃判定にヒット-----------\n"
+	GameObject* col = _p_col->GetGameObject();
+	TrackObject* ptr = dynamic_cast<PlayerObject*>(col);
+	if (ptr == nullptr)return;
+	GetComponent<BoxCollider2D>()->SetIsActive(false);
+	
+	// デバック用
+	std::cout << "----------------攻撃判定にヒット-----------\n";
 	std::cout << "      ヒットしたタグ:"<< col->GetTag() <<"\n";
-	*/
 }
