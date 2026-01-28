@@ -7,7 +7,9 @@
 // 噛みつく敵本体にパラメータ
 namespace BiteEnemyParam
 {
-	const std::string tag = "Bite";		// 本体のタグ:Bitetag
+	const std::string tag = "Bite";		// 本体のタグ:Bite
+	const bool startTrigger = true;		// 開始時に一度だけ実行される
+	const bool changeTrigger = false;	// シーン切り替え後に一度だけ実行される
 	const int anipos = 0;		// 再生するアニメーションID
 	const int oldani = 0;		// 停止するアニメーションID
 	const int direction = 0;	// 初期は右向き
@@ -25,9 +27,9 @@ namespace BiteEnemyParam
 // 攻撃マスのパラメータ
 namespace AttackMassParam
 {
-	const std::string tag = "Enemy";
-	const bool Fg = false;
-	const int direction = 0;
-	const hft::HFFLOAT3 scale = { 70.f,70.f,70.f };
-	const hft::HFFLOAT3 position = { 0.0f,0.0f,0.0f };
+	const std::string tag = "Enemy";	// 攻撃マスのタグ:Enemy
+	const bool Fg = false;				// フラグ
+	const int direction = 0;			// 方向
+	const hft::HFFLOAT3 scale = { 70.f,70.f,70.f };		// サイズ
+	const hft::HFFLOAT3 position = { 0.0f,0.0f,0.0f };	// 座標
 }

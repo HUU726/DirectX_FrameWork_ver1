@@ -41,8 +41,8 @@ private:
 	int anipos;			// 次のアニメーションを再生するための変数
 	int oldani;			// 前のアニメーションをストップするための変数
 	int Act[4];
-	bool changeState = false;	// アニメーションを一回実行するための変数
-	bool startState = true;	// 始めのアニメーション
+	bool changeTrigger;	// アニメーションを一回実行するための変数
+	bool startTrigger;	// 始めのアニメーション
 
 	enum State
 	{
@@ -61,9 +61,9 @@ private:
 	void Spin();
 	void Dead();
 
-	GameObject2D object2D;	// 本体のアニメーション
+	GameObject2D object2D;			// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定
-	AttackMass attackCollider;						// 攻撃の判定
+	AttackMass attackCollider;		// 攻撃の判定
 public:
 	BiteEnemy();					
 

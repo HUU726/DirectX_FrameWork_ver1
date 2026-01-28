@@ -34,7 +34,8 @@ void BiteEnemy::Init(const int& direction)
 	deadtime = BiteEnemyParam::dead;			// 死亡状態でかかるフレーム
 	anipos = BiteEnemyParam::anipos;			// 再生アニメーションの初期化(0)
 	oldani = BiteEnemyParam::oldani;			// 停止アニメーションの初期化(0)
-
+	startTrigger = BiteEnemyParam::startTrigger;	// 開始時に一度だけ実行される
+	changeTrigger = BiteEnemyParam::changeTrigger;	// シーン切り替え後に一度だけ実行される
 
 	// 引数が範囲外の数値だった場合,右向きで初期化
 	if (direction < 4 && direction >= 0) { SetDirection(direction); }	
@@ -55,7 +56,7 @@ void BiteEnemy::Init(const int& direction)
 	// レンダラーの設定
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
 	// アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8.0f, 8.0f));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	float flameraito = 0;		// フレームレート
@@ -307,18 +308,18 @@ void BiteEnemy::Defoult1()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
+		changeTrigger = false;
 		if (anipos >= 4) { anipos = 0; }
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
 	// 最初に再生するアニメーション(この書き方をするのは古いアニメーションが無いため)
-	if (startState == true)
+	if (startTrigger == true)
 	{
-		startState = false;
+		startTrigger = false;
 		// 方向からアニメーションを決定する
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
@@ -327,7 +328,7 @@ void BiteEnemy::Defoult1()
 	{
 		currentState = BiteEnemy::attack;
 		timer = 0;
-		changeState = true;
+		changeTrigger = true;
 		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
 		anipos++;
 	}	
@@ -346,9 +347,9 @@ void BiteEnemy::Attack()
 	//================================================================
 	attackCollider.SendPos(p_transform->position);		
 
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;	
+		changeTrigger = false;	
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 		//================================================================
@@ -361,6 +362,7 @@ void BiteEnemy::Attack()
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
+		changeTrigger = true;
 		currentState = BiteEnemy::defoult2;					// 通常状態へ
 		attackCollider.SetFg(false);						// デバック用
 		timer = 0;
@@ -376,9 +378,9 @@ void BiteEnemy::Defoult2()
 {
 	// 方向を取得
 	int dir = GetDirection();
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
+		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 	}
@@ -388,7 +390,7 @@ void BiteEnemy::Defoult2()
 	{
 		currentState = BiteEnemy::spin;
 		timer = 0;
-		changeState = true;
+		changeTrigger = true;
 		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
 		anipos++;
 	}
@@ -402,9 +404,9 @@ void BiteEnemy::Spin()
 	// 方向を取得
 	int dir = GetDirection();
 
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
+		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 
@@ -416,7 +418,7 @@ void BiteEnemy::Spin()
 	{
 		currentState = BiteEnemy::defoult1;
 		timer = 0;
-		changeState = true;
+		changeTrigger = true;
 		SetDirection(dir + 1);
 		if (dir == 3) { SetDirection(0); }
 		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
@@ -431,9 +433,9 @@ void BiteEnemy::Dead()
 {
 	CEnemy::DownEnemyCount();			// エネミー総数の減少
 
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
+		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(12);
@@ -475,7 +477,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 				timer = 0;							// タイマー初期化
 				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
 				currentState = BiteEnemy::dead;		// 死亡状態へ移行
-				changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
+				changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
 				attackCollider.SetFg(false);		// 攻撃判定を消す
 			}
 		}
@@ -497,7 +499,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 				timer = 0;							// タイマー初期化
 				oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
 				currentState = BiteEnemy::dead;		// 死亡状態へ移行
-				changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
+				changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
 				attackCollider.SetFg(false);		// 攻撃判定を消す
 			}
 		}
@@ -517,7 +519,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 			timer = 0;							// タイマー初期化
 			oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
 			currentState = BiteEnemy::dead;		// 死亡状態へ移行
-			changeState = true;					// 死亡状態の一度だけ処理されるのをアクティブに
+			changeTrigger = true;					// 死亡状態の一度だけ処理されるのをアクティブに
 			attackCollider.SetFg(false);		// 攻撃判定を消す
 		}
 	}
@@ -547,7 +549,8 @@ void AttackMass::Init()
 	attackCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさはサイズと同じ
 	attackCollider->SetSize(p_size);
-	
+	this->SetIsRender(false);						// 攻撃判定を描写しない
+
 	/* デバック用
 	// レンダラーの設定
 	attackRenderer = new GameObject2D;
@@ -565,6 +568,7 @@ void AttackMass::Update()
 	// フラグがtrueであればアクティブ
 	if (GetFg() == true)
 	{
+		UpdateOffset();
 		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
 		// デバック用
 		//GetComponent<SpriteRenderer>()->SetIsActive(true);
