@@ -220,87 +220,14 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// ‘Šè‚Ìî•ñ‚ğæ“¾
 	GameObject* col = _p_col->GetGameObject();
 	std::string tag = col->GetTag();
+	TrackObject* bite = dynamic_cast<BiteEnemy*>(col);
+	TrackObject* gun = dynamic_cast<GunEnemy*>(col);
+	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
+	TrackObject* thorn = dynamic_cast<ThormObject*>(col);
+	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
 
-	// ÚG‘Šè‚ª’e‚Ìê‡‰½‚à‚È‚µ
-	if (col == dynamic_cast<BulletObject*>(col))
-	{
-		return;
-	}
-
-	// Šš‚İ‚Â‚­“G
-	{
-		TrackObject* ptr = dynamic_cast<BiteEnemy*>(col);
-		if (ptr != nullptr)
-		{
-			if (tag == "Bite")
-			{
-				currentState = BulletObject::blast;
-				startScene = true;
-			}
-		}
-	}
-	// ’e‚ğŒ‚‚Â“G
-	{
-		TrackObject* ptr = dynamic_cast<GunEnemy*>(col);
-		if (ptr != nullptr)
-		{
-			//	”­Ë’¼Œã‚Å–³‚¯‚ê‚Î,”­ËŒ³‚ÉÚG‚µ‚½ê‡Á–Å‚·‚é
-			if (tag == "Gun" && NotHittime == 0)
-			{
-				std::cout << tag << "‚Éƒqƒbƒg\n";
-				currentState = BulletObject::blast;
-				startScene = true;
-			}
-		}
-	}
-	// ”š’e
-	{
-		TrackObject* ptr = dynamic_cast<BombEnemy*>(col);
-		if (ptr != nullptr)
-		{
-			if (tag == "Enemy")
-			{
-				currentState = BulletObject::blast;
-				startScene = true;
-			}
-		}
-	}
-	// —‰ºƒgƒQ
-	{
-		TrackObject* ptr = dynamic_cast<ThormObject*>(col);
-		if (ptr != nullptr)
-		{
-			if (tag == "Enemy")
-			{
-				currentState = BulletObject::blast;
-				startScene = true;
-			}
-		}
-	}
-	// ˜AŒ‹ƒuƒƒbƒN
-	{
-		TrackObject* ptr = dynamic_cast<ConnectObject*>(col);
-		if (ptr != nullptr)
-		{
-			if (tag == "Enemy")
-			{
-				currentState = BulletObject::blast;
-				startScene = true;
-			}
-		}
-	}
-
-	
-
-
-	// ”­Ë’¼Œã‚Ì“–‚½‚è”»’è‚ğ–³Œø‰»
-	if (tag == "Player" || tag == "Bom" || tag == "Thorn" || tag == "Connect" || tag == "Bite")
-	{
-		//std::cout << tag << "‚Éƒqƒbƒg\n";
-		currentState = BulletObject::blast;
-		startScene = true;
-	}
-
+	bool Hit = (bite || gun || bomb || thorn || connect);
+	if (Hit == false)return;
 	//	”­Ë’¼Œã‚Å–³‚¯‚ê‚Î,”­ËŒ³‚ÉÚG‚µ‚½ê‡Á–Å‚·‚é
 	if (tag == "Gun" && NotHittime == 0)
 	{

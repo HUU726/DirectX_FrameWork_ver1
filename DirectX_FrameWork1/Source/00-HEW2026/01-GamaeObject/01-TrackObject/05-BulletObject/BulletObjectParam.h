@@ -6,7 +6,7 @@
 namespace BulletObjectParam
 {
 	BoxCollider2D* col = nullptr;	// 自身の体の判定用のコライダー
-	const std::string tag = "Bullet";	// タグ
+	const std::string tag = "DamageObject";	// タグ
 	const bool active = false;	// 弾が存在する時にtrueにし、存在しない時にfalseにする
 	const int livetime = 300;	// 弾が進み続けるフレーム
 	const float spead = 3.f;	// 弾の進むスピード
