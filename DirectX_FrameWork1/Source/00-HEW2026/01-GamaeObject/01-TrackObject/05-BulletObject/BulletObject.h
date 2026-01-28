@@ -18,10 +18,10 @@ private:
 	int livetime;					// 弾が存在する時間
 	float spead;					// 弾の進むスピード
 	bool startTrigger;				// アクティブになると一度だけ実行される
-	int NotHittime;					// 弾が撃たれてから、ヒット判定に本体を含めない時間
 	int direction;					// 方向の情報を値として格納する変数(0:右 1:上 2:左 3:下)
 	
 	// 内部用
+	void AddPos();					// 出現させる座標を調節させる
 	void UpdatePos();				// 方向の種類によって、自身の位置を加算する
 	void CheakMyPos();				// マップの隅の超えるなら反対の座標を代入する
 
@@ -34,7 +34,7 @@ public:
 	void OnCollisionEnter(Collider* _p_col) override;
 
 	// 外部用
-	void SendPos(const hft::HFFLOAT3& NewPos) { p_transform->position; }		// 弾が放たれる直前の座標を送るよう
+	void SendPos(const hft::HFFLOAT3& NewPos) { p_transform->position = NewPos; }		// 弾が放たれる直前の座標を送るよう
 	void SetBulletActive(const bool& NewAct) { active = NewAct; }				// 弾の状態をセットする
 	bool GetBulletActive() { return active; }									// 弾の状態を受け取る
 };

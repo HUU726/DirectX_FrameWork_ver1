@@ -33,7 +33,7 @@ private:
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
 	
-	// BulletObject* bullet;				// 弾オブジェクト
+	BulletObject* bullet;				// 弾オブジェクト
 public:
 	GunEnemy();
 	~GunEnemy();
