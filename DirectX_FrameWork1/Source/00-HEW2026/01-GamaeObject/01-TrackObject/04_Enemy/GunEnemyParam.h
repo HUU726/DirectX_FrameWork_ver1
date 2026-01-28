@@ -4,8 +4,8 @@
 
 namespace GunEnemyParam
 {
-	const std::string tag = "Gun";	// タグ:"Gun"
-	const int waittimer = 180;	// 弾が消えてからの待機時間
+	const std::string tag = "Gun";			// タグ:"Gun"
+	const int waittimer = 180;				// 弾が消えてからの待機時間
 	const int bulletcreateflame = 50;		// シューティングのフレーム数
 	const bool changeScene = false;			// シーンが切り替わった時に一度だけ再生されるようにする
 	const bool startScene = true;			// 一度だけ再生される
@@ -14,5 +14,5 @@ namespace GunEnemyParam
 	const int deadtime = 30;				// 死亡状態が終わる時間
 	const hft::HFFLOAT3 scale = { 140.f,140.f, 1.f };		// サイズ
 	const hft::HFFLOAT3 position = { 0.0f,0.0f, -2.0f };	// 位置
-	const char* biteenemyTexName = "Assets/01-Texture/03-Enemy/EnemyTamateki.png";	// テクスチャ
+	const char* gunenemyTexName = "Assets/01-Texture/03-Enemy/EnemyTamateki.png";	// テクスチャ
 }

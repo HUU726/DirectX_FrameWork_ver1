@@ -31,5 +31,5 @@ namespace AttackMassParam
 	const bool Fg = false;				// フラグ
 	const int direction = 0;			// 方向
 	const hft::HFFLOAT3 scale = { 100.f,100.f,1.f };		// サイズ
-	const hft::HFFLOAT3 position = { 1500.0f,1500.0f,-2.0f };	// 座標(なぜかUpdateで本体が更新されるよりも先にこちらの判定が出てしまうので座標を遠くへ飛ばしてます)
+	const hft::HFFLOAT3 position = { 1500.0f,1500.0f,-2.0f };	// 座標(なぜかUpdateで本体が更新されるよりも先にこちらの判定が更新されてしまうので座標を遠くへ飛ばしてます)
 }

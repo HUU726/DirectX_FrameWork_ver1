@@ -19,6 +19,12 @@ BiteEnemy::BiteEnemy()
 	bodyCollider = nullptr;
 }
 
+// デストラクタ
+BiteEnemy::~BiteEnemy()
+{
+	if (attackCollider) { delete attackCollider; attackCollider = nullptr; }
+}
+
 //==================================================================================
 // 本体の初期化処理
 //==================================================================================
@@ -275,13 +281,14 @@ void BiteEnemy::Init(const int& direction)
 	
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
-	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
+	hft::HFFLOAT3 p_size = { 100.f,100.f,1.f };
 	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
 	bodyCollider->SetIsActive(true);
 
 	//攻撃マスの初期化
-	attackCollider.Init();
-	attackCollider.SetFg(false);
+	attackCollider = new AttackMass;
+	attackCollider->Init();
+	attackCollider->SetFg(false);
 }
 
 
@@ -347,7 +354,7 @@ void BiteEnemy::Attack()
 	//================================================================
 	// (変更予定)座標は常に送り続ける
 	//================================================================
-	attackCollider.SendPos(p_transform->position);
+	attackCollider->SendPos(p_transform->position);
 
 	if (changeTrigger == true)
 	{
@@ -357,16 +364,16 @@ void BiteEnemy::Attack()
 		//================================================================
 		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
 		//================================================================
-		attackCollider.SendDir(direction);
+		attackCollider->SendDir(direction);
 		//attackCollider.UpdateOffset();
-		attackCollider.SetFg(true);							// デバック用
+		attackCollider->SetFg(true);							// デバック用
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
 		changeTrigger = true;
 		currentState = BiteEnemy::defoult2;					// 通常状態へ
-		attackCollider.SetFg(false);						// デバック用
+		attackCollider->SetFg(false);						// デバック用
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -477,7 +484,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
 		currentState = BiteEnemy::dead;		// 死亡状態へ移行
 		changeTrigger = true;				// 死亡状態の一度だけ処理されるのをアクティブに
-		attackCollider.SetFg(false);		// 攻撃判定を消す
+		attackCollider->SetFg(false);		// 攻撃判定を消す
 		GetComponent<BoxCollider2D>()->SetIsActive(false);		// 自身の当たり判定を消す
 	}
 }
@@ -506,14 +513,7 @@ void AttackMass::Init()
 	attackCollider->SetSize(p_size);				//
 	attackCollider->SetIsActive(false);				// 判定を出さない												// 当たり判定を出さない
 	this->SetIsRender(false);						// 攻撃判定を描写しない
-
-	//デバック用
-	// レンダラーの設定
-	attackRenderer = new GameObject2D;
-	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
-	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	GetComponent<SpriteRenderer>()->SetIsActive(false);
-	
+	this->SetIsActive(false);						// 行動を止める
 }
 
 //===================================================================================
@@ -526,14 +526,14 @@ void AttackMass::Update()
 	{
 		UpdatePos();		// 方向による判定の座標更新
 		GetComponent<BoxCollider2D>()->SetIsActive(true);
-		// デバック用
-		//GetComponent<SpriteRenderer>()->SetIsActive(true);
+		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.specular
+		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 0, 0, 0.5 };
+		GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
 		GetComponent<BoxCollider2D>()->SetIsActive(false);
-		// デバック用
-		//GetComponent<SpriteRenderer>()->SetIsActive(false);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
 
 	// デバック用
@@ -570,8 +570,8 @@ void AttackMass::OnCollisionEnter(Collider* _p_col)
 	TrackObject* ptr = dynamic_cast<PlayerObject*>(col);
 	if (ptr == nullptr)return;
 	GetComponent<BoxCollider2D>()->SetIsActive(false);
-	
+
 	// デバック用
-	std::cout << "----------------攻撃判定にヒット-----------\n";
-	std::cout << "      ヒットしたタグ:"<< col->GetTag() <<"\n";
+	//std::cout << "----------------攻撃判定にヒット-----------\n";
+	//std::cout << "      ヒットしたタグ:"<< col->GetTag() <<"\n";
 }

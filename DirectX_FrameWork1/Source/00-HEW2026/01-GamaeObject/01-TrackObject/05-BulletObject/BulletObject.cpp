@@ -22,19 +22,17 @@
 //=================================================================
 void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 {
-	SetTag(BulletObjectParam::tag);
-	bodyColler = AddComponent<BoxCollider2D>();
-	bodyColler->SetIsActive(false);
-	timer = 0;
-	active = BulletObjectParam::active;
-	livetime = BulletObjectParam::livetime;
-	spead = BulletObjectParam::spead;
-	blasttime = BulletObjectParam::blasttime;
-	startScene = BulletObjectParam::startScene;
-	NotHittime = BulletObjectParam::NotHittime;
-	p_transform->scale = BulletObjectParam::scale;
-	currentState = BulletObject::defoult;
-	p_map = New_p_map;
+	
+	timer = 0;									// タイマー初期化
+	SetTag(BulletObjectParam::tag);				// タグの初期化
+	active = BulletObjectParam::active;			// 弾が存在するか否か
+	livetime = BulletObjectParam::livetime;		// 弾が画面にでている時間
+	spead = BulletObjectParam::spead;			// 弾のスピード
+	blasttime = BulletObjectParam::blasttime;	// 破裂してから消える時間
+	startScene = BulletObjectParam::startScene;	// 開始時に一度だけ再生される
+	NotHittime = BulletObjectParam::NotHittime;	// 発射時に本体に当たらない時間
+	currentState = BulletObject::defoult;		// 最初にとる行動
+	p_map = New_p_map;							// マップ情報の渡し
 
 	// マップから情報を受け取る
 	if (New_p_map == nullptr)
@@ -57,11 +55,16 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 	// 方向の情報
 	SetDirection(NewDirection);
 
-	AddComponent<SpriteRenderer>();
+	// 位置の設定
+	{
+		p_transform->scale = BulletObjectParam::scale;			// 大きさの初期化
+		p_transform->position = BulletObjectParam::position;	// 座標の初期化
+	}
+
 	//画像の設定
 	{
 		//レンダラーの設定
-		GetComponent<SpriteRenderer>()->LoadTexture(BulletObjectParam::BulletObjTexName);
+		std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BulletObjectParam::BulletObjTexName);
 
 		//アニメーターの設定
 		SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(1, 1));
@@ -82,7 +85,14 @@ void BulletObject::Init(BaseMap* New_p_map,const int& NewDirection)
 		}
 		p_spriteAnimator->AddAnimation(anim1);
 	}
-	GetComponent<SpriteRenderer>()->SetIsActive(false);	// 初期化で描写しない
+	//GetComponent<SpriteRenderer>()->SetIsActive(false);	// 初期化で描写しない
+
+	// 本体のコライダー設定
+	bodyCollider = AddComponent<BoxCollider2D>();
+	bodyCollider->Init();
+	hft::HFFLOAT3 p_size = p_transform->scale;			// サイズ分当たり判定をとる
+	bodyCollider->SetSize(p_size);
+	bodyCollider->SetIsActive(false);
 }
 
 //=======================================================================
@@ -92,7 +102,6 @@ void BulletObject::Update()
 {
 	if (GetBulletActive())
 	{
-		//std::cout << "LeftTop::" << LeftTop.x << LeftTop.y << "\n";	// デバック用
 		timer++;
 		switch (currentState) {
 		case defoult:Defoult(); break;		// 通常状態
@@ -113,9 +122,7 @@ void BulletObject::Defoult()
 		GetComponent<BoxCollider2D>()->SetIsActive(true);	// 当たり判定をアクティブ
 		GetComponent<SpriteRenderer>()->SetIsActive(true);	// 描写をする
 		GetComponent<SpriteAnimator>()->Play(0);
-		//std::cout << "Bullet出現\n";
 	}
-	//std::cout << "X座標:" << p_transform->position.x << "Y座標:" << p_transform->position.y << "Z座標:" << p_transform->position.z << "\n";
 	if (timer <= livetime)
 	{
 		if (NotHittime > 0)
@@ -220,19 +227,17 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 	std::string tag = col->GetTag();
+	TrackObject* player = dynamic_cast<PlayerObject*>(col);
 	TrackObject* bite = dynamic_cast<BiteEnemy*>(col);
 	TrackObject* gun = dynamic_cast<GunEnemy*>(col);
 	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
 	TrackObject* thorn = dynamic_cast<ThormObject*>(col);
 	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
 
-	bool Hit = (bite || gun || bomb || thorn || connect);
+	bool Hit = (player||bite || gun || bomb || thorn || connect);
 	if (Hit == false)return;
+	if (tag == "Gun" && NotHittime > 0)return;
 	//	発射直後で無ければ,発射元に接触した場合消滅する
-	if (tag == "Gun" && NotHittime == 0)
-	{
-		std::cout << tag << "にヒット\n";
-		currentState = BulletObject::blast;
-		startScene = true;
-	}
+	currentState = BulletObject::blast;
+	startScene = true;
 }

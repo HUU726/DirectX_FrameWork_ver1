@@ -8,23 +8,21 @@ class BoxCollider2D;
 class AttackMass : public GameObject2D
 {
 private:
-	GameObject2D* attackRenderer;	// 画像表示用(デバック用)
-	BoxCollider2D* attackCollider;	// 攻撃の判定
 	bool Fg;						// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
 	int direction;					// 噛みつく敵と同じ仕様の変数
 	hft::HFFLOAT3 acceptPos;		// 受け取る座標
+	BoxCollider2D* attackCollider;	// 攻撃の判定
 public:
-	//AttackMass();
 	void Init() override;
 	void Update() override;
 
-	void SetFg(const bool& NewFg) { Fg = NewFg; }				// Fgをセット 
-	bool GetFg() { return Fg; }									// Fgを返す
+	void SetFg(const bool& NewFg) { Fg = NewFg; }							// Fgをセット 
+	bool GetFg() { return Fg; }												// Fgを返す
 
 	void SendPos(const hft::HFFLOAT3 NewPos) { acceptPos = NewPos; }		// 座標を送る用
-	void SendDir(const int& NewDir) { direction = NewDir; }								// 方向を送る用
-	//void UpdateOffset();													// 方向による当たり判定のずらし
-	void UpdatePos();
+	
+	void SendDir(const int& NewDir) { direction = NewDir; }					// 方向を送る用
+	void UpdatePos();														// 方向による当たり判定のずらし		
 	void OnCollisionEnter(Collider* _p_col) override;
 };
 
@@ -66,10 +64,10 @@ private:
 
 	GameObject2D object2D;			// 本体のアニメーション
 	BoxCollider2D* bodyCollider;	// 本体の判定
-	AttackMass attackCollider;		// 攻撃の判定
+	AttackMass* attackCollider;		// 攻撃の判定
 public:
 	BiteEnemy();					
-
+	~BiteEnemy();
 	void Init() override {};		// 初期化処理
 	void Init(const int&);		// 方向で初期化
 	void Update() override;		// 更新処理
