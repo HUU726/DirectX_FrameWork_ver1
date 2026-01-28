@@ -50,7 +50,7 @@ void ConnectObject::Init()
 		searchCollVert = AddComponent<BoxCollider2D>();
 		searchCollVert->SetSize({ searchCollThickness, collLength, 0.f });
 		searchCollVert->SetGameObject(this);
-		searchCollVert->SetIsTrigger(true);
+				searchCollVert->SetIsTrigger(true);
 	}
 }
 
@@ -264,77 +264,6 @@ float ConnectObject::GetContactDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 t
 	return distance;
 }
 
-void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount,float cellSize)
-{
-	//1マス配置ごとの座標の移動量
-	hft::HFFLOAT3 tileStep = connectDir * cellSize;
-
-	//オブジェクトの生成位置。初期値は自身の位置から1マス分進んだところ
-	hft::HFFLOAT3 spawnPos = originPos + tileStep;
-	spawnPos.z = p_transform->position.z;
-
-	//表示する画像の向き、縦と横の向きを切り替える
-	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackVertRotation;
-	if (connectDir.y <= 0) { texRotation = ConnectObjectParam::emitAttackHoriRotation; }
-
-	//自身の座標から接触相手の座標までの間のマスに攻撃判定用オブジェクトを配置する
-	for (int i = 0; i < cellCount - 1; i++)
-	{
-		GameObject2D* attackObj = nullptr;
-		bool foundUnused = false;
-
-		//既存の配列の中から非アクティブなものを探す
-		for (GameObject2D* obj : emitAttackObjects)
-		{
-			//オブジェクトのisActiveフラグがいじれないのでコンポーネントのフラグでアクティブ状態を確認
-			if (!obj->GetTransform().GetIsActive())
-			{
-				//ある場合はそれを生成位置に持ってくる
-				attackObj = obj;
-				foundUnused = true;
-				break;
-			}
-		}
-
-		//配列内から見つからなければ新規作成
-		if (!foundUnused)
-		{
-			attackObj = new GameObject2D;
-			attackObj->Init();
-
-			//レンダラーの設定
-			SpriteRenderer* renderer = attackObj->GetComponent<SpriteRenderer>();
-			const char* texName = ConnectObjectParam::emitAttackTexName;
-			renderer->LoadTexture(texName);
-
-			//コライダーの設定
-			BoxCollider2D* boxColl2D = attackObj->AddComponent<BoxCollider2D>();
-			boxColl2D->SetSize(hft::HFFLOAT3{ cellSize, cellSize, 0.f });
-
-			emitAttackObjects.push_back(attackObj);
-			std::cout << "攻撃判定オブジェクトを新しく生成" << std::endl;
-		}
-		else
-		{
-			std::cout << "攻撃判定オブジェクトを再利用" << std::endl;
-		}
-
-		//オブジェクトをアクティブにして位置と回転を設定
-		attackObj->SetIsActive(true);
-		attackObj->SetIsRender(true);
-
-		Transform* trf = attackObj->GetTransformPtr();
-		trf->position = spawnPos;
-		trf->scale = hft::HFFLOAT3{ cellSize, cellSize, 0.f };
-		trf->rotation = texRotation;
-
-
-		//生成位置を次のマスに移動させる
-		spawnPos += tileStep;
-	}
-}
-
-
 void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir)
 {
 
@@ -354,7 +283,6 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	//オブジェクトの生成位置を計る
 	float middleDistance = distance / 2;
 	hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
-	//spawnPos.z = -4;
 
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
@@ -471,16 +399,3 @@ void ConnectObject::OnCollisionStay(Collider* _p_col)
 {
 	
 }
-
-//void ConnectObject::debug_Move()
-//{
-//	GetComponent<Transform>()->position += debug_moveDir;
-//
-//	hft::HFFLOAT3 dir = debug_startPos - GetComponent<Transform>()->position;
-//	float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
-//
-//	if (length > 500)
-//	{
-//		GetComponent<Transform>()->position = debug_startPos;
-//	}
-//}
