@@ -15,8 +15,8 @@
 #include <ctime>
 
 #define CHARGE_THRESHOLD 0.2f
-#define TILE_SIZE 100.0f
-#define INVINCIBLE_TIME 1.0f
+//#define TILE_SIZE 100.0f
+//#define INVINCIBLE_TIME 1.0f
 
 enum ANIM_ID {
     ANIM_STAND = 0,
@@ -26,7 +26,8 @@ enum ANIM_ID {
     ANIM_ATTACK_RIGHT, // 右方向
     ANIM_ATTACK_LEFT,  // 左方向
     ANIM_HIT,
-    ANIM_DEAD
+    ANIM_DEAD,
+    ANIM_DEAD_LOOP
 };
 
 PlayerObject::PlayerObject()
@@ -144,6 +145,12 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     animDead.SetID(ANIM_DEAD);
     animator->AddAnimation(animDead);
 
+    SpriteAnimation animDeadLoop(div, { 7.0f, 2.0f }, 1);
+    animDeadLoop.GetCellRef(0).flame = 1;
+    animDeadLoop.SetType(SPRITE_ANIM_TYPE::LOOP);
+    animDeadLoop.SetID(ANIM_DEAD_LOOP);
+    animator->AddAnimation(animDeadLoop);
+
     // 最初に立ち状態を再生しておく
     animator->Play(ANIM_STAND);
 
@@ -152,11 +159,14 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     collider->SetSize({ 50.0f, 50.0f, 0.0f });
 
     // 子オブジェクト生成
+    float ratio = pMap->GetScaleRatio(); // マップ比率取得
+    tileSize = 125.0f * ratio;
+
     pTuningFork = new TuningFork();
-    pTuningFork->Init();
+    pTuningFork->Init(ratio);
 
     pArrow = new Arrow();
-    pArrow->Init();
+    pArrow->Init(ratio);
 
 	// サウンド読み込み
     SE_LAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
@@ -169,7 +179,29 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-    //if (pInput->GetKeyTrigger(13)) { OnHit();};
+    if (pInput->GetKeyTrigger(13)) { OnHit();};
+
+    // 無敵時間更新
+    if (invincible)
+    {
+        auto renderer = GetComponent<SpriteRenderer>();
+
+		std::cout << "Invincible Time:" << inv_cnt << std::endl;
+        inv_cnt -= 1.0f / 60.0f;
+        if (inv_cnt <= 0.0f)
+        {
+            invincible = false;
+			std::cout << "Invincible OFF" << std::endl;
+            renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+        }
+        else
+        {
+			std::cout << "Invincible ON" << std::endl;
+            float alpha = (int)(inv_cnt * 4) % 2 == 0 ? 0.5f : 1.0f;
+			std::cout << "Alpha:" << alpha << std::endl;
+            renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, alpha };
+        }
+    }
 
     hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
     float stickMagSq = stick.x * stick.x + stick.y * stick.y;
@@ -215,27 +247,12 @@ void PlayerObject::Update()
     case PLAYER_STATE::CHARGE:  UpdateCharge();  break;
     case PLAYER_STATE::RELEASE: UpdateRelease(); break;
     case PLAYER_STATE::HIT:     UpdateDamage();  break;
+    case PLAYER_STATE::DEAD:    UpdateDead();    break;
     }
 
     // 子オブジェクト更新
     if (pTuningFork) pTuningFork->Update();
     if (pArrow) pArrow->Update();
-
-    // 無敵時間更新
-    if (invincible)
-    {
-        inv_time -= 1.0f / 60.0f;
-        if (inv_time <= 0.0f)
-        {
-            invincible = false;
-            GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,1 };
-        }
-        else
-        {
-            float alpha = (int)(inv_time * 20) % 2 == 0 ? 0.5f : 1.0f;
-            GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,alpha };
-        }
-    }
 }
 
 // ----------------------------------------------------------------------------
@@ -296,29 +313,18 @@ void PlayerObject::UpdateSelect()
     // マウス操作の場合
     else if (mouseMode)
     {
-        // -------------------------------------------------------------
-        // ★座標変換の魔法（ここを修正）
-        // -------------------------------------------------------------
-
-        // 1. マウスの絶対座標（画面中央が 0,0）
-        //    例：画面右端なら +600, 左端なら -600
+        // マウスの絶対座標（画面中央が 0,0）
         float mouseWorldX = rawMx;
         float mouseWorldY = rawMy * -1.f;
 
-        // 2. プレイヤーの絶対座標（画面中央が 0,0）
-        //    移動すると値が変わる（例：右のマスに行くと +100）
+        // プレイヤーの絶対座標（画面中央が 0,0）
         float playerWorldX = p_transform->position.x;
         float playerWorldY = p_transform->position.y;
 
-        // 3. 「プレイヤーから見た」マウスの位置（相対ベクトル）
-        //    式：ベクトル = 終点(マウス) - 始点(プレイヤー)
+        // 「プレイヤーから見た」マウスの位置（相対ベクトル）
         float relMx = mouseWorldX - playerWorldX;
         float relMy = mouseWorldY - playerWorldY;
 
-        // 4. 見た目の中心補正（任意）
-        //    プレイヤーの座標は「足元」なので、判定基準を「お腹」あたりに上げる
-        //    これをしないと、自キャラの「顔」をクリックした時に「上判定」にならず「下判定」になりがちです
-        //relMy += 50.0f; // お腹のあたりを中心にする（数値は調整してください）
 
         std::cout << "playerWorldX : " << playerWorldX << std::endl;
         std::cout << "playerWorldY : " << playerWorldY << std::endl;
@@ -329,10 +335,6 @@ void PlayerObject::UpdateSelect()
         std::cout << "relMX : " << relMx << std::endl;
         std::cout << "relMY : " << relMy << std::endl;
 
-
-        // -------------------------------------------------------------
-        // 以下、判定ロジック（そのまま）
-        // -------------------------------------------------------------
         float distSq = relMx * relMx + relMy * relMy;
 
         // 半径20px以上離れていたら判定する
@@ -340,8 +342,7 @@ void PlayerObject::UpdateSelect()
         {
             float targetAngle = angle.x;
 
-            // XとYの「絶対値」を比べて、横長エリアか縦長エリアかを判定
-            // これで×印のエリア分けになります
+            // XとYの絶対値を比べて、エリアを判定
             if (std::abs(relMx) > std::abs(relMy))
             {
                 // 横長のエリアにいる（右か左）
@@ -350,8 +351,7 @@ void PlayerObject::UpdateSelect()
             else
             {
                 // 縦長のエリアにいる（上か下）
-                // ※Inputの仕様上、画面座標Yは上がマイナス
-                targetAngle = (relMy < 0) ? 90.0f : 270.0f;
+                targetAngle = (relMy > 0) ? 90.0f : 270.0f;
             }
 
             // 有効判定
@@ -380,22 +380,25 @@ void PlayerObject::UpdateSelect()
 
     if (pTuningFork)
     {
-        if (isTargetValid)
+        if (!pTuningFork->IsAnimating())
         {
-            hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
-            hft::HFFLOAT2 targetPos = {
-                 myPos.x + (dirVec.x * TILE_SIZE),
-                 myPos.y - (dirVec.y * TILE_SIZE)
-            };
-            pTuningFork->SetLineIndex(targetIndex);
-            pTuningFork->GetTransformPtr()->position.x = targetPos.x;
-            pTuningFork->GetTransformPtr()->position.y = targetPos.y;
-            pTuningFork->GetTransformPtr()->position.z = -10;
-            pTuningFork->GetComponent<SpriteRenderer>()->SetIsActive(true);
-        }
-        else
-        {
-            pTuningFork->Hide();
+            if (isTargetValid)
+            {
+                hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
+                hft::HFFLOAT2 targetPos = {
+                     myPos.x + (dirVec.x * tileSize),
+                     myPos.y - (dirVec.y * tileSize)
+                };
+                pTuningFork->SetLineIndex(targetIndex);
+                pTuningFork->GetTransformPtr()->position.x = targetPos.x;
+                pTuningFork->GetTransformPtr()->position.y = targetPos.y;
+                pTuningFork->GetTransformPtr()->position.z = -10;
+                pTuningFork->GetComponent<SpriteRenderer>()->SetIsActive(true);
+            }
+            else
+            {
+                pTuningFork->Hide();
+            }
         }
     }
 
@@ -437,8 +440,6 @@ void PlayerObject::UpdateSelect()
 
 void PlayerObject::UpdateCharge()
 {
-    pTuningFork->SetAlpha(1.0f); //実体化
-
     animTimer++;
     if (!isChargeLoop)
     {
@@ -515,7 +516,7 @@ void PlayerObject::UpdateCharge()
         // --- パワー計算 ---
 
         // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed;
+        float basePower = mag * charge_speed + max_hammer_power * 0.3;
         if (basePower > limit_hammer_power) basePower = limit_hammer_power;
 
         // チャージボーナス
@@ -772,12 +773,31 @@ void PlayerObject::UpdateRelease()
 
 void PlayerObject::UpdateDamage()
 {
-    if (!invincible) ChangeState(PLAYER_STATE::STAND);
+    animTimer++; // アニメーション時間を進める
+
+    // HITアニメは7コマ×4フレーム = 28フレームなので、30くらいで復帰
+    if (animTimer > 30)
+        ChangeState(PLAYER_STATE::STAND);
+
     std::cout << "STATE:Hit >> Stand" << std::endl;
+}
+
+void PlayerObject::UpdateDead()
+{
+    auto animator = GetComponent<SpriteAnimator>();
+
+    if (animTimer + 1 >= DEAD_ANIM_END)
+    {
+        animator->Play(ANIM_DEAD_LOOP);
+    }
+    else
+        animTimer++;
 }
 
 void PlayerObject::OnHit()
 {
+	if (invincible || state == PLAYER_STATE::DEAD) return; // 無敵中や死亡中は無視
+
     hitpoint--;
     std::cout << "Player Damaged! HP:" << hitpoint << std::endl;
 
@@ -788,7 +808,7 @@ void PlayerObject::OnHit()
     else
     {
         invincible = true;
-        inv_time = INVINCIBLE_TIME;
+		inv_cnt = inv_time;
 
         // ステート変更
         ChangeState(PLAYER_STATE::HIT);
@@ -802,6 +822,9 @@ void PlayerObject::OnDead()
     ChangeState(PLAYER_STATE::DEAD);
     SoundManager::GetInstance().Play(SE_Dead);
     std::cout << "STATE: PlayerDEAD" << std::endl;
+
+    isDead = true;
+	std::cout << "Player_isDead:" << isDead << std::endl;
 
     // ここにゲームオーバー処理などを追加
 }
@@ -855,9 +878,38 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
         break;
     }
 
+    // SELECT -> CHARGE (設置開始)
+    if (state == PLAYER_STATE::SELECT && _nextState == PLAYER_STATE::CHARGE)
+    {
+        if (pTuningFork)
+        {
+            // 設置する座標を計算 (現在のSelectカーソル位置)
+            hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
+            hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
+            hft::HFFLOAT2 targetPos = {
+                 myPos.x + (dirVec.x * tileSize),
+                 myPos.y - (dirVec.y * tileSize)
+            };
+
+            // アニメーション再生！
+            pTuningFork->PlayAppear(targetPos);
+        }
+    }
+    // CHARGE -> SELECT/STAND (キャンセル/中断)
+    else if (state == PLAYER_STATE::CHARGE && _nextState != PLAYER_STATE::RELEASE)
+    {
+        // 攻撃発射(RELEASE)以外でチャージを抜けるときは、音叉を片付ける
+        if (pTuningFork)
+        {
+            pTuningFork->PlayDisappear();
+        }
+    }
+
     state = _nextState; //ステート更新
     animTimer = 0;
     isChargeLoop = false;
+
+	chargeTimer = 0; // チャージタイマーリセット
 
 	p_transform->rotation.z = 0.0f; // 傾きをリセット
 	if (p_transform->scale.x < 0.0f) p_transform->scale.x *= -1; // 左右反転をリセット
