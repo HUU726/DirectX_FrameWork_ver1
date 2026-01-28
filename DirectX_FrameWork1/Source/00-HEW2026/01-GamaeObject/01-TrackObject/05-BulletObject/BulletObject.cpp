@@ -201,7 +201,7 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// ヒットしたのがこれら以外の場合、処理を終了する
 	bool Hit = (player||bite || gun || bomb || thorn  || connect);
 	if (Hit == false)return;
-	if (other_tag == "DamageObject" || other_tag == "Gun" || other_tag == "Bite")
+	if (other_tag == "DamageObject" || other_tag == "Gun" || other_tag == "Bite"||other_tag=="Player")
 	{
 		timer = 0;											// タイマーを元に戻す
 		GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0
