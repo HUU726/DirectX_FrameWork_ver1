@@ -11,7 +11,7 @@ private:
 	bool Fg;						// trueなら当たり判定と描写をアクティブに、falseなら当たり判定と描写を非アクティブに
 	int direction;					// 噛みつく敵と同じ仕様の変数
 	hft::HFFLOAT3 acceptPos;		// 受け取る座標
-	BoxCollider2D* attackCollider;	// 攻撃の判定
+	//BoxCollider2D* attackCollider;	// 攻撃の判定
 public:
 	void Init() override;
 	void Update() override;
@@ -21,8 +21,12 @@ public:
 
 	void SendPos(const hft::HFFLOAT3 NewPos) { acceptPos = NewPos; }		// 座標を送る用
 	
+	hft::HFFLOAT3 ReturnPos() { return p_transform->position; };			// 更新された座標を返す用
+
 	void SendDir(const int& NewDir) { direction = NewDir; }					// 方向を送る用
-	void UpdatePos();														// 方向による当たり判定のずらし		
+	void UpdatePos();														// 方向による当たり判定のずらし	
+
+	void MassFrash();														// マスを光らす関数
 	void OnCollisionEnter(Collider* _p_col) override;
 };
 
@@ -34,6 +38,7 @@ private:
 	
 	// 敵の情報
 	int direction;		// 本体の現在向いている方向		(0:右方向 1:上方向 2:左方向 3:下方向)
+	int attackCreate;	// 攻撃判定を出すタイミング
 	int defoulttime_1;	// 通常状態1のフレーム数
 	int defoulttime_2;	// 通常状態2のフレーム数
 	int attacktime;		// 攻撃状態のフレーム数

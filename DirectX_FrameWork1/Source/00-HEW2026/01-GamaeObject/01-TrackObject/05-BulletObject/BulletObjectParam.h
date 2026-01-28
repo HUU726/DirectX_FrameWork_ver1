@@ -10,7 +10,7 @@ namespace BulletObjectParam
 	const int livetime = 300;				// 弾が進み続けるフレーム
 	const float spead = 3.f;				// 弾の進むスピード
 	const bool startTrigger = true;			// アクティブになると一度だけ実行される
-	const hft::HFFLOAT3 position = { 1000.f,1000.f,-2.f };		// 座標
+	const hft::HFFLOAT3 position = { 1000.f,1000.f,-2.f };			// 座標
 	const hft::HFFLOAT3 scale = { 30.f,30.f,1.0f };					// サイズ
 	const char* BulletObjTexName = "Assets/01-Texture/03-Enemy/Bullet.png";	// テクスチャ
 }

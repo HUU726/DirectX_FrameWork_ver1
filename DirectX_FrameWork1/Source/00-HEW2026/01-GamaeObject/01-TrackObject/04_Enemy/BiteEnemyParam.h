@@ -10,6 +10,7 @@ namespace BiteEnemyParam
 	const std::string tag = "Bite";		// 本体のタグ:Bite
 	const bool startTrigger = true;		// 開始時に一度だけ実行される
 	const bool changeTrigger = false;	// シーン切り替え後に一度だけ実行される
+	const int attackCreate = 10;		// 攻撃判定を出すタイミング
 	const int anipos = 0;		// 再生するアニメーションID
 	const int oldani = 0;		// 停止するアニメーションID
 	const int direction = 0;	// 初期は右向き

@@ -31,7 +31,6 @@ BiteEnemy::~BiteEnemy()
 void BiteEnemy::Init(const int& direction)
 {
 	timer = 0;									// タイマーの初期化
-	
 	tag = BiteEnemyParam::tag;					// タグ:Bite
 	currentState = BiteEnemy::defoult1;			// 通常状態からスタート
 	defoulttime_1 = BiteEnemyParam::defoult1;	// 通常状態1でかかるフレーム
@@ -43,7 +42,7 @@ void BiteEnemy::Init(const int& direction)
 	oldani = BiteEnemyParam::oldani;			// 停止アニメーションの初期化(0)
 	startTrigger = BiteEnemyParam::startTrigger;	// 開始時に一度だけ実行される
 	changeTrigger = BiteEnemyParam::changeTrigger;	// シーン切り替え後に一度だけ実行される
-
+	attackCreate = BiteEnemyParam::attackCreate;	// 攻撃判定を出すタイミング
 	// 引数が範囲外の数値だった場合,右向きで初期化
 	if (direction < 4 && direction >= 0) { SetDirection(direction); }	
 	else { SetDirection(0); }
@@ -281,22 +280,26 @@ void BiteEnemy::Init(const int& direction)
 	
 	// 本体のコライダーの設定
 	bodyCollider = AddComponent<BoxCollider2D>();
-	hft::HFFLOAT3 p_size = { 100.f,100.f,1.f };
-	bodyCollider->SetSize(p_size);					// 本体のサイズ分当たり判定をとる
+	//hft::HFFLOAT3 p_size = { 100.f,100.f,1.f };
+	bodyCollider->SetSize(p_transform->scale);					// 本体のサイズ分当たり判定をとる
 	bodyCollider->SetIsActive(true);
 
 	//攻撃マスの初期化
 	attackCollider = new AttackMass;
 	attackCollider->Init();
 	attackCollider->SetFg(false);
+	attackCollider->SendDir(direction);
 }
-
 
 //==================================================================================
 // 本体の更新処理
 //==================================================================================
 void BiteEnemy::Update()
 {
+	attackCollider->SendPos(p_transform->position);		// 座標を攻撃マスに送る
+	attackCollider->UpdatePos();						// 座標を更新
+	attackCollider->MassFrash();						// マスを光らす
+
 	timer++;	// タイマー更新
 	switch (currentState)
 	{
@@ -309,7 +312,6 @@ void BiteEnemy::Update()
 	}
 }
 
-
 //==================================================================================
 // 通常状態1の処理
 //==================================================================================
@@ -320,8 +322,6 @@ void BiteEnemy::Defoult1()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
-		//if (dir == 2) { p_transform->rotation.y = 180; }
-		//else { p_transform->rotation.y = 0; }
 		if (anipos >= 4) { anipos = 0; }
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
@@ -330,8 +330,6 @@ void BiteEnemy::Defoult1()
 	// 最初に再生するアニメーション(この書き方をするのは古いアニメーションが無いため)
 	if (startTrigger == true)
 	{
-		//if (dir == 2) { p_transform->rotation.y = 180; }
-		//else { p_transform->rotation.y = 0; }
 		startTrigger = false;
 		// 方向からアニメーションを決定する
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
@@ -355,29 +353,24 @@ void BiteEnemy::Attack()
 	// 方向を取得
 	int dir = GetDirection();
 
-	//================================================================
-	// (変更予定)座標は常に送り続ける
-	//================================================================
-	attackCollider->SendPos(p_transform->position);
-
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;	
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
-		//================================================================
-		// (変更予定)攻撃判定に現在の方向を送ってからアクティブにする
-		//================================================================
-		attackCollider->SendDir(direction);
-		//attackCollider.UpdateOffset();
-		attackCollider->SetFg(true);							// デバック用
+	}
+
+	if (timer == attackCreate)
+	{
+		attackCollider->SendDir(dir);							// 方向を送る
+		attackCollider->SetFg(true);							// 攻撃をアクティブ
 	}
 	//std::cout << "攻撃判定のX座標:" << attackCollider.attackCollider->GetOffset().x << "Y座標:" << attackCollider.attackCollider->GetOffset().y << "Z座標:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
 		changeTrigger = true;
 		currentState = BiteEnemy::defoult2;					// 通常状態へ
-		attackCollider->SetFg(false);						// デバック用
+		attackCollider->SetFg(false);						// 攻撃を非アクティブ
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -422,7 +415,6 @@ void BiteEnemy::Spin()
 		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Stop(oldani);
-
 	}
 
 	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
@@ -434,8 +426,9 @@ void BiteEnemy::Spin()
 		changeTrigger = true;
 		SetDirection(dir + 1);
 		if (dir == 3) { SetDirection(0); }
-		oldani = Act[anipos] + dir;	// 現在のアニメーションIDを古いものとする
+		oldani = Act[anipos] + dir;								// 現在のアニメーションIDを古いものとする
 		anipos++;
+		attackCollider->SendDir(direction);						// 方向を送る
 	}
 }
 
@@ -512,12 +505,13 @@ void AttackMass::Init()
 	p_transform->scale = AttackMassParam::scale;		// サイズの初期化
 
 	// 当たり判定の追加
-	attackCollider = AddComponent<BoxCollider2D>();
+	auto attackCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさはサイズと同じ
 	attackCollider->SetSize(p_size);				//
-	attackCollider->SetIsActive(false);				// 判定を出さない												// 当たり判定を出さない
-	this->SetIsRender(false);						// 攻撃判定を描写しない
-	this->SetIsActive(false);						// 行動を止める
+	attackCollider->SetIsActive(false);				// 判定を出さない		
+	//this->SetIsRender(false);						// 攻撃判定を描写しない
+	//this->SetIsActive(false);						// 行動を止める
+	GetComponent<SpriteRenderer>()->SetIsActive(true);
 }
 
 //===================================================================================
@@ -530,14 +524,11 @@ void AttackMass::Update()
 	{
 		UpdatePos();		// 方向による判定の座標更新
 		GetComponent<BoxCollider2D>()->SetIsActive(true);
-		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.specular
 		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 0, 0, 0.5 };
-		GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
 		GetComponent<BoxCollider2D>()->SetIsActive(false);
-		GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
 
 	// デバック用
@@ -552,16 +543,25 @@ void AttackMass::UpdatePos()
 	// 中心となる座標を更新
 	p_transform->position = acceptPos;
 	switch (direction) {
-	case 0:p_transform->position.x = acceptPos.x + 100; break;
-	case 1:p_transform->position.y = acceptPos.y + 100; break;
-	case 2:p_transform->position.x = acceptPos.x - 100; break;
-	case 3:p_transform->position.y = acceptPos.y - 100; break;
+	case 0:p_transform->position.x = acceptPos.x + 120; break;
+	case 1:p_transform->position.y = acceptPos.y + 120; break;
+	case 2:p_transform->position.x = acceptPos.x - 120; break;
+	case 3:p_transform->position.y = acceptPos.y - 120; break;
 	}
 
 	// デバック用
 	//hft::HFFLOAT3 ShowOff = p_transform->position;
 	//std::cout << "===========================================================================\n";
 	//std::cout << "X座標:" << ShowOff.x << "Y座標:" << ShowOff.y << "Z座標:" << ShowOff.z << "\n";
+}
+
+//===================================================================================
+// 攻撃判定が出るマスを光らせる関数
+//===================================================================================
+void AttackMass::MassFrash()
+{
+	if (Fg == true){GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 0, 0, 0.5 };}
+	else { GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 1, 0, 0.5 };}
 }
 
 //===================================================================================
