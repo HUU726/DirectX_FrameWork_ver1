@@ -50,7 +50,7 @@ void ConnectObject::Init()
 		searchCollVert = AddComponent<BoxCollider2D>();
 		searchCollVert->SetSize({ searchCollThickness, collLength, 0.f });
 		searchCollVert->SetGameObject(this);
-				searchCollVert->SetIsTrigger(true);
+		searchCollVert->SetIsTrigger(true);
 	}
 }
 
@@ -352,9 +352,16 @@ void ConnectObject::OnCollisionEnter(Collider* _p_col)
 	//接触相手が自分以外の連結ブロックかつ、相手の本体のコライダーの場合は接触している判定
 	if (GameObject* obj = _p_col->GetGameObject())
 	{
-		ConnectObject* connectObj = dynamic_cast<ConnectObject*>(obj);
+		//連結ブロックにキャストできるか
+		ConnectObject* connectObj = dynamic_cast<ConnectObject*>(obj);	
 
-		if (connectObj && connectObj != this && _p_col == connectObj->GetBodyCollider())
+		//キャストできない場合何もしない
+		if (connectObj == nullptr) { return; }
+
+		bool isThisObj = (connectObj == this);							//自分の本体部のアドレスかどうか
+		bool isBodyObj = (_p_col == connectObj->GetBodyCollider());		//相手の本体部のアドレスかどうか
+
+		if (!isThisObj && isBodyObj)
 		{
 			//既に取得した連結ブロックと重複しているか確認
 			auto it = std::find(connectObjArray.begin(), connectObjArray.end(), connectObj);
