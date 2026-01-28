@@ -1,69 +1,72 @@
-#include "DirectX_FrameWork1/Source/99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
+ï»¿#include "DirectX_FrameWork1/Source/99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
-
+#include"../../01-TrackObject/04_Enemy/BombEnemy.h"
+#include"../../01-TrackObject/02_ThornObject/ThormObject.h"
+#include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
 class BoxCollider2D;
 
-// ‚±‚ÌƒGƒlƒ~[‚Ìƒ^ƒO:"Bite"
+// ã“ã®ã‚¨ãƒãƒŸãƒ¼ã®ã‚¿ã‚°:"Bite"
 
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 BiteEnemy::BiteEnemy()
 {
-	
+	bodyCollider = nullptr;
 }
 
-BiteEnemy::~BiteEnemy()
-{
-
-}
-
-// ‰Šú‰»=============================================================
+//==================================================================================
+// æœ¬ä½“ã®åˆæœŸåŒ–å‡¦ç†
+//==================================================================================
 void BiteEnemy::Init(const int& direction)
 {
-	timer = 0;									// ƒ^ƒCƒ}[‚Ì‰Šú‰»
-	tag = BiteEnemyParam::tag;					// ƒ^ƒO:Bite
-	anipos = BiteEnemyParam::anipos;
-	oldani = BiteEnemyParam::oldani;
-	hitstoptime = BiteEnemyParam::hitstoptime;	// ƒqƒbƒgƒXƒgƒbƒvŠÔ
-	currentState = BiteEnemy::defoult1;			// ’Êíó‘Ô‚©‚çƒXƒ^[ƒg
-	defoulttime_1 = BiteEnemyParam::defoult1;	// ’Êíó‘Ô1‚Å‚©‚©‚éƒtƒŒ[ƒ€
-	defoulttime_2 = BiteEnemyParam::defoult2;	// ’Êíó‘Ô2‚Å‚©‚©‚éƒtƒŒ[ƒ€
-	attacktime = BiteEnemyParam::attack;		// UŒ‚ó‘Ô‚Å‚©‚©‚éƒtƒŒ[ƒ€
-	spinttime = BiteEnemyParam::spin;			// ‰ñ“]ó‘Ô‚Å‚©‚©‚éƒtƒŒ[ƒ€
-	deadtime = BiteEnemyParam::dead;			// €–Só‘Ô‚Å‚©‚©‚éƒtƒŒ[ƒ€
+	timer = 0;									// ã‚¿ã‚¤ãƒãƒ¼ã®åˆæœŸåŒ–
+	
+	tag = BiteEnemyParam::tag;					// ã‚¿ã‚°:Bite
+	currentState = BiteEnemy::defoult1;			// é€šå¸¸çŠ¶æ…‹ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ
+	defoulttime_1 = BiteEnemyParam::defoult1;	// é€šå¸¸çŠ¶æ…‹1ã§ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
+	defoulttime_2 = BiteEnemyParam::defoult2;	// é€šå¸¸çŠ¶æ…‹2ã§ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
+	attacktime = BiteEnemyParam::attack;		// æ”»æ’ƒçŠ¶æ…‹ã§ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
+	spinttime = BiteEnemyParam::spin;			// å›è»¢çŠ¶æ…‹ã§ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
+	deadtime = BiteEnemyParam::dead;			// æ­»äº¡çŠ¶æ…‹ã§ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
+	anipos = BiteEnemyParam::anipos;			// å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–(0)
+	oldani = BiteEnemyParam::oldani;			// åœæ­¢ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–(0)
+	startTrigger = BiteEnemyParam::startTrigger;	// é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å®Ÿè¡Œã•ã‚Œã‚‹
+	changeTrigger = BiteEnemyParam::changeTrigger;	// ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå¾Œã«ä¸€åº¦ã ã‘å®Ÿè¡Œã•ã‚Œã‚‹
 
-	// ˆø”‚ª”ÍˆÍŠO‚Ì”’l‚¾‚Á‚½ê‡,‰EŒü‚«‚Å‰Šú‰»
+	// å¼•æ•°ãŒç¯„å›²å¤–ã®æ•°å€¤ã ã£ãŸå ´åˆ,å³å‘ãã§åˆæœŸåŒ–
 	if (direction < 4 && direction >= 0) { SetDirection(direction); }	
 	else { SetDirection(0); }
 	
-	// s“®ƒV[ƒPƒ“ƒX(// ’Êí¨UŒ‚¨’Êí¨‰ñ“]¨...)
+	// è¡Œå‹•ã‚·ãƒ¼ã‚±ãƒ³ã‚¹(// é€šå¸¸â†’æ”»æ’ƒâ†’é€šå¸¸â†’å›è»¢â†’...ç¹°ã‚Šè¿”ã—)
 	for (int i = 0; i < 4; i++)
 	{
 		Act[i] = BiteEnemyParam::Act[i];
 	}
 
-	// ˆÊ’u‚Ìİ’è
+	// ä½ç½®ã®è¨­å®š
 	{
-		p_transform->scale = BiteEnemyParam::scale;
-		p_transform->position = BiteEnemyParam::position;
+		p_transform->scale = BiteEnemyParam::scale;			// å¤§ãã•ã®åˆæœŸåŒ–
+		p_transform->position = BiteEnemyParam::position;	// åº§æ¨™ã®åˆæœŸåŒ–
 	}
 
-	// ƒŒƒ“ƒ_ƒ‰[‚Ìİ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã®è¨­å®š
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
-	// ƒAƒjƒ[ƒ^[‚Ìİ’è
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8.0f, 8.0f));
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®è¨­å®š
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
-	float flameraito = 0;
-	float flamespead = 0;
-	// ˆø”: •ªŠ„”, ŠJnˆÊ’u(x,y), ƒRƒ}”
-	// ’ÊíƒAƒjƒ[ƒVƒ‡ƒ“
+	float flameraito = 0;		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
+	float flamespead = 0;		// å†ç”Ÿã‚¹ãƒ”ãƒ¼ãƒ‰
+
+	// é€šå¸¸ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	{
-		{
+		{ // å³å‘ã
 			flameraito = 10;
+			flamespead = 10;
 			SpriteAnimation anim(div, { 0,0 }, flameraito);
 			anim.InActive();
 			anim.SetID(0);
@@ -71,14 +74,15 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 
 		
-		{
+		{ // ä¸Šå‘ã
 			flameraito = 10;
+			flamespead = 10;
 			SpriteAnimation anim(div, { 4,2 }, flameraito);
 			anim.InActive();
 			anim.SetID(1);
@@ -86,14 +90,14 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 		
-		{
-
+		{ // å·¦å‘ã
 			flameraito = 10;
+			flamespead = 10;
 			SpriteAnimation anim(div, { 0,0 }, flameraito);
 			anim.InActive();
 			anim.SetID(2);
@@ -101,14 +105,15 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 
 		}
 
-		{
+		{ // ä¸‹å‘ã
 			flameraito = 10;
+			flamespead = 10;
 			SpriteAnimation anim(div, { 2,1 }, flameraito);
 			anim.InActive();
 			anim.SetID(3);
@@ -116,16 +121,17 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 	}
 
-	// UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“
+	// æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	{
-		{
+		{ // å³å‘ã
 			flameraito = 7;
+			flamespead = 7;
 			SpriteAnimation anim(div, { 2,4 }, flameraito);
 			anim.InActive();
 			anim.SetID(4);
@@ -133,14 +139,15 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 
 
-		{
+		{ // ä¸Šå‘ã
 			flameraito = 6;
+			flamespead = 6;
 			SpriteAnimation anim(div, { 1,6 }, flameraito);
 			anim.InActive();
 			anim.SetID(5);
@@ -148,13 +155,14 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 
-		{
+		{ // å·¦å‘ã
 			flameraito = 7;
+			flamespead = 7;
 			SpriteAnimation anim(div, { 2,4 }, flameraito);
 			anim.InActive();
 			anim.SetID(6);
@@ -162,95 +170,19 @@ void BiteEnemy::Init(const int& direction)
 			anim.SetPriority(0);
 			for (int i = 0; i < flameraito; i++)
 			{
-				anim.GetCellRef(i).flame = flameraito;
+				anim.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
 
-		{
+		{ // ä¸‹å‘ã
 			flameraito = 6;
+			flamespead = 6;
 			SpriteAnimation anim(div, { 3,5 }, flameraito);
 			anim.InActive();
 			anim.SetID(7);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
 			anim.SetPriority(0);
-			for (int i = 0; i < flameraito; i++)
-			{
-				anim.GetCellRef(i).flame = flameraito;
-			}
-			p_spriteAnimator->AddAnimation(anim);
-		}
-	}
-	
-	// ‰ñ“]
-	{
-		{
-			flameraito = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
-			anim.InActive();
-			anim.SetID(8);
-			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim.SetPriority(0);
-			for (int i = 0; i < flameraito; i++)
-			{
-				anim.GetCellRef(i).flame = flameraito;
-			}
-			p_spriteAnimator->AddAnimation(anim);
-		}
-
-		{
-			flameraito = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
-			anim.InActive();
-			anim.SetID(9);
-			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim.SetPriority(0);
-			for (int i = 0; i < flameraito; i++)
-			{
-				anim.GetCellRef(i).flame = flameraito;
-			}
-			p_spriteAnimator->AddAnimation(anim);
-		}
-
-		{
-			flameraito = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
-			anim.InActive();
-			anim.SetID(10);
-			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim.SetPriority(0);
-			for (int i = 0; i < flameraito; i++)
-			{
-				anim.GetCellRef(i).flame = flameraito;
-			}
-			p_spriteAnimator->AddAnimation(anim);
-		}
-
-		{
-			flameraito = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
-			anim.InActive();
-			anim.SetID(11);
-			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim.SetPriority(0);
-			for (int i = 0; i < flameraito; i++)
-			{
-				anim.GetCellRef(i).flame = flameraito;
-			}
-			p_spriteAnimator->AddAnimation(anim);
-		}
-	}
-
-	// €–S
-	{
-		{
-			flameraito = 4;
-			SpriteAnimation anim(div, { 6,3 }, flameraito);
-			anim.InActive();
-			anim.SetID(12);
-			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim.SetPriority(0);
-			flamespead = 15;
 			for (int i = 0; i < flameraito; i++)
 			{
 				anim.GetCellRef(i).flame = flamespead;
@@ -259,19 +191,103 @@ void BiteEnemy::Init(const int& direction)
 		}
 	}
 	
-	// –{‘Ì‚ÌƒRƒ‰ƒCƒ_[‚Ìİ’è
+	// å›è»¢ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	{
+		{ // å³å‘ã
+			flameraito = 2;
+			flamespead = 2;
+			SpriteAnimation anim(div, { 1,1 }, flameraito);
+			anim.InActive();
+			anim.SetID(8);
+			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim.SetPriority(0);
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim);
+		}
+
+		{ // ä¸Šå‘ã
+			flameraito = 2;
+			flamespead = 2;
+			SpriteAnimation anim(div, { 1,1 }, flameraito);
+			anim.InActive();
+			anim.SetID(9);
+			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim.SetPriority(0);
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim);
+		}
+
+		{ // å·¦å‘ã
+			flameraito = 2;
+			flamespead = 2;
+			SpriteAnimation anim(div, { 5,3 }, flameraito);
+			anim.InActive();
+			anim.SetID(10);
+			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim.SetPriority(0);
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim);
+		}
+
+		{ // ä¸‹å‘ã
+			flameraito = 2;
+			flamespead = 2;
+			SpriteAnimation anim(div, { 5,3 }, flameraito);
+			anim.InActive();
+			anim.SetID(11);
+			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim.SetPriority(0);
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim);
+		}
+	}
+
+	// æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	{
+		// ä¸€æ–¹å‘ã®ã¿
+		flameraito = 4;
+		flamespead = 4;
+		SpriteAnimation anim(div, { 6,3 }, flameraito);
+		anim.InActive();
+		anim.SetID(12);
+		anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
+		anim.SetPriority(0);
+		flamespead = 15;
+		for (int i = 0; i < flameraito; i++)
+		{
+			anim.GetCellRef(i).flame = flamespead;
+		}
+		p_spriteAnimator->AddAnimation(anim);
+	}
+	
+	// æœ¬ä½“ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¨­å®š
 	bodyCollider = AddComponent<BoxCollider2D>();
 	hft::HFFLOAT3 p_size = { 100.f,100.f,0.f };
-	bodyCollider->SetSize(p_size);					// –{‘Ì‚ÌƒTƒCƒY•ª“–‚½‚è”»’è‚ğ‚Æ‚é
+	bodyCollider->SetSize(p_size);					// æœ¬ä½“ã®ã‚µã‚¤ã‚ºåˆ†å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
 
-	//UŒ‚ƒ}ƒX‚Ìİ’è
+	//æ”»æ’ƒãƒã‚¹ã®åˆæœŸåŒ–
 	attackCollider.Init();
 }
 
-// XV===============================================================
+
+//==================================================================================
+// æœ¬ä½“ã®æ›´æ–°å‡¦ç†
+//==================================================================================
 void BiteEnemy::Update()
 {
-	timer++;
+	timer++;	// ã‚¿ã‚¤ãƒãƒ¼æ›´æ–°
 	
 	switch (currentState)
 	{
@@ -280,72 +296,75 @@ void BiteEnemy::Update()
 	case State::attack:Attack();break;
 	case State::spin:Spin();break;
 	case State::dead:Dead();break;
-	default:std::cout << "ó‘ÔƒGƒ‰[\n";
+	default:std::cout << "çŠ¶æ…‹ã‚¨ãƒ©ãƒ¼\n";
 	}
 }
 
 
 //==================================================================================
-// ’Êíó‘Ô1‚Ìˆ—
+// é€šå¸¸çŠ¶æ…‹1ã®å‡¦ç†
 //==================================================================================
 void BiteEnemy::Defoult1()
 {
-	// •ûŒü‚ğæ“¾
+	// æ–¹å‘ã‚’å–å¾—
 	int dir = GetDirection();
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
+		changeTrigger = false;
 		if (anipos >= 4) { anipos = 0; }
-		// Ä¶‚³‚ê‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒXƒgƒbƒv
+		// å†ç”Ÿã•ã‚Œã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¹ãƒˆãƒƒãƒ—
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
-	// Å‰‚ÉÄ¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“(‚±‚Ì‘‚«•û‚ğ‚·‚é‚Ì‚ÍŒÃ‚¢ƒAƒjƒ[ƒVƒ‡ƒ“‚ª–³‚¢‚½‚ß)
-	if (startState == true)
+	// æœ€åˆã«å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³(ã“ã®æ›¸ãæ–¹ã‚’ã™ã‚‹ã®ã¯å¤ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡ã„ãŸã‚)
+	if (startTrigger == true)
 	{
-		startState = false;
-		// •ûŒü‚©‚çƒAƒjƒ[ƒVƒ‡ƒ“‚ğŒˆ’è‚·‚é
+		startTrigger = false;
+		// æ–¹å‘ã‹ã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ±ºå®šã™ã‚‹
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
-	// ŠÔ‚ğ’´‚¦‚½ê‡
+	// æ™‚é–“ã‚’è¶…ãˆãŸå ´åˆ
 	if (timer >= defoulttime_1)
 	{
 		currentState = BiteEnemy::attack;
 		timer = 0;
-		changeState = true;
-		oldani = Act[anipos] + dir;	// Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ID‚ğŒÃ‚¢‚à‚Ì‚Æ‚·‚é
+		changeTrigger = true;
+		oldani = Act[anipos] + dir;	// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³IDã‚’å¤ã„ã‚‚ã®ã¨ã™ã‚‹
 		anipos++;
 	}	
 }
 
-
 //==================================================================================
-// UŒ‚ó‘Ô‚Ìˆ—
+// æ”»æ’ƒçŠ¶æ…‹ã®å‡¦ç†
 //==================================================================================
 void BiteEnemy::Attack()
 {
-	// •ûŒü‚ğæ“¾
+	// æ–¹å‘ã‚’å–å¾—
 	int dir = GetDirection();
 
-	if (changeState == true)
+	//================================================================
+	// (å¤‰æ›´äºˆå®š)åº§æ¨™ã¯å¸¸ã«é€ã‚Šç¶šã‘ã‚‹
+	//================================================================
+	attackCollider.SendPos(p_transform->position);		
+
+	if (changeTrigger == true)
 	{
-		changeState = false;	
-		//attackCollider.SetOffset(offset[dir]);			// UŒ‚ƒ}ƒX‚ÌˆÊ’u‚ğ’²®
-		GetComponent<SpriteAnimator>()->Stop(oldani);		// Ä¶‚³‚ê‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒXƒgƒbƒv
+		changeTrigger = false;	
+		GetComponent<SpriteAnimator>()->Stop(oldani);		// å†ç”Ÿã•ã‚Œã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¹ãƒˆãƒƒãƒ—
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 		//================================================================
-		// (•ÏX—\’è)UŒ‚”»’è‚ÉŒ»İ‚Ì•ûŒü‚ğ‘—‚Á‚Ä‚©‚çƒAƒNƒeƒBƒu‚É‚·‚é
+		// (å¤‰æ›´äºˆå®š)æ”»æ’ƒåˆ¤å®šã«ç¾åœ¨ã®æ–¹å‘ã‚’é€ã£ã¦ã‹ã‚‰ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 		//================================================================
-		//================================================================
-		// (•ÏX—\’è)À•W‚ÍSetFg‚ªtrue‚ÌAí‚É‘—‚è‘±‚¯‚é
-		//================================================================
-		attackCollider.SetFg(true);							// ƒfƒoƒbƒN—p
+		attackCollider.SendDir(direction);
+		attackCollider.UpdateOffset();
+		attackCollider.SetFg(true);							// ãƒ‡ãƒãƒƒã‚¯ç”¨
 	}
-	//std::cout << "UŒ‚”»’è‚ÌXÀ•W:" << attackCollider.attackCollider->GetOffset().x << "YÀ•W:" << attackCollider.attackCollider->GetOffset().y << "ZÀ•W:" << attackCollider.attackCollider->GetOffset().z << "\n";
+	//std::cout << "æ”»æ’ƒåˆ¤å®šã®Xåº§æ¨™:" << attackCollider.attackCollider->GetOffset().x << "Yåº§æ¨™:" << attackCollider.attackCollider->GetOffset().y << "Zåº§æ¨™:" << attackCollider.attackCollider->GetOffset().z << "\n";
 	if (timer > attacktime)
 	{
-		currentState = BiteEnemy::defoult2;					// ’Êíó‘Ô‚Ö
-		attackCollider.SetFg(false);						// ƒfƒoƒbƒN—p
+		changeTrigger = true;
+		currentState = BiteEnemy::defoult2;					// é€šå¸¸çŠ¶æ…‹ã¸
+		attackCollider.SetFg(false);						// ãƒ‡ãƒãƒƒã‚¯ç”¨
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
@@ -353,16 +372,16 @@ void BiteEnemy::Attack()
 }
 
 //==================================================================================
-// ’Êíó‘Ô2‚Ìˆ—
+// é€šå¸¸çŠ¶æ…‹2ã®å‡¦ç†
 //==================================================================================
 void BiteEnemy::Defoult2()
 {
-	// •ûŒü‚ğæ“¾
+	// æ–¹å‘ã‚’å–å¾—
 	int dir = GetDirection();
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
-		// Ä¶‚³‚ê‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒXƒgƒbƒv
+		changeTrigger = false;
+		// å†ç”Ÿã•ã‚Œã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¹ãƒˆãƒƒãƒ—
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 	}
 	GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
@@ -371,24 +390,24 @@ void BiteEnemy::Defoult2()
 	{
 		currentState = BiteEnemy::spin;
 		timer = 0;
-		changeState = true;
-		oldani = Act[anipos] + dir;	// Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ID‚ğŒÃ‚¢‚à‚Ì‚Æ‚·‚é
+		changeTrigger = true;
+		oldani = Act[anipos] + dir;	// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³IDã‚’å¤ã„ã‚‚ã®ã¨ã™ã‚‹
 		anipos++;
 	}
 }
 
 //==================================================================================
-// ‰ñ“]ó‘Ô‚Ìˆ—
+// å›è»¢çŠ¶æ…‹ã®å‡¦ç†
 //==================================================================================
 void BiteEnemy::Spin()
 {
-	// •ûŒü‚ğæ“¾
+	// æ–¹å‘ã‚’å–å¾—
 	int dir = GetDirection();
 
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
-		// Ä¶‚³‚ê‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒXƒgƒbƒv
+		changeTrigger = false;
+		// å†ç”Ÿã•ã‚Œã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¹ãƒˆãƒƒãƒ—
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 
 	}
@@ -399,28 +418,25 @@ void BiteEnemy::Spin()
 	{
 		currentState = BiteEnemy::defoult1;
 		timer = 0;
-		changeState = true;
+		changeTrigger = true;
 		SetDirection(dir + 1);
 		if (dir == 3) { SetDirection(0); }
-		oldani = Act[anipos] + dir;	// Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ID‚ğŒÃ‚¢‚à‚Ì‚Æ‚·‚é
+		oldani = Act[anipos] + dir;	// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³IDã‚’å¤ã„ã‚‚ã®ã¨ã™ã‚‹
 		anipos++;
 	}
 }
 
 //==================================================================================
-// €–Só‘Ô‚Ìˆ—
+// æ­»äº¡çŠ¶æ…‹ã®å‡¦ç†
 //==================================================================================
 void BiteEnemy::Dead()
 {
-	CEnemy::DownEnemyCount();			// ƒGƒlƒ~[‘”‚ÌŒ¸­
-	
-	// •ûŒü‚ğæ“¾
-	int dir = GetDirection();
+	CEnemy::DownEnemyCount();			// ã‚¨ãƒãƒŸãƒ¼ç·æ•°ã®æ¸›å°‘
 
-	if (changeState == true)
+	if (changeTrigger == true)
 	{
-		changeState = false;
-		// Ä¶‚³‚ê‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒXƒgƒbƒv
+		changeTrigger = false;
+		// å†ç”Ÿã•ã‚Œã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¹ãƒˆãƒƒãƒ—
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(12);
 	}
@@ -428,91 +444,170 @@ void BiteEnemy::Dead()
 	if (timer >= deadtime)
 	{
 		timer = 0;
-		this->SetIsActive(false);
-		this->SetIsRender(false);
+		GetComponent<SpriteAnimator>()->Stop(12);
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
+		this->SetIsRender(false);		// æå†™åœæ­¢
+		this->SetIsActive(false);		// æ´»å‹•åœæ­¢
 	}
 }
 
-//@brief	ƒRƒ‰ƒCƒ_[“¯m‚ªÕ“Ë‚µ‚½Û‚Ìˆ—
-// @param	Collider2D* _p_col	2D—pƒRƒ‰ƒCƒ_[‚Ìƒ|ƒCƒ“ƒ^
-void BiteEnemy::OnCollisionEnter(Collider* _p_col)// ƒqƒbƒg‚µ‚½‘Šè‚ÌƒRƒ‰ƒCƒ_[
+//===================================================================================
+// æœ¬ä½“ã«ãƒ’ãƒƒãƒˆã—ãŸéš›ã®å‡¦ç†(OnCollisionEnter)
+//===================================================================================
+void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
-	// ÚG‘Šè‚Ìî•ñ‚ğæ“¾
+	// æ¥è§¦ç›¸æ‰‹ã®æƒ…å ±ã‚’å–å¾—
 	GameObject* col = _p_col->GetGameObject();
-
-	if (bodyCollider == _p_col)
+	std::string other_tag = col->GetTag();		// ã‚¿ã‚°
+	
+	// ãƒ’ãƒƒãƒˆã—ãŸç›¸æ‰‹ãŒå¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆ,æ­»äº¡çŠ¶æ…‹ã¸
+	// çˆ†å¼¾ã®å‡¦ç†
 	{
+		// åš™ã¿ã¤ãæ•µã®æ”»æ’ƒåˆ¤å®šã¨åŒã˜ã‚¿ã‚°ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ãŸã‚,ã‚­ãƒ£ã‚¹ãƒˆã§å‹ã‚’ç¢ºèªã™ã‚‹
+		TrackObject* ptr = dynamic_cast<BombEnemy*>(col);
+		// çˆ†å¼¾ã®å‹ã§ã¯ãªã„å ´åˆ, ptr ã« nullptr ãŒæ ¼ç´ã•ã‚Œã‚‹
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				// ãƒ‡ãƒãƒƒã‚¯ç”¨
+				// std::cout << "BIteEnemyæœ¬ä½“ã«çˆ†å¼¾ãŒãƒ’ãƒƒãƒˆ\n";
 
+				// å‡¦ç†
+				timer = 0;							// ã‚¿ã‚¤ãƒãƒ¼åˆæœŸåŒ–
+				oldani = anipos;					// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã™ã‚‹
+				currentState = BiteEnemy::dead;		// æ­»äº¡çŠ¶æ…‹ã¸ç§»è¡Œ
+				changeTrigger = true;					// æ­»äº¡çŠ¶æ…‹ã®ä¸€åº¦ã ã‘å‡¦ç†ã•ã‚Œã‚‹ã®ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«
+				attackCollider.SetFg(false);		// æ”»æ’ƒåˆ¤å®šã‚’æ¶ˆã™
+			}
+		}
+	}
+	
+	// é€£çµãƒ–ãƒ­ãƒƒã‚¯ã®å‡¦ç†
+	{
+		// ã‚­ãƒ£ã‚¹ãƒˆã§ç›¸æ‰‹ã®å‹ã‚’ç¢ºèªã™ã‚‹
+		TrackObject* ptr = dynamic_cast<ConnectObject*>(col);
+		// é€£çµã™ã‚‹æ•µã®å‹ã§ã¯ãªã„å ´åˆ, ptr ã« nullptr ãŒæ ¼ç´ã•ã‚Œã‚‹
+		if (ptr != nullptr)
+		{
+			if (tag == "Enemy")
+			{
+				// ãƒ‡ãƒãƒƒã‚¯ç”¨
+				// std::cout << "BIteEnemyæœ¬ä½“ã«é€£çµãƒ–ãƒ­ãƒƒã‚¯ãŒãƒ’ãƒƒãƒˆ\n";
+
+				// å‡¦ç†
+				timer = 0;							// ã‚¿ã‚¤ãƒãƒ¼åˆæœŸåŒ–
+				oldani = anipos;					// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã™ã‚‹
+				currentState = BiteEnemy::dead;		// æ­»äº¡çŠ¶æ…‹ã¸ç§»è¡Œ
+				changeTrigger = true;					// æ­»äº¡çŠ¶æ…‹ã®ä¸€åº¦ã ã‘å‡¦ç†ã•ã‚Œã‚‹ã®ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«
+				attackCollider.SetFg(false);		// æ”»æ’ƒåˆ¤å®šã‚’æ¶ˆã™
+			}
+		}
 	}
 
-	// ‘ÎÛƒIƒuƒWƒFƒNƒg‚Ìê‡Adead‚ÖˆÚs
-	
-	
-	if (col->GetTag() == "Bullet" || col->GetTag() == "DamageObject" || col->GetTag() == "Thorn" || col->GetTag() == "Connect")
+	// è½ä¸‹ãƒˆã‚²ã®å‡¦ç†
 	{
-		timer = 0;
-		std::cout << col->GetTag()<<"\n";
-		//std::cout << "BIteEnemy–{‘Ì‚Éƒqƒbƒg\n";
-		oldani = anipos;
-		currentState = BiteEnemy::dead;
-		changeState = true;
-		attackCollider.SetFg(false);		// UŒ‚”»’è‚ğÁ‚·
+		// ã‚­ãƒ£ã‚¹ãƒˆã§ç›¸æ‰‹ã®å‹ã‚’ç¢ºèªã™ã‚‹
+		TrackObject* ptr = dynamic_cast<ThormObject*>(col);
+		// é€£çµã™ã‚‹æ•µã®å‹ã§ã¯ãªã„å ´åˆ, ptr ã« nullptr ãŒæ ¼ç´ã•ã‚Œã‚‹
+		if (ptr != nullptr)
+		{
+			// ãƒ‡ãƒãƒƒã‚¯ç”¨
+		// std::cout << "BIteEnemyæœ¬ä½“ã«è½ä¸‹ãƒˆã‚²ãŒãƒ’ãƒƒãƒˆ\n";
+
+		// å‡¦ç†
+			timer = 0;							// ã‚¿ã‚¤ãƒãƒ¼åˆæœŸåŒ–
+			oldani = anipos;					// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã™ã‚‹
+			currentState = BiteEnemy::dead;		// æ­»äº¡çŠ¶æ…‹ã¸ç§»è¡Œ
+			changeTrigger = true;					// æ­»äº¡çŠ¶æ…‹ã®ä¸€åº¦ã ã‘å‡¦ç†ã•ã‚Œã‚‹ã®ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«
+			attackCollider.SetFg(false);		// æ”»æ’ƒåˆ¤å®šã‚’æ¶ˆã™
+		}
 	}
-	
+
+	/// ã‚¿ã‚°ä¸è¦ãªã‚‰ã€ã¾ãŸå¤‰ãˆã‚‹ã‹ã‚‚.....
 }
 
+//*
+//*  æœ¬ä½“ã¨OnCollisionEnterã®å‡¦ç†ã¨æ”»æ’ƒåˆ¤å®šã®OnCollisionEnterã®å‡¦ç†ãŒè¢«ã£ã¦ã—ã¾ã†ãŸã‚ã€æ”»æ’ƒåˆ¤å®šã‚’ã‚¯ãƒ©ã‚¹ã«ã—ã¦æœ¬ä½“ã«æŒãŸã›ã¦ã¾ã™
+//*
+
+// ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚°:"Enemy"
+// 
+//===================================================================================
+// æ”»æ’ƒåˆ¤å®šã®åˆæœŸåŒ–
+//===================================================================================
 void AttackMass::Init()
 {
-	attackRenderer = new GameObject2D;
-	// ƒpƒ‰ƒ[ƒ^‰Šú‰»
-	tag = "Enemy";
-	p_transform->position = { 0.0f,0.0f,0.0f };
-	p_transform->scale = { 70.f,70.f,1.f };
-	// “–‚½‚è”»’è‚Ì’Ç‰Á
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆæœŸåŒ–
+	tag = AttackMassParam::tag;							// ã‚¿ã‚°ã®åˆæœŸåŒ–
+	SetFg(AttackMassParam::Fg);							// ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
+	direction = AttackMassParam::direction;				// æ–¹å‘ã®åˆæœŸåŒ–
+	p_transform->position = AttackMassParam::position;	// åº§æ¨™ã®åˆæœŸåŒ–
+	p_transform->scale = AttackMassParam::scale;		// ã‚µã‚¤ã‚ºã®åˆæœŸåŒ–
+
+	// å½“ãŸã‚Šåˆ¤å®šã®è¿½åŠ 
 	attackCollider = AddComponent<BoxCollider2D>();
-	hft::HFFLOAT3 p_size = p_transform->scale;		// “–‚½‚è”»’è‚Ì‘å‚«‚³‚Í–{‘Ì‚ÌƒTƒCƒY‚Æ“¯‚¶
+	hft::HFFLOAT3 p_size = p_transform->scale;		// å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•ã¯ã‚µã‚¤ã‚ºã¨åŒã˜
 	attackCollider->SetSize(p_size);
-	// ƒŒƒ“ƒ_ƒ‰[‚Ìİ’è
-	//std::shared_ptr<Texture> tex1 = attackRenderer->GetComponent<SpriteRenderer>()->LoadTexture("Assets/01-Texture/99-Test/wave.png");
-	//SetFg(false);
+	this->SetIsRender(false);						// æ”»æ’ƒåˆ¤å®šã‚’æå†™ã—ãªã„
+
+	/* ãƒ‡ãƒãƒƒã‚¯ç”¨
+	// ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã®è¨­å®š
+	attackRenderer = new GameObject2D;
 	SpriteRenderer* renderer = attackRenderer->GetComponent<SpriteRenderer>();
 	renderer->LoadTexture("Assets/01-Texture/99-Test/wave.png");
 	GetComponent<SpriteRenderer>()->SetIsActive(false);
+	*/
 }
 
-//	
-void AttackMass::Update(hft::HFFLOAT3 NewPos,const int& direction)
+//===================================================================================
+// æ”»æ’ƒåˆ¤å®šã®æ›´æ–°
+//===================================================================================
+void AttackMass::Update()
 {
-	p_transform->position = NewPos;
-	switch (direction) {
-	case 0:p_transform->position.x += 75; break;
-	case 1:p_transform->position.y += 75; break;
-	case 2:p_transform->position.x -= 75; break;
-	case 3:p_transform->position.y -= 75; break;
-	}
-
-	if (Fg == true)
+	// ãƒ•ãƒ©ã‚°ãŒtrueã§ã‚ã‚Œã°ã‚¢ã‚¯ãƒ†ã‚£ãƒ–
+	if (GetFg() == true)
 	{
+		UpdateOffset();
 		GetComponent<BoxCollider2D>()->SetIsTrigger(true);
-		GetComponent<SpriteRenderer>()->SetIsActive(true);
+		// ãƒ‡ãƒãƒƒã‚¯ç”¨
+		//GetComponent<SpriteRenderer>()->SetIsActive(true);
 	}
 	else
 	{
 		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
-		GetComponent<SpriteRenderer>()->SetIsActive(false);
+		// ãƒ‡ãƒãƒƒã‚¯ç”¨
+		//GetComponent<SpriteRenderer>()->SetIsActive(false);
 	}
 
-	// ƒfƒoƒbƒN—p
-	//std::cout << "XÀ•W:" << p_transform->position.x << "YÀ•W:" << p_transform->position.y << "ZÀ•W:" << p_transform->position.z << "\n";
+	// ãƒ‡ãƒãƒƒã‚¯ç”¨
+	//std::cout << "Xåº§æ¨™:" << p_transform->position.x << "Yåº§æ¨™:" << p_transform->position.y << "Zåº§æ¨™:" << p_transform->position.z << "\n";
 }
 
-// UŒ‚ƒ}ƒX‚ÌOnCillisionEnter
+//===================================================================================
+// æ–¹å‘ã«ã‚ˆã£ã¦ã€æ”»æ’ƒåˆ¤å®šã®ä½ç½®ã‚’å¤‰ãˆã‚‹é–¢æ•°
+//===================================================================================
+void AttackMass::UpdateOffset()
+{
+	hft::HFFLOAT3 Offset[4] = { {50.f,0.f,0.f},{0.f,50.f,0.f},{-50.f,0.f,0.f}, {0.f,-50.f,0.f} };
+	GetComponent<BoxCollider2D>()->SetOffset(Offset[direction]);
+	// ãƒ‡ãƒãƒƒã‚¯ç”¨
+	//hft::HFFLOAT3 ShowOff = GetComponent<BoxCollider2D>()->GetOffset();
+	//std::cout << "===========================================================================\n";
+	//std::cout << "Xåº§æ¨™:" << ShowOff.x << "Yåº§æ¨™:" << ShowOff.y << "Zåº§æ¨™:" << ShowOff.z << "\n";
+}
+
+//===================================================================================
+// æ”»æ’ƒåˆ¤å®šã«ãƒ’ãƒƒãƒˆã—ãŸéš›ã®å‡¦ç†(OnCollisionEnter)
+//===================================================================================
 void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
-	// ÚG‘Šè‚Ìî•ñ‚ğæ“¾
-	GameObject* col = _p_col->GetGameObject();
-	if (col->GetTag() == "Bom")
-	{
-		std::cout << "UŒ‚”»’è‚Éƒqƒbƒg\n";
-	}
+	//*ã»ã¼ãƒ‡ãƒãƒƒã‚¯ç”¨
+	
+	// æ¥è§¦ç›¸æ‰‹ã®æƒ…å ±ã‚’å–å¾—
+	//GameObject* col = _p_col->GetGameObject();
+	/*
+	std::cout << "----------------æ”»æ’ƒåˆ¤å®šã«ãƒ’ãƒƒãƒˆ-----------\n"
+	std::cout << "      ãƒ’ãƒƒãƒˆã—ãŸã‚¿ã‚°:"<< col->GetTag() <<"\n";
+	*/
 }
