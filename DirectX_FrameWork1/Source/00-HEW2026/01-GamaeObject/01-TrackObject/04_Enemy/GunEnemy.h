@@ -7,15 +7,16 @@
 class GunEnemy : public CEnemy
 {
 private:
-	int waittimer;						// 弾が消えてからの待機時間
 	int timer;							// 経過時間
 	int direction;						// 方向
-	bool changeScene;					// シーンが切り替わった時に一度だけ再生されるようにする
-	bool startScene;					// 一度だけ再生されるようにする
+	int waittimer;						// 弾が消えてからの待機時間
 	int anipos;							// 新しいアニメーションを再生するためのID格納用変数
 	int oldani;							// 古いアニメーションをストップさせるためのID格納用変数
 	int bulletcreateflame;				// 弾オブジェクトを作成するフレーム数
 	int deadtime;						// 死亡状態が終了する時間
+	bool startScene;					// 一度だけ再生されるようにする
+	bool changeScene;					// シーンが切り替わった時に一度だけ再生されるようにする
+	bool life = false;					// このオブジェクトの当たり判定が取られるか否か(Init中に当たり判定取られるのを防止するため)
 
 	enum State
 	{
@@ -31,13 +32,11 @@ private:
 
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
-
-	GameObject2D object2D;				// 本体のアニメーション
-	BoxCollider2D* bodyColl = nullptr;	// 自身の体の判定用のコライダー
 	
-	// BulletObject bullet;				// 弾オブジェクト
+	// BulletObject* bullet;				// 弾オブジェクト
 public:
 	GunEnemy();
+	~GunEnemy();
 	void Init() override {};
 	void Init(BaseMap* p_map,const int& NewDirection);
 	void Update() override;
