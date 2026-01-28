@@ -303,7 +303,7 @@ void PlayerObject::UpdateSelect()
         // 1. マウスの絶対座標（画面中央が 0,0）
         //    例：画面右端なら +600, 左端なら -600
         float mouseWorldX = rawMx;
-        float mouseWorldY = rawMy;
+        float mouseWorldY = rawMy * -1.f;
 
         // 2. プレイヤーの絶対座標（画面中央が 0,0）
         //    移動すると値が変わる（例：右のマスに行くと +100）
@@ -320,6 +320,15 @@ void PlayerObject::UpdateSelect()
         //    これをしないと、自キャラの「顔」をクリックした時に「上判定」にならず「下判定」になりがちです
         //relMy += 50.0f; // お腹のあたりを中心にする（数値は調整してください）
 
+        std::cout << "playerWorldX : " << playerWorldX << std::endl;
+        std::cout << "playerWorldY : " << playerWorldY << std::endl;
+
+        std::cout << "mouseWorldX : " << mouseWorldX << std::endl;
+        std::cout << "mouseWorldY : " << mouseWorldY << std::endl;
+
+        std::cout << "relMX : " << relMx << std::endl;
+        std::cout << "relMY : " << relMy << std::endl;
+
 
         // -------------------------------------------------------------
         // 以下、判定ロジック（そのまま）
@@ -327,7 +336,7 @@ void PlayerObject::UpdateSelect()
         float distSq = relMx * relMx + relMy * relMy;
 
         // 半径20px以上離れていたら判定する
-        if (distSq > 4.0f)
+        if (distSq > 400.0f)
         {
             float targetAngle = angle.x;
 
