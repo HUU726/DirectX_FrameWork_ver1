@@ -363,9 +363,9 @@ void GunEnemy::Dead()
 	if (timer >= deadtime)
 	{
 		GetComponent<SpriteAnimator>()->Stop(anipos);		
-		GetComponent<SpriteRenderer>()->SetIsActive(false);	// •`ŽÊ‚Ì’âŽ~
-		//GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
-		//GetComponent<GameObjectManager>()->DestroyGameObject(this);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);			// •`ŽÊ‚Ì’âŽ~
+		GameObjectManager::GetInstance().RemoveGameObject(bullet);	// ’e‚ÌŠˆ“®’âŽ~
+		GameObjectManager::GetInstance().RemoveGameObject(this);	// Šˆ“®’âŽ~
 	}
 }
 
