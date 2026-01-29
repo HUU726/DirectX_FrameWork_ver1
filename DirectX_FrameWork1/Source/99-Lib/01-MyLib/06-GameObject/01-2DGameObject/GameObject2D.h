@@ -1,5 +1,6 @@
 #pragma once
 #include "../GameObject.h"
+#include "../../07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
 class Collider2D;
 
