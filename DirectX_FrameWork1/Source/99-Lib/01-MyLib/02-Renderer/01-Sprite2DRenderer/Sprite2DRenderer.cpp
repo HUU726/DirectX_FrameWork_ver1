@@ -148,10 +148,6 @@ void Sprite2DRenderer::Draw(SpriteRenderer* _p_renderer)
 	if (p_camera == nullptr)
 		return;
 
-	std::shared_ptr<hft::Polygon> shape = _p_renderer->GetShape();
-	if (!shape)
-		return;
-
 	hft::Polygon& polygon = _p_renderer->GetPolygonRef();
 
 	RenderPipeline();

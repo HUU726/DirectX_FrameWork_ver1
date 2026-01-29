@@ -211,10 +211,12 @@ void SpriteAnimator::Init()
 
 	auto comp = gameObject->GetComponent<SpriteRenderer>();
 
-	auto& shader = comp->GetPolygonRef().material.shader;
+	auto& polygon = comp->GetPolygonRef();
+	auto& shader = polygon.material.shader;
 	auto VS_anim = hft::VertexShaderTable::GetInstance().CreateShader("Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/VS_Sprite2D.hlsl");
 	auto PS_anim = hft::PixelShaderTable::GetInstance().CreateShader("Source/99-Lib/01-MyLib/999-Shader/01-2D/01-Sprite2DShader/PS_Sprite2D.hlsl");
 	
+	polygon.material.isTexture = 1;
 	shader.SetVertexShader(VS_anim);
 	shader.SetPixelShader(PS_anim);
 }
