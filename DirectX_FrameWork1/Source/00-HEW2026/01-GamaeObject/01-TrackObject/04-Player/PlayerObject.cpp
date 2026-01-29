@@ -510,7 +510,7 @@ void PlayerObject::UpdateCharge()
         // --- パワー計算 ---
 
         // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed + max_hammer_power * 0.3;
+        float basePower = mag * charge_speed + max_hammer_power + 1.f;
         if (basePower > limit_hammer_power) basePower = limit_hammer_power;
 
         // チャージボーナス
