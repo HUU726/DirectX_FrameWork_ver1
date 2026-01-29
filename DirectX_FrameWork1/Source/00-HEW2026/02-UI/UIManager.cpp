@@ -1,5 +1,7 @@
 #include "UIManager.h"
 #include "../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
+#include "../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
+
 
 //タイトルシーン管理の処理=======================================================
 void TitleUIManager::Init()
@@ -313,10 +315,17 @@ void StagePlayUIManager::PlayMode()
 
 void StagePlayUIManager::ScalePlayerHPBer()
 {
-	if (Input::GetInstance().GetKeyTrigger((int)Button::KeyBord::A))
-	{
-		playerCurHp--;
-	}
+	//プレイヤータグのついたオブジェクトを参照し、HPバーの大きさを調整する
+	std::vector<GameObject*> playerObjArray = GameObjectManager::GetInstance().FindGameObject_Tag("Player");
+
+	if (playerObjArray.empty()) { return; }
+
+	PlayerObject* player = dynamic_cast<PlayerObject*>(playerObjArray[0]);
+
+	if (player == nullptr) { return; }
+
+	playerCurHp = player->GetPlayerHP();
+	playerMaxHp = player->GetPlayerMaxHP();
 
 
 	float hpRatio = (float)playerCurHp / playerMaxHp;
@@ -327,8 +336,6 @@ void StagePlayUIManager::ScalePlayerHPBer()
 
 	playerHpBar.GetTransformPtr()->scale.y = currentScaleY;
 	playerHpBar.GetTransformPtr()->position.y = currentPosY;
-
-	std::vector<GameObject2D*> playerObj = GameObjectManager::GetInstance().FindGameObject_Tag("Player");
 }
 
 void StagePlayUIManager::SetPlayerData()
