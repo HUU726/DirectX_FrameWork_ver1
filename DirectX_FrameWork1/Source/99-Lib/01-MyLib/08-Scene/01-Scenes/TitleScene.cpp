@@ -27,6 +27,8 @@ void TitleScene::Init()
 
 	{	//マップテスト
 		map.Init();
+
+
 	}
 
 	//camera2D.GetComponent<Camera2D>()->SetTarget(&gameObject2D);
