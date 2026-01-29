@@ -289,11 +289,16 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	
 	//距離を計る
 	float distance = GetContactDistance(myPos, tarPos);
-	
+
+	if (distance < 0)
+	{
+		distance *= -1;
+	}
+
 	//オブジェクトの生成位置を計る
 	float x = (myPos.x + tarPos.x) / 2;
 	float y = (myPos.y + tarPos.y) / 2;
-	float z = 0;
+	float z = myPos.z;
 	hft::HFFLOAT3 spawnPos = {x, y, z};
 
 
