@@ -179,8 +179,6 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-	if (pInput->GetKeyTrigger(13)) { OnHit();}; // デバッグ用被弾テスト
-
     // 無敵時間更新
     if (invincible)
     {
@@ -270,9 +268,7 @@ void PlayerObject::UpdateStand()
 
     // マウス位置 - 中心位置 = 相対ベクトル
     float relX = mx;
-    float relY = my;
-
-    // relY = my + 28.0f; // 補正したい場合のみ
+    float relY = my * -1.f;
 
     float mouseMagSq = relX * relX + relY * relY;
 
@@ -438,6 +434,8 @@ void PlayerObject::UpdateSelect()
 
 void PlayerObject::UpdateCharge()
 {
+    //SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
+
     animTimer++;
     if (!isChargeLoop)
     {
@@ -455,8 +453,6 @@ void PlayerObject::UpdateCharge()
     hft::HFFLOAT2 aimVector = { 0, 0 }; // 狙っている方向ベクトル(矢印用)
     bool isReleased = false;           // 発射判定
     bool isCanceled = false;           // キャンセル判定
-
-	//SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
 
     // ===================================================
     // マウス操作
@@ -587,7 +583,7 @@ void PlayerObject::UpdateCharge()
         float angleDiff = std::abs(shotAngle - this->angle.x);
         if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
 
-        if (angleDiff < 1.0f)
+        if (angleDiff < 1.0f || hammer_power < 0.3f)
         {
             pArrow->Hide();
             hammer_power = 0.0f;
