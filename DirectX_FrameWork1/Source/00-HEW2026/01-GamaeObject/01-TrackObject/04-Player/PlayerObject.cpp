@@ -834,7 +834,7 @@ void PlayerObject::OnCollisionEnter(Collider* _p_col)
     std::string tag = _p_col->GetGameObject()->GetTag();
 
     // “G‚âƒ_ƒ[ƒW°‚ÉG‚ê‚½‚ç OnHit ‚ğŒÄ‚Ô
-    if (tag == "Enemy" || tag == "DamageObject")
+    if (tag == "Enemy" || tag == "DamageObject" || tag == "Connect")
     {
         OnHit();
     }
