@@ -300,18 +300,14 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
 	hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
-	//if (connectDir.y != 0)
-	//{
-	//	collSize = { distance, collThickness, 0.f};
-	//}
+	if (connectDir.y != 0)
+	{
+		collSize = { distance, collThickness, 0.f};
+	}
 
 	//テクスチャのサイズを設定
 	float texThickNess = ConnectObjectParam::emitAttacktTexThickness;
 	hft::HFFLOAT3 texSize = { texThickNess, distance, 0.f };
-	//if (connectDir.y != 0)
-	//{
-	//	texSize = { distance, texThickNess, 0.f };
-	//}
 
 	texSize = texSize * scallingLate;
 
