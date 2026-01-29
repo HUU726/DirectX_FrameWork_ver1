@@ -10,6 +10,9 @@ int ConnectObject::instanceCounter = 0;
 
 ConnectObject::ConnectObject()
 {
+	//–¼‘O‚ğİ’è
+	name = "Connect";
+
 	//¶¬”Ô†‚ğİ’è
 	instanceCounter++;
 	myInstanceNumber = instanceCounter;
