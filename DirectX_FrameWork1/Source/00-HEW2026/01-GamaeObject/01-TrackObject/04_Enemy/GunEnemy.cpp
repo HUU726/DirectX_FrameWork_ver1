@@ -12,7 +12,7 @@
 #define DOWN 3
 
 //	タグは"Gun"
-
+int debug = 300;
 // コンストラクタ
 GunEnemy::GunEnemy()
 {
@@ -55,8 +55,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(GunEnemyParam::gunenemyTexName);
 
 	//アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
-	//SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 11));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 11));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定 
@@ -82,8 +81,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flamecount = 6;
 			flameraito = 12;
 			// shottingのアニメーション
-			SpriteAnimation anim2(div, { 1,5 }, flamecount);
-			//SpriteAnimation anim2(div, { 5,9 }, flamecount);
+			SpriteAnimation anim2(div, { 5,9 }, flamecount);
 			anim2.InActive();
 			anim2.SetID(1);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -114,7 +112,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flamecount = 6;
 			flameraito = 12;
 			// shottingのアニメーション
-			SpriteAnimation anim2(div, { 5,6 }, flamecount);
+			SpriteAnimation anim2(div, { 6,6 }, flamecount);
 			anim2.InActive();
 			anim2.SetID(3);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -176,7 +174,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flamecount = 6;
 			flamecount = 12;
 			// shottingのアニメーション
-			SpriteAnimation anim2(div, { 7,5 }, flamecount);
+			SpriteAnimation anim2(div, { 0,6 }, flamecount);
 			anim2.InActive();
 			anim2.SetID(7);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -341,23 +339,17 @@ void GunEnemy::Dead()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
-		// 当たり判定の停止
-		GetComponent<SpriteRenderer>()->SetIsActive(false);
-
-		// 弾オブジェクトの停止
-		bullet->SetBulletActive(false);
-
-		// エネミー総数の減少
-		CEnemy::DownEnemyCount();
+		CEnemy::DownEnemyCount();							// エネミー総数の減少
+		GetComponent<SpriteAnimator>()->Stop(oldani);		// アニメーションの停止
 		// 死亡アニメーションを再生する
 		if (direction == 0 || direction == 1)
 		{
-			anipos = 8;
+			anipos = 9;
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
 		else
 		{
-			anipos = 9;
+			anipos = 8;
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
 	}
@@ -365,9 +357,10 @@ void GunEnemy::Dead()
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	if (timer >= deadtime)
 	{
-		GetComponent<SpriteAnimator>()->Stop(anipos);
-		GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
-		GetComponent<GameObjectManager>()->DestroyGameObject(this);
+		GetComponent<SpriteAnimator>()->Stop(anipos);		
+		GetComponent<SpriteRenderer>()->SetIsActive(false);	// 描写の停止
+		//GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
+		//GetComponent<GameObjectManager>()->DestroyGameObject(this);
 	}
 }
 

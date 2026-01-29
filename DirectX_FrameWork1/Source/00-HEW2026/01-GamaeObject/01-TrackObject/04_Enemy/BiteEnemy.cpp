@@ -75,7 +75,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 10;
 			flamespead = 10;
-			SpriteAnimation anim(div, { 6,3 }, flameraito);
+			SpriteAnimation anim(div, { 7,6 }, flameraito);
 			anim.InActive();
 			anim.SetID(0);
 			anim.SetType(SPRITE_ANIM_TYPE::LOOP);
@@ -140,7 +140,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 9;
 			flamespead = 7;
-			SpriteAnimation anim(div, { 5,9 }, flameraito);
+			SpriteAnimation anim(div, { 5,8 }, flameraito);
 			anim.InActive();
 			anim.SetID(4);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -151,7 +151,6 @@ void BiteEnemy::Init(const int& direction)
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
-
 
 		{ // 上向き
 			flameraito = 6;
@@ -470,13 +469,13 @@ void BiteEnemy::Dead()
 		// 再生されていたアニメーションをストップ
 		if (dir == 0 || dir == 1)
 		{
-			anipos = 12;
+			anipos = 13;
 			GetComponent<SpriteAnimator>()->Stop(oldani);
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
 		else
 		{
-			anipos = 13;
+			anipos = 12;
 			GetComponent<SpriteAnimator>()->Stop(oldani);
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
@@ -487,8 +486,8 @@ void BiteEnemy::Dead()
 		timer = 0;
 		GetComponent<SpriteAnimator>()->Stop(anipos);
 		GetComponent<SpriteRenderer>()->SetIsActive(false);						// 描写停止
-		GetComponent<GameObjectManager>()->DestroyGameObject(attackCollider);	// 攻撃マスの活動停止
-		GetComponent<GameObjectManager>()->DestroyGameObject(this);				// 活動停止
+		//GetComponent<GameObjectManager>()->DestroyGameObject(attackCollider);	// 攻撃マスの活動停止
+		//GetComponent<GameObjectManager>()->DestroyGameObject(this);				// 活動停止
 	}
 }
 
@@ -501,7 +500,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	GameObject* col = _p_col->GetGameObject();
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	if (col->GetName()=="Bomb"|| col->GetName() == "Connect"|| col->GetName() == "Thron")
+	if (col->GetName() == "Bomb" || col->GetName() == "Connect" || col->GetName() == "Thron" || col->GetName() == "Bullet")
 	{
 		// 処理
 		timer = 0;																// タイマー初期化
