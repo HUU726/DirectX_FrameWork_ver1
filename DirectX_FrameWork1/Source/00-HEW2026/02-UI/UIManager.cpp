@@ -1,4 +1,5 @@
 #include "UIManager.h"
+#include "../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 
 //タイトルシーン管理の処理=======================================================
 void TitleUIManager::Init()
@@ -326,6 +327,8 @@ void StagePlayUIManager::ScalePlayerHPBer()
 
 	playerHpBar.GetTransformPtr()->scale.y = currentScaleY;
 	playerHpBar.GetTransformPtr()->position.y = currentPosY;
+
+	std::vector<GameObject2D*> playerObj = GameObjectManager::GetInstance().FindGameObject_Tag("Player");
 }
 
 void StagePlayUIManager::SetPlayerData()
