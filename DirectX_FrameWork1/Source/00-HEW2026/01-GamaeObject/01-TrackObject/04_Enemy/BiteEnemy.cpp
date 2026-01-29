@@ -470,7 +470,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	std::string other_tag = col->GetTag();		// タグ
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	GameObject2D* bullet = dynamic_cast<BulletObject*>(col);
+	//GameObject2D* bullet = dynamic_cast<BulletObject*>(col);
 	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
 	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
 	TrackObject* thorm = dynamic_cast<ThormObject*>(col);
@@ -478,7 +478,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	if (Hit == false)return;
 
 	// 処理
-	if (other_tag == "Bom" || other_tag == "Enemy"||other_tag=="DamageObject")
+	if (other_tag == "Bom" || other_tag == "Enemy")
 	{
 		timer = 0;																// タイマー初期化
 		oldani = anipos;														// 現在のアニメーションを古いアニメーションとする
