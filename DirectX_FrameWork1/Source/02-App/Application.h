@@ -11,6 +11,7 @@
 #include <iostream>
 #include "../99-Lib/01-MyLib/02-Renderer/98-RendererManager/RendererManager.h"
 #include "../99-Lib/01-MyLib/01-System/System.h"
+#include "../99-Lib/01-MyLib/998-FH_Types/HF_FLOAT.h"
 
 
 class HF_Window;
@@ -21,7 +22,6 @@ private:
 	HINSTANCE hInstance;	//アプリケーションID
 	int nCmdShow;
 	HF_Window* p_window;	//ウィンドウ
-
 
 	void InitWindow();
 	void InitSystem();
@@ -37,6 +37,7 @@ public:
 	HINSTANCE GetHInstance() const { return hInstance; }
 	int GetNCmdShow() const { return nCmdShow; }
 	HF_Window* GetWindowPtr() { return p_window; }
+	hft::HFFLOAT2 GetWindowSize();
 
 	/**
 	* @brief	アプリケーションを継続できるかどうか

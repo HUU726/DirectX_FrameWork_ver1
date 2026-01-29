@@ -1,6 +1,9 @@
 #include "UIManager.h"
+
 #include "../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include "../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
+
+#include "../../99-Lib/01-MyLib/03-Sound/Fsound.h"
 
 #include "../../02-App/Application.h"
 #include "../../02-App/HF_Window.h"
@@ -9,10 +12,8 @@
 void TitleUIManager::Init()
 {
 	{	//背景
-		const auto& p_window = Application::GetInstance().GetWindowPtr();
-		float width = p_window->GetWidth();
-		float height = p_window->GetHeight();
-		backGround.Init({ 0.f, 0.f, 0.f }, { width, height }, "Assets/01-Texture/20-BGImg/01-Title/title1.png", Type_UI::NormalType);
+		hft::HFFLOAT2 windowSize = Application::GetInstance().GetWindowSize();
+		backGround.Init({ 0.f, 0.f, 0.f }, windowSize, "Assets/01-Texture/20-BGImg/01-Title/title1.png", Type_UI::NormalType);
 	}
 
 	{	//ボタン
@@ -31,6 +32,9 @@ void TitleUIManager::Init()
 
 	}
 
+
+	int bgmID = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/20-BGM/Title.wav", true, true);
+	SoundManager::GetInstance().SetVolume(bgmID, 0.3f);
 }
 
 #include "../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
@@ -59,39 +63,6 @@ bool TitleUIManager::GetIsPressedEndButton()
 {
 	return gameEndButton.GetIsPressed();
 }
-
-
-
-//ステージセレクトシーン管理の処理=======================================================
-void StageSelectUIManager::Init()
-{
-
-}
-
-void StageSelectUIManager::Update()
-{
-
-}
-
-void StageSelectUIManager::ChangeCurrentStage()
-{
-	Input& input = Input::GetInstance();
-
-
-
-}
-
-void StageSelectUIManager::StartStageMode()
-{
-	return;
-}
-
-void StageSelectUIManager::GoTitleMode()
-{
-	return;
-}
-
-
 
 
 //ステージプレイシーン管理の処理=======================================================

@@ -5,7 +5,7 @@
 
 #define MAP_CENTER_POSX (0)
 #define MAP_CENTER_POSY (0)
-#define MAP_SIZE (600.0f)
+#define MAP_SIZE (800.0f)
 #define BASE_TILE_NUM (5.f)
 
 
@@ -327,7 +327,7 @@ void BaseMap::CreateTiles()
 		float height = p_window->GetHeight();
 		BGImg = new GameObject2D;
 		auto renderer = BGImg->GetComponent<SpriteRenderer>();
-		renderer->LoadTexture("Assets/01-Texture/01-Map/Background.png");
+		renderer->LoadTexture("Assets/01-Texture/01-Map/BGImg800.png");
 		auto p_trf = BGImg->GetTransformPtr();
 		p_trf->position.z = -20;
 		p_trf->scale = { width,height,1 };
