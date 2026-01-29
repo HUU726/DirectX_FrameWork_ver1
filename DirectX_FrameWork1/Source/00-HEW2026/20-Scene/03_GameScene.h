@@ -8,6 +8,7 @@ class Hew_GameScene : public BaseScene
 {
 private:
 	StagePlayUIManager _UI;
+
 public:
 
 	void Init() override;
