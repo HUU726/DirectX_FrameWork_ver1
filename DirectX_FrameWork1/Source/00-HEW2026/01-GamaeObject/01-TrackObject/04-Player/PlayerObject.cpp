@@ -583,7 +583,7 @@ void PlayerObject::UpdateCharge()
         float angleDiff = std::abs(shotAngle - this->angle.x);
         if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
 
-        if (angleDiff < 1.0f || hammer_power < 0.3f)
+        if (angleDiff < 1.0f || hammer_power < 1.0f)
         {
             pArrow->Hide();
             hammer_power = 0.0f;
@@ -791,6 +791,8 @@ void PlayerObject::UpdateDead()
 void PlayerObject::OnHit()
 {
 	if (invincible || state == PLAYER_STATE::DEAD) return; // –³“G’†‚âŽ€–S’†‚Í–³Ž‹
+
+    if (pArrow) pArrow->Hide();
 
     hitpoint--;
     std::cout << "Player Damaged! HP:" << hitpoint << std::endl;
