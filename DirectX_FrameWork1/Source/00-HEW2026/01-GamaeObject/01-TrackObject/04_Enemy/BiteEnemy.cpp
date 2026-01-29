@@ -6,6 +6,7 @@
 #include"../../01-TrackObject/02_ThornObject/ThormObject.h"
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/05-BulletObject/BulletObject.h"
+#include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
@@ -16,6 +17,7 @@ class BoxCollider2D;
 // コンストラクタ
 BiteEnemy::BiteEnemy()
 {
+	name = "Bite";
 	//bodyCollider = nullptr;
 }
 
@@ -62,7 +64,7 @@ void BiteEnemy::Init(const int& direction)
 	// レンダラーの設定
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
 	// アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8,10));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	float flameraito = 0;		// フレームレート
@@ -73,7 +75,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 10;
 			flamespead = 10;
-			SpriteAnimation anim(div, { 0,0 }, flameraito);
+			SpriteAnimation anim(div, { 7,6 }, flameraito);
 			anim.InActive();
 			anim.SetID(0);
 			anim.SetType(SPRITE_ANIM_TYPE::LOOP);
@@ -136,9 +138,9 @@ void BiteEnemy::Init(const int& direction)
 	// 攻撃アニメーション
 	{
 		{ // 右向き
-			flameraito = 7;
+			flameraito = 9;
 			flamespead = 7;
-			SpriteAnimation anim(div, { 2,4 }, flameraito);
+			SpriteAnimation anim(div, { 5,8 }, flameraito);
 			anim.InActive();
 			anim.SetID(4);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -149,7 +151,6 @@ void BiteEnemy::Init(const int& direction)
 			}
 			p_spriteAnimator->AddAnimation(anim);
 		}
-
 
 		{ // 上向き
 			flameraito = 6;
@@ -167,7 +168,7 @@ void BiteEnemy::Init(const int& direction)
 		}
 
 		{ // 左向き
-			flameraito = 7;
+			flameraito = 9;
 			flamespead = 7;
 			SpriteAnimation anim(div, { 2,4 }, flameraito);
 			anim.InActive();
@@ -202,7 +203,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
+			SpriteAnimation anim(div, { 0,6 }, flameraito);
 			anim.InActive();
 			anim.SetID(8);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -217,7 +218,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 上向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
+			SpriteAnimation anim(div, { 5,3 }, flameraito);
 			anim.InActive();
 			anim.SetID(9);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -232,7 +233,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 左向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
+			SpriteAnimation anim(div, { 2,5 }, flameraito);
 			anim.InActive();
 			anim.SetID(10);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -247,7 +248,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 下向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
+			SpriteAnimation anim(div, { 7,2 }, flameraito);
 			anim.InActive();
 			anim.SetID(11);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -262,25 +263,44 @@ void BiteEnemy::Init(const int& direction)
 
 	// 死亡アニメーション
 	{
-		// 一方向のみ
-		flameraito = 4;
-		flamespead = 4;
-		SpriteAnimation anim(div, { 6,3 }, flameraito);
-		anim.InActive();
-		anim.SetID(12);
-		anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
-		anim.SetPriority(0);
-		flamespead = 15;
-		for (int i = 0; i < flameraito; i++)
 		{
-			anim.GetCellRef(i).flame = flamespead;
+			// 左向き
+			flameraito = 4;
+			flamespead = 4;
+			SpriteAnimation anim1(div, { 6,3 }, flameraito);
+			anim1.InActive();
+			anim1.SetID(12);
+			anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim1.SetPriority(0);
+			flamespead = 15;
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim1.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
 		}
-		p_spriteAnimator->AddAnimation(anim);
+
+		{
+			// 右向き
+			flameraito = 4;
+			flamespead = 4;
+			SpriteAnimation anim1(div, { 1,8 }, flameraito);
+			anim1.InActive();
+			anim1.SetID(13);
+			anim1.SetType(SPRITE_ANIM_TYPE::NORMAL);
+			anim1.SetPriority(0);
+			flamespead = 15;
+			for (int i = 0; i < flameraito; i++)
+			{
+				anim1.GetCellRef(i).flame = flamespead;
+			}
+			p_spriteAnimator->AddAnimation(anim1);
+		}
+
 	}
 	
 	// 本体のコライダーの設定
 	auto bodyCollider = AddComponent<BoxCollider2D>();
-	//hft::HFFLOAT3 p_size = { 100.f,100.f,1.f };
 	bodyCollider->SetSize(p_transform->scale);					// 本体のサイズ分当たり判定をとる
 	bodyCollider->SetIsActive(true);
 
@@ -447,39 +467,42 @@ void BiteEnemy::Dead()
 	{
 		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
-		GetComponent<SpriteAnimator>()->Stop(oldani);
-		GetComponent<SpriteAnimator>()->Play(12);
+		if (dir == 0 || dir == 1)
+		{
+			anipos = 13;
+			GetComponent<SpriteAnimator>()->Stop(oldani);
+			GetComponent<SpriteAnimator>()->Play(anipos);
+		}
+		else
+		{
+			anipos = 12;
+			GetComponent<SpriteAnimator>()->Stop(oldani);
+			GetComponent<SpriteAnimator>()->Play(anipos);
+		}
 	}
 	
 	if (timer >= deadtime)
 	{
 		timer = 0;
-		GetComponent<SpriteAnimator>()->Stop(12);
-		GetComponent<SpriteRenderer>()->SetIsActive(false);//SetIsRender(false);		// 描写停止
-		//GetComponent<>->SetIsActive(false);		// 活動停止
+		GetComponent<SpriteAnimator>()->Stop(anipos);
+		GetComponent<SpriteRenderer>()->SetIsActive(false);						// 描写停止
+		//GetComponent<GameObjectManager>()->DestroyGameObject(attackCollider);	// 攻撃マスの活動停止
+		//GetComponent<GameObjectManager>()->DestroyGameObject(this);				// 活動停止
 	}
 }
 
 //===================================================================================
 // 本体にヒットした際の処理(OnCollisionEnter)
-//===================================================================================
+//=========================================================================　==========
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	std::string other_tag = col->GetTag();		// タグ
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	//GameObject2D* bullet = dynamic_cast<BulletObject*>(col);
-	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
-	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
-	TrackObject* thorm = dynamic_cast<ThormObject*>(col);
-	bool Hit = (bomb || connect || thorm);
-	if (Hit == false)return;
-
-	// 処理
-	if (other_tag == "Bom" || other_tag == "Enemy")
+	if (col->GetName() == "Bomb" || col->GetName() == "Connect" || col->GetName() == "Thron")
 	{
+		// 処理
 		timer = 0;																// タイマー初期化
 		oldani = anipos;														// 現在のアニメーションを古いアニメーションとする
 		currentState = BiteEnemy::dead;											// 死亡状態へ移行
@@ -575,11 +598,6 @@ void AttackMass::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	TrackObject* ptr = dynamic_cast<PlayerObject*>(col);
-	if (ptr == nullptr)return;
+	if (col->GetName() != "Player")return;
 	GetComponent<BoxCollider2D>()->SetIsActive(false);
-
-	// デバック用
-	//std::cout << "----------------攻撃判定にヒット-----------\n";
-	//std::cout << "      ヒットしたタグ:"<< col->GetTag() <<"\n";
 }

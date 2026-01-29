@@ -14,8 +14,8 @@ private:
 	int oldani;							// 古いアニメーションをストップさせるためのID格納用変数
 	int bulletcreateflame;				// 弾オブジェクトを作成するフレーム数
 	int deadtime;						// 死亡状態が終了する時間
-	bool startScene;					// 一度だけ再生されるようにする
-	bool changeScene;					// シーンが切り替わった時に一度だけ再生されるようにする
+	bool startTrigger;					// 一度だけ再生されるようにする
+	bool changeTrigger;					// シーンが切り替わった時に一度だけ再生されるようにする
 	bool life = false;					// このオブジェクトの当たり判定が取られるか否か(Init中に当たり判定取られるのを防止するため)
 
 	enum State
