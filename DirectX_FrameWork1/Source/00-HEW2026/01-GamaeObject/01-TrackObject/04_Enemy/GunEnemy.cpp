@@ -228,7 +228,8 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	// 当たり判定初期化
 	auto bodyColl = AddComponent<BoxCollider2D>();
 	bodyColl->Init();
-	bodyColl->SetSize(p_transform->scale);					// 本体のサイズ分当たり判定をとる
+	hft::HFFLOAT3 Inputscale = { p_transform->scale.x - 10.f,p_transform->scale.y,p_transform->scale.z };	// 当たり判定を少し調整
+	bodyColl->SetSize(Inputscale);				// 当たり判定のサイズを設定
 
 	// マップの情報
 	// 弾オブジェクト初期化
@@ -312,6 +313,7 @@ void GunEnemy::Shotting()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
+		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 0, 0, 0.5 };
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
@@ -320,10 +322,10 @@ void GunEnemy::Shotting()
 	if (timer >= bulletcreateflame && bullet->GetBulletActive() == false)
 	{
 		timer = 0;
-		std::cout << "弾オブジェクト発射!!\n";
+		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0, 0, 0, 0 };
 		bullet->SendPos(p_transform->position);			// 発射する直前の自身の位置を送る
 		bullet->SetBulletActive(true);					// 弾オブジェクトをアクティブにする
-		changeTrigger = true;								// changeSceneを有効にする
+		changeTrigger = true;							// changeSceneを有効にする
 		oldani = anipos;								// 再生しているアニメーションを古いものとする
 		currentState = GunEnemy::defoult;				// defoultに移行
 	}

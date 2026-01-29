@@ -141,10 +141,10 @@ void BulletObject::Update()
 void BulletObject::AddPos()
 {
 	switch(direction){
-	case RIGHT: p_transform->position.x += 100.f; break;
-	case UP:	p_transform->position.y += 100.f; break;
-	case LEFT: p_transform->position.x -= 100.f; break;
-	case DOWN:	p_transform->position.y -= 100.f; break;
+	case RIGHT: p_transform->position.x += 90.f; p_transform->position.y += 15.f; break;
+	case UP:	p_transform->position.y += 95.f; break;
+	case LEFT: p_transform->position.x -= 90.f; p_transform->position.y += 15.f; break;
+	case DOWN:	p_transform->position.y -= 95.f; break;
 	default:
 		std::cout << "座標調節エラー\n";
 	}
@@ -193,7 +193,7 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 	// ヒットしたのがこれら以外の場合、処理を終了する
-	if (col->GetName() == "Connect" || col->GetName() == "Gun" || col->GetName() == "Bite" || col->GetName() == "Player" || col->GetName() == "Thorn")
+	if (col->GetName() == "Connect" || col->GetName() == "Gun" || col->GetName() == "Bite" || col->GetName() == "Player" || col->GetName() == "Thorn" || col->GetName() == "Enemy")
 	{
 		timer = 0;											// タイマーを元に戻す
 		GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0
