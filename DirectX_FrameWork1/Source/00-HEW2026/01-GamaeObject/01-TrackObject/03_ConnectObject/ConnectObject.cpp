@@ -299,11 +299,18 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
-	hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
+	//hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
+	//if (connectDir.y != 0)
+	//{
+	//	collSize = { distance, collThickness, 0.f};
+	//}
+
+	hft::HFFLOAT3 collSize = { distance, collThickness, 0.f };
 	if (connectDir.y != 0)
 	{
-		collSize = { distance, collThickness, 0.f};
+		collSize = { collThickness, distance, 0.f };
 	}
+
 
 	//テクスチャのサイズを設定
 	float texThickNess = ConnectObjectParam::emitAttacktTexThickness;
@@ -350,8 +357,10 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	attackObj->GetTransformPtr()->rotation = texRotation;
 
 	//コライダーのサイズの設定
+	//attackObj->GetComponent<BoxCollider2D>()->SetSize(texSize);
 	attackObj->GetComponent<BoxCollider2D>()->SetSize(collSize);
 }
+
 
 
 
