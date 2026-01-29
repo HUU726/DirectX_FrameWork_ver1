@@ -32,6 +32,9 @@ private:
 	//攻撃判定用のオブジェクト配列
 	std::vector<GameObject2D*> emitAttackObjects;
 
+	//拡大率調整用のスケールレート
+	float scallingLate;
+
 public:
 	ConnectObject();
 	void Init(BaseMap* map);

@@ -6,6 +6,8 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 
+#include "../../../10-Map/Map.h"
+
 int ConnectObject::instanceCounter = 0;
 
 ConnectObject::ConnectObject()
@@ -24,6 +26,10 @@ ConnectObject::ConnectObject()
 	bodyCollider = nullptr;
 	searchCollVert = nullptr;
 	searchCollHori = nullptr;
+
+	//map = nullptr;
+
+	scallingLate = 0.f;
 }
 
 void ConnectObject::Init(BaseMap* map)
@@ -57,6 +63,8 @@ void ConnectObject::Init(BaseMap* map)
 		searchCollVert->SetGameObject(this);
 		searchCollVert->SetIsTrigger(true);
 	}
+
+	scallingLate = map->GetScaleRatio();
 }
 
 void ConnectObject::Update()
@@ -281,33 +289,39 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	
 	//距離を計る
 	float distance = GetContactDistance(myPos, tarPos);
-	
+
+	if (distance < 0)
+	{
+		distance *= -1;
+	}
+
 	//オブジェクトの生成位置を計る
-	//float middleDistance = distance / 2;
-	//hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
-	
 	float x = (myPos.x + tarPos.x) / 2;
 	float y = (myPos.y + tarPos.y) / 2;
-	float z = 0;
+	float z = myPos.z;
 	hft::HFFLOAT3 spawnPos = {x, y, z};
 
 
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
-	hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
+	//hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
+	//if (connectDir.y != 0)
+	//{
+	//	collSize = { distance, collThickness, 0.f};
+	//}
+
+	hft::HFFLOAT3 collSize = { distance, collThickness, 0.f };
 	if (connectDir.y != 0)
 	{
-		collSize = { distance, collThickness, 0.f};
+		collSize = { collThickness, distance, 0.f };
 	}
+
 
 	//テクスチャのサイズを設定
 	float texThickNess = ConnectObjectParam::emitAttacktTexThickness;
 	hft::HFFLOAT3 texSize = { texThickNess, distance, 0.f };
-	if (connectDir.y != 0)
-	{
-		texSize = { distance, texThickNess, 0.f };
-	}
 
+	texSize = texSize * scallingLate;
 
 	//自身の座標から接触相手の座標までの間のマスに攻撃判定用オブジェクトを配置する
 	GameObject2D* attackObj = nullptr;
@@ -348,8 +362,10 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	attackObj->GetTransformPtr()->rotation = texRotation;
 
 	//コライダーのサイズの設定
+	//attackObj->GetComponent<BoxCollider2D>()->SetSize(texSize);
 	attackObj->GetComponent<BoxCollider2D>()->SetSize(collSize);
 }
+
 
 
 
