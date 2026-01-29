@@ -106,7 +106,7 @@ void StagePlayUIManager::Init()
 {
 	//ポーズボタンUI
 	{
-		poseButton.Init({ -400.f, 200.f, 0.f }, { 80.f, 80.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		poseButton.Init({ -400.f, 200.f, -3.f }, { 80.f, 80.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		poseButton.SetTargetKey(Button::KeyBord::Escape);
 		poseButton.SetTargetXBoxButton(Button::XBox::X);
 	}
@@ -114,7 +114,7 @@ void StagePlayUIManager::Init()
 
 	//リトライボタンUI
 	{
-		retryButton.Init({ -400.f, 100.f, 0.f }, { 80.f, 80.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		retryButton.Init({ -400.f, 100.f, -3.f }, { 80.f, 80.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		retryButton.SetTargetKey(Button::KeyBord::Escape);
 		retryButton.SetTargetXBoxButton(Button::XBox::X);
 	}
@@ -122,10 +122,11 @@ void StagePlayUIManager::Init()
 
 	//プレイヤーのHPバーのUI
 	{
-		playerHpBar.Init({ 400.f, -100.f, 0.f }, { 100.f, 400.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		playerHpBar.Init({ 400.f, -100.f, -53.f }, { 100.f, 400.f }, "Assets/01-Texture/10-UI/01-HP/HP_Middle.png", Type_UI::NormalType);
+
 
 		//プレイヤーのHPバー背景UI
-		playerHpBarBack.Init({ 400.f, -100.f, 0.f }, { 100.f, 400.f }, "Assets/01-Texture/99-Test/wave.png", Type_UI::NormalType);
+		playerHpBarBack.Init({ 400.f, -100.f, -52.f }, { 100.f, 400.f }, "Assets/01-Texture/10-UI/01-HP/HP_Back.png", Type_UI::NormalType);
 
 		//barの最大Yサイズと初期Y位置を設定
 		maxHpBerHeight = 400.f;
@@ -135,17 +136,17 @@ void StagePlayUIManager::Init()
 
 	//ポーズボタンが押された時のUI
 	{
-		poseBackGround.Init({ 0.f, 0.f, 1.f }, { 150.f, 500.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		poseBackGround.Init({ 0.f, 0.f, -3.f }, { 150.f, 500.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
 
-		restartButton.Init({ 0.f, 100.f, 0.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		restartButton.Init({ 0.f, 100.f, -3.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		restartButton.SetTargetKey(Button::KeyBord::A);
 		restartButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goStageSelectButton.Init({ 0.f, 0.f, 0.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		goStageSelectButton.Init({ 0.f, 0.f, -3.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		goStageSelectButton.SetTargetKey(Button::KeyBord::A);
 		goStageSelectButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goTitleButton.Init({ 0.f, -100.f, 0.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		goTitleButton.Init({ 0.f, -100.f, -3.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		goTitleButton.SetTargetKey(Button::KeyBord::A);
 		goTitleButton.SetTargetXBoxButton(Button::XBox::A);
 	}
@@ -153,19 +154,19 @@ void StagePlayUIManager::Init()
 
 	//ゲームオーバー時のUI
 	{
-		gameOverUI.Init({ 0.f, 200.f, 0.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		gameOverUI.Init({ 0.f, 200.f, -3.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
 		gameOverUI.SetIsRender(false);
 
 
 		//リトライボタン
-		gameOverRetryButton.Init({ 0.f, -50.f, 0.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		gameOverRetryButton.Init({ 0.f, -50.f, -3.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		gameOverRetryButton.SetTargetKey(Button::KeyBord::B);
 		gameOverRetryButton.SetTargetXBoxButton(Button::XBox::B);
 		gameOverRetryButton.SetIsRender(false);
 
 
 		//ステージセレクトに行くボタン
-		gameOverStageSelectButton.Init({ 0.f, -200.f, 0.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		gameOverStageSelectButton.Init({ 0.f, -200.f, -3.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
 		gameOverStageSelectButton.SetTargetKey(Button::KeyBord::B);
 		gameOverStageSelectButton.SetTargetXBoxButton(Button::XBox::B);
 		gameOverStageSelectButton.SetIsRender(false);
@@ -174,7 +175,7 @@ void StagePlayUIManager::Init()
 
 	//ステージクリア
 	{
-		clearUI.Init({ 0.f, 0.f, 0.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		clearUI.Init({ 0.f, 0.f, -300.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
 		clearUI.SetIsRender(false);
 	}
 }
@@ -303,10 +304,6 @@ void StagePlayUIManager::PlayMode()
 	{
 		isStageClear = true;
 		return;
-	}
-	if (Input::GetInstance().GetButtonTrigger(Button::XBox::B))
-	{
-		enemyCount--;
 	}
 
 
