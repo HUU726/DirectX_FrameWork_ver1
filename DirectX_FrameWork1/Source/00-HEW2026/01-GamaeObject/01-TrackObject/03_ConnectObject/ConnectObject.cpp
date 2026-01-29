@@ -12,8 +12,8 @@ ConnectObject::ConnectObject()
 {
 	//–¼‘O‚ğİ’è
 	//name = "Connect";
-	name = "Enemy";
-	tag = "Enemy";
+	//name = "Enemy";
+	//tag = "Enemy";
 
 	//¶¬”Ô†‚ğİ’è
 	instanceCounter++;
