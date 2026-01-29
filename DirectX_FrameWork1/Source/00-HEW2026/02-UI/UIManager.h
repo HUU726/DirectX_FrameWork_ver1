@@ -75,6 +75,7 @@ private:
 	UI poseButton;
 	UI retryButton;
 	UI playerHpBar;
+	UI playerHpBarFront;
 	UI playerHpBarBack;
 
 	UI poseBackGround;
