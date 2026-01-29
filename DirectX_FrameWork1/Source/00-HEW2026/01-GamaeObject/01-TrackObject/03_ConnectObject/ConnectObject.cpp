@@ -64,9 +64,6 @@ void ConnectObject::Update()
 
 	//他の連結ブロックと繋がっているか検知し、接触している場合は攻撃判定を追加する
 	SearchConnectedState();
-
-	//デバッグ用の座標移動
-	//debug_Move();
 }
 
 void ConnectObject::ResetAttackObjectsActive()
