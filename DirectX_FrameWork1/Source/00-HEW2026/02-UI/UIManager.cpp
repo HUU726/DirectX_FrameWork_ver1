@@ -2,45 +2,52 @@
 #include "../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include "../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
 
+#include "../../02-App/Application.h"
+#include "../../02-App/HF_Window.h"
 
 //タイトルシーン管理の処理=======================================================
 void TitleUIManager::Init()
 {
-	backGround.Init({ 0.f, 0.f, 0.f }, { 500.f, 500.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+	{	//背景
+		const auto& p_window = Application::GetInstance().GetWindowPtr();
+		float width = p_window->GetWidth();
+		float height = p_window->GetHeight();
+		backGround.Init({ 0.f, 0.f, 0.f }, { width, height }, "Assets/01-Texture/20-BGImg/01-Title/title1.png", Type_UI::NormalType);
+	}
 
-	titleUI.Init({ 0.f, 200.f, -1.f }, { 500.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+	{	//ボタン
 
-	gameStartButton.Init({ 0.f, -100.f, -1.f }, { 200.f, 50.f }, "Assets/01-Texture/99-Test/wave.png", Type_UI::ButtonType);
-	gameStartButton.SetTargetKey(Button::KeyBord::A);
-	gameStartButton.SetTargetXBoxButton(Button::XBox::A);
+		hft::HFFLOAT3 basePos = { -155,-125,-1 };
+		hft::HFFLOAT3 buttonScl = { 500,125,1 };
 
-	gameEndButton.Init({ 0.f, -150.f, -1.f }, { 200.f, 50.f }, "Assets/01-Texture/99-Test/wave.png", Type_UI::ButtonType);
-	gameEndButton.SetTargetKey(Button::KeyBord::B);
-	gameEndButton.SetTargetXBoxButton(Button::XBox::B);
+		gameStartButton.Init(basePos, buttonScl, "Assets/01-Texture/10-UI/10-Title/Button_Start.png", Type_UI::ButtonType);
+		gameStartButton.SetTargetKey(Button::KeyBord::A);
+		gameStartButton.SetTargetXBoxButton(Button::XBox::A);
 
-	sceneTransitionUI.Init({ 600.f, 0.f, -3.f }, { 500.f, 500.f }, "Assets/01-Texture/99-Test/field.jpg", Type_UI::NormalType);
+		basePos.y -= buttonScl.y * 1.3f;
+		gameEndButton.Init(basePos, buttonScl, "Assets/01-Texture/10-UI/10-Title/Button_End.png", Type_UI::ButtonType);
+		gameEndButton.SetTargetKey(Button::KeyBord::B);
+		gameEndButton.SetTargetXBoxButton(Button::XBox::B);
+
+	}
 
 }
 
+#include "../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
+#include "../20-Scene/02_StageSelectScene.h"
 void TitleUIManager::Update()
 {
 	if (GetIsPressedStartButton())
 	{
-		startTransitionAnim = true;
+		SceneManager::GetInstance().LoadScene<Hew_StageSelectScene>();
 	}
 
 
 	if (GetIsPressedEndButton())
 	{
-
+		Application::GetInstance().GetWindowPtr()->EndWindow();
 	}
 
-
-	//ゲームスタートボタンを押した時のアニメーション
-	if (startTransitionAnim)
-	{
-		SceneTransitionAnim();
-	}
 }
 
 bool TitleUIManager::GetIsPressedStartButton()
@@ -51,20 +58,6 @@ bool TitleUIManager::GetIsPressedStartButton()
 bool TitleUIManager::GetIsPressedEndButton()
 {
 	return gameEndButton.GetIsPressed();
-}
-
-void TitleUIManager::SceneTransitionAnim()
-{
-	Transform* tfm = sceneTransitionUI.GetTransformPtr();
-	hft::HFFLOAT3 pos = tfm->position;
-
-
-	tfm->position.x -= 10.f;
-
-	if (tfm->position.x <= 0.f)
-	{
-		tfm->position.x = 0.f;
-	}
 }
 
 
