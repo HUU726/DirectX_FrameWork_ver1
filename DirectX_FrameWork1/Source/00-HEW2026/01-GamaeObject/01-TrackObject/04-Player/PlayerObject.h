@@ -24,12 +24,14 @@ private:
     BaseMap* pMap = nullptr;
     Input* pInput = nullptr;
 
+    /* ゲームに合わせて変更して良い変数 */
     int hitpoint = 3;
     int max_hitpoint = 3;
     float hammer_power = 0.0f;
-    const float max_hammer_power = 30.0f; // めちゃつよなので後から変えてもよし
-    const float limit_hammer_power = 20.f;//引っ張りで溜められる最大パワー
+	const float max_hammer_power = 15.0f; // 最大まで引っ張った時のパワー
+    const float limit_hammer_power = 8.f; // 引っ張りで溜められる限界パワー
 	const float charge_speed = 0.2f; // チャージ速度
+    //////////////////////////////////////
 
     int chargeTimer = 0;
 	int chargeflame = 4; // チャージアニメーションのフレーム数
