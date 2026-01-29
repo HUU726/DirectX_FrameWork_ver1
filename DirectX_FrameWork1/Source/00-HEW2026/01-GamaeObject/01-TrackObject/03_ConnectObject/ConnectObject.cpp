@@ -11,7 +11,8 @@ int ConnectObject::instanceCounter = 0;
 ConnectObject::ConnectObject()
 {
 	//–¼‘O‚ðÝ’è
-	name = "Connect";
+	//name = "Connect";
+	name = "Enemy";
 
 	//¶¬”Ô†‚ðÝ’è
 	instanceCounter++;
@@ -328,7 +329,8 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	{
 		attackObj = new GameObject2D;
 		attackObj->Init();
-		attackObj->SetTag("Enemy");
+		//attackObj->SetTag("Enemy");
+		attackObj->SetTag("Connect");
 		attackObj->GetComponent<SpriteRenderer>()->LoadTexture(ConnectObjectParam::emitAttackTexName);
 		attackObj->AddComponent<BoxCollider2D>();
 		emitAttackObjects.push_back(attackObj);
