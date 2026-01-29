@@ -1,5 +1,3 @@
-// 弾オブジェクト::タグ:Bullet
-
 #include"BulletObject.h"
 #include"BulletObjectParam.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
@@ -15,6 +13,9 @@
 #define UP 1
 #define LEFT 2
 #define DOWN 3
+
+// 弾オブジェクト::タグ:DamageObject
+
 
 // コンストラクタ
 BulletObject::BulletObject()
