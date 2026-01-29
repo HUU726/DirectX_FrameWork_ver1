@@ -11,10 +11,8 @@ class TitleUIManager : public GameObject2D
 {
 private:
 	UI backGround;
-	UI titleUI;
 	UI gameStartButton;
 	UI gameEndButton;
-	UI sceneTransitionUI;
 
 	//シーン遷移のアニメーションをするか否か
 	bool startTransitionAnim = false;
@@ -29,8 +27,6 @@ public:
 	//ゲーム終了ボタンが押されたか検知
 	bool GetIsPressedEndButton();
 
-	//シーン遷移用UIの座標を変化させてアニメーション
-	void SceneTransitionAnim();
 };
 
 

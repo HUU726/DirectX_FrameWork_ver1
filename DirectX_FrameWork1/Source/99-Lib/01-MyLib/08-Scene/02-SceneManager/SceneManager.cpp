@@ -15,7 +15,7 @@
 
 void SceneManager::Init()
 {
-	curScene = std::make_unique<Hew_StageSelectScene>();
+	curScene = std::make_unique<Hew_TitleScene>();
 	SetUpScene();
 }
 
