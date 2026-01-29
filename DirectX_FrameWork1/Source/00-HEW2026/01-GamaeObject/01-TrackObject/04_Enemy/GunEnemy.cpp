@@ -4,6 +4,7 @@
 #include"../../01-TrackObject/02_ThornObject/ThormObject.h"
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include"../../01-TrackObject/04_Enemy/BombEnemy.h"
+#include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 
 #define RIGHT 0
 #define UP 1
@@ -15,7 +16,7 @@
 // コンストラクタ
 GunEnemy::GunEnemy()
 {
-	
+	name = "Gun";
 }
 
 // デストラクタ
@@ -32,8 +33,8 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	timer = 0;												// タイマーの初期化
 	SetTag(GunEnemyParam::tag);								// タグを付ける:"Gun"
 	currentState = GunEnemy::defoult;						// 状態をデフォルトに
-	changeScene = GunEnemyParam::changeScene;				// changeSceneをfalseで初期化
-	startScene = GunEnemyParam::startScene;					// startSceneをtrueで初期化
+	changeTrigger = GunEnemyParam::changeScene;				// changeSceneをfalseで初期化
+	startTrigger = GunEnemyParam::startScene;					// startSceneをtrueで初期化
 	anipos = GunEnemyParam::anipos;							// aniposを初期化
 	oldani = GunEnemyParam::oldani;							// oldaniを初期化
 	waittimer = GunEnemyParam::waittimer;					// 弾が非アクティブになってからの待機時間を初期化
@@ -248,17 +249,17 @@ void GunEnemy::Defoult()
 	anipos = dir * 2;									// 方向から再生するIDを決定する
 	
 	// ゲームが始まった際,一度だけ通る
-	if (startScene == true)
+	if (startTrigger == true)
 	{
-		startScene = false;
+		startTrigger = false;
 		life = false;
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 最初のアニメーションを再生
 	}
 
 	// この状態中、一度だけ通るコード
-	if (changeScene == true)
+	if (changeTrigger == true)
 	{
-		changeScene = false;
+		changeTrigger = false;
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
@@ -271,7 +272,7 @@ void GunEnemy::Defoult()
 	if (waittimer <= timer)
 	{
 		timer = 0;							// リセット
-		changeScene = true;					// changeSceneを有効にする
+		changeTrigger = true;					// changeSceneを有効にする
 		oldani = anipos;					// 再生しているアニメーションを古いものとする
 		currentState = GunEnemy::shotting;	// shottingへ移行
 	}
@@ -290,22 +291,21 @@ void GunEnemy::Shotting()
 	anipos = (dir * 2) + 1;									// 方向から再生するIDを決定する
 
 	// タイマー更新
-	if (changeScene == true)
+	if (changeTrigger == true)
 	{
-		changeScene = false;
+		changeTrigger = false;
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
 
 	
-
 	if (timer >= bulletcreateflame && bullet->GetBulletActive() == false)
 	{
 		timer = 0;
 		std::cout << "弾オブジェクト発射!!\n";
 		bullet->SendPos(p_transform->position);			// 発射する直前の自身の位置を送る
 		bullet->SetBulletActive(true);					// 弾オブジェクトをアクティブにする
-		changeScene = true;								// changeSceneを有効にする
+		changeTrigger = true;								// changeSceneを有効にする
 		oldani = anipos;								// 再生しているアニメーションを古いものとする
 		currentState = GunEnemy::defoult;				// defoultに移行
 	}
@@ -318,9 +318,9 @@ void GunEnemy::Dead()
 {
 	timer++;
 
-	if (changeScene == true)
+	if (changeTrigger == true)
 	{
-		changeScene = false;
+		changeTrigger = false;
 		// 当たり判定の停止
 		GetComponent<SpriteRenderer>()->SetIsActive(false);
 
@@ -336,7 +336,8 @@ void GunEnemy::Dead()
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	if (timer >= deadtime)
 	{
-		GetComponent<GameObject>()->SetIsActive(false);
+		GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
+		GetComponent<GameObjectManager>()->DestroyGameObject(this);
 	}
 }
 
@@ -348,18 +349,14 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 	if (life == false)return;
 	// 対象のオブジェクトと接触した際、Deadへ移行
 	GameObject* col = _p_col->GetGameObject();
-	std::string other_tag = col->GetTag();		// タグ
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
-	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
-	TrackObject* thorm = dynamic_cast<ThormObject*>(col);
-	bool Hit = (bomb || connect || thorm);
-	if (Hit == true)
+	if (col->GetName() == "Connect" || col->GetName() == "Bomb" || col->GetName() == "Thorn")
 	{
 		// 処理
 		timer = 0;
-		changeScene = true;
+		changeTrigger = true;
 		currentState = GunEnemy::dead;
 		GetComponent<BoxCollider2D>()->SetIsActive(false);		// 当たり判定消去
+		bullet->SetBulletActive(false);							// 弾も削除
 	}
 }

@@ -19,7 +19,7 @@
 // コンストラクタ
 BulletObject::BulletObject()
 {
-	
+	name = "Bullet";
 }
 
 //=================================================================
@@ -191,17 +191,8 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 {
 	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	std::string other_tag = col->GetTag();
-	TrackObject* player = dynamic_cast<PlayerObject*>(col);
-	TrackObject* bite = dynamic_cast<BiteEnemy*>(col);
-	TrackObject* gun = dynamic_cast<GunEnemy*>(col);
-	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
-	TrackObject* thorn = dynamic_cast<ThormObject*>(col);
-	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
 	// ヒットしたのがこれら以外の場合、処理を終了する
-	bool Hit = (player||bite || gun || bomb || thorn  || connect);
-	if (Hit == false)return;
-	if (other_tag == "DamageObject" || other_tag == "Gun" || other_tag == "Bite"||other_tag=="Player"||other_tag=="Enemy")
+	if (col->GetName() == "Connect" || col->GetName() == "Gun" || col->GetName() == "Bite" || col->GetName() == "Player" || col->GetName() == "Thorn")
 	{
 		timer = 0;											// タイマーを元に戻す
 		GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0
