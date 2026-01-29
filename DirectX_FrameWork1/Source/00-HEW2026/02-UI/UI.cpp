@@ -50,8 +50,12 @@ void UI::Init(const hft::HFFLOAT3 pos, const hft::HFFLOAT2 scale, const char* te
 
 	if (type == Type_UI::ButtonType)
 	{
-		onSE = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/10-UI/OnCursor.wav", false);
-		dicSE = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/10-UI/Decision.wav", false);
+		SoundManager& soundMng = SoundManager::GetInstance();
+		onSE = soundMng.AddSoundDirect("Assets/03-Sound/10-UI/OnCursor.wav", false);
+		dicSE = soundMng.AddSoundDirect("Assets/03-Sound/10-UI/Decision.wav", false);
+
+		soundMng.SetVolume(onSE, 0.5f);
+		soundMng.SetVolume(dicSE, 0.1f);
 	}
 }
 
