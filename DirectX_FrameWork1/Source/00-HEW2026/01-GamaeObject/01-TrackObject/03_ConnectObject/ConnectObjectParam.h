@@ -18,7 +18,7 @@ namespace ConnectObjectParam
 	const char* emitAttackTexName = "Assets/01-Texture/03-Enemy/Connect_V.png";
 	const float emitAttacktTexThickness = 500.f; //UŒ‚”»’è—p‚Ì‰æ‘œ‚Ì•
 
-	const hft::HFFLOAT3 emitAttackVertRotation = { 0.f, 0.f, 90.f }; //‰¡‚ÉŒq‚ª‚Á‚½‚Ì‰æ‘œ‚ÌŒü‚«
-	const hft::HFFLOAT3 emitAttackHoriRotation = { 0.f, 0.f,  0.f }; //c‚ÉŒq‚ª‚Á‚½‚Ì‰æ‘œ‚ÌŒü‚«
+	const hft::HFFLOAT3 emitAttackVertRotation = { 0.f, 0.f, 0.f }; //‰¡‚ÉŒq‚ª‚Á‚½‚Ì‰æ‘œ‚ÌŒü‚«
+	const hft::HFFLOAT3 emitAttackHoriRotation = { 0.f, 0.f,  90.f }; //c‚ÉŒq‚ª‚Á‚½‚Ì‰æ‘œ‚ÌŒü‚«
 	const float emitAttackCollThickness = 20.f; //UŒ‚”»’è—p‚Ì‰æ‘œ‚Ì•
 }

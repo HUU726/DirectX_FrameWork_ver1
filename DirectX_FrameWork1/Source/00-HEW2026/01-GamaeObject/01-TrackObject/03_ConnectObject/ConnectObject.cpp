@@ -269,7 +269,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 
 	//表示する画像の向き、縦と横の向きを切り替える
 	hft::HFFLOAT3 texRotation = ConnectObjectParam::emitAttackHoriRotation;
-	if (connectDir.y <= 0)
+	if (connectDir.y != 0)
 	{
 		texRotation = ConnectObjectParam::emitAttackVertRotation;
 	}
@@ -281,13 +281,19 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	float distance = GetContactDistance(myPos, tarPos);
 	
 	//オブジェクトの生成位置を計る
-	float middleDistance = distance / 2;
-	hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
+	//float middleDistance = distance / 2;
+	//hft::HFFLOAT3 spawnPos = myPos + (connectDir * middleDistance);
+	
+	float x = (myPos.x + tarPos.x) / 2;
+	float y = (myPos.y + tarPos.y) / 2;
+	float z = 0;
+	hft::HFFLOAT3 spawnPos = {x, y, z};
+
 
 	//コライダーのサイズを設定
 	float collThickness = ConnectObjectParam::emitAttackCollThickness;
 	hft::HFFLOAT3 collSize = { collThickness, distance, 0.f};
-	if (connectDir.y <= 0)
+	if (connectDir.y != 0)
 	{
 		collSize = { distance, collThickness, 0.f};
 	}
@@ -295,7 +301,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	//テクスチャのサイズを設定
 	float texThickNess = ConnectObjectParam::emitAttacktTexThickness;
 	hft::HFFLOAT3 texSize = { texThickNess, distance, 0.f };
-	if (connectDir.y <= 0)
+	if (connectDir.y != 0)
 	{
 		texSize = { distance, texThickNess, 0.f };
 	}
