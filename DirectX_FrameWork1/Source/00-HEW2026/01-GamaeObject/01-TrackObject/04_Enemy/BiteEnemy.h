@@ -65,8 +65,6 @@ private:
 	void Spin();
 	void Dead();
 
-	//GameObject2D object2D;			// 本体のアニメーション
-	//BoxCollider2D* bodyCollider;	// 本体の判定
 	AttackMass* attackCollider;		// 攻撃の判定
 public:
 	BiteEnemy();					

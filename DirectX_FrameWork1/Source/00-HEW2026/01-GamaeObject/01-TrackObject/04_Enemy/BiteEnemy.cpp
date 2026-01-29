@@ -18,7 +18,6 @@ class BoxCollider2D;
 BiteEnemy::BiteEnemy()
 {
 	name = "Bite";
-	//bodyCollider = nullptr;
 }
 
 // デストラクタ
@@ -32,16 +31,16 @@ BiteEnemy::~BiteEnemy()
 //==================================================================================
 void BiteEnemy::Init(const int& direction)
 {
-	timer = 0;									// タイマーの初期化
-	tag = BiteEnemyParam::tag;					// タグ:Bite
-	currentState = BiteEnemy::defoult1;			// 通常状態からスタート
-	defoulttime_1 = BiteEnemyParam::defoult1;	// 通常状態1でかかるフレーム
-	defoulttime_2 = BiteEnemyParam::defoult2;	// 通常状態2でかかるフレーム
-	attacktime = BiteEnemyParam::attack;		// 攻撃状態でかかるフレーム
-	spinttime = BiteEnemyParam::spin;			// 回転状態でかかるフレーム
-	deadtime = BiteEnemyParam::dead;			// 死亡状態でかかるフレーム
-	anipos = BiteEnemyParam::anipos;			// 再生アニメーションの初期化(0)
-	oldani = BiteEnemyParam::oldani;			// 停止アニメーションの初期化(0)
+	timer = 0;										// タイマーの初期化
+	tag = BiteEnemyParam::tag;						// タグ:Bite
+	currentState = BiteEnemy::defoult1;				// 通常状態からスタート
+	defoulttime_1 = BiteEnemyParam::defoult1;		// 通常状態1でかかるフレーム
+	defoulttime_2 = BiteEnemyParam::defoult2;		// 通常状態2でかかるフレーム
+	attacktime = BiteEnemyParam::attack;			// 攻撃状態でかかるフレーム
+	spinttime = BiteEnemyParam::spin;				// 回転状態でかかるフレーム
+	deadtime = BiteEnemyParam::dead;				// 死亡状態でかかるフレーム
+	anipos = BiteEnemyParam::anipos;				// 再生アニメーションの初期化(0)
+	oldani = BiteEnemyParam::oldani;				// 停止アニメーションの初期化(0)
 	startTrigger = BiteEnemyParam::startTrigger;	// 開始時に一度だけ実行される
 	changeTrigger = BiteEnemyParam::changeTrigger;	// シーン切り替え後に一度だけ実行される
 	attackCreate = BiteEnemyParam::attackCreate;	// 攻撃判定を出すタイミング
@@ -318,7 +317,6 @@ void BiteEnemy::Update()
 {
 	attackCollider->SendPos(p_transform->position);		// 座標を攻撃マスに送る
 	attackCollider->UpdatePos();						// 座標を更新
-	attackCollider->MassFrash();						// マスを光らす
 
 	timer++;	// タイマー更新
 	switch (currentState)
@@ -347,6 +345,14 @@ void BiteEnemy::Defoult1()
 		GetComponent<SpriteAnimator>()->Stop(oldani);
 		GetComponent<SpriteAnimator>()->Play(Act[anipos] + dir);
 	}
+
+	// 通常状態の残りフレームが4分の3を切ると、攻撃判定を可視化する
+	if (timer > defoulttime_1 / 4)
+	{
+		attackCollider->GetComponent<SpriteRenderer>()->SetIsActive(true);
+		attackCollider->MassFrash();
+	}
+
 	// 最初に再生するアニメーション(この書き方をするのは古いアニメーションが無いため)
 	if (startTrigger == true)
 	{
@@ -370,6 +376,8 @@ void BiteEnemy::Defoult1()
 //==================================================================================
 void BiteEnemy::Attack()
 {
+	attackCollider->MassFrash();						// マスを光らす
+
 	// 方向を取得
 	int dir = GetDirection();
 
@@ -382,8 +390,9 @@ void BiteEnemy::Attack()
 
 	if (timer == attackCreate)
 	{
+		// 攻撃前にも送る
 		attackCollider->UpdatePos();							// 座標を更新
-		attackCollider->MassFrash();							// 攻撃前にもマスを表示
+		attackCollider->MassFrash();							// マスを表示
 		attackCollider->SendDir(dir);							// 方向を送る
 		attackCollider->SetFg(true);							// 攻撃をアクティブ
 	}
@@ -396,6 +405,7 @@ void BiteEnemy::Attack()
 		timer = 0;
 		anipos++;
 		oldani = Act[anipos] + dir;
+		attackCollider->GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0, 0, 0, 0.0 };
 	}
 }
 
@@ -493,7 +503,7 @@ void BiteEnemy::Dead()
 
 //===================================================================================
 // 本体にヒットした際の処理(OnCollisionEnter)
-//=========================================================================　==========
+//===================================================================================
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
@@ -533,12 +543,10 @@ void AttackMass::Init()
 
 	// 当たり判定の追加
 	auto attackCollider = AddComponent<BoxCollider2D>();
-	hft::HFFLOAT3 p_size = p_transform->scale;		// 当たり判定の大きさはサイズと同じ
-	attackCollider->SetSize(p_size);				//
-	attackCollider->SetIsActive(false);				// 判定を出さない		
-	//this->SetIsRender(false);						// 攻撃判定を描写しない
-	//this->SetIsActive(false);						// 行動を止める
-	GetComponent<SpriteRenderer>()->SetIsActive(true);
+	hft::HFFLOAT3 p_size = p_transform->scale;		
+	attackCollider->SetSize(p_size);				// 当たり判定の大きさはサイズと同じ
+	attackCollider->SetIsActive(false);				// 判定を出さない
+	GetComponent<SpriteRenderer>()->SetIsActive(false);
 }
 
 //===================================================================================

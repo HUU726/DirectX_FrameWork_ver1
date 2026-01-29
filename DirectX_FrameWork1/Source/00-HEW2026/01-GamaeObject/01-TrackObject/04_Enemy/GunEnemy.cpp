@@ -228,7 +228,8 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	// 当たり判定初期化
 	auto bodyColl = AddComponent<BoxCollider2D>();
 	bodyColl->Init();
-	bodyColl->SetSize(p_transform->scale);					// 本体のサイズ分当たり判定をとる
+	hft::HFFLOAT3 Inputscale = { p_transform->scale.x - 10.f,p_transform->scale.y,p_transform->scale.z };	// 当たり判定を少し調整
+	bodyColl->SetSize(Inputscale);				// 当たり判定のサイズを設定
 
 	// マップの情報
 	// 弾オブジェクト初期化
