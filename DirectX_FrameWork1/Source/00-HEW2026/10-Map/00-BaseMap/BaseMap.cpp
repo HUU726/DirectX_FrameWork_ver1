@@ -396,7 +396,7 @@ void BaseMap::CreateObjects()
 			case CONNECT_OBJ:
 				{
 					ConnectObject* p_obj = new ConnectObject;
-					p_obj->Init();
+					p_obj->Init(this);
 					p_obj->GetTransformPtr()->position.z = -50;
 					p_trackObj = p_obj;
 				}
