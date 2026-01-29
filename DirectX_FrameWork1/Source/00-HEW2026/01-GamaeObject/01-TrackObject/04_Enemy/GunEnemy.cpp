@@ -191,12 +191,11 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 
 		// deadのアニメーション
 		{
-			// 右向き
+			// 左向き
 			{
 				flamecount = 5;
 				flameraito = 8;
 				SpriteAnimation anim3(div, { 4,4 }, flamecount);
-				//SpriteAnimation anim3(div, { 0,9 }, flamecount);
 				anim3.InActive();
 				anim3.SetID(8);
 				anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -207,12 +206,12 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 				}
 				p_spriteAnimator->AddAnimation(anim3);
 			}
-			// 左向き
+			// 右向き
 			{
 				/*
 				flamecount = 5;
 				flameraito = 8;
-				SpriteAnimation anim3(div, { 4,4 }, flamecount);
+				SpriteAnimation anim3(div, { 0,9 }, flamecount);
 				anim3.InActive();
 				anim3.SetID(9);
 				anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
