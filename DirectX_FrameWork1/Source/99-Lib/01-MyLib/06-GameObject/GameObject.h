@@ -107,6 +107,7 @@ public:
 	bool GetIsRender() const { return isRender; }
 
 	void SetID(int _id) { id = _id; }
+	void SetName(std::string _name) { name = _name; }
 	void SetTag(std::string _tag) { tag = _tag; }
 	void SetIsActive(bool _is);
 	void SetIsRender(bool _is);
