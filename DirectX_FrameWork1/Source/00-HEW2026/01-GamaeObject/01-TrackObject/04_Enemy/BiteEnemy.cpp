@@ -493,14 +493,14 @@ void BiteEnemy::Dead()
 
 //===================================================================================
 // 本体にヒットした際の処理(OnCollisionEnter)
-//===================================================================================
+//=========================================================================　==========
 void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
-	if (col->GetName() == "Bomb" || col->GetName() == "Connect" || col->GetName() == "Thron" || col->GetName() == "Bullet")
+	if (col->GetName() == "Bomb" || col->GetName() == "Connect" || col->GetName() == "Thron")
 	{
 		// 処理
 		timer = 0;																// タイマー初期化
