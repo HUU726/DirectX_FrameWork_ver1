@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+
 #include"../../../../01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/998-FH_Types/HF_FLOAT.h"
 
