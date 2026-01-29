@@ -12,7 +12,7 @@
 #define DOWN 3
 
 //	タグは"Gun"
-int debug = 300;
+
 // コンストラクタ
 GunEnemy::GunEnemy()
 {
@@ -313,16 +313,19 @@ void GunEnemy::Shotting()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
-		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 0, 0, 0.5 };
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
 
+	if (timer > bulletcreateflame / 2)
+	{
+		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1.6, 0.5, 0.5, 1 };
+	}
 	
 	if (timer >= bulletcreateflame && bullet->GetBulletActive() == false)
 	{
 		timer = 0;
-		//GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 0, 0, 0, 0 };
+		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 1, 1, 1 };
 		bullet->SendPos(p_transform->position);			// 発射する直前の自身の位置を送る
 		bullet->SetBulletActive(true);					// 弾オブジェクトをアクティブにする
 		changeTrigger = true;							// changeSceneを有効にする

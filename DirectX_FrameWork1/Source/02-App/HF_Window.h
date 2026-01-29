@@ -40,5 +40,9 @@ public:
 	*/
 	void EditWindowName();
 
+	/*
+	* @brief	èIóπ
+	*/
+	void EndWindow();
 };
 
