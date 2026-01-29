@@ -19,24 +19,30 @@ private:
 
     // 攻撃アニメーションのタイミング定数
     const int SLIDE_START_TIMING = 9;
-    const int SLIDE_END_TIMING = 60;
+    const int SLIDE_END_TIMING = 30;
 
     BaseMap* pMap = nullptr;
     Input* pInput = nullptr;
 
+    /* ゲームに合わせて変更して良い変数 */
     int hitpoint = 3;
     int max_hitpoint = 3;
     float hammer_power = 0.0f;
-    const float max_hammer_power = 30.0f; // めちゃつよなので後から変えてもよし
-    const float limit_hammer_power = 20.f;//引っ張りで溜められる最大パワー
+	const float max_hammer_power = 15.0f; // 最大まで引っ張った時のパワー
+    const float limit_hammer_power = 8.f; // 引っ張りで溜められる限界パワー
 	const float charge_speed = 0.2f; // チャージ速度
+    //////////////////////////////////////
 
     int chargeTimer = 0;
 	int chargeflame = 4; // チャージアニメーションのフレーム数
     bool isChargeLoop = false;
 
     bool invincible = false;
-    float inv_time = 1.0f;
+    float inv_time = 2.0f;
+	float inv_cnt = 0.0f;
+
+    bool isDead = false;
+    const int DEAD_ANIM_END = 42;
 
     // チャージ中に決定した攻撃方向を保存しておく変数
     hft::HFFLOAT2 attackDirection = { 0, 0 };
@@ -59,11 +65,14 @@ private:
     TuningFork* pTuningFork = nullptr;
     Arrow* pArrow = nullptr;
 
+    float tileSize = 100.0f;
+
     void UpdateStand();
     void UpdateSelect();
     void UpdateCharge();
     void UpdateRelease();
     void UpdateDamage();
+    void UpdateDead();
 
     void OnHit();
     void OnDead();
@@ -82,7 +91,16 @@ public:
     void Update() override;
     void OnCollisionEnter(Collider* _p_col) override;
 
-    // ゲッター
+    // ゲッター //
     PLAYER_STATE GetPlayerState() { return state; }
+
     int GetPlayerHP() { return hitpoint; }
+	int GetPlayerMaxHP() { return max_hitpoint; }
+
+	bool GetIsInvincible() { return invincible; } // 無敵状態かどうか
+	bool GetIsDead() { return isDead; }           // 死亡状態かどうか
+
+	float GetHammerPower() { return hammer_power; }             //現在のハンマーパワー
+	float GetMaxHammerPower() { return max_hammer_power; }      //ハンマーパワーの最大値
+	float GetLimitHammerPower() { return limit_hammer_power; }  //引っ張りで溜められる最大パワー
 };

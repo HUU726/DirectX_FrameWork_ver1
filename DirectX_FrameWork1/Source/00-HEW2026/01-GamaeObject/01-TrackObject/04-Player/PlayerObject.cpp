@@ -15,8 +15,8 @@
 #include <ctime>
 
 #define CHARGE_THRESHOLD 0.2f
-#define TILE_SIZE 100.0f
-#define INVINCIBLE_TIME 1.0f
+//#define TILE_SIZE 100.0f
+//#define INVINCIBLE_TIME 1.0f
 
 enum ANIM_ID {
     ANIM_STAND = 0,
@@ -26,7 +26,8 @@ enum ANIM_ID {
     ANIM_ATTACK_RIGHT, // 右方向
     ANIM_ATTACK_LEFT,  // 左方向
     ANIM_HIT,
-    ANIM_DEAD
+    ANIM_DEAD,
+    ANIM_DEAD_LOOP
 };
 
 PlayerObject::PlayerObject()
@@ -97,16 +98,18 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     { 
         animFront.GetCellRef(i).flame = 3;
     }
+    animFront.GetCellRef(3).flame = 15;
     animFront.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animFront.SetID(ANIM_ATTACK_FRONT);
     animator->AddAnimation(animFront);
 
     // 右攻撃 (ANIM_ATTACK_RIGHT)
-    SpriteAnimation animRight(div, { 0.0f, 7.0f }, 4);
+    SpriteAnimation animRight(div, { 7.0f, 5.0f }, 4);
     for (int i = 0; i < 4; i++)
     {
         animRight.GetCellRef(i).flame = 3;
     }
+    animRight.GetCellRef(3).flame = 15;
     animRight.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animRight.SetID(ANIM_ATTACK_RIGHT);
     animator->AddAnimation(animRight);
@@ -117,6 +120,7 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     {
         animLeft.GetCellRef(i).flame = 3;
     }
+    animLeft.GetCellRef(3).flame = 15;
     animLeft.SetType(SPRITE_ANIM_TYPE::NORMAL);
     animLeft.SetID(ANIM_ATTACK_LEFT);
     animator->AddAnimation(animLeft);
@@ -141,6 +145,12 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     animDead.SetID(ANIM_DEAD);
     animator->AddAnimation(animDead);
 
+    SpriteAnimation animDeadLoop(div, { 7.0f, 2.0f }, 1);
+    animDeadLoop.GetCellRef(0).flame = 1;
+    animDeadLoop.SetType(SPRITE_ANIM_TYPE::LOOP);
+    animDeadLoop.SetID(ANIM_DEAD_LOOP);
+    animator->AddAnimation(animDeadLoop);
+
     // 最初に立ち状態を再生しておく
     animator->Play(ANIM_STAND);
 
@@ -149,11 +159,14 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     collider->SetSize({ 50.0f, 50.0f, 0.0f });
 
     // 子オブジェクト生成
+    float ratio = pMap->GetScaleRatio(); // マップ比率取得
+    tileSize = 125.0f * ratio;
+
     pTuningFork = new TuningFork();
-    pTuningFork->Init();
+    pTuningFork->Init(ratio);
 
     pArrow = new Arrow();
-    pArrow->Init();
+    pArrow->Init(ratio);
 
 	// サウンド読み込み
     SE_LAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
@@ -166,7 +179,25 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 
 void PlayerObject::Update()
 { 
-    if (pInput->GetKeyTrigger(13)) { OnHit();};
+    // 無敵時間更新
+    if (invincible)
+    {
+        auto renderer = GetComponent<SpriteRenderer>();
+
+        inv_cnt -= 1.0f / 60.0f;
+        if (inv_cnt <= 0.0f)
+        {
+            invincible = false;
+            //renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+			renderer->SetIsActive(true);
+        }
+        else
+        {
+            float alpha = (int)(inv_cnt * 8) % 2 == 0 ? 0.0f : 1.0f;
+            //renderer->GetPolygonRef().material.diffuse = { 1.0f, 1.0f, 1.0f, alpha };
+			renderer->SetIsActive(alpha);
+        }
+    }
 
     hft::HFFLOAT2 stick = pInput->GetLeftAnalogStick();
     float stickMagSq = stick.x * stick.x + stick.y * stick.y;
@@ -192,11 +223,15 @@ void PlayerObject::Update()
         // 「有効なマスに乗っていない（＝動いている or 範囲外）」なら操作不能
         if (!pMap->IsValidTarget(myIndex))
         {
-            if (state != PLAYER_STATE::STAND) ChangeState(PLAYER_STATE::STAND);
+            if (state != PLAYER_STATE::STAND && state != PLAYER_STATE::RELEASE)
+            {
+                ChangeState(PLAYER_STATE::STAND);
+            }
 
             if (pTuningFork) pTuningFork->Hide();
             if (pArrow) pArrow->Hide();
-            return;
+
+            if (state != PLAYER_STATE::RELEASE) return;
         }
     }
 
@@ -208,27 +243,12 @@ void PlayerObject::Update()
     case PLAYER_STATE::CHARGE:  UpdateCharge();  break;
     case PLAYER_STATE::RELEASE: UpdateRelease(); break;
     case PLAYER_STATE::HIT:     UpdateDamage();  break;
+    case PLAYER_STATE::DEAD:    UpdateDead();    break;
     }
 
     // 子オブジェクト更新
     if (pTuningFork) pTuningFork->Update();
     if (pArrow) pArrow->Update();
-
-    // 無敵時間更新
-    if (invincible)
-    {
-        inv_time -= 1.0f / 60.0f;
-        if (inv_time <= 0.0f)
-        {
-            invincible = false;
-            GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,1 };
-        }
-        else
-        {
-            float alpha = (int)(inv_time * 20) % 2 == 0 ? 0.5f : 1.0f;
-            GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1,1,1,alpha };
-        }
-    }
 }
 
 // ----------------------------------------------------------------------------
@@ -246,14 +266,12 @@ void PlayerObject::UpdateStand()
     float mx = (float)pInput->GetMouseCenterX();
     float my = (float)pInput->GetMouseCenterY();
 
-    float centerX = p_transform->position.x - 28.0f;
-    float centerY = p_transform->position.y - 140.0f;
-
     // マウス位置 - 中心位置 = 相対ベクトル
-    float relX = mx - centerX;
-    float relY = my - centerY;
+    float relX = mx;
+    float relY = my * -1.f;
 
     float mouseMagSq = relX * relX + relY * relY;
+
     // ---------------------------------------------------
 
     // スティック入力がある or マウスがプレイヤーからある程度離れているなら
@@ -276,14 +294,6 @@ void PlayerObject::UpdateSelect()
     float rawMx = (float)pInput->GetMouseCenterX();
     float rawMy = (float)pInput->GetMouseCenterY();
 
-    float centerX = p_transform->position.x - 28.0f;
-    float centerY = p_transform->position.y - 140.0f;
-
-    float relMx = rawMx - centerX;
-    float relMy = rawMy - centerY;
-
-    float mouseMagSq = relMx * relMx + relMy * relMy;
-
     // コントローラー入力がある場合
     if (stickMagSq > 0.25f && controllerMode)
     {
@@ -294,65 +304,67 @@ void PlayerObject::UpdateSelect()
             angle.x = (stick.y > 0) ? 90.0f : 270.0f;
         }
     }
-    // マウス操作の場合：一番近い有効なマスを選択する
+    // マウス操作の場合
     else if (mouseMode)
     {
-        float playerScreenX = -28.0f;
-        float playerScreenY = -140.0f;
+        // マウスの絶対座標（画面中央が 0,0）
+        float mouseWorldX = rawMx;
+        float mouseWorldY = rawMy * -1.f;
 
-        // マウスの「プレイヤーからの相対位置」
-        float relMx = rawMx - playerScreenX;
-        float relMy = rawMy - playerScreenY;
+        // プレイヤーの絶対座標（画面中央が 0,0）
+        float playerWorldX = p_transform->position.x;
+        float playerWorldY = p_transform->position.y;
 
-        // 最短距離の有効マスを探す
-        float minDistance = 10000000.0f; // とりあえず大きな値
-        bool found = false;
-        float bestAngle = angle.x;
+        // 「プレイヤーから見た」マウスの位置（相対ベクトル）
+        float relMx = mouseWorldX - playerWorldX;
+        float relMy = mouseWorldY - playerWorldY;
 
-        // 4方向 (右, 上, 左, 下) の角度リスト
-        float checkAngles[] = { 0.0f, 90.0f, 180.0f, 270.0f };
 
-        for (float a : checkAngles)
+        std::cout << "playerWorldX : " << playerWorldX << std::endl;
+        std::cout << "playerWorldY : " << playerWorldY << std::endl;
+
+        std::cout << "mouseWorldX : " << mouseWorldX << std::endl;
+        std::cout << "mouseWorldY : " << mouseWorldY << std::endl;
+
+        std::cout << "relMX : " << relMx << std::endl;
+        std::cout << "relMY : " << relMy << std::endl;
+
+        float distSq = relMx * relMx + relMy * relMy;
+
+        // 半径20px以上離れていたら判定する
+        if (distSq > 400.0f)
         {
-            hft::HFFLOAT2 dir = GetVecFromAngle(a);
+            float targetAngle = angle.x;
 
-            // その方向のマスが有効かチェック
+            // XとYの絶対値を比べて、エリアを判定
+            if (std::abs(relMx) > std::abs(relMy))
+            {
+                // 横長のエリアにいる（右か左）
+                targetAngle = (relMx > 0) ? 0.0f : 180.0f;
+            }
+            else
+            {
+                // 縦長のエリアにいる（上か下）
+                targetAngle = (relMy > 0) ? 90.0f : 270.0f;
+            }
+
+            // 有効判定
+            hft::HFFLOAT2 dir = GetVecFromAngle(targetAngle);
             hft::HFFLOAT2 currentIdx = GetLineIndex();
             hft::HFFLOAT2 targetIdx = { currentIdx.x + dir.x, currentIdx.y + dir.y };
 
             if (pMap && pMap->IsValidTarget(targetIdx))
             {
-                // そのマスの中心座標（プレイヤーからの相対位置）を計算
-                float tileRelX = dir.x * TILE_SIZE;
-                float tileRelY = dir.y * TILE_SIZE;
-
-                // マウスカーソルとの距離を計算
-                float dx = relMx - tileRelX;
-                float dy = relMy - tileRelY;
-
-                float distSq = dx * dx + dy * dy;
-
-                // これまでで一番近ければ採用
-                if (distSq < minDistance)
-                {
-                    minDistance = distSq;
-                    bestAngle = a;
-                    found = true;
-                }
+                angle.x = targetAngle;
             }
         }
-
-        // 有効な候補が見つかったら、その方向を向く
-        if (found)
-        {
-            angle.x = bestAngle;
-        }
-
     }
 
     // ---------------------------------------------------
     // 音叉プレビュー表示
     // ---------------------------------------------------
+    pTuningFork->SetAlpha(0.5f); //プレビュー用に半透明にする
+
     bool isTargetValid = false;
     hft::HFFLOAT2 myIndex = GetLineIndex();
     hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
@@ -362,21 +374,25 @@ void PlayerObject::UpdateSelect()
 
     if (pTuningFork)
     {
-        if (isTargetValid)
+        if (!pTuningFork->IsAnimating())
         {
-            hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
-            hft::HFFLOAT2 targetPos = {
-                 myPos.x + (dirVec.x * TILE_SIZE),
-                 myPos.y - (dirVec.y * TILE_SIZE)
-            };
-            pTuningFork->SetLineIndex(targetIndex);
-            pTuningFork->GetTransformPtr()->position.x = targetPos.x;
-            pTuningFork->GetTransformPtr()->position.y = targetPos.y;
-            pTuningFork->GetComponent<SpriteRenderer>()->SetIsActive(true);
-        }
-        else
-        {
-            pTuningFork->Hide();
+            if (isTargetValid)
+            {
+                hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
+                hft::HFFLOAT2 targetPos = {
+                     myPos.x + (dirVec.x * tileSize),
+                     myPos.y - (dirVec.y * tileSize)
+                };
+                pTuningFork->SetLineIndex(targetIndex);
+                pTuningFork->GetTransformPtr()->position.x = targetPos.x;
+                pTuningFork->GetTransformPtr()->position.y = targetPos.y;
+                pTuningFork->GetTransformPtr()->position.z = -10;
+                pTuningFork->GetComponent<SpriteRenderer>()->SetIsActive(true);
+            }
+            else
+            {
+                pTuningFork->Hide();
+            }
         }
     }
 
@@ -418,6 +434,8 @@ void PlayerObject::UpdateSelect()
 
 void PlayerObject::UpdateCharge()
 {
+    //SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
+
     animTimer++;
     if (!isChargeLoop)
     {
@@ -435,8 +453,6 @@ void PlayerObject::UpdateCharge()
     hft::HFFLOAT2 aimVector = { 0, 0 }; // 狙っている方向ベクトル(矢印用)
     bool isReleased = false;           // 発射判定
     bool isCanceled = false;           // キャンセル判定
-
-	//SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
 
     // ===================================================
     // マウス操作
@@ -494,7 +510,7 @@ void PlayerObject::UpdateCharge()
         // --- パワー計算 ---
 
         // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed;
+        float basePower = mag * charge_speed + max_hammer_power + 1.f;
         if (basePower > limit_hammer_power) basePower = limit_hammer_power;
 
         // チャージボーナス
@@ -567,7 +583,7 @@ void PlayerObject::UpdateCharge()
         float angleDiff = std::abs(shotAngle - this->angle.x);
         if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
 
-        if (angleDiff < 1.0f)
+        if (angleDiff < 1.0f || hammer_power < 1.0f)
         {
             pArrow->Hide();
             hammer_power = 0.0f;
@@ -601,7 +617,20 @@ void PlayerObject::UpdateCharge()
             };
 
             pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+            pArrow->GetTransformPtr()->position.z = -11;
         }
+    }
+
+    int currentAngle = (int)(angle.x + 0.5f) % 360;
+    // 右を向いている時 (0度)
+    if (currentAngle == 0)
+    {
+		if (p_transform->scale.x < 0) p_transform->scale.x *= -1; // 右向きに補正
+    }
+    // 左を向いている時 (180度)
+    else if (currentAngle == 180)
+    {
+		if (p_transform->scale.x > 0) p_transform->scale.x *= -1; // 左向きに補正
     }
 }
 
@@ -628,22 +657,51 @@ void PlayerObject::UpdateRelease()
             return;
         }
 
-        float cross = faceDir.x * moveVec.y - faceDir.y * moveVec.x;
+        auto animator = GetComponent<SpriteAnimator>();
 
-        if (std::abs(cross) < 0.1f)
+        // 今の向きを整数(0, 90, 180, 270)で取得して扱いやすくする
+        int currentAngle = (int)(angle.x + 0.5f) % 360;
+
+        // 右を向いている時 (0度)
+        if (currentAngle == 0)
         {
-            // 正面 (Front)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_FRONT);
+            if (moveVec.x > 0.5f)       animator->Play(ANIM_ATTACK_FRONT); // 右(正面)
+            else if (moveVec.y < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 上
+            else if (moveVec.y > 0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_RIGHT); // 下
+            }
         }
-        else if (cross > 0.0f)
+        // 上を向いている時 (90度)
+        else if (currentAngle == 90)
         {
-            // 右方向 (Right)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_RIGHT);
+            if (moveVec.y < -0.5f)      animator->Play(ANIM_ATTACK_LEFT); // 上(正面)
+            else if (moveVec.x < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 左
+            else if (moveVec.x > 0.5f) {
+                p_transform->scale.x *= -1; //左右反転
+                animator->Play(ANIM_ATTACK_LEFT); // 右
+            }
         }
-        else
+        // 左を向いている時 (180度)
+        else if (currentAngle == 180)
         {
-            // 左方向 (Left)
-            GetComponent<SpriteAnimator>()->Play(ANIM_ATTACK_LEFT);
+            if (p_transform->scale.x > 0) p_transform->scale.x *= -1; // 左向きに補正
+            if (moveVec.x < -0.5f)      animator->Play(ANIM_ATTACK_FRONT); // 左(正面)
+            else if (moveVec.y > 0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_RIGHT); // 下
+            }
+            else if (moveVec.y < -0.5f) animator->Play(ANIM_ATTACK_LEFT); // 上
+        }
+        // 下を向いている時 (270度)
+        else if (currentAngle == 270)
+        {
+            if (moveVec.y > 0.5f)       animator->Play(ANIM_ATTACK_RIGHT); // 下(正面)
+            else if (moveVec.x > 0.5f)  animator->Play(ANIM_ATTACK_FRONT); // 右
+            else if (moveVec.x < -0.5f) {
+				p_transform->scale.x *= -1; // 左右反転
+                animator->Play(ANIM_ATTACK_FRONT); // 左
+            }
         }
 
         if (pTuningFork) pTuningFork->Hide();
@@ -709,12 +767,33 @@ void PlayerObject::UpdateRelease()
 
 void PlayerObject::UpdateDamage()
 {
-    if (!invincible) ChangeState(PLAYER_STATE::STAND);
+    animTimer++; // アニメーション時間を進める
+
+    // HITアニメは7コマ×4フレーム = 28フレームなので、30くらいで復帰
+    if (animTimer > 30)
+        ChangeState(PLAYER_STATE::STAND);
+
     std::cout << "STATE:Hit >> Stand" << std::endl;
+}
+
+void PlayerObject::UpdateDead()
+{
+    auto animator = GetComponent<SpriteAnimator>();
+
+    if (animTimer + 1 >= DEAD_ANIM_END)
+    {
+        animator->Play(ANIM_DEAD_LOOP);
+    }
+    else
+        animTimer++;
 }
 
 void PlayerObject::OnHit()
 {
+	if (invincible || state == PLAYER_STATE::DEAD) return; // 無敵中や死亡中は無視
+
+    if (pArrow) pArrow->Hide();
+
     hitpoint--;
     std::cout << "Player Damaged! HP:" << hitpoint << std::endl;
 
@@ -725,7 +804,7 @@ void PlayerObject::OnHit()
     else
     {
         invincible = true;
-        inv_time = INVINCIBLE_TIME;
+		inv_cnt = inv_time;
 
         // ステート変更
         ChangeState(PLAYER_STATE::HIT);
@@ -739,6 +818,9 @@ void PlayerObject::OnDead()
     ChangeState(PLAYER_STATE::DEAD);
     SoundManager::GetInstance().Play(SE_Dead);
     std::cout << "STATE: PlayerDEAD" << std::endl;
+
+    isDead = true;
+	std::cout << "Player_isDead:" << isDead << std::endl;
 
     // ここにゲームオーバー処理などを追加
 }
@@ -792,9 +874,41 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
         break;
     }
 
+    // SELECT -> CHARGE (設置開始)
+    if (state == PLAYER_STATE::SELECT && _nextState == PLAYER_STATE::CHARGE)
+    {
+        if (pTuningFork)
+        {
+            // 設置する座標を計算 (現在のSelectカーソル位置)
+            hft::HFFLOAT2 myPos = { p_transform->position.x, p_transform->position.y };
+            hft::HFFLOAT2 dirVec = GetVecFromAngle(angle.x);
+            hft::HFFLOAT2 targetPos = {
+                 myPos.x + (dirVec.x * tileSize),
+                 myPos.y - (dirVec.y * tileSize)
+            };
+
+            // アニメーション再生！
+            pTuningFork->PlayAppear(targetPos);
+        }
+    }
+    // CHARGE -> SELECT/STAND (キャンセル/中断)
+    else if (state == PLAYER_STATE::CHARGE && _nextState != PLAYER_STATE::RELEASE)
+    {
+        // 攻撃発射(RELEASE)以外でチャージを抜けるときは、音叉を片付ける
+        if (pTuningFork)
+        {
+            pTuningFork->PlayDisappear();
+        }
+    }
+
     state = _nextState; //ステート更新
     animTimer = 0;
     isChargeLoop = false;
+
+	chargeTimer = 0; // チャージタイマーリセット
+
+	p_transform->rotation.z = 0.0f; // 傾きをリセット
+	if (p_transform->scale.x < 0.0f) p_transform->scale.x *= -1; // 左右反転をリセット
 
     //次ステートのアニメーション再生
     switch (state) {

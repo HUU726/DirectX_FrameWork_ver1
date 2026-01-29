@@ -9,7 +9,6 @@ enum Type_UI
 {
 	NormalType,	 //初期値から何も作用しない。背景など
 	ButtonType,  //押下を検知等
-	//DynamicType, //アニメーションをするUI
 };
 
 class UI : public GameObject2D

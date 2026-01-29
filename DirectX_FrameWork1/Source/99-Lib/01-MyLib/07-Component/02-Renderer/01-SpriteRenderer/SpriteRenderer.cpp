@@ -56,7 +56,7 @@ std::shared_ptr<Texture> SpriteRenderer::LoadTexture(const char* _filePath)
 	if (textureSource)
 	{
 		sp_texture = textureSource;
-		this->sp_shape->material.isTexture = 1;
+		polygon.material.isTexture = 1;
 		return sp_texture;
 	}
 
@@ -73,8 +73,8 @@ void SpriteRenderer::Draw()
 	{
 		Sprite2DRenderer& renderer = Sprite2DRenderer::GetInstance();
 		
-		renderer.SetVertexBuffer(sp_shape->p_vertexBuffer);
-		renderer.SetIndexBuffer(sp_shape->p_indexBuffer);
+		renderer.SetVertexBuffer(polygon.p_vertexBuffer);
+		renderer.SetIndexBuffer(polygon.p_indexBuffer);
 
 		//renderer.SetVertexBuffer(polygon.p_vertexBuffer);
 		//renderer.SetIndexBuffer(polygon.p_indexBuffer);

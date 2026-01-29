@@ -81,9 +81,6 @@ void UI::Update()
 	default:
 		break;
 	}
-
-
-
 }
 
 void UI::SetTargetKey(Button::KeyBord key)
@@ -111,12 +108,10 @@ void UI::UpdateIsPressed()
 	if ((isMouseInside && isMousePressed) || isKeyPressed || isXBottonPressed)
 	{
 		isPressed = true;
-		//std::cout << "UI‚ªmouse‚É‰Ÿ‚³‚ê‚Ä‚¢‚é" << std::endl;
 	}
 	else
 	{
 		isPressed = false;
-		//std::cout << "UI‚ªmouse‚É‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢" << std::endl;
 	}
 }
 
@@ -129,7 +124,6 @@ void UI::UpdateIsMouseInside()
 	hft::HFFLOAT2 mousePos = { posX, posY };
 
 	hft::HFFLOAT3 myPos = GetTransform().position;
-	//hft::HFFLOAT2 mySize = GetTransform().scale;
 
 	float halfW = initialScale.x * 0.5f;
 	float halfH = initialScale.y * 0.5f;

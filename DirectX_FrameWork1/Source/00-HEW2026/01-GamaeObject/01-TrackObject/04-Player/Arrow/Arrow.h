@@ -3,11 +3,15 @@
 
 class Arrow : public GameObject2D
 {
+private:
+    float scaleRatio = 1.0f; //マップ比率保存用変数
+
 public:
     Arrow();
     ~Arrow();
 
     void Init() override;
+    void Init(float _scaleRatio);
 
     /**
      * @brief 矢印の状態を更新して表示

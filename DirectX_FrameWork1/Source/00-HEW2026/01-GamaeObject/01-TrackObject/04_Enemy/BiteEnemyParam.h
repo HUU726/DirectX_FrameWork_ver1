@@ -10,6 +10,7 @@ namespace BiteEnemyParam
 	const std::string tag = "Bite";		// 本体のタグ:Bite
 	const bool startTrigger = true;		// 開始時に一度だけ実行される
 	const bool changeTrigger = false;	// シーン切り替え後に一度だけ実行される
+	const int attackCreate = 10;		// 攻撃判定を出すタイミング
 	const int anipos = 0;		// 再生するアニメーションID
 	const int oldani = 0;		// 停止するアニメーションID
 	const int direction = 0;	// 初期は右向き
@@ -31,5 +32,5 @@ namespace AttackMassParam
 	const bool Fg = false;				// フラグ
 	const int direction = 0;			// 方向
 	const hft::HFFLOAT3 scale = { 100.f,100.f,1.f };		// サイズ
-	const hft::HFFLOAT3 position = { 1500.0f,1500.0f,-2.0f };	// 座標(なぜかUpdateで本体が更新されるよりも先にこちらの判定が出てしまうので座標を遠くへ飛ばしてます)
+	const hft::HFFLOAT3 position = { 1500.0f,1500.0f,-2.0f };	// 座標(なぜかUpdateで本体が更新されるよりも先にこちらの判定が更新されてしまうので座標を遠くへ飛ばしてます)
 }
