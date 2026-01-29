@@ -24,7 +24,7 @@ ConnectObject::ConnectObject()
 	searchCollHori = nullptr;
 }
 
-void ConnectObject::Init()
+void ConnectObject::Init(BaseMap* map)
 {
 	//–{‘Ì•”•ª‚Ìİ’è
 	{

@@ -8,6 +8,7 @@
 //検査用コライダーに接触したコライダーが連結ブロックかどうかを検索するのはキャスト形式で行う
 
 class BoxCollider2D;
+class BaseMap;
 
 class ConnectObject : public TrackObject
 {
@@ -33,7 +34,7 @@ private:
 
 public:
 	ConnectObject();
-	void Init() override;
+	void Init(BaseMap* map);
 	void Update() override;
 
 	//全ての攻撃判定オブジェクトのアクティブ状態をリセット
