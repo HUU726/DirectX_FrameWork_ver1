@@ -5,7 +5,7 @@
 #include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
 #include"../../01-TrackObject/02_ThornObject/ThormObject.h"
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
-
+#include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/05-BulletObject/BulletObject.h"
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
@@ -455,8 +455,8 @@ void BiteEnemy::Dead()
 	{
 		timer = 0;
 		GetComponent<SpriteAnimator>()->Stop(12);
-		this->SetIsRender(false);		// 描写停止
-		this->SetIsActive(false);		// 活動停止
+		GetComponent<SpriteRenderer>()->SetIsActive(false);//SetIsRender(false);		// 描写停止
+		//GetComponent<>->SetIsActive(false);		// 活動停止
 	}
 }
 
@@ -470,6 +470,7 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	std::string other_tag = col->GetTag();		// タグ
 	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
+	GameObject2D* bullet = dynamic_cast<BulletObject*>(col);
 	TrackObject* bomb = dynamic_cast<BombEnemy*>(col);
 	TrackObject* connect = dynamic_cast<ConnectObject*>(col);
 	TrackObject* thorm = dynamic_cast<ThormObject*>(col);
@@ -477,14 +478,15 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 	if (Hit == false)return;
 
 	// 処理
-	if (other_tag == "Bom" || other_tag == "Enemy")
+	if (other_tag == "Bom" || other_tag == "Enemy"||other_tag=="DamageObject")
 	{
-		timer = 0;							// タイマー初期化
-		oldani = anipos;					// 現在のアニメーションを古いアニメーションとする
-		currentState = BiteEnemy::dead;		// 死亡状態へ移行
-		changeTrigger = true;				// 死亡状態の一度だけ処理されるのをアクティブに
-		attackCollider->SetFg(false);		// 攻撃判定を消す
-		GetComponent<BoxCollider2D>()->SetIsActive(false);		// 自身の当たり判定を消す
+		timer = 0;																// タイマー初期化
+		oldani = anipos;														// 現在のアニメーションを古いアニメーションとする
+		currentState = BiteEnemy::dead;											// 死亡状態へ移行
+		changeTrigger = true;													// 死亡状態の一度だけ処理されるのをアクティブに
+		attackCollider->GetComponent<SpriteRenderer>()->SetIsActive(false);		// 可視化されているマスの表示をOFF
+		attackCollider->SetFg(false);											// 攻撃判定を消す
+		GetComponent<BoxCollider2D>()->SetIsActive(false);						// 自身の当たり判定を消す
 	}
 }
 
@@ -558,7 +560,7 @@ void AttackMass::UpdatePos()
 }
 
 //===================================================================================
-// 攻撃判定が出るマスを光らせる関数
+// 攻撃判定が出るマスを可視化する関数
 //===================================================================================
 void AttackMass::MassFrash()
 {
