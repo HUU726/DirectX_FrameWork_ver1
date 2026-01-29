@@ -12,7 +12,7 @@
 #define DOWN 3
 
 //	タグは"Gun"
-int debug = 300;
+
 // コンストラクタ
 GunEnemy::GunEnemy()
 {
