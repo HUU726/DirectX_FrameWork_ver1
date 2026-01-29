@@ -34,7 +34,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	SetTag(GunEnemyParam::tag);								// タグを付ける:"Gun"
 	currentState = GunEnemy::defoult;						// 状態をデフォルトに
 	changeTrigger = GunEnemyParam::changeScene;				// changeSceneをfalseで初期化
-	startTrigger = GunEnemyParam::startScene;					// startSceneをtrueで初期化
+	startTrigger = GunEnemyParam::startScene;				// startSceneをtrueで初期化
 	anipos = GunEnemyParam::anipos;							// aniposを初期化
 	oldani = GunEnemyParam::oldani;							// oldaniを初期化
 	waittimer = GunEnemyParam::waittimer;					// 弾が非アクティブになってからの待機時間を初期化
@@ -56,6 +56,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 
 	//アニメーターの設定
 	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
+	//SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 11));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	//animationの設定 
@@ -68,6 +69,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flameraito = 12;
 			// defoultのアニメーション
 			SpriteAnimation anim1(div, { 0,0 }, flamecount);
+			//SpriteAnimation anim1(div, { 4,7 }, flamecount);
 			anim1.InActive();
 			anim1.SetID(0);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
@@ -82,6 +84,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flameraito = 12;
 			// shottingのアニメーション
 			SpriteAnimation anim2(div, { 1,5 }, flamecount);
+			//SpriteAnimation anim2(div, { 5,9 }, flamecount);
 			anim2.InActive();
 			anim2.SetID(1);
 			anim2.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -188,18 +191,39 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 
 		// deadのアニメーション
 		{
-			flamecount = 5;
-			flameraito = 8;
-			SpriteAnimation anim3(div, { 4,4 }, flamecount);
-			anim3.InActive();
-			anim3.SetID(8);
-			anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
-			anim3.SetPriority(0);
-			for (int i = 0; i < flamecount; i++)
+			// 右向き
 			{
-				anim3.GetCellRef(i).flame = flameraito;
+				flamecount = 5;
+				flameraito = 8;
+				SpriteAnimation anim3(div, { 4,4 }, flamecount);
+				//SpriteAnimation anim3(div, { 0,9 }, flamecount);
+				anim3.InActive();
+				anim3.SetID(8);
+				anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+				anim3.SetPriority(0);
+				for (int i = 0; i < flamecount; i++)
+				{
+					anim3.GetCellRef(i).flame = flameraito;
+				}
+				p_spriteAnimator->AddAnimation(anim3);
 			}
-			p_spriteAnimator->AddAnimation(anim3);
+			// 左向き
+			{
+				/*
+				flamecount = 5;
+				flameraito = 8;
+				SpriteAnimation anim3(div, { 4,4 }, flamecount);
+				anim3.InActive();
+				anim3.SetID(9);
+				anim3.SetType(SPRITE_ANIM_TYPE::NORMAL);
+				anim3.SetPriority(0);
+				for (int i = 0; i < flamecount; i++)
+				{
+					anim3.GetCellRef(i).flame = flameraito;
+				}
+				p_spriteAnimator->AddAnimation(anim3);
+				*/
+			}
 		}
 	}
 
@@ -330,12 +354,26 @@ void GunEnemy::Dead()
 		// エネミー総数の減少
 		CEnemy::DownEnemyCount();
 		// 死亡アニメーションを再生する
+		/*
+		if (direction == 0 || direction == 1)
+		{
+			anipos = 8;
+			GetComponent<SpriteAnimator>()->Play(anipos);
+		}
+		else
+		{
+			anipos = 9;
+			GetComponent<SpriteAnimator>()->Play(anipos);
+		}
+		*/
 		GetComponent<SpriteAnimator>()->Play(8);
 	}
 
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	if (timer >= deadtime)
 	{
+		GetComponent<SpriteAnimator>()->Stop(8);
+		//GetComponent<SpriteAnimator>()->Stop(anipos);
 		GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
 		GetComponent<GameObjectManager>()->DestroyGameObject(this);
 	}
@@ -355,6 +393,7 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 		// 処理
 		timer = 0;
 		changeTrigger = true;
+		oldani = anipos;
 		currentState = GunEnemy::dead;
 		GetComponent<BoxCollider2D>()->SetIsActive(false);		// 当たり判定消去
 		bullet->SetBulletActive(false);							// 弾も削除
