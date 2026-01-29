@@ -362,6 +362,8 @@ void BiteEnemy::Attack()
 
 	if (timer == attackCreate)
 	{
+		attackCollider->UpdatePos();							// 座標を更新
+		attackCollider->MassFrash();							// 攻撃前にもマスを表示
 		attackCollider->SendDir(dir);							// 方向を送る
 		attackCollider->SetFg(true);							// 攻撃をアクティブ
 	}
