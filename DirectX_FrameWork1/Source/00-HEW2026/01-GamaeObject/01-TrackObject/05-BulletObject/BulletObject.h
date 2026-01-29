@@ -11,68 +11,30 @@ class BoxCollider2D;
 class BulletObject : public GameObject2D
 {
 private:
-	// 自身の体の判定用のコライダー
-	BoxCollider2D* bodyColler = nullptr;
-
-	// マップの情報
-	BaseMap* p_map = nullptr;
-
-	// マップの端
-	hft::HFFLOAT2 LeftTop;
-	hft::HFFLOAT2 RightBottom;
+	hft::HFFLOAT2 LeftTop;			// マップの端(左、上)
+	hft::HFFLOAT2 RightBottom;		// マップの端(右、下)
+	int timer;						// 経過時間
+	bool active;					// 弾が存在する時にtrueにし、存在しない時にfalseにする
+	int livetime;					// 弾が存在する時間
+	float spead;					// 弾の進むスピード
+	bool startTrigger;				// アクティブになると一度だけ実行される
+	int direction;					// 方向の情報を値として格納する変数(0:右 1:上 2:左 3:下)
 	
-	// 弾が存在する時にtrueにし、存在しない時にfalseにする
-	bool active;
+	// 内部用
+	void AddPos();					// 出現させる座標を調節させる
+	void UpdatePos();				// 方向の種類によって、自身の位置を加算する
+	void CheakMyPos();				// マップの隅の超えるなら反対の座標を代入する
 
-	// 弾が進み続けるフレーム
-	int livetime;
-
-	// 弾の進むスピード
-	float spead;
-
-	// 弾が炸裂してから消えるまでのフレーム
-	int blasttime;
-
-	// 経過時間
-	int timer;
-
-	// シーンが切り替わると一度だけ実行される
-	bool startScene = true;
-	
-	// 弾が撃たれてから、ヒット判定に本体を含めない時間
-	int NotHittime;
-
-	enum State
-	{
-		defoult,
-		blast,
-	};
-	State currentState;
-
-	// 方向の情報を値として格納する変数
-	int direction;	// 0:右 1:上 2:左 3:下
-	
-	// 方向の種類によって、自身の位置を加算する
-	void UpdatePos();
-
-	// マップの隅の超えるなら反対の座標を代入する
-	void CheakMyPos();
-	
+	BaseMap* p_map;					// マップの情報
 public:
-	BulletObject() = default;
+	BulletObject();
 	void Init() override {};
 	void Init(BaseMap* p_map,const int& NewDirection);	// マップ情報,発射元の当たり判定,方向
 	void Update() override;
-
-	void SetTag(const std::string& NewTag) { tag = NewTag; }
-	void SetDirection(const int& NewDirection) { direction = NewDirection; }
-	int GetDirection() { return direction; }
-	void SetBulletActive(const bool& NewActive) { active = NewActive; }
-	bool GetBulletActive() { return active; }
-
-	
-	void SetPos(const hft::HFFLOAT3& NewPosition) { p_transform->position = NewPosition; }// 座標指定
-	void Defoult();
-	void Blast();
 	void OnCollisionEnter(Collider* _p_col) override;
+
+	// 外部用
+	void SendPos(const hft::HFFLOAT3& NewPos) { p_transform->position = NewPos; }		// 弾が放たれる直前の座標を送るよう
+	void SetBulletActive(const bool& NewAct) { active = NewAct; }				// 弾の状態をセットする
+	bool GetBulletActive() { return active; }									// 弾の状態を受け取る
 };

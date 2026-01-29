@@ -510,7 +510,7 @@ void PlayerObject::UpdateCharge()
         // --- パワー計算 ---
 
         // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed + max_hammer_power * 0.3;
+        float basePower = mag * charge_speed + max_hammer_power + 1.f;
         if (basePower > limit_hammer_power) basePower = limit_hammer_power;
 
         // チャージボーナス
@@ -583,7 +583,7 @@ void PlayerObject::UpdateCharge()
         float angleDiff = std::abs(shotAngle - this->angle.x);
         if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
 
-        if (angleDiff < 1.0f || hammer_power < 0.3f)
+        if (angleDiff < 1.0f || hammer_power < 1.0f)
         {
             pArrow->Hide();
             hammer_power = 0.0f;
@@ -791,6 +791,8 @@ void PlayerObject::UpdateDead()
 void PlayerObject::OnHit()
 {
 	if (invincible || state == PLAYER_STATE::DEAD) return; // 無敵中や死亡中は無視
+
+    if (pArrow) pArrow->Hide();
 
     hitpoint--;
     std::cout << "Player Damaged! HP:" << hitpoint << std::endl;
