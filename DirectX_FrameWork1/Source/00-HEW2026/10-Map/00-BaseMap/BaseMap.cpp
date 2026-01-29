@@ -329,7 +329,7 @@ void BaseMap::CreateTiles()
 		auto renderer = BGImg->GetComponent<SpriteRenderer>();
 		renderer->LoadTexture("Assets/01-Texture/01-Map/Background.png");
 		auto p_trf = BGImg->GetTransformPtr();
-		p_trf->position.z = -99;
+		p_trf->position.z = -20;
 		p_trf->scale = { width,height,1 };
 	}
 }
@@ -363,7 +363,7 @@ void BaseMap::CreateObjects()
 				{
 					PlayerObject* p_obj = new PlayerObject;
 					p_obj->Init(this, &Input::GetInstance());
-					p_obj->GetTransformPtr()->position.z = -30;
+					p_obj->GetTransformPtr()->position.z = -1;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -372,7 +372,7 @@ void BaseMap::CreateObjects()
 					biteVec += 1;
 					BiteEnemy* p_obj = new BiteEnemy;
 					p_obj->Init(*biteVec);
-					p_obj->GetTransformPtr()->position.z = -20;
+					p_obj->GetTransformPtr()->position.z = -2;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -381,7 +381,7 @@ void BaseMap::CreateObjects()
 					++gunVec;
 					GunEnemy* p_obj = new GunEnemy;
 					p_obj->Init(this, *gunVec);
-					p_obj->GetTransformPtr()->position.z = -30;
+					p_obj->GetTransformPtr()->position.z = -3;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -389,7 +389,7 @@ void BaseMap::CreateObjects()
 				{
 					BombEnemy* p_obj = new BombEnemy;
 					p_obj->Init();
-					p_obj->GetTransformPtr()->position.z = -40;
+					p_obj->GetTransformPtr()->position.z = -4;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -397,7 +397,7 @@ void BaseMap::CreateObjects()
 				{
 					ConnectObject* p_obj = new ConnectObject;
 					p_obj->Init(this);
-					p_obj->GetTransformPtr()->position.z = -50;
+					p_obj->GetTransformPtr()->position.z = -5;
 					p_trackObj = p_obj;
 				}
 				break;
@@ -405,7 +405,7 @@ void BaseMap::CreateObjects()
 				{
 					ThormObject* p_obj = new ThormObject;
 					p_obj->Init();
-					p_obj->GetTransformPtr()->position.z = -60;
+					p_obj->GetTransformPtr()->position.z = -6;
 					p_trackObj = p_obj;
 				}
 				break;
