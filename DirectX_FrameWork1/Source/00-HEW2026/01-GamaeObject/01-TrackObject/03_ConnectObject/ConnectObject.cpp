@@ -13,6 +13,7 @@ ConnectObject::ConnectObject()
 	//–¼‘O‚ðÝ’è
 	//name = "Connect";
 	name = "Enemy";
+	tag = "Enemy";
 
 	//¶¬”Ô†‚ðÝ’è
 	instanceCounter++;
@@ -331,6 +332,7 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 		attackObj->Init();
 		//attackObj->SetTag("Enemy");
 		attackObj->SetTag("Connect");
+		attackObj->SetName("Connect");
 		attackObj->GetComponent<SpriteRenderer>()->LoadTexture(ConnectObjectParam::emitAttackTexName);
 		attackObj->AddComponent<BoxCollider2D>();
 		emitAttackObjects.push_back(attackObj);
