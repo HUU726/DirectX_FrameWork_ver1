@@ -329,7 +329,7 @@ void BaseMap::CreateTiles()
 		auto renderer = BGImg->GetComponent<SpriteRenderer>();
 		renderer->LoadTexture("Assets/01-Texture/01-Map/Background.png");
 		auto p_trf = BGImg->GetTransformPtr();
-		p_trf->position.z = -99;
+		p_trf->position.z = -10;
 		p_trf->scale = { width,height,1 };
 	}
 }
