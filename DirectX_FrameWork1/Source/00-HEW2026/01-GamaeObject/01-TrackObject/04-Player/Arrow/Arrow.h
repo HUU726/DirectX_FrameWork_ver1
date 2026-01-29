@@ -18,8 +18,9 @@ public:
      * @param _pos   表示位置（音叉と同じ場所）
      * @param _angle 回転角度（度数法）
      * @param _ratio パワーの割合 (0.0f ~ 1.0f)
+     * @param _tileSize タイルサイズ（開始位置のオフセット計算用）
      */
-    void UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio);
+    void UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio, float _tileSize);
 
     void Hide();
 };

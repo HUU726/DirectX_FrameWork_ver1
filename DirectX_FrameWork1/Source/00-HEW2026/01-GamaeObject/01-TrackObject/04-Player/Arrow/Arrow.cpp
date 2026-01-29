@@ -36,7 +36,7 @@ void Arrow::Init(float _scaleRatio)
     renderer->SetIsActive(false);
 }
 
-void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio)
+void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio, float _tileSize)
 {
     auto renderer = GetComponent<SpriteRenderer>();
     if (!renderer->GetIsActive()) {
@@ -45,17 +45,27 @@ void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _rati
 
     Transform* pTrf = GetTransformPtr();
 
-    // ˆÊ’u‚Æ‰ñ“]‚ÌXV
-    pTrf->position.x = _pos.x;
-    pTrf->position.y = _pos.y;
+    // ‰ñ“]‚ÌÝ’è
+    float rotDeg = _angle - 180.f;
+    pTrf->rotation.z = rotDeg;
 
-    pTrf->rotation.z = _angle - 180.f; //‰æ‘œ‚ÉŠî‚Ã‚«¶‰E”½“] -180
+    // ’·‚³iƒXƒP[ƒ‹j‚ÌŒˆ’è
+    float length = _tileSize * (0.5f + _ratio * 2.0f);
 
-    // ƒpƒ[‚É‰ž‚¶‚½Lk
-    // _ratio (0.0`1.0) ‚É‰ž‚¶‚ÄA’·‚³‚ð•Ï‚¦‚é
-    float scaleVal = 0.5f + _ratio; // Å¬0.5”{ ` Å‘å1.5”{
+    pTrf->scale = { length, 50.0f, 1.0f };
 
-    pTrf->scale = { 100.0f * scaleVal * scaleRatio, 50.0f * scaleRatio, 1.0f };
+    // ˆÊ’u‚ÌƒIƒtƒZƒbƒgŒvŽZ
+    // Šp“x‚ðƒ‰ƒWƒAƒ“‚É•ÏŠ·
+    float rad = rotDeg * 3.14159265f / 180.0f;
+    float dirX = std::cos(rad);
+    float dirY = std::sin(rad);
+
+    // ‚¸‚ç‚·‹——£ = (ƒ^ƒCƒ‹‚Ì”¼Œa) + (–îˆó‚Ì”¼Œa)
+    float offsetDist = (_tileSize * -0.2f) + (length * 0.5f);
+
+    // À•W‚É”½‰f
+    pTrf->position.x = _pos.x + dirX * offsetDist;
+    pTrf->position.y = _pos.y + dirY * offsetDist;
 }
 
 void Arrow::Hide()

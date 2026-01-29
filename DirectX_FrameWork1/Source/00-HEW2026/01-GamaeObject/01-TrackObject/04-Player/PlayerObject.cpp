@@ -510,7 +510,7 @@ void PlayerObject::UpdateCharge()
         // --- パワー計算 ---
 
         // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed + max_hammer_power + 1.f;
+        float basePower = mag * charge_speed + max_hammer_power + 1.f; //最低でも１マスズラしからスタート
         if (basePower > limit_hammer_power) basePower = limit_hammer_power;
 
         // チャージボーナス
@@ -616,7 +616,8 @@ void PlayerObject::UpdateCharge()
                 pTuningFork->GetTransformPtr()->position.y
             };
 
-            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, tileSize);
+
             pArrow->GetTransformPtr()->position.z = -11;
         }
     }
@@ -651,7 +652,7 @@ void PlayerObject::UpdateRelease()
         {
             // キャンセル処理...
             ChangeState(PLAYER_STATE::STAND);
-            if (pTuningFork) pTuningFork->Hide();
+            if (pTuningFork) pTuningFork->PlayDisappear();
             if (pArrow) pArrow->Hide();
             hammer_power = 0.0f;
             return;
