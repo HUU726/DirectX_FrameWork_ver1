@@ -130,7 +130,7 @@ void RendererManager::UnInit()
 void RendererManager::ClearScreen()
 {
 	// 画面塗りつぶし色
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	// 描画先のキャンバスと使用する深度バッファを指定する
 	this->p_DeviceContext->OMSetRenderTargets(1, &this->p_RenderTargetView, this->p_DepthStencilView);
 	// 描画先キャンバスを塗りつぶす

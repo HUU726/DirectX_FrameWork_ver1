@@ -6,11 +6,7 @@
 
 // マクロ定義
 #define CLASS_NAME   "DX21_Fuki"// ウインドウクラスの名前
-#define WINDOW_NAME  "FH_Application"// ウィンドウの名前
-
-#define SCREEN_WIDTH (1920 / 1.5)		//ウィンドウ横
-#define SCREEN_HEIGHT (1080 / 1.5)	//ウィンドウ縦
-
+#define WINDOW_NAME  "ズラッシュ！！"// ウィンドウの名前
 
 
 class HF_Window
