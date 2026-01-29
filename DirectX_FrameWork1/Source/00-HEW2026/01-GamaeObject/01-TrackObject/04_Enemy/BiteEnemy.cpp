@@ -64,8 +64,7 @@ void BiteEnemy::Init(const int& direction)
 	// レンダラーの設定
 	std::shared_ptr<Texture> tex = GetComponent<SpriteRenderer>()->LoadTexture(BiteEnemyParam::BiteEnemyTexName);
 	// アニメーターの設定
-	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8, 8));
-	// SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8,10));
+	SpriteAnimator* p_spriteAnimator = AddComponent<SpriteAnimator>(hft::HFFLOAT2(8,10));
 	hft::HFFLOAT2 div = p_spriteAnimator->GetDivision();
 
 	float flameraito = 0;		// フレームレート
@@ -76,8 +75,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 10;
 			flamespead = 10;
-			SpriteAnimation anim(div, { 0,0 }, flameraito);
-			//SpriteAnimation anim(div, { 6,3 }, flameraito);
+			SpriteAnimation anim(div, { 6,3 }, flameraito);
 			anim.InActive();
 			anim.SetID(0);
 			anim.SetType(SPRITE_ANIM_TYPE::LOOP);
@@ -140,11 +138,9 @@ void BiteEnemy::Init(const int& direction)
 	// 攻撃アニメーション
 	{
 		{ // 右向き
-			flameraito = 7;
-			//flameraito = 9;
+			flameraito = 9;
 			flamespead = 7;
-			SpriteAnimation anim(div, { 2,4 }, flameraito);
-			//SpriteAnimation anim(div, { 5,9 }, flameraito);
+			SpriteAnimation anim(div, { 5,9 }, flameraito);
 			anim.InActive();
 			anim.SetID(4);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -173,8 +169,7 @@ void BiteEnemy::Init(const int& direction)
 		}
 
 		{ // 左向き
-			flameraito = 7;
-			//flameraito = 9;
+			flameraito = 9;
 			flamespead = 7;
 			SpriteAnimation anim(div, { 2,4 }, flameraito);
 			anim.InActive();
@@ -209,8 +204,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 右向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
-			//SpriteAnimation anim(div, { 0,6 }, flameraito);
+			SpriteAnimation anim(div, { 0,6 }, flameraito);
 			anim.InActive();
 			anim.SetID(8);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -225,8 +219,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 上向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 1,1 }, flameraito);
-			//SpriteAnimation anim(div, { 5,3 }, flameraito);
+			SpriteAnimation anim(div, { 5,3 }, flameraito);
 			anim.InActive();
 			anim.SetID(9);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -241,8 +234,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 左向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
-			//SpriteAnimation anim(div, { 2,5 }, flameraito);
+			SpriteAnimation anim(div, { 2,5 }, flameraito);
 			anim.InActive();
 			anim.SetID(10);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -257,8 +249,7 @@ void BiteEnemy::Init(const int& direction)
 		{ // 下向き
 			flameraito = 2;
 			flamespead = 2;
-			SpriteAnimation anim(div, { 5,3 }, flameraito);
-			//SpriteAnimation anim(div, { 7,2 }, flameraito);
+			SpriteAnimation anim(div, { 7,2 }, flameraito);
 			anim.InActive();
 			anim.SetID(11);
 			anim.SetType(SPRITE_ANIM_TYPE::NORMAL);
@@ -291,7 +282,6 @@ void BiteEnemy::Init(const int& direction)
 		}
 
 		{
-			/*
 			// 右向き
 			flameraito = 4;
 			flamespead = 4;
@@ -306,7 +296,6 @@ void BiteEnemy::Init(const int& direction)
 				anim1.GetCellRef(i).flame = flamespead;
 			}
 			p_spriteAnimator->AddAnimation(anim1);
-			*/
 		}
 
 	}
@@ -479,7 +468,6 @@ void BiteEnemy::Dead()
 	{
 		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
-		/*
 		if (dir == 0 || dir == 1)
 		{
 			anipos = 12;
@@ -492,16 +480,12 @@ void BiteEnemy::Dead()
 			GetComponent<SpriteAnimator>()->Stop(oldani);
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
-		*/
-		GetComponent<SpriteAnimator>()->Stop(oldani);
-		GetComponent<SpriteAnimator>()->Play(12);
 	}
 	
 	if (timer >= deadtime)
 	{
 		timer = 0;
-		GetComponent<SpriteAnimator>()->Stop(12);
-		//GetComponent<SpriteAnimator>()->Stop(anipos);
+		GetComponent<SpriteAnimator>()->Stop(anipos);
 		GetComponent<SpriteRenderer>()->SetIsActive(false);						// 描写停止
 		GetComponent<GameObjectManager>()->DestroyGameObject(attackCollider);	// 攻撃マスの活動停止
 		GetComponent<GameObjectManager>()->DestroyGameObject(this);				// 活動停止

@@ -25,9 +25,9 @@ GunEnemy::~GunEnemy()
 	if (!bullet) { delete bullet; bullet = nullptr; }
 }
 
-//====================================================================================================
+//===============================================================================================
 // 弾を撃つ敵の初期化処理(Init)
-//====================================================================================================
+//===============================================================================================
 void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 {
 	timer = 0;												// タイマーの初期化
@@ -68,8 +68,7 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			flamecount = 12;
 			flameraito = 12;
 			// defoultのアニメーション
-			SpriteAnimation anim1(div, { 0,0 }, flamecount);
-			//SpriteAnimation anim1(div, { 4,7 }, flamecount);
+			SpriteAnimation anim1(div, { 4,7 }, flamecount);
 			anim1.InActive();
 			anim1.SetID(0);
 			anim1.SetType(SPRITE_ANIM_TYPE::LOOP);
@@ -208,7 +207,6 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 			}
 			// 右向き
 			{
-				/*
 				flamecount = 5;
 				flameraito = 8;
 				SpriteAnimation anim3(div, { 0,9 }, flamecount);
@@ -221,7 +219,6 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 					anim3.GetCellRef(i).flame = flameraito;
 				}
 				p_spriteAnimator->AddAnimation(anim3);
-				*/
 			}
 		}
 	}
@@ -353,7 +350,6 @@ void GunEnemy::Dead()
 		// エネミー総数の減少
 		CEnemy::DownEnemyCount();
 		// 死亡アニメーションを再生する
-		/*
 		if (direction == 0 || direction == 1)
 		{
 			anipos = 8;
@@ -364,15 +360,12 @@ void GunEnemy::Dead()
 			anipos = 9;
 			GetComponent<SpriteAnimator>()->Play(anipos);
 		}
-		*/
-		GetComponent<SpriteAnimator>()->Play(8);
 	}
 
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	if (timer >= deadtime)
 	{
-		GetComponent<SpriteAnimator>()->Stop(8);
-		//GetComponent<SpriteAnimator>()->Stop(anipos);
+		GetComponent<SpriteAnimator>()->Stop(anipos);
 		GetComponent<GameObjectManager>()->DestroyGameObject(bullet);
 		GetComponent<GameObjectManager>()->DestroyGameObject(this);
 	}
