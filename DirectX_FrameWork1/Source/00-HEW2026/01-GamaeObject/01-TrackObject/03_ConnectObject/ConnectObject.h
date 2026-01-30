@@ -10,6 +10,7 @@
 class BoxCollider2D;
 class BaseMap;
 
+
 class ConnectObject : public TrackObject
 {
 private:
@@ -32,11 +33,15 @@ private:
 	//攻撃判定用のオブジェクト配列
 	std::vector<GameObject2D*> emitAttackObjects;
 
+	//削除するときのゴミ箱
+	static std::vector<GameObject2D*> deleteObject;
+
 	//拡大率調整用のスケールレート
 	float scallingLate;
 
 public:
 	ConnectObject();
+	~ConnectObject();
 	void Init(BaseMap* map);
 	void Update() override;
 
@@ -60,6 +65,9 @@ public:
 
 	//自身の座標から接触相手の座標まで、縦横いずれかの向きで攻撃判定用オブジェクトを配置する
 	void SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir);
+
+	//シーン遷移時に当たり判定用のオブジェクトをゴミ箱に入れる
+	void MoveAttackObjectsToTrash();
 
 	//自身の生成番号を取得
 	const int GetInstanceNumber() { return myInstanceNumber; }
