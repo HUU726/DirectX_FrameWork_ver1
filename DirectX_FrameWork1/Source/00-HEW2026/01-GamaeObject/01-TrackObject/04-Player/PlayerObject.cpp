@@ -268,7 +268,7 @@ void PlayerObject::UpdateStand()
 
     // マウス位置 - 中心位置 = 相対ベクトル
     float relX = mx;
-    float relY = my * -1.f;
+    float relY = my;
 
     float mouseMagSq = relX * relX + relY * relY;
 
@@ -309,7 +309,7 @@ void PlayerObject::UpdateSelect()
     {
         // マウスの絶対座標（画面中央が 0,0）
         float mouseWorldX = rawMx;
-        float mouseWorldY = rawMy * -1.f;
+        float mouseWorldY = rawMy;
 
         // プレイヤーの絶対座標（画面中央が 0,0）
         float playerWorldX = p_transform->position.x;
@@ -466,7 +466,7 @@ void PlayerObject::UpdateCharge()
         float pullY = dragStartPos.y - my;
         float mag = std::sqrt(pullX * pullX + pullY * pullY);
 
-        aimVector = { pullX, pullY };
+        aimVector = { pullX, -pullY };
 
         // --- パワー計算 ---
 
@@ -509,26 +509,56 @@ void PlayerObject::UpdateCharge()
 
         // --- パワー計算 ---
 
-        // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed + max_hammer_power + 1.f;
-        if (basePower > limit_hammer_power) basePower = limit_hammer_power;
+        float normalizedMag = 0.0f;
 
-        // チャージボーナス
+        if (mag > CHARGE_THRESHOLD)
+        {
+            // (現在の傾き - 閾値) / (1.0 - 閾値)
+            normalizedMag = (mag - CHARGE_THRESHOLD) / (1.0f - CHARGE_THRESHOLD);
+        }
+
+        // 正規化した値を使って目標パワーを計算
+        float targetPower = normalizedMag * limit_hammer_power;
+
+        // 限界まで倒している時だけ、さらにボーナスを加算する（限界突破）
         if (mag > 0.9f)
         {
             chargeTimer++;
             float bonusPower = chargeTimer * charge_speed;
-            hammer_power = basePower + bonusPower;
+            targetPower += bonusPower;
         }
         else
         {
             chargeTimer = 0;
-            hammer_power = basePower;
+        }
+
+        // 現在のパワーを、目標パワーに向けて徐々に変化させる
+        if (hammer_power < targetPower)
+        {
+            hammer_power += charge_speed;
+
+            // 行き過ぎ防止（目標を超えたら合わせる）
+            if (hammer_power > targetPower) hammer_power = targetPower;
+        }
+        else
+        {
+            hammer_power = targetPower;
+
         }
 
         // 判定
         if (mag < CHARGE_THRESHOLD) isCanceled = true;
-        if (!pInput->GetButtonPress(Button::XBox::X)) isReleased = true;
+        if (!pInput->GetButtonPress(Button::XBox::X))
+        {
+            if (hammer_power < 1.0f)
+            {
+                isCanceled = true;
+            }
+            else
+            {
+                isReleased = true;
+            }
+        }
     }
 
     // 方向保存処理
@@ -586,7 +616,7 @@ void PlayerObject::UpdateCharge()
         if (angleDiff < 1.0f || hammer_power < 1.0f)
         {
             pArrow->Hide();
-            hammer_power = 0.0f;
+            //hammer_power = 0.0f;
             chargeTimer = 0;
         }
         else
