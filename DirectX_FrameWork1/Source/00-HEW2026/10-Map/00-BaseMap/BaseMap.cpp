@@ -580,7 +580,7 @@ bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
 	for (const auto& obj : onMapTrackObjects)
 	{
 		objline = obj->GetLineIndex();
-		if (_index == objline && obj->GetTag() != "TuningFork" && obj->GetTag() != "Player")
+		if (_index == objline && obj->GetTag() != "TuningFork" && obj->GetTag() != "Player" && obj->GetTag() != "Connenct")
 		{
 			std::cout << "can't select : reason...Tag: " << obj->GetTag() << std::endl;
 			return false;
