@@ -453,6 +453,7 @@ BaseMap::~BaseMap()
 }
 
 
+#include "../../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 void BaseMap::SetSlideData(const hft::HFFLOAT2& _anchorPos, const hft::HFFLOAT2& _moveVec, const float& _power)
 {
 	//ƒYƒŒ‚ª‘¶İ‚·‚é‚©Šm”F
