@@ -11,6 +11,8 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 #include "../../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
+#include "../../../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
+
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -180,10 +182,10 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     pArrow->Init(ratio);
 
 	// サウンド読み込み
-    SE_LAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
-    SE_MAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
-    SE_SAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
-    SE_Charge = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+    SE_LAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/01-Player/Onsa.wav", false);
+    SE_MAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/01-Player/Onsa.wav", false);
+    SE_SAttack = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/01-Player/Onsa.wav", false);
+    SE_Charge = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/01-Player/Charge.wav", false);
     SE_Hit = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
     SE_Dead = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
 }
@@ -463,8 +465,6 @@ void PlayerObject::UpdateSelect()
 
 void PlayerObject::UpdateCharge()
 {
-    //SoundManager::GetInstance().Play(SE_Charge); // チャージ音再生
-
     animTimer++;
     if (!isChargeLoop)
     {
@@ -788,6 +788,7 @@ void PlayerObject::UpdateRelease()
             try
             {
                 if (anchorIdx.x >= 0 && anchorIdx.y >= 0) {
+                    GameObjectManager::GetInstance().Stop(80.0f);
                     pMap->SetSlideData(anchorIdx, moveVec, hammer_power);
                     if (pTuningFork) pTuningFork->PlayHitEffect();
 
@@ -863,6 +864,7 @@ void PlayerObject::OnHit()
 
     hitpoint--;
     std::cout << "Player Damaged! HP:" << hitpoint << std::endl;
+    GameObjectManager::GetInstance().Stop(80.0f);
 
     if (hitpoint <= 0)
     {
@@ -994,7 +996,7 @@ void PlayerObject::ChangeState(PLAYER_STATE _nextState)
     //次ステートのアニメーション再生
     switch (state) {
     case PLAYER_STATE::STAND:   animator->Play(ANIM_STAND); break;
-    case PLAYER_STATE::CHARGE:  animator->Play(ANIM_CHARGE); break;
+    case PLAYER_STATE::CHARGE:  animator->Play(ANIM_CHARGE); SoundManager::GetInstance().Play(SE_Charge); break;
     case PLAYER_STATE::HIT:     animator->Play(ANIM_HIT); break;
     case PLAYER_STATE::DEAD:    animator->Play(ANIM_DEAD); break;
     default: break;
