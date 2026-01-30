@@ -33,6 +33,7 @@ private:
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
 	int GetDirection() { return direction; }
 	
+	static std::vector<BulletObject*> ptr_num;	// 削除する予定のオブジェクトを一時保
 	BulletObject* bullet;				// 弾オブジェクト
 public:
 	GunEnemy();

@@ -7,12 +7,16 @@
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/05-BulletObject/BulletObject.h"
 #include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
+#include"../../../../01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
 class BoxCollider2D;
 
 // このエネミーのタグ:"Bite"
+
+
+std::vector<AttackMass*> BiteEnemy::ptr_num;
 
 // コンストラクタ
 BiteEnemy::BiteEnemy()
@@ -23,7 +27,7 @@ BiteEnemy::BiteEnemy()
 // デストラクタ
 BiteEnemy::~BiteEnemy()
 {
-	if (!attackCollider) { delete attackCollider; attackCollider = nullptr; }
+	if (attackCollider) { delete attackCollider; attackCollider = nullptr; }
 }
 
 //==================================================================================
@@ -31,6 +35,9 @@ BiteEnemy::~BiteEnemy()
 //==================================================================================
 void BiteEnemy::Init(const int& direction)
 {
+	for (auto num : ptr_num)delete num;
+	ptr_num.clear();
+
 	timer = 0;										// タイマーの初期化
 	tag = BiteEnemyParam::tag;						// タグ:Bite
 	currentState = BiteEnemy::defoult1;				// 通常状態からスタート
@@ -328,6 +335,18 @@ void BiteEnemy::Update()
 	case State::dead:Dead();break;
 	default:std::cout << "状態エラー\n";
 	}
+
+	// シーン遷移
+	if (SceneManager::GetInstance().GetNext())
+	{
+		if (attackCollider)
+		{
+			attackCollider->GetComponent<BoxCollider2D>()->SetIsActive(false);
+			attackCollider->GetComponent<SpriteRenderer>()->SetIsActive(false);
+			ptr_num.push_back(attackCollider);
+			attackCollider = nullptr;
+		}
+	}
 }
 
 //==================================================================================
@@ -526,6 +545,12 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 //*
 //*  本体とOnCollisionEnterの処理と攻撃判定のOnCollisionEnterの処理が被ってしまうため、攻撃判定をクラスにして本体に持たせてます
 //*
+
+AttackMass::~AttackMass()
+{
+	GetComponent<BoxCollider2D>()->SetIsActive(false);
+	GetComponent<SpriteRenderer>()->SetIsActive(false);
+}
 
 // このオブジェクトのタグ:"Enemy"
 // 

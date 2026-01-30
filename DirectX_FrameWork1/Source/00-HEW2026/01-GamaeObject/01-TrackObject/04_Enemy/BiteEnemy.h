@@ -12,18 +12,16 @@ private:
 	int direction;					// 噛みつく敵と同じ仕様の変数
 	hft::HFFLOAT3 acceptPos;		// 受け取る座標
 public:
+	~AttackMass();
 	void Init() override;
 	void Update() override;
 
 	void SetFg(const bool& NewFg) { Fg = NewFg; }							// Fgをセット 
 	bool GetFg() { return Fg; }												// Fgを返す
-
 	void SendPos(const hft::HFFLOAT3 NewPos) { acceptPos = NewPos; }		// 座標を送る用
 	hft::HFFLOAT3 ReturnPos() { return p_transform->position; };			// 更新された座標を返す用
-
 	void SendDir(const int& NewDir) { direction = NewDir; }					// 方向を送る用
 	void UpdatePos();														// 方向による当たり判定のずらし	
-
 	void MassFrash();														// マスを光らす関数
 	void OnCollisionEnter(Collider* _p_col) override;
 };
@@ -65,6 +63,7 @@ private:
 	void Spin();
 	void Dead();
 
+	static std::vector<AttackMass*> ptr_num;	// 削除する予定のオブジェクトを一時保管
 	AttackMass* attackCollider;		// 攻撃の判定
 public:
 	BiteEnemy();					
