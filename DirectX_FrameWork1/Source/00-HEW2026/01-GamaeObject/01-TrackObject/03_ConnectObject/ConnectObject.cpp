@@ -32,6 +32,15 @@ ConnectObject::ConnectObject()
 	scallingLate = 0.f;
 }
 
+ConnectObject::~ConnectObject()
+{
+	for (GameObject2D* obj : emitAttackObjects)
+	{
+		delete obj;
+		obj = nullptr;
+	}
+}
+
 void ConnectObject::Init(BaseMap* map)
 {
 	//–{‘Ì•”•ª‚Ìİ’è

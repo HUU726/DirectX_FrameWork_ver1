@@ -37,6 +37,7 @@ private:
 
 public:
 	ConnectObject();
+	~ConnectObject();
 	void Init(BaseMap* map);
 	void Update() override;
 
