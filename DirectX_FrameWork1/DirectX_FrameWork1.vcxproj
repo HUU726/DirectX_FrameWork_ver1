@@ -159,7 +159,6 @@
     <ClCompile Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.cpp" />
     <ClCompile Include="Source\00-HEW2026\10-Map\Map.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.cpp" />
-    <ClCompile Include="Source\00-HEW2026\20-Scene\02_SelectScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\03_GameScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\04_ResultScene.cpp" />
     <ClCompile Include="Source\00-HEW2026\20-Scene\Test_HewScene.cpp" />
@@ -262,7 +261,6 @@
     <ClInclude Include="Source\00-HEW2026\10-Map\99-MapDataManager\MapDataManager.h" />
     <ClInclude Include="Source\00-HEW2026\10-Map\Map.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\01_Hew_TitleScene.h" />
-    <ClInclude Include="Source\00-HEW2026\20-Scene\02_SelectScene.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\03_GameScene.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\04_ResultScene.h" />
     <ClInclude Include="Source\00-HEW2026\20-Scene\Test_HewScene2.h" />

@@ -13,4 +13,5 @@ void Hew_GameScene::Init()
 
 void Hew_GameScene::UnInit()
 {
+	MapDataManager::GetInstance().UnLoadMap();
 }

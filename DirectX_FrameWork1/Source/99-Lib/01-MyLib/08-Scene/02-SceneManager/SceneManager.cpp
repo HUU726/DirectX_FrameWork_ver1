@@ -21,7 +21,7 @@ void SceneManager::Init()
 
 void SceneManager::UnInit()
 {
-	UnloadScene();
+	//UnloadScene();
 }
 
 /**

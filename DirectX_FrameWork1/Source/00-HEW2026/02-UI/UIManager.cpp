@@ -70,7 +70,7 @@ void StagePlayUIManager::Init()
 {
 	//ポーズボタンUI
 	{
-		poseButton.Init({ -820.f, 400.f, -95.f }, { 200.f, 200.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		poseButton.Init({ -700.f, 400.f, -95.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pause.png", Type_UI::ButtonType);
 		poseButton.SetTargetKey(Button::KeyBord::Tab);
 		poseButton.SetTargetXBoxButton(Button::XBox::X);
 	}
@@ -78,7 +78,7 @@ void StagePlayUIManager::Init()
 
 	//リトライボタンUI
 	{
-		retryButton.Init({ -820.f, 170.f, -95.f }, { 200.f, 200.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		retryButton.Init({ -700.f, 170.f, -95.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Retry.png", Type_UI::ButtonType);
 		retryButton.SetTargetKey(Button::KeyBord::R);
 		retryButton.SetTargetXBoxButton(Button::XBox::X);
 	}
@@ -101,17 +101,17 @@ void StagePlayUIManager::Init()
 
 	//ポーズボタンが押された時のUI
 	{
-		poseBackGround.Init({ 0.f, 0.f, -98.f }, { 150.f, 500.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		poseBackGround.Init({ -80.f, 0.f, -98.f }, { 800.f, 850.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_paper.png", Type_UI::NormalType);
 
-		restartButton.Init({ 0.f, 100.f, -98.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		restartButton.Init({ 0.f, 150.f, -98.f }, { 600.f, 250.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_restart.png", Type_UI::ButtonType);
 		restartButton.SetTargetKey(Button::KeyBord::A);
 		restartButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goStageSelectButton.Init({ 0.f, 0.f, -98.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		goStageSelectButton.Init({ 0.f, 0.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
 		goStageSelectButton.SetTargetKey(Button::KeyBord::A);
 		goStageSelectButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goTitleButton.Init({ 0.f, -100.f, -98.f }, { 80.f, 50.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		goTitleButton.Init({ 0.f, -150.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
 		goTitleButton.SetTargetKey(Button::KeyBord::A);
 		goTitleButton.SetTargetXBoxButton(Button::XBox::A);
 	}
@@ -193,15 +193,16 @@ void StagePlayUIManager::PoseMode()
 	}
 }
 
-
+#include "../20-Scene/01_Hew_TitleScene.h"
 void StagePlayUIManager::GoTitleMode()
 {
-	return;
+	SceneManager::GetInstance().LoadScene<Hew_TitleScene>();
 }
 
+#include "../20-Scene/02_StageSelectScene.h"
 void StagePlayUIManager::GoStageSelectMode()
 {
-	return;
+	SceneManager::GetInstance().LoadScene<Hew_StageSelectScene>();
 }
 
 void StagePlayUIManager::GameOverMode()
@@ -233,8 +234,10 @@ void StagePlayUIManager::StageClearMode()
 	return;
 }
 
+#include "../20-Scene/03_GameScene.h"
 void StagePlayUIManager::RetryMode()
 {
+	SceneManager::GetInstance().LoadScene<Hew_GameScene>();
 	return;
 }
 
@@ -242,8 +245,14 @@ void StagePlayUIManager::PlayMode()
 {
 	//ポーズ時のUIを非表示
 	poseBackGround.SetIsRender(false);
+
+	restartButton.SetIsActive(false);
 	restartButton.SetIsRender(false);
+
 	goStageSelectButton.SetIsRender(false);
+	goStageSelectButton.SetIsRender(false);
+
+	goTitleButton.SetIsActive(false);
 	goTitleButton.SetIsRender(false);
 
 
@@ -302,7 +311,7 @@ void StagePlayUIManager::ScalePlayerHPBer()
 
 void StagePlayUIManager::SetPlayerData()
 {
-
+　ン
 }
 
 bool StagePlayUIManager::GetIsPose()
