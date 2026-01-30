@@ -30,9 +30,9 @@ public:
 
 	/**
 	* @brief	GameObject全体のUpdateを止める
-	* @param	float	_flame	止めるフレーム数
+	* @param	float	_miriS	止める時間(ミリ秒)
 	*/
-	void Stop(float _flame) { Sleep(_flame); }
+	void Stop(float _miriS) { Sleep(_miriS); }
 
 	/**
 	* @brief	ゲームオブジェクト追加
