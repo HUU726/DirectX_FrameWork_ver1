@@ -406,6 +406,8 @@ void GunEnemy::OnCollisionEnter(Collider* _p_col)
 		changeTrigger = true;
 		oldani = anipos;
 		currentState = GunEnemy::dead;
+		bullet->GetComponent<BoxCollider2D>()->SetIsActive(false);
+		bullet->GetComponent<SpriteRenderer>()->SetIsActive(false);
 		GetComponent<BoxCollider2D>()->SetIsActive(false);		// “–‚½‚è”»’èÁ‹
 		bullet->SetBulletActive(false);							// ’e‚àíœ
 	}
