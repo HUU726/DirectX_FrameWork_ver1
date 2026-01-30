@@ -143,8 +143,8 @@ void StagePlayUIManager::Init()
 	// ---------------------------------------------------
 	{
 		// 背景 (仮画像)
-		clearUI.Init({ 0.f, 200.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
-		clearUI.SetIsActive(false); clearUI.SetIsRender(false);
+		//clearUI.Init({ 0.f, 200.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		//clearUI.SetIsActive(false); clearUI.SetIsRender(false);
 
 		// ステージセレクトへ (Pausemenu_select画像を再利用)
 		clearStageSelectButton.Init({ 0.f, -50.f, -99.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
@@ -157,6 +157,52 @@ void StagePlayUIManager::Init()
 		clearTitleButton.SetTargetKey(Button::KeyBord::B);
 		clearTitleButton.SetTargetXBoxButton(Button::XBox::B);
 		clearTitleButton.SetIsActive(false); clearTitleButton.SetIsRender(false);
+	}
+
+	// ---------------------------------------------------
+	// ステージクリア文字 (メンバ変数配列の初期化)
+	// ---------------------------------------------------
+	{
+		// 読み込むファイル名のリスト
+		std::vector<std::string> fileNames = {
+			"Assets/01-Texture/10-UI/12-Game/S.png",
+			"Assets/01-Texture/10-UI/12-Game/t.png",
+			"Assets/01-Texture/10-UI/12-Game/a.png",
+			"Assets/01-Texture/10-UI/12-Game/g.png",
+			"Assets/01-Texture/10-UI/12-Game/e.png",
+			"Assets/01-Texture/10-UI/12-Game/C.png",
+			"Assets/01-Texture/10-UI/12-Game/l.png",
+			"Assets/01-Texture/10-UI/12-Game/e.png",
+			"Assets/01-Texture/10-UI/12-Game/a.png",
+			"Assets/01-Texture/10-UI/12-Game/r.png"
+		};
+
+		// 配列サイズチェック（念のため）
+		if (fileNames.size() > clearLogos.size()) return;
+
+		// 表示設定
+		float startX = -830.0f;
+		float startY = 200.0f;
+		float gapX = 180.0f;
+		float sizeW = 350.0f;
+		float sizeH = 350.0f;
+
+		for (int i = 0; i < fileNames.size(); i++)
+		{
+			// "STAGE" と "CLEAR" の間に隙間を作る
+			float currentX = startX + (i * gapX);
+			if (i >= 5) currentX += 50.0f;
+
+			// 最終到達点 (ゴール)
+			hft::HFFLOAT3 finalPos = { currentX, startY, -99.05f };
+			hft::HFFLOAT2 scale = { sizeW, sizeH };
+
+			clearLogos[i].Init(finalPos, scale, fileNames[i].c_str(), Type_UI::NormalType);
+
+			// 最初は非表示
+			clearLogos[i].SetIsActive(false);
+			clearLogos[i].SetIsRender(false);
+		}
 	}
 }
 
@@ -254,7 +300,7 @@ void StagePlayUIManager::GameOverMode()
 void StagePlayUIManager::StageClearMode()
 {
 	// クリアUIを表示＆有効化
-	clearUI.SetIsActive(true); clearUI.SetIsRender(true);
+	//clearUI.SetIsActive(true); clearUI.SetIsRender(true);
 	clearStageSelectButton.SetIsActive(true); clearStageSelectButton.SetIsRender(true);
 	clearTitleButton.SetIsActive(true); clearTitleButton.SetIsRender(true);
 
@@ -265,6 +311,58 @@ void StagePlayUIManager::StageClearMode()
 	playerHpBarFront.SetIsRender(false);
 	playerHpBarBack.SetIsRender(false);
 
+	// ---------------------------------------------------
+	// 文字のアニメーション処理
+	// ---------------------------------------------------
+	clearAnimTimer++;
+
+	int delay = 5;
+	int duration = 20;
+	float slideDist = 400.0f;
+
+	// 配列をループ
+	for (int i = 0; i < clearLogos.size(); i++)
+	{
+		UI& targetLogo = clearLogos[i];
+
+		targetLogo.SetIsActive(true);
+		targetLogo.SetIsRender(true);
+
+		int startTime = i * delay;
+
+		// X座標（ゴール地点）の計算
+		float startX = -830.0f;
+		float gapX = 180.0f;
+		float finalX = startX + (i * gapX);
+		if (i >= 5) finalX += 50.0f;
+
+		// X座標を確定
+		targetLogo.GetTransformPtr()->position.x = finalX;
+
+		// Y座標（ゴール地点）
+		float finalY = 200.0f;
+
+		// 待機
+		if (clearAnimTimer < startTime)
+		{
+			// ゴールより上(+slideDist)に待機させておく
+			targetLogo.GetTransformPtr()->position.y = finalY + slideDist;
+		}
+		// 移動中＆完了
+		else
+		{
+			float t = (float)(clearAnimTimer - startTime) / duration;
+			if (t > 1.0f) t = 1.0f;
+
+			float ease = t * t * (3.0f - 2.0f * t);
+
+			float currentY = finalY + (slideDist * (1.0f - ease));
+
+			targetLogo.GetTransformPtr()->position.y = currentY;
+		}
+	}
+
+	// ボタン判定（CleanUp呼び出しは不要）
 	if (clearStageSelectButton.GetIsPressed())
 	{
 		isGoStageSelect = true;
@@ -303,9 +401,17 @@ void StagePlayUIManager::PlayMode()
 	gameOverStageSelectButton.SetIsActive(false); gameOverStageSelectButton.SetIsRender(false);
 
 	// クリア
-	clearUI.SetIsActive(false); clearUI.SetIsRender(false);
+	//clearUI.SetIsActive(false); clearUI.SetIsRender(false);
 	clearStageSelectButton.SetIsActive(false); clearStageSelectButton.SetIsRender(false);
 	clearTitleButton.SetIsActive(false); clearTitleButton.SetIsRender(false);
+
+	// 範囲for文でスッキリ記述
+	for (auto& logo : clearLogos)
+	{
+		logo.SetIsActive(false);
+		logo.SetIsRender(false);
+	}
+	clearAnimTimer = 0;
 
 	// ------------------------------------
 	// プレイ中HUDを有効化＆表示
@@ -320,6 +426,11 @@ void StagePlayUIManager::PlayMode()
 	//プレイヤーのHPバーの長さを切り替え
 	ScalePlayerHPBer();
 
+	if (retryButton.GetIsPressed())
+	{
+		isRetry = true;
+		return;
+	}
 
 	//ポーズボタンを押したときはポーズモードに移行
 	if (!isPose && poseButton.GetIsPressed())
@@ -334,6 +445,9 @@ void StagePlayUIManager::PlayMode()
 		isGameOver = true;
 		return;
 	}
+
+	std::vector<GameObject*> enemies = GameObjectManager::GetInstance().FindGameObject_Tag("Enemy");
+	enemyCount = (int)enemies.size();
 
 	if (enemyCount <= 0)
 	{
