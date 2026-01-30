@@ -6,7 +6,7 @@
 #include"../../01-TrackObject/04_Enemy/BombEnemy.h"
 #include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include"../../../../01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
-
+#include"../../../../01-MyLib/03-Sound/Fsound.h"
 #define RIGHT 0
 #define UP 1
 #define LEFT 2
@@ -238,6 +238,9 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	// 弾オブジェクト初期化
 	bullet = new BulletObject;					// 弾オブジェクト生成
 	bullet->Init(_p_map, GetDirection());		//	弾オブジェクトの初期化(マップの情報,方向)
+
+	//SE_Daed=SoundManager::AddSound();
+	//SE_Shot=SoundManager::AddSound();
 }
 
 //===============================================================================================
@@ -269,6 +272,7 @@ void GunEnemy::Update()
 			ptr_num.clear();
 			bullet = nullptr;
 		}
+		
 	}
 }
 
@@ -357,6 +361,8 @@ void GunEnemy::Dead()
 
 	if (changeTrigger == true)
 	{
+		GameObjectManager::GetInstance().Stop(300);
+		Sleep(100);
 		changeTrigger = false;
 		CEnemy::DownEnemyCount();							// エネミー総数の減少
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// アニメーションの停止

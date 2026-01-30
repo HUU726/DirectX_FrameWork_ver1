@@ -8,6 +8,7 @@
 #include"../../../../00-HEW2026/01-GamaeObject/01-TrackObject/05-BulletObject/BulletObject.h"
 #include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include"../../../../01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
+#include"../../../../01-MyLib/03-Sound/Fsound.h"
 #include"BiteEnemy.h"
 #include"BiteEnemyParam.h"
 
@@ -315,6 +316,9 @@ void BiteEnemy::Init(const int& direction)
 	attackCollider->Init();
 	attackCollider->SetFg(false);
 	attackCollider->SendDir(direction);
+
+	//SE_Bite = SoundManager::AddSound();
+	//SE_Dead = SoundManager::AddSound();
 }
 
 //==================================================================================
@@ -346,6 +350,8 @@ void BiteEnemy::Update()
 			ptr_num.push_back(attackCollider);
 			attackCollider = nullptr;
 		}
+
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);
 	}
 }
 
@@ -494,6 +500,8 @@ void BiteEnemy::Dead()
 
 	if (changeTrigger == true)
 	{
+		GameObjectManager::GetInstance().Stop(300);
+		Sleep(100);
 		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		if (dir == 0 || dir == 1)
@@ -514,7 +522,7 @@ void BiteEnemy::Dead()
 	{
 		timer = 0;
 		GetComponent<SpriteAnimator>()->Stop(anipos);
-		GetComponent<SpriteRenderer>()->SetIsActive(false);						// 描写停止
+		GetComponent<SpriteRenderer>()->SetIsActive(false);					// 描写停止
 		GameObjectManager::GetInstance().RemoveGameObject(attackCollider);	// 攻撃マスの活動停止
 		GameObjectManager::GetInstance().RemoveGameObject(this);			// 活動停止
 	}
@@ -527,7 +535,6 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 {
 	// 接触相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
-	
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ
 	if (col->GetName() == "Bomb" || col->GetName() == "Connect" || col->GetName() == "Thron")
 	{
@@ -538,7 +545,9 @@ void BiteEnemy::OnCollisionEnter(Collider* _p_col)
 		changeTrigger = true;													// 死亡状態の一度だけ処理されるのをアクティブに
 		attackCollider->GetComponent<SpriteRenderer>()->SetIsActive(false);		// 可視化されているマスの表示をOFF
 		attackCollider->SetFg(false);											// 攻撃判定を消す
+		GetComponent<BoxCollider2D>()->SetIsTrigger(false);						// 自身の当たり判定を消す
 		GetComponent<BoxCollider2D>()->SetIsActive(false);						// 自身の当たり判定を消す
+	
 	}
 }
 

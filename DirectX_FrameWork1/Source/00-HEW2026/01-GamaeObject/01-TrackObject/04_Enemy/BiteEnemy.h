@@ -67,7 +67,7 @@ private:
 	AttackMass* attackCollider;					// UŒ‚‚Ì”»’è
 
 	int SE_Bite = -1;							// Œø‰Ê‰¹(Šš‚İ‚Â‚«)
-	int SE_Daed = -1;							// Œø‰Ê‰¹(€–S)
+	int SE_Dead = -1;							// Œø‰Ê‰¹(€–S)
 public:
 	BiteEnemy();					
 	~BiteEnemy();
