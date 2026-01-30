@@ -5,6 +5,7 @@
 #include"../../01-TrackObject/03_ConnectObject/ConnectObject.h"
 #include"../../01-TrackObject/04_Enemy/BombEnemy.h"
 #include"../../../../01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
+#include"../../../../01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
 #define RIGHT 0
 #define UP 1
@@ -12,6 +13,8 @@
 #define DOWN 3
 
 //	タグは"Gun"
+
+std::vector<BulletObject*> GunEnemy::ptr_num;
 
 // コンストラクタ
 GunEnemy::GunEnemy()
@@ -22,7 +25,7 @@ GunEnemy::GunEnemy()
 // デストラクタ
 GunEnemy::~GunEnemy()
 {
-	if (!bullet) { delete bullet; bullet = nullptr; }
+	if (bullet) { delete bullet; bullet = nullptr; }
 }
 
 //===============================================================================================
@@ -255,6 +258,17 @@ void GunEnemy::Update()
 		break;
 	default:
 		break;
+	}
+
+	if (SceneManager::GetInstance().GetNext())
+	{
+		if (bullet)
+		{
+			bullet->GetComponent<BoxCollider2D>()->SetIsActive(false);
+			bullet->GetComponent<SpriteRenderer>()->SetIsActive(false);
+			ptr_num.clear();
+			bullet = nullptr;
+		}
 	}
 }
 

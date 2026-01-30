@@ -227,7 +227,7 @@ void PlayerObject::Update()
 
 
     // 行動不能判定
-    if (pMap)
+    if (pMap && state != PLAYER_STATE::DEAD)
     {
         hft::HFFLOAT2 myIndex = GetLineIndex();
 
@@ -430,7 +430,7 @@ void PlayerObject::UpdateSelect()
     // ---------------------------------------------------
 
     // コントローラー (Xボタン)
-    if (pInput->GetButtonPress(Button::XBox::X) && controllerMode)
+    if (pInput->GetButtonPress(Button::XBox::A) && controllerMode)
     {
         if (isTargetValid && stickMagSq > CHARGE_THRESHOLD * CHARGE_THRESHOLD)
         {
@@ -577,7 +577,7 @@ void PlayerObject::UpdateCharge()
 
         // 判定
         if (mag < CHARGE_THRESHOLD) isCanceled = true;
-        if (!pInput->GetButtonPress(Button::XBox::X))
+        if (!pInput->GetButtonPress(Button::XBox::A))
         {
             if (hammer_power < 1.0f)
             {
@@ -675,7 +675,15 @@ void PlayerObject::UpdateCharge()
                 pTuningFork->GetTransformPtr()->position.y
             };
 
-            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+            float maxDist = 999.0f;
+
+            float arrowSize = hammer_power;
+            if (arrowSize > limit_hammer_power)
+            {
+                arrowSize = limit_hammer_power;
+            }
+
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, arrowSize, tileSize, maxDist);
             pArrow->GetTransformPtr()->position.z = -11;
         }
     }
@@ -710,7 +718,7 @@ void PlayerObject::UpdateRelease()
         {
             // キャンセル処理...
             ChangeState(PLAYER_STATE::STAND);
-            if (pTuningFork) pTuningFork->Hide();
+            if (pTuningFork) pTuningFork->PlayDisappear();
             if (pArrow) pArrow->Hide();
             hammer_power = 0.0f;
             return;
@@ -905,6 +913,20 @@ void PlayerObject::OnCollisionEnter(Collider* _p_col)
 
 void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 {
+    if (state == PLAYER_STATE::DEAD)
+    {
+        return;
+    }
+
+    if (state == PLAYER_STATE::HIT && _nextState != PLAYER_STATE::DEAD)
+    {
+        // まだ痛がっている最中（30フレーム未満）なら、変更を無視する
+        if (animTimer < 30)
+        {
+            return;
+        }
+    }
+
     auto animator = GetComponent<SpriteAnimator>();
 
     //今のステートのアニメーションを止める
