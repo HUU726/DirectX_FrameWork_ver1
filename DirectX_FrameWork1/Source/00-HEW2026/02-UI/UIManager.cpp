@@ -311,7 +311,7 @@ void StagePlayUIManager::ScalePlayerHPBer()
 
 void StagePlayUIManager::SetPlayerData()
 {
-
+Å@Éì
 }
 
 bool StagePlayUIManager::GetIsPose()
