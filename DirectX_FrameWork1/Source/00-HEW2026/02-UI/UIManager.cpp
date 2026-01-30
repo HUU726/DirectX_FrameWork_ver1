@@ -101,17 +101,17 @@ void StagePlayUIManager::Init()
 
 	//ポーズボタンが押された時のUI
 	{
-		poseBackGround.Init({ -80.f, 0.f, -98.f }, { 800.f, 850.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_paper.png", Type_UI::NormalType);
+		poseBackGround.Init({ -80.f, 0.f, -70.f }, { 800.f, 850.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_paper.png", Type_UI::NormalType);
 
-		restartButton.Init({ 0.f, 150.f, -98.f }, { 600.f, 250.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_restart.png", Type_UI::ButtonType);
+		restartButton.Init({ 0.f, 150.f, -71.f }, { 600.f, 250.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_restart.png", Type_UI::ButtonType);
 		restartButton.SetTargetKey(Button::KeyBord::A);
 		restartButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goStageSelectButton.Init({ 0.f, 0.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
+		goStageSelectButton.Init({ 0.f, 0.f, -71.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
 		goStageSelectButton.SetTargetKey(Button::KeyBord::A);
 		goStageSelectButton.SetTargetXBoxButton(Button::XBox::A);
 
-		goTitleButton.Init({ 0.f, -150.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
+		goTitleButton.Init({ 0.f, -150.f, -71.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
 		goTitleButton.SetTargetKey(Button::KeyBord::A);
 		goTitleButton.SetTargetXBoxButton(Button::XBox::A);
 	}
