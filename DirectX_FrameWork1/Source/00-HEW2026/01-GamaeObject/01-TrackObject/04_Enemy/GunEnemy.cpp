@@ -43,7 +43,6 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	waittimer = GunEnemyParam::waittimer;					// 弾が非アクティブになってからの待機時間を初期化
 	bulletcreateflame = GunEnemyParam::bulletcreateflame;	// 弾オブジェクトを生成するフレーム
 	deadtime = GunEnemyParam::deadtime;						// 死亡状態にかかるフレーム
-
 	if (0 <= direction && direction < 4)SetDirection(direction);	// 方向の初期化
 	else { SetDirection(0); }
 
@@ -239,8 +238,9 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	bullet = new BulletObject;					// 弾オブジェクト生成
 	bullet->Init(_p_map, GetDirection());		//	弾オブジェクトの初期化(マップの情報,方向)
 
-	//SE_Daed=SoundManager::AddSound();
-	//SE_Shot=SoundManager::AddSound();
+	//SE_Daed=SoundManager::AddSound("Assets/03-Sound/02-Enemy/Enemy_Dead.wav");
+	//SE_Shot=SoundManager::AddSound("Assets/03-Sound/02-Enemy/Gun_Shot.wav");
+	//SE_Reload = SoundManager::AddSound("Assets/03-Sound/02-Enemy/Gun_Reload.wav");
 }
 
 //===============================================================================================
@@ -331,6 +331,7 @@ void GunEnemy::Shotting()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
+		//SoundManager::GetInstance().Play(SE_Reload);
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
@@ -343,6 +344,7 @@ void GunEnemy::Shotting()
 	if (timer >= bulletcreateflame && bullet->GetBulletActive() == false)
 	{
 		timer = 0;
+		//SoundManager::GetInstance().Play(SE_Shot);
 		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 1, 1, 1 };
 		bullet->SendPos(p_transform->position);			// 発射する直前の自身の位置を送る
 		bullet->SetBulletActive(true);					// 弾オブジェクトをアクティブにする
@@ -361,6 +363,7 @@ void GunEnemy::Dead()
 
 	if (changeTrigger == true)
 	{
+		// SoundManager::GetInstance().Play(SE_Dead);
 		GameObjectManager::GetInstance().Stop(300);
 		Sleep(100);
 		changeTrigger = false;
@@ -394,7 +397,6 @@ void GunEnemy::Dead()
 //===============================================================================================
 void GunEnemy::OnCollisionEnter(Collider* _p_col)
 {	
-	if (life == false)return;
 	// 対象のオブジェクトと接触した際、Deadへ移行
 	GameObject* col = _p_col->GetGameObject();
 	// ヒットした相手が対象のオブジェクトの場合,死亡状態へ

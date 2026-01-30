@@ -16,7 +16,6 @@ private:
 	int deadtime;						// 死亡状態が終了する時間
 	bool startTrigger;					// 一度だけ再生されるようにする
 	bool changeTrigger;					// シーンが切り替わった時に一度だけ再生されるようにする
-	bool life = false;					// このオブジェクトの当たり判定が取られるか否か(Init中に当たり判定取られるのを防止するため)
 
 	enum State
 	{
@@ -37,7 +36,7 @@ private:
 	BulletObject* bullet;						// 弾オブジェクト
 
 	int SE_Shot = -1;							// 効果音(ショット)
-	int SE_Relosd = -1;							// 効果音(リロード)
+	int SE_Reload = -1;							// 効果音(リロード)
 	int SE_Dead = -1;							// 効果音(死亡)
 public:
 	GunEnemy();
