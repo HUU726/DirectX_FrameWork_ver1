@@ -193,7 +193,7 @@ void BulletObject::OnCollisionEnter(Collider* _p_col)
 	// 相手の情報を取得
 	GameObject* col = _p_col->GetGameObject();
 	// ヒットしたのがこれら以外の場合、処理を終了する
-	if (col->GetName() == "Connect" || col->GetName() == "Gun" || col->GetName() == "Bite" || col->GetName() == "Player" || col->GetName() == "Thorn" || col->GetName() == "Enemy")
+	if (col->GetName() == "Connect" || col->GetName() == "Gun" || col->GetName() == "Bite" || col->GetTag() == "Player" || col->GetName() == "Thorn" || col->GetName() == "Enemy")
 	{
 		timer = 0;											// タイマーを元に戻す
 		GetComponent<SpriteAnimator>()->Stop(0);			// 停止するアニメーションIDは0

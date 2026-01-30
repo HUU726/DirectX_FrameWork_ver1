@@ -34,7 +34,11 @@ private:
 	int GetDirection() { return direction; }
 	
 	static std::vector<BulletObject*> ptr_num;	// 削除する予定のオブジェクトを一時保
-	BulletObject* bullet;				// 弾オブジェクト
+	BulletObject* bullet;						// 弾オブジェクト
+
+	int SE_Shot = -1;							// 効果音(ショット)
+	int SE_Relosd = -1;							// 効果音(リロード)
+	int SE_Dead = -1;							// 効果音(死亡)
 public:
 	GunEnemy();
 	~GunEnemy();
