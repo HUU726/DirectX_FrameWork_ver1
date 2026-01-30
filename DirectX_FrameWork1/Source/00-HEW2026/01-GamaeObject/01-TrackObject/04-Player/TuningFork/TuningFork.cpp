@@ -1,5 +1,6 @@
 #include "TuningFork.h"
 #include "../../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
+#include "../../../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
 TuningFork::TuningFork()
 {
@@ -45,6 +46,11 @@ void TuningFork::Init(float _scaleRatio)
 
 void TuningFork::Update()
 {
+    if (SceneManager::GetInstance().GetNext())
+    {
+        GetComponent<SpriteRenderer>()->SetIsActive(false);
+    }
+
     // 親クラス更新
     TrackObject::Update();
 
