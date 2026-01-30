@@ -30,8 +30,8 @@ private:
     int hitpoint = 3;
     int max_hitpoint = 3;
     float hammer_power = 0.0f;
-	const float max_hammer_power = 15.0f; // 最大まで引っ張った時のパワー //memo:１以外の奇数の時+1、以降も継続（7.f = 10マスズラす）
-    const float limit_hammer_power = 8.f; // 引っ張りで溜められる限界パワー
+	const float max_hammer_power = 8.0f; // 最大まで引っ張った時のパワー //memo:１以外の奇数の時+1、以降も継続（7.f = 10マスズラす）
+    const float limit_hammer_power = 5.f; // 引っ張りで溜められる限界パワー
 	const float charge_speed = 0.2f; // チャージ速度
     //////////////////////////////////////
 

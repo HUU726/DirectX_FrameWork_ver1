@@ -227,7 +227,7 @@ void PlayerObject::Update()
 
 
     // 行動不能判定
-    if (pMap)
+    if (pMap && state != PLAYER_STATE::DEAD)
     {
         hft::HFFLOAT2 myIndex = GetLineIndex();
 
@@ -430,7 +430,7 @@ void PlayerObject::UpdateSelect()
     // ---------------------------------------------------
 
     // コントローラー (Xボタン)
-    if (pInput->GetButtonPress(Button::XBox::X) && controllerMode)
+    if (pInput->GetButtonPress(Button::XBox::A) && controllerMode)
     {
         if (isTargetValid && stickMagSq > CHARGE_THRESHOLD * CHARGE_THRESHOLD)
         {
@@ -577,7 +577,7 @@ void PlayerObject::UpdateCharge()
 
         // 判定
         if (mag < CHARGE_THRESHOLD) isCanceled = true;
-        if (!pInput->GetButtonPress(Button::XBox::X))
+        if (!pInput->GetButtonPress(Button::XBox::A))
         {
             if (hammer_power < 1.0f)
             {
@@ -675,38 +675,15 @@ void PlayerObject::UpdateCharge()
                 pTuningFork->GetTransformPtr()->position.y
             };
 
+            float maxDist = 999.0f;
 
-            float maxDist = 100.0f;
-            if (pMap)
+            float arrowSize = hammer_power;
+            if (arrowSize > limit_hammer_power)
             {
-                hft::HFFLOAT2 currentIdx = pTuningFork->GetLineIndex();
-                hft::HFFLOAT2 dir = GetVecFromAngle(angle.x);
-
-                // 端までの距離を計算（IsValidTarget が false になるまで調べる）
-                int dist = 0;
-                hft::HFFLOAT2 checkIdx = currentIdx;
-
-                // 念のため上限付きループ
-                for (int i = 0; i < 20; ++i)
-                {
-                    checkIdx.x += dir.x;
-                    checkIdx.y += dir.y;
-
-                    // IsValidTarget は「指定したマスが有効か」を返すはず
-                    // (ただしスライド中のマスも false になる仕様だと、スライド中の列に向かっては矢印が出なくなるかも？)
-                    // (壁判定だけしたいなら専用の関数が必要ですが、とりあえず IsValidTarget でOKならこれを使います)
-                    if (!pMap->IsValidTarget(checkIdx))
-                    {
-                        break;
-                    }
-                    dist++;
-                }
-                maxDist = (float)dist;
+                arrowSize = limit_hammer_power;
             }
 
-            std::cout << "Power: " << hammer_power << " / DistLimit: " << maxDist << std::endl;
-
-            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, hammer_power, tileSize, maxDist);
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, arrowSize, tileSize, maxDist);
             pArrow->GetTransformPtr()->position.z = -11;
         }
     }
@@ -936,6 +913,20 @@ void PlayerObject::OnCollisionEnter(Collider* _p_col)
 
 void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 {
+    if (state == PLAYER_STATE::DEAD)
+    {
+        return;
+    }
+
+    if (state == PLAYER_STATE::HIT && _nextState != PLAYER_STATE::DEAD)
+    {
+        // まだ痛がっている最中（30フレーム未満）なら、変更を無視する
+        if (animTimer < 30)
+        {
+            return;
+        }
+    }
+
     auto animator = GetComponent<SpriteAnimator>();
 
     //今のステートのアニメーションを止める
