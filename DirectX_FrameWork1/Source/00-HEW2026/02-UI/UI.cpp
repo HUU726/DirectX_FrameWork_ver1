@@ -3,6 +3,7 @@
 #include "../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../99-Lib/01-MyLib/02-Renderer/99-ShapeTable/01-ShapeTable2D/ShapeTable2D.h"
 
+#include "../../99-Lib/01-MyLib/03-Sound/Fsound.h"
 
 //シェーダーをUI用に変更
 UI::UI()
@@ -47,13 +48,19 @@ void UI::Init(const hft::HFFLOAT3 pos, const hft::HFFLOAT2 scale, const char* te
 	this->type = type;
 
 
+	if (type == Type_UI::ButtonType)
+	{
+		SoundManager& soundMng = SoundManager::GetInstance();
+		onSE = soundMng.AddSoundDirect("Assets/03-Sound/10-UI/OnCursor.wav", false);
+		dicSE = soundMng.AddSoundDirect("Assets/03-Sound/10-UI/Decision.wav", false);
+
+		soundMng.SetVolume(onSE, 0.5f);
+		soundMng.SetVolume(dicSE, 0.1f);
+	}
 }
 
 void UI::Update()
 {
-	isPressed = false;
-	isMouseInside = false;
-
 	//更新処理
 	switch (type)
 	{
@@ -64,6 +71,7 @@ void UI::Update()
 
 		UpdateIsMouseInside();
 		UpdateIsPressed();
+		UpdateIsTrigger();
 
 		//アニメーション系の処理
 		GetTransformPtr()->scale = initialScale;
@@ -75,15 +83,15 @@ void UI::Update()
 		else if (isMouseInside)
 		{
 			AnimationMouseInside();
+
+			if (coverTrg)
+				SoundManager::GetInstance().Play(onSE);
 		}
 		break;
 
 	default:
 		break;
 	}
-
-
-
 }
 
 void UI::SetTargetKey(Button::KeyBord key)
@@ -111,12 +119,26 @@ void UI::UpdateIsPressed()
 	if ((isMouseInside && isMousePressed) || isKeyPressed || isXBottonPressed)
 	{
 		isPressed = true;
-		//std::cout << "UIがmouseに押されている" << std::endl;
 	}
 	else
 	{
 		isPressed = false;
-		//std::cout << "UIがmouseに押されていない" << std::endl;
+	}
+}
+
+void UI::UpdateIsTrigger()
+{
+	isTrigger = false;
+
+	Input& input = Input::GetInstance();
+	bool isMouseTrigger = input.GetMouseTrigger(Button::Mouse::Left);
+	bool isKeyTrigger = input.GetKeyTrigger((int)targetKey);
+	bool isXBottonTriiger = input.GetButtonTrigger(targetXboxBotton);
+
+	if ((isMouseInside && isMouseTrigger) || isKeyTrigger || isXBottonTriiger)
+	{
+		isTrigger = true;
+		SoundManager::GetInstance().Play(dicSE);
 	}
 }
 
@@ -129,7 +151,6 @@ void UI::UpdateIsMouseInside()
 	hft::HFFLOAT2 mousePos = { posX, posY };
 
 	hft::HFFLOAT3 myPos = GetTransform().position;
-	//hft::HFFLOAT2 mySize = GetTransform().scale;
 
 	float halfW = initialScale.x * 0.5f;
 	float halfH = initialScale.y * 0.5f;
@@ -138,6 +159,8 @@ void UI::UpdateIsMouseInside()
 		mousePos.x < myPos.x + halfW &&
 		mousePos.y >= myPos.y - halfH &&
 		mousePos.y < myPos.y + halfH;
+
+	preISMouseInside = isMouseInside;
 
 	if (isInside)
 	{
@@ -148,11 +171,26 @@ void UI::UpdateIsMouseInside()
 		isMouseInside = false;
 	}
 
+	if (isMouseInside && !preISMouseInside)
+	{
+		coverTrg = true;
+	}
+	else
+	{
+		coverTrg = false;
+	}
+
+
 }
 
 bool UI::GetIsPressed()
 {
 	return isPressed;
+}
+
+bool UI::GetIsTrigger()
+{
+	return isTrigger;
 }
 
 bool UI::GetIsMouseInside()

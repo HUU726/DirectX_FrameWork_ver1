@@ -19,12 +19,13 @@
 
 #include "../../../../00-HEW2026/01-GamaeObject/01-TrackObject/03_ConnectObject/ConnectObject.h" //朝日奈担当連結ブロック
 
+#include "../../../../00-HEW2026/02-UI/UIManager.h"
 
 class TitleScene : public BaseScene
 {
 private:
 	Map4 map;
-
+	StagePlayUIManager stagePlayUI;
 public:
 	~TitleScene() override;
 

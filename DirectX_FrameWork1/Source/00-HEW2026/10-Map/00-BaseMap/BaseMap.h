@@ -120,7 +120,7 @@ public:
 	/*** ゲッター ***/
 	const hft::HFFLOAT2& GetLefTopPos() { return leftTopPos; }
 	const hft::HFFLOAT2& GetRitBotPos() { return rightBottomPos; }
-	const float& GetScaleRatio() { return scaleRaito; }
+	const float& GetScaleRatio() { return scaleRaito * 1.2f; }
 
 	/**
 	* @brief	マップをズラす時のプレイヤーからもらうデータ

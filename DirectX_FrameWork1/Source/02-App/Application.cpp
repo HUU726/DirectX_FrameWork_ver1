@@ -28,6 +28,11 @@ void Application::InitSystem()
 	Input::GetInstance().Init(hWnd); //’©“ú“Þ’S“–‚Ì“ü—ÍƒVƒXƒeƒ€‰Šú‰»
 }
 
+hft::HFFLOAT2 Application::GetWindowSize()
+{
+	return hft::HFFLOAT2(p_window->GetWidth(),p_window->GetHeight());
+}
+
 bool Application::isLoop()
 {
 	return p_window->Update();

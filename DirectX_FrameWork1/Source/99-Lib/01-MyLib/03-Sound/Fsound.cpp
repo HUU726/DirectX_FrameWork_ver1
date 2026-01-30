@@ -54,6 +54,7 @@ void SoundManager::ReleaseSounds()
 		swapWfx.swap(wfxs);
 		swapBuffer.swap(buffers);
 		swapDataBuffer.swap(dataBuffers);
+		swapSourceVoice.swap(sourceVoices);
 	}
 }
 

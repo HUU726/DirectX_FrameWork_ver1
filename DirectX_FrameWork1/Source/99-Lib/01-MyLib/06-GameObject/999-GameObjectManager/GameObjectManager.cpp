@@ -92,7 +92,7 @@ std::vector<GameObject*> GameObjectManager::FindGameObject_Tag(std::string _tag)
 
 	for (const auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == _tag)
+		if (gameObject->GetTag() == _tag)
 			answer.push_back(gameObject);
 	}
 

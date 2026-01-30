@@ -127,6 +127,14 @@ void HF_Window::EditWindowName()
 	//SetWindowTextA(hWnd, CLASS_NAME);
 }
 
+void HF_Window::EndWindow()
+{
+	int res = MessageBoxA(NULL, "終了しますか？", "確認", MB_OKCANCEL);
+	if (res == IDOK) {
+		DestroyWindow(hWnd);  // 「WM_DESTROY」メッセージを送る
+	}
+}
+
 
 
 

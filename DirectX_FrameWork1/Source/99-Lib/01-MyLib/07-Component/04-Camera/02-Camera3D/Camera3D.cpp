@@ -3,6 +3,8 @@
 #include "../../99-CompMng/ComponentManager.h"
 #include "../../../02-Renderer/02-Mesh3DRenderer/Mesh3DRenderer.h"
 #include "../../../06-GameObject/GameObject.h"
+
+#include "../../../../../02-App/Application.h"
 #include "../../../../../02-App/HF_Window.h"
 
 
@@ -99,7 +101,8 @@ Camera3D::Camera3D()
 {
 	p_target = nullptr;
 	fov = 60.0f;
-	aspect = static_cast<float>SCREEN_WIDTH / static_cast<float>SCREEN_HEIGHT;
+	hft::HFFLOAT2 windowSize = Application::GetInstance().GetWindowSize();
+	aspect = windowSize.x / windowSize.y;
 	nearClip = 0.1f;
 	farClip = 100000.0f;
 	forward = { 0.f,0.f,1.f };

@@ -9,7 +9,6 @@ enum Type_UI
 {
 	NormalType,	 //初期値から何も作用しない。背景など
 	ButtonType,  //押下を検知等
-	//DynamicType, //アニメーションをするUI
 };
 
 class UI : public GameObject2D
@@ -18,10 +17,16 @@ private:
 	hft::HFFLOAT2 initialScale;		//初期の拡大率(アニメーション後の引き戻しで使う)
 	Type_UI type;					//UIの種類
 	bool isPressed = false;			//押されているかどうか
+	bool isTrigger = false;
 	bool isMouseInside = false;		//マウスが自身の範囲内に存在するか
 
 	Button::KeyBord targetKey;
 	Button::XBox targetXboxBotton;
+
+	bool coverTrg = false;
+	bool preISMouseInside = false;
+	int onSE;
+	int dicSE;
 
 public:
 	UI();
@@ -38,11 +43,15 @@ public:
 	//ボタンの押下状態を更新
 	void UpdateIsPressed();
 
+	//ボタンの桜花のトリガーを更新
+	void UpdateIsTrigger();
+
 	//mouseが自身の範囲内にあるかの状態を更新
 	void UpdateIsMouseInside();
 
 	//押されているかどうか
 	bool GetIsPressed();
+	bool GetIsTrigger();
 	bool GetIsMouseInside();
 
 	void AnimationPressed();

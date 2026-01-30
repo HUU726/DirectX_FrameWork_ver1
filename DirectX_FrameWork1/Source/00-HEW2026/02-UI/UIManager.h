@@ -11,10 +11,8 @@ class TitleUIManager : public GameObject2D
 {
 private:
 	UI backGround;
-	UI titleUI;
 	UI gameStartButton;
 	UI gameEndButton;
-	UI sceneTransitionUI;
 
 	//シーン遷移のアニメーションをするか否か
 	bool startTransitionAnim = false;
@@ -29,41 +27,10 @@ public:
 	//ゲーム終了ボタンが押されたか検知
 	bool GetIsPressedEndButton();
 
-	//シーン遷移用UIの座標を変化させてアニメーション
-	void SceneTransitionAnim();
 };
 
 
-//ステージセレクトシーンのUI管理
-class StageSelectUIManager : public GameObject2D
-{
-private:
-	UI backGround;					//背景
-	UI stageStartButton;			//ステージ開始ボタン
-	UI goToTitleButton;				//タイトル移行ボタン
 
-	std::vector<UI> stageViewUI;	//ステージ画面のUI
-	std::vector<UI> stageNameUI;	//ステージ名のUI
-
-	//int 
-	int currentStageNum;		//現在選択しているステージ名
-	bool isStartStage = false;		//ステージ開始しているかどうか
-	bool isGoTitle = false;			//タイトル移行状態かどうか
-
-public:
-	void Init() override;
-	void Update() override;
-
-
-	//選択ステージの切り替え
-	void ChangeCurrentStage();
-
-	//ステージスタートの時の処理
-	void StartStageMode();
-
-	//タイトルに戻る時の処理
-	void GoTitleMode();
-};
 
 
 
@@ -75,6 +42,7 @@ private:
 	UI poseButton;
 	UI retryButton;
 	UI playerHpBar;
+	UI playerHpBarFront;
 	UI playerHpBarBack;
 
 	UI poseBackGround;

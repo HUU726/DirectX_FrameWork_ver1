@@ -8,6 +8,7 @@
 //検査用コライダーに接触したコライダーが連結ブロックかどうかを検索するのはキャスト形式で行う
 
 class BoxCollider2D;
+class BaseMap;
 
 class ConnectObject : public TrackObject
 {
@@ -31,13 +32,12 @@ private:
 	//攻撃判定用のオブジェクト配列
 	std::vector<GameObject2D*> emitAttackObjects;
 
-	hft::HFFLOAT3 debug_moveDir;
-	hft::HFFLOAT3 debug_startPos;
-
+	//拡大率調整用のスケールレート
+	float scallingLate;
 
 public:
 	ConnectObject();
-	void Init() override;
+	void Init(BaseMap* map);
 	void Update() override;
 
 	//全ての攻撃判定オブジェクトのアクティブ状態をリセット
@@ -59,8 +59,6 @@ public:
 	float GetContactDistance(hft::HFFLOAT3 originPos, hft::HFFLOAT3 tarPos);
 
 	//自身の座標から接触相手の座標まで、縦横いずれかの向きで攻撃判定用オブジェクトを配置する
-	void SpawnAttackObjects(hft::HFFLOAT3 originPos, hft::HFFLOAT3 connectDir, int cellCount, float cellSize);
-
 	void SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 connectDir);
 
 	//自身の生成番号を取得
@@ -96,14 +94,4 @@ public:
 	* @param	Collider2D*	_p_col	2D用コライダーのポインタ
 	*/
 	void OnCollisionStay(Collider* _p_col) override;
-
-
-	//デバッグ用の処理
-	//void debug_SetmoveDir(hft::HFFLOAT2 moveDir) { debug_moveDir = moveDir; }
-	//void debug_SetstartPos()
-	//{
-	//	debug_startPos = GetComponent<Transform>()->position;
-	//}
-
-	//void debug_Move();
 };
