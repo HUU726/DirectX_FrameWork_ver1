@@ -2,6 +2,8 @@
 
 #include "../00-TrackObject/TrackObject.h"
 
+#include <vector>
+
 // 前方宣言
 class BaseMap;
 class Input;
@@ -66,6 +68,10 @@ private:
     Arrow* pArrow = nullptr;
 
     float tileSize = 100.0f;
+
+    //削除待ちの音叉を一時保管するリスト（static）
+    static std::vector<TuningFork*> garbageForks;
+    static std::vector<Arrow*> garbageArrows;
 
     void UpdateStand();
     void UpdateSelect();

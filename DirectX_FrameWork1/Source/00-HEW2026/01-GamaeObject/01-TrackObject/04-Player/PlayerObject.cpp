@@ -9,10 +9,14 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+#include "../../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+
+std::vector<TuningFork*> PlayerObject::garbageForks;
+std::vector<Arrow*> PlayerObject::garbageArrows;
 
 #define CHARGE_THRESHOLD 0.2f
 //#define TILE_SIZE 100.0f
@@ -45,6 +49,13 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 {
+	//以前使った音叉と矢印を削除
+    for (auto p : garbageForks) delete p;
+    garbageForks.clear();
+
+    for (auto p : garbageArrows) delete p;
+    garbageArrows.clear();
+
     //マウス入力モードで開始
 	mouseMode = true;
     
@@ -249,6 +260,24 @@ void PlayerObject::Update()
     // 子オブジェクト更新
     if (pTuningFork) pTuningFork->Update();
     if (pArrow) pArrow->Update();
+
+	// シーン遷移を確認したら音叉と矢印をゴミ箱へ
+    if (SceneManager::GetInstance().GetNext())
+    {
+        if (pTuningFork)
+        {
+            pTuningFork->Hide(); // 見えなくしておく
+            garbageForks.push_back(pTuningFork); // ゴミ箱へ
+            pTuningFork = nullptr;
+        }
+
+        if (pArrow)
+        {
+            pArrow->Hide();
+            garbageArrows.push_back(pArrow);
+            pArrow = nullptr;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
