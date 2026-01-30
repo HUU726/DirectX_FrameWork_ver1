@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "../../99-Lib/01-MyLib/06-GameObject/01-2DGameObject/GameObject2D.h"
 
 #include "../../04-Input/Input.h"
@@ -54,7 +56,12 @@ private:
 	UI gameOverRetryButton;			//ゲームオーバー後のリトライボタン
 	UI gameOverStageSelectButton;	//ゲームオーバー後のステージセレクトボタン
 
-	UI clearUI;
+	//UI clearUI;
+	UI clearStageSelectButton;
+	UI clearTitleButton;
+	std::array<UI, 10> clearLogos;
+
+	int clearAnimTimer = 0;
 
 	//ゲームオーバーUIの最大サイズ
 	hft::HFFLOAT2 maxSize = { 200.f, 100.f };

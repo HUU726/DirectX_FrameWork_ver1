@@ -8,7 +8,11 @@
 
 #include "../../../10-Map/Map.h"
 
+#include "../../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
+
 int ConnectObject::instanceCounter = 0;
+
+std::vector<GameObject2D*> ConnectObject::deleteObject;
 
 ConnectObject::ConnectObject()
 {
@@ -32,8 +36,25 @@ ConnectObject::ConnectObject()
 	scallingLate = 0.f;
 }
 
+ConnectObject::~ConnectObject()
+{
+	for (GameObject2D* obj : emitAttackObjects)
+	{
+		delete obj;
+		obj = nullptr;
+	}
+}
+
 void ConnectObject::Init(BaseMap* map)
 {
+	for (GameObject2D* emit : deleteObject)
+	{
+		delete emit; 
+		emit = nullptr;
+	}
+
+	deleteObject.clear();
+
 	//本体部分の設定
 	{
 		p_transform->scale = ConnectObjectParam::mainBodyScale;
@@ -74,6 +95,13 @@ void ConnectObject::Update()
 
 	//他の連結ブロックと繋がっているか検知し、接触している場合は攻撃判定を追加する
 	SearchConnectedState();
+
+	//シーン遷移時に攻撃判定をゴミ箱に
+	if (SceneManager::GetInstance().GetNext())
+	{
+		MoveAttackObjectsToTrash();
+	}
+
 }
 
 void ConnectObject::ResetAttackObjectsActive()
@@ -364,6 +392,19 @@ void ConnectObject::SpawnAttackObjects(hft::HFFLOAT3 tarPos, hft::HFFLOAT3 conne
 	//コライダーのサイズの設定
 	//attackObj->GetComponent<BoxCollider2D>()->SetSize(texSize);
 	attackObj->GetComponent<BoxCollider2D>()->SetSize(collSize);
+}
+
+void ConnectObject::MoveAttackObjectsToTrash()
+{
+	for (GameObject2D* emit : emitAttackObjects)
+	{
+		emit->SetIsActive(false);
+		emit->SetIsRender(false);
+		deleteObject.push_back(emit);
+		emit = nullptr;
+	}
+
+	emitAttackObjects.clear();
 }
 
 

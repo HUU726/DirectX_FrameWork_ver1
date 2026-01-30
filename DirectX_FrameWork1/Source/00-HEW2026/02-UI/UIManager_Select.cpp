@@ -124,12 +124,12 @@ public:
 
         // 画像パス設定
         {   //ステージ画像
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
-            stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Tutorialpreview.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Stage1preview.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Stage2preview.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Stage3preview.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Stage4preview.png");
+            stagePaths.push_back("Assets/01-Texture/10-UI/11-Select/Stage5preview.png");
             stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
             stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
             stagePaths.push_back("Assets/01-Texture/99-Test/wave.png");
