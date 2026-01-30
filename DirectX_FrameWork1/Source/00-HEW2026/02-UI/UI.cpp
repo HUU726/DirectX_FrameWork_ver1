@@ -61,6 +61,8 @@ void UI::Init(const hft::HFFLOAT3 pos, const hft::HFFLOAT2 scale, const char* te
 
 void UI::Update()
 {
+	if (!GetIsActive()) return;
+
 	//XVˆ—
 	switch (type)
 	{

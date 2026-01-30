@@ -55,6 +55,8 @@ private:
 	UI gameOverStageSelectButton;	//ゲームオーバー後のステージセレクトボタン
 
 	UI clearUI;
+	UI clearStageSelectButton;
+	UI clearTitleButton;
 
 	//ゲームオーバーUIの最大サイズ
 	hft::HFFLOAT2 maxSize = { 200.f, 100.f };

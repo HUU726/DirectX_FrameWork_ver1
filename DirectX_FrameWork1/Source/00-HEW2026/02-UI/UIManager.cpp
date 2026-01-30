@@ -68,6 +68,9 @@ bool TitleUIManager::GetIsPressedEndButton()
 //ステージプレイシーン管理の処理=======================================================
 void StagePlayUIManager::Init()
 {
+	// ---------------------------------------------------
+	// プレイ中 UI (HUD)
+	// ---------------------------------------------------
 	//ポーズボタンUI
 	{
 		poseButton.Init({ -700.f, 400.f, -95.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pause.png", Type_UI::ButtonType);
@@ -75,73 +78,85 @@ void StagePlayUIManager::Init()
 		poseButton.SetTargetXBoxButton(Button::XBox::X);
 	}
 
-
-	//リトライボタンUI
+	//リトライボタンUI (HUD)
 	{
 		retryButton.Init({ -700.f, 170.f, -95.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Retry.png", Type_UI::ButtonType);
 		retryButton.SetTargetKey(Button::KeyBord::R);
 		retryButton.SetTargetXBoxButton(Button::XBox::X);
 	}
 
-
 	//プレイヤーのHPバーのUI
 	{
 		playerHpBar.Init({ 450.f, -100.f, -95.f }, { 100.f, 400.f }, "Assets/01-Texture/10-UI/01-HP/HP_Middle.png", Type_UI::NormalType);
-
 		playerHpBarFront.Init({ 450.f, -100.f, -96.f }, { 100.f, 400.f }, "Assets/01-Texture/10-UI/01-HP/HP_Front.png", Type_UI::NormalType);
-
-		//プレイヤーのHPバー背景UI
 		playerHpBarBack.Init({ 450.f, -100.f, -94.f }, { 100.f, 400.f }, "Assets/01-Texture/10-UI/01-HP/HP_Back.png", Type_UI::NormalType);
-
-		//barの最大Yサイズと初期Y位置を設定
 		maxHpBerHeight = 400.f;
 		barInitialPosY = -100.f;
 	}
 
-
-	//ポーズボタンが押された時のUI
+	// ---------------------------------------------------
+	// ポーズ画面 UI
+	// ---------------------------------------------------
 	{
-		poseBackGround.Init({ -80.f, 0.f, -70.f }, { 800.f, 850.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_paper.png", Type_UI::NormalType);
+		poseBackGround.Init({ -80.f, 0.f, -97.f }, { 800.f, 850.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_paper.png", Type_UI::NormalType);
+		poseBackGround.SetIsActive(false); poseBackGround.SetIsRender(false); // 初期化時は非表示
 
-		restartButton.Init({ 0.f, 150.f, -71.f }, { 600.f, 250.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_restart.png", Type_UI::ButtonType);
+		restartButton.Init({ 0.f, 150.f, -98.f }, { 600.f, 250.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_restart.png", Type_UI::ButtonType);
 		restartButton.SetTargetKey(Button::KeyBord::A);
 		restartButton.SetTargetXBoxButton(Button::XBox::A);
+		restartButton.SetIsActive(false); restartButton.SetIsRender(false);
 
-		goStageSelectButton.Init({ 0.f, 0.f, -71.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
+		goStageSelectButton.Init({ 0.f, 0.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
 		goStageSelectButton.SetTargetKey(Button::KeyBord::A);
 		goStageSelectButton.SetTargetXBoxButton(Button::XBox::A);
+		goStageSelectButton.SetIsActive(false); goStageSelectButton.SetIsRender(false);
 
-		goTitleButton.Init({ 0.f, -150.f, -71.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
+		goTitleButton.Init({ 0.f, -150.f, -98.f }, { 500.f, 200.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
 		goTitleButton.SetTargetKey(Button::KeyBord::A);
 		goTitleButton.SetTargetXBoxButton(Button::XBox::A);
+		goTitleButton.SetIsActive(false); goTitleButton.SetIsRender(false);
 	}
 
-
-	//ゲームオーバー時のUI
+	// ---------------------------------------------------
+	// ゲームオーバー画面 UI
+	// ---------------------------------------------------
 	{
-		gameOverUI.Init({ 0.f, 200.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
-		gameOverUI.SetIsRender(false);
+		// 背景 (仮画像)
+		gameOverUI.Init({ 0.f, 200.f, -99.f }, { 1579.f, 417.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_GameOver.png", Type_UI::NormalType);
+		gameOverUI.SetIsActive(false); gameOverUI.SetIsRender(false);
 
-
-		//リトライボタン
-		gameOverRetryButton.Init({ 0.f, -50.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		// リトライボタン (PlayView_Retry画像を再利用)
+		gameOverRetryButton.Init({ 0.f, -50.f, -99.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_GameOver_Retry1.png", Type_UI::ButtonType);
 		gameOverRetryButton.SetTargetKey(Button::KeyBord::B);
 		gameOverRetryButton.SetTargetXBoxButton(Button::XBox::B);
-		gameOverRetryButton.SetIsRender(false);
+		gameOverRetryButton.SetIsActive(false); gameOverRetryButton.SetIsRender(false);
 
-
-		//ステージセレクトに行くボタン
-		gameOverStageSelectButton.Init({ 0.f, -200.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::ButtonType);
+		// ステージセレクトへ (Pausemenu_select画像を再利用)
+		gameOverStageSelectButton.Init({ 0.f, -200.f, -99.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_GameOver_select.png", Type_UI::ButtonType);
 		gameOverStageSelectButton.SetTargetKey(Button::KeyBord::B);
 		gameOverStageSelectButton.SetTargetXBoxButton(Button::XBox::B);
-		gameOverStageSelectButton.SetIsRender(false);
+		gameOverStageSelectButton.SetIsActive(false); gameOverStageSelectButton.SetIsRender(false);
 	}
 
-
-	//ステージクリア
+	// ---------------------------------------------------
+	// ステージクリア画面 UI
+	// ---------------------------------------------------
 	{
-		clearUI.Init({ 0.f, 0.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
-		clearUI.SetIsRender(false);
+		// 背景 (仮画像)
+		clearUI.Init({ 0.f, 200.f, -99.f }, { 200.f, 100.f }, "Assets/01-Texture/99-Test/daruma.jpg", Type_UI::NormalType);
+		clearUI.SetIsActive(false); clearUI.SetIsRender(false);
+
+		// ステージセレクトへ (Pausemenu_select画像を再利用)
+		clearStageSelectButton.Init({ 0.f, -50.f, -99.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_select.png", Type_UI::ButtonType);
+		clearStageSelectButton.SetTargetKey(Button::KeyBord::A);
+		clearStageSelectButton.SetTargetXBoxButton(Button::XBox::A);
+		clearStageSelectButton.SetIsActive(false); clearStageSelectButton.SetIsRender(false);
+
+		// タイトルへ (Pausemenu_title画像を再利用)
+		clearTitleButton.Init({ 0.f, -200.f, -99.f }, { 350.f, 150.f }, "Assets/01-Texture/10-UI/12-Game/UI_PlayView_Pausemenu_title.png", Type_UI::ButtonType);
+		clearTitleButton.SetTargetKey(Button::KeyBord::B);
+		clearTitleButton.SetTargetXBoxButton(Button::XBox::B);
+		clearTitleButton.SetIsActive(false); clearTitleButton.SetIsRender(false);
 	}
 }
 
@@ -150,15 +165,11 @@ void StagePlayUIManager::Update()
 {
 	//フラグごとのUIの状態変化
 	if (isRetry) { RetryMode(); return; }
-
 	if (isGoStageSelect) { GoStageSelectMode(); return; }
-
 	if (isGoTitle) { GoTitleMode(); return; }
 
 	if (isGameOver) { GameOverMode(); return; }
-
 	if (isStageClear) { StageClearMode(); return; }
-
 	if (isPose) { PoseMode(); return; }
 
 	PlayMode();
@@ -167,10 +178,15 @@ void StagePlayUIManager::Update()
 
 void StagePlayUIManager::PoseMode()
 {
-	poseBackGround.SetIsRender(true);
-	restartButton.SetIsRender(true);
-	goStageSelectButton.SetIsRender(true);
-	goTitleButton.SetIsRender(true);
+	// ポーズUIを表示＆有効化
+	poseBackGround.SetIsActive(true); poseBackGround.SetIsRender(true);
+	restartButton.SetIsActive(true);  restartButton.SetIsRender(true);
+	goStageSelectButton.SetIsActive(true); goStageSelectButton.SetIsRender(true);
+	goTitleButton.SetIsActive(true); goTitleButton.SetIsRender(true);
+
+	// プレイ中HUDを無効化（ポーズ中は押せないようにする）
+	poseButton.SetIsActive(false);
+	retryButton.SetIsActive(false);
 
 	if (restartButton.GetIsPressed())
 	{
@@ -207,9 +223,17 @@ void StagePlayUIManager::GoStageSelectMode()
 
 void StagePlayUIManager::GameOverMode()
 {
-	gameOverUI.SetIsRender(true);
-	gameOverRetryButton.SetIsRender(true);
-	gameOverStageSelectButton.SetIsRender(true);
+	// ゲームオーバーUIを表示＆有効化
+	gameOverUI.SetIsActive(true); gameOverUI.SetIsRender(true);
+	gameOverRetryButton.SetIsActive(true); gameOverRetryButton.SetIsRender(true);
+	gameOverStageSelectButton.SetIsActive(true); gameOverStageSelectButton.SetIsRender(true);
+
+	// プレイ中HUDを無効化・非表示
+	poseButton.SetIsActive(false); poseButton.SetIsRender(false);
+	retryButton.SetIsActive(false); retryButton.SetIsRender(false);
+	playerHpBar.SetIsRender(false);
+	playerHpBarFront.SetIsRender(false);
+	playerHpBarBack.SetIsRender(false);
 
 	if (gameOverRetryButton.GetIsPressed())
 	{
@@ -229,9 +253,30 @@ void StagePlayUIManager::GameOverMode()
 
 void StagePlayUIManager::StageClearMode()
 {
-	clearUI.SetIsRender(true);
+	// クリアUIを表示＆有効化
+	clearUI.SetIsActive(true); clearUI.SetIsRender(true);
+	clearStageSelectButton.SetIsActive(true); clearStageSelectButton.SetIsRender(true);
+	clearTitleButton.SetIsActive(true); clearTitleButton.SetIsRender(true);
 
-	return;
+	// プレイ中HUDを無効化・非表示
+	poseButton.SetIsActive(false); poseButton.SetIsRender(false);
+	retryButton.SetIsActive(false); retryButton.SetIsRender(false);
+	playerHpBar.SetIsRender(false);
+	playerHpBarFront.SetIsRender(false);
+	playerHpBarBack.SetIsRender(false);
+
+	if (clearStageSelectButton.GetIsPressed())
+	{
+		isGoStageSelect = true;
+		isStageClear = false;
+		return;
+	}
+	if (clearTitleButton.GetIsPressed())
+	{
+		isGoTitle = true;
+		isStageClear = false;
+		return;
+	}
 }
 
 #include "../20-Scene/03_GameScene.h"
@@ -243,17 +288,33 @@ void StagePlayUIManager::RetryMode()
 
 void StagePlayUIManager::PlayMode()
 {
-	//ポーズ時のUIを非表示
-	poseBackGround.SetIsRender(false);
+	// ------------------------------------
+	// 他モードのUIを全て無効化＆非表示
+	// ------------------------------------
+	// ポーズ
+	poseBackGround.SetIsActive(false); poseBackGround.SetIsRender(false);
+	restartButton.SetIsActive(false); restartButton.SetIsRender(false);
+	goStageSelectButton.SetIsActive(false); goStageSelectButton.SetIsRender(false);
+	goTitleButton.SetIsActive(false); goTitleButton.SetIsRender(false);
 
-	restartButton.SetIsActive(false);
-	restartButton.SetIsRender(false);
+	// ゲームオーバー
+	gameOverUI.SetIsActive(false); gameOverUI.SetIsRender(false);
+	gameOverRetryButton.SetIsActive(false); gameOverRetryButton.SetIsRender(false);
+	gameOverStageSelectButton.SetIsActive(false); gameOverStageSelectButton.SetIsRender(false);
 
-	goStageSelectButton.SetIsRender(false);
-	goStageSelectButton.SetIsRender(false);
+	// クリア
+	clearUI.SetIsActive(false); clearUI.SetIsRender(false);
+	clearStageSelectButton.SetIsActive(false); clearStageSelectButton.SetIsRender(false);
+	clearTitleButton.SetIsActive(false); clearTitleButton.SetIsRender(false);
 
-	goTitleButton.SetIsActive(false);
-	goTitleButton.SetIsRender(false);
+	// ------------------------------------
+	// プレイ中HUDを有効化＆表示
+	// ------------------------------------
+	poseButton.SetIsActive(true); poseButton.SetIsRender(true);
+	retryButton.SetIsActive(true); retryButton.SetIsRender(true);
+	playerHpBar.SetIsRender(true);
+	playerHpBarFront.SetIsRender(true);
+	playerHpBarBack.SetIsRender(true);
 
 
 	//プレイヤーのHPバーの長さを切り替え
@@ -279,10 +340,7 @@ void StagePlayUIManager::PlayMode()
 		isStageClear = true;
 		return;
 	}
-
-
 }
-
 
 void StagePlayUIManager::ScalePlayerHPBer()
 {
