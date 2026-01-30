@@ -37,6 +37,7 @@ public:
 	const MapData& GetMapData(int _id) { return datas[_id]; }
 
 	BaseMap* LoadMap();
+	void UnLoadMap();
 
 	void UnInit();
 

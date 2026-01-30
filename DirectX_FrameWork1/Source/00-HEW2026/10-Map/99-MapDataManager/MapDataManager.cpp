@@ -40,6 +40,11 @@ BaseMap* MapDataManager::LoadMap()
 	return p_curMap;
 }
 
+void MapDataManager::UnLoadMap()
+{
+	delete p_curMap;
+}
+
 void MapDataManager::UnInit()
 {
 	if (p_curMap)

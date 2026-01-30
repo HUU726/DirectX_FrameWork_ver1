@@ -9,10 +9,14 @@
 #include "../../../../99-Lib/01-MyLib/07-Component/02-Renderer/01-SpriteRenderer/SpriteRenderer.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/03-Collider/01-Collider2D/BoxCollider2D.h"
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
+#include "../../../../99-Lib/01-MyLib/08-Scene/02-SceneManager/SceneManager.h"
 
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+
+std::vector<TuningFork*> PlayerObject::garbageForks;
+std::vector<Arrow*> PlayerObject::garbageArrows;
 
 #define CHARGE_THRESHOLD 0.2f
 //#define TILE_SIZE 100.0f
@@ -45,6 +49,13 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
 {
+	//以前使った音叉と矢印を削除
+    for (auto p : garbageForks) delete p;
+    garbageForks.clear();
+
+    for (auto p : garbageArrows) delete p;
+    garbageArrows.clear();
+
     //マウス入力モードで開始
 	mouseMode = true;
     
@@ -216,7 +227,7 @@ void PlayerObject::Update()
 
 
     // 行動不能判定
-    if (pMap)
+    if (pMap && state != PLAYER_STATE::DEAD)
     {
         hft::HFFLOAT2 myIndex = GetLineIndex();
 
@@ -249,6 +260,24 @@ void PlayerObject::Update()
     // 子オブジェクト更新
     if (pTuningFork) pTuningFork->Update();
     if (pArrow) pArrow->Update();
+
+	// シーン遷移を確認したら音叉と矢印をゴミ箱へ
+    if (SceneManager::GetInstance().GetNext())
+    {
+        if (pTuningFork)
+        {
+            pTuningFork->Hide(); // 見えなくしておく
+            garbageForks.push_back(pTuningFork); // ゴミ箱へ
+            pTuningFork = nullptr;
+        }
+
+        if (pArrow)
+        {
+            pArrow->Hide();
+            garbageArrows.push_back(pArrow);
+            pArrow = nullptr;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -268,7 +297,7 @@ void PlayerObject::UpdateStand()
 
     // マウス位置 - 中心位置 = 相対ベクトル
     float relX = mx;
-    float relY = my * -1.f;
+    float relY = my;
 
     float mouseMagSq = relX * relX + relY * relY;
 
@@ -309,7 +338,7 @@ void PlayerObject::UpdateSelect()
     {
         // マウスの絶対座標（画面中央が 0,0）
         float mouseWorldX = rawMx;
-        float mouseWorldY = rawMy * -1.f;
+        float mouseWorldY = rawMy;
 
         // プレイヤーの絶対座標（画面中央が 0,0）
         float playerWorldX = p_transform->position.x;
@@ -401,7 +430,7 @@ void PlayerObject::UpdateSelect()
     // ---------------------------------------------------
 
     // コントローラー (Xボタン)
-    if (pInput->GetButtonPress(Button::XBox::X) && controllerMode)
+    if (pInput->GetButtonPress(Button::XBox::A) && controllerMode)
     {
         if (isTargetValid && stickMagSq > CHARGE_THRESHOLD * CHARGE_THRESHOLD)
         {
@@ -466,7 +495,7 @@ void PlayerObject::UpdateCharge()
         float pullY = dragStartPos.y - my;
         float mag = std::sqrt(pullX * pullX + pullY * pullY);
 
-        aimVector = { pullX, pullY };
+        aimVector = { pullX, -pullY };
 
         // --- パワー計算 ---
 
@@ -509,26 +538,56 @@ void PlayerObject::UpdateCharge()
 
         // --- パワー計算 ---
 
-        // 基本パワー (スティック 0~1.0 -> 0~20)
-        float basePower = mag * charge_speed + max_hammer_power + 1.f;
-        if (basePower > limit_hammer_power) basePower = limit_hammer_power;
+        float normalizedMag = 0.0f;
 
-        // チャージボーナス
+        if (mag > CHARGE_THRESHOLD)
+        {
+            // (現在の傾き - 閾値) / (1.0 - 閾値)
+            normalizedMag = (mag - CHARGE_THRESHOLD) / (1.0f - CHARGE_THRESHOLD);
+        }
+
+        // 正規化した値を使って目標パワーを計算
+        float targetPower = normalizedMag * limit_hammer_power;
+
+        // 限界まで倒している時だけ、さらにボーナスを加算する（限界突破）
         if (mag > 0.9f)
         {
             chargeTimer++;
             float bonusPower = chargeTimer * charge_speed;
-            hammer_power = basePower + bonusPower;
+            targetPower += bonusPower;
         }
         else
         {
             chargeTimer = 0;
-            hammer_power = basePower;
+        }
+
+        // 現在のパワーを、目標パワーに向けて徐々に変化させる
+        if (hammer_power < targetPower)
+        {
+            hammer_power += charge_speed;
+
+            // 行き過ぎ防止（目標を超えたら合わせる）
+            if (hammer_power > targetPower) hammer_power = targetPower;
+        }
+        else
+        {
+            hammer_power = targetPower;
+
         }
 
         // 判定
         if (mag < CHARGE_THRESHOLD) isCanceled = true;
-        if (!pInput->GetButtonPress(Button::XBox::X)) isReleased = true;
+        if (!pInput->GetButtonPress(Button::XBox::A))
+        {
+            if (hammer_power < 1.0f)
+            {
+                isCanceled = true;
+            }
+            else
+            {
+                isReleased = true;
+            }
+        }
     }
 
     // 方向保存処理
@@ -586,7 +645,7 @@ void PlayerObject::UpdateCharge()
         if (angleDiff < 1.0f || hammer_power < 1.0f)
         {
             pArrow->Hide();
-            hammer_power = 0.0f;
+            //hammer_power = 0.0f;
             chargeTimer = 0;
         }
         else
@@ -616,7 +675,15 @@ void PlayerObject::UpdateCharge()
                 pTuningFork->GetTransformPtr()->position.y
             };
 
-            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio);
+            float maxDist = 999.0f;
+
+            float arrowSize = hammer_power;
+            if (arrowSize > limit_hammer_power)
+            {
+                arrowSize = limit_hammer_power;
+            }
+
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, arrowSize, tileSize, maxDist);
             pArrow->GetTransformPtr()->position.z = -11;
         }
     }
@@ -651,7 +718,7 @@ void PlayerObject::UpdateRelease()
         {
             // キャンセル処理...
             ChangeState(PLAYER_STATE::STAND);
-            if (pTuningFork) pTuningFork->Hide();
+            if (pTuningFork) pTuningFork->PlayDisappear();
             if (pArrow) pArrow->Hide();
             hammer_power = 0.0f;
             return;
@@ -846,6 +913,20 @@ void PlayerObject::OnCollisionEnter(Collider* _p_col)
 
 void PlayerObject::ChangeState(PLAYER_STATE _nextState)
 {
+    if (state == PLAYER_STATE::DEAD)
+    {
+        return;
+    }
+
+    if (state == PLAYER_STATE::HIT && _nextState != PLAYER_STATE::DEAD)
+    {
+        // まだ痛がっている最中（30フレーム未満）なら、変更を無視する
+        if (animTimer < 30)
+        {
+            return;
+        }
+    }
+
     auto animator = GetComponent<SpriteAnimator>();
 
     //今のステートのアニメーションを止める

@@ -36,7 +36,7 @@ void Arrow::Init(float _scaleRatio)
     renderer->SetIsActive(false);
 }
 
-void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio)
+void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _ratio, float _power, float _tileSize, float _maxDist)
 {
     auto renderer = GetComponent<SpriteRenderer>();
     if (!renderer->GetIsActive()) {
@@ -45,17 +45,45 @@ void Arrow::UpdateTransform(const hft::HFFLOAT2& _pos, float _angle, float _rati
 
     Transform* pTrf = GetTransformPtr();
 
-    // 位置と回転の更新
-    pTrf->position.x = _pos.x;
-    pTrf->position.y = _pos.y;
+    // 1. 回転の設定
+    float rotDeg = _angle - 180.f;
+    pTrf->rotation.z = rotDeg;
 
-    pTrf->rotation.z = _angle - 180.f; //画像に基づき左右反転 -180
+    // 2. 長さ（スケール）の決定
 
-    // パワーに応じた伸縮
-    // _ratio (0.0～1.0) に応じて、長さを変える
-    float scaleVal = 0.5f + _ratio; // 最小0.5倍 ～ 最大1.5倍
+    // ★修正：複雑な計算をやめて、パワーをそのままマスの数にする
+    // "純粋に力とマスを対応させる" ならこれが一番キレイです。
+    // パワー 3.5 = 3.5マス分
+    float tileCount = _power;
 
-    pTrf->scale = { 100.0f * scaleVal * scaleRatio, 50.0f * scaleRatio, 1.0f };
+    // ※もし「0.5マス」のような端数が嫌で、カクカク伸ばしたいなら
+    // float tileCount = (float)((int)_power); 
+    // にしてください。
+
+    // 上限キャップ（Player側で999を渡しているので実質無効）
+    if (tileCount > _maxDist)
+    {
+        tileCount = _maxDist;
+    }
+
+    // 計算したマス数 × タイルサイズ で実際の長さを出す
+    float length = _tileSize * tileCount;
+
+    // 最低保証（0だと見えなくなるので）
+    if (length < 0.1f) length = 0.1f;
+
+    pTrf->scale = { length, 50.f, 1.0f };
+
+    // 3. 位置のオフセット計算
+    float rad = rotDeg * 3.14159265f / 180.0f;
+    float dirX = std::cos(rad);
+    float dirY = std::sin(rad);
+
+    // 長さの半分だけずらして、根本を合わせる
+    float offsetDist = length * 0.5f;
+
+    pTrf->position.x = _pos.x + dirX * offsetDist;
+    pTrf->position.y = _pos.y + dirY * offsetDist;
 }
 
 void Arrow::Hide()
