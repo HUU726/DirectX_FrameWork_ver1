@@ -188,6 +188,8 @@ void PlayerObject::Init(BaseMap* _pMap, Input* _pInput)
     SE_Charge = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/01-Player/Charge.wav", false);
     SE_Hit = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
     SE_Dead = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/00-Test/SE_Land.wav", false);
+
+    SoundManager::GetInstance().SetVolume(SE_Charge, 0.1f);
 }
 
 void PlayerObject::Update()
@@ -811,7 +813,20 @@ void PlayerObject::UpdateRelease()
 
                     if (playId != -1)
                     {
+                        // 0.9倍 ～ 1.1倍 の範囲でランダムな数値を生成
+                        // (rand() % 21) で 0~20 を作り、-10 して -10~10、それを100で割って -0.1~0.1
+                        float randomPitch = 1.0f + ((rand() % 21 - 10) / 100.0f);
+
+                        // ピッチを設定
+                        SoundManager::GetInstance().SetPitch(playId, randomPitch);
+
+                        // ついでに音量も少しランダムにする
+                        float randomVol = 1.0f + ((rand() % 11 - 5) / 100.0f); // 0.95 ~ 1.05
+                        SoundManager::GetInstance().SetVolume(playId, randomVol);
+
+                        // 再生
                         SoundManager::GetInstance().Play(playId);
+
                     }
 
                     std::cout << "Action: Slide!" << std::endl;
