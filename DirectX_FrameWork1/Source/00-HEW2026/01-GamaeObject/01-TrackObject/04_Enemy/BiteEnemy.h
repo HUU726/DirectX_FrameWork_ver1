@@ -64,13 +64,16 @@ private:
 	void Dead();
 
 	static std::vector<AttackMass*> ptr_num;	// 削除する予定のオブジェクトを一時保管
-	AttackMass* attackCollider;		// 攻撃の判定
+	AttackMass* attackCollider;					// 攻撃の判定
+
+	int SE_Bite = -1;							// 効果音(噛みつき)
+	int SE_Dead = -1;							// 効果音(死亡)
 public:
 	BiteEnemy();					
 	~BiteEnemy();
 	void Init() override {};		// 初期化処理
-	void Init(const int&);		// 方向で初期化
-	void Update() override;		// 更新処理
+	void Init(const int&);			// 方向で初期化
+	void Update() override;			// 更新処理
 
 	// 方向をセットまたは返す
 	void SetDirection(const int& NewDirection) { direction = NewDirection; }
