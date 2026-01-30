@@ -289,7 +289,6 @@ void GunEnemy::Defoult()
 	if (startTrigger == true)
 	{
 		startTrigger = false;
-		life = false;
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 最初のアニメーションを再生
 	}
 
