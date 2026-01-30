@@ -80,6 +80,18 @@ void GameObjectManager::AddWaitToNow()
 
 void GameObjectManager::Action()
 {
+	if (stopFlame > 0)
+	{
+		flameCnt++;
+		if (stopFlame < flameCnt)
+		{
+			stopFlame = 0;
+			flameCnt = 0;
+		}
+		else
+			return;
+	}
+
 	for (auto& gameObject : gameObjects)
 	{
 		gameObject->Update();

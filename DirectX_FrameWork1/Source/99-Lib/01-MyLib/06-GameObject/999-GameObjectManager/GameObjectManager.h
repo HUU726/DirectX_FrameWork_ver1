@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <Windows.h>
 
 
 class GameObject;
@@ -14,6 +15,10 @@ private:
 	std::vector<GameObject*> waitingQueue;	//次シーンのオブジェクトを待機させておくコンテナ
 	std::vector<GameObject*> destroyQueue;	//削除オブジェクト格納コンテナ
 
+	float stopFlame;
+	float flameCnt;
+	float sendFlame;
+
 	GameObjectManager() : idCnt(0) {}
 
 public:
@@ -22,6 +27,12 @@ public:
 		static GameObjectManager instance;
 		return instance;
 	}
+
+	/**
+	* @brief	GameObject全体のUpdateを止める
+	* @param	float	_miriS	止める時間(ミリ秒)
+	*/
+	void Stop(float _miriS) { Sleep(_miriS); }
 
 	/**
 	* @brief	ゲームオブジェクト追加
