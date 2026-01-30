@@ -583,7 +583,7 @@ void PlayerObject::UpdateCharge()
         float angleDiff = std::abs(shotAngle - this->angle.x);
         if (angleDiff > 180.0f) angleDiff = 360.0f - angleDiff;
 
-        if (angleDiff < 1.0f || hammer_power < 1.0f)
+        if (angleDiff < 1.0f)
         {
             pArrow->Hide();
             hammer_power = 0.0f;
@@ -616,8 +616,38 @@ void PlayerObject::UpdateCharge()
                 pTuningFork->GetTransformPtr()->position.y
             };
 
-            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, tileSize);
 
+            float maxDist = 100.0f;
+            if (pMap)
+            {
+                hft::HFFLOAT2 currentIdx = pTuningFork->GetLineIndex();
+                hft::HFFLOAT2 dir = GetVecFromAngle(angle.x);
+
+                // 端までの距離を計算（IsValidTarget が false になるまで調べる）
+                int dist = 0;
+                hft::HFFLOAT2 checkIdx = currentIdx;
+
+                // 念のため上限付きループ
+                for (int i = 0; i < 20; ++i)
+                {
+                    checkIdx.x += dir.x;
+                    checkIdx.y += dir.y;
+
+                    // IsValidTarget は「指定したマスが有効か」を返すはず
+                    // (ただしスライド中のマスも false になる仕様だと、スライド中の列に向かっては矢印が出なくなるかも？)
+                    // (壁判定だけしたいなら専用の関数が必要ですが、とりあえず IsValidTarget でOKならこれを使います)
+                    if (!pMap->IsValidTarget(checkIdx))
+                    {
+                        break;
+                    }
+                    dist++;
+                }
+                maxDist = (float)dist;
+            }
+
+            std::cout << "Power: " << hammer_power << " / DistLimit: " << maxDist << std::endl;
+
+            pArrow->UpdateTransform(targetPos, shotAngle + shakeAngle, ratio, hammer_power, tileSize, maxDist);
             pArrow->GetTransformPtr()->position.z = -11;
         }
     }
