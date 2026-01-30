@@ -317,8 +317,8 @@ void BiteEnemy::Init(const int& direction)
 	attackCollider->SetFg(false);
 	attackCollider->SendDir(direction);
 
-	//SE_Bite = SoundManager::AddSound("Assets/03-Sound/02-Enemy/Bite_attack.wav");
-	//SE_Dead = SoundManager::AddSound("Assets/03-Sound/02-Enemy/Enemy_Dead.wav");
+	SE_Bite = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/02-Enemy/Bite_attack.wav",false);
+	SE_Dead = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/02-Enemy/Enemy_Dead.wav", false);
 }
 
 //==================================================================================
@@ -416,7 +416,7 @@ void BiteEnemy::Attack()
 	if (timer == attackCreate)
 	{
 		// 攻撃前にも送る
-		//SoundManager::GetInstance().Play(SE_Bite);
+		SoundManager::GetInstance().Play(SE_Bite);
 		attackCollider->UpdatePos();							// 座標を更新
 		attackCollider->MassFrash();							// マスを表示
 		attackCollider->SendDir(dir);							// 方向を送る
@@ -501,7 +501,7 @@ void BiteEnemy::Dead()
 
 	if (changeTrigger == true)
 	{
-		//SoundManager::GetInstance().Play(SE_Dead);
+		SoundManager::GetInstance().Play(SE_Dead);
 		GameObjectManager::GetInstance().Stop(300);
 		Sleep(100);
 		changeTrigger = false;

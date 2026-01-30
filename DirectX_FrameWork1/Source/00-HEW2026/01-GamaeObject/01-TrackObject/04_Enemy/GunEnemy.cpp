@@ -238,9 +238,9 @@ void GunEnemy::Init(BaseMap* _p_map, const int& direction)
 	bullet = new BulletObject;					// 弾オブジェクト生成
 	bullet->Init(_p_map, GetDirection());		//	弾オブジェクトの初期化(マップの情報,方向)
 
-	//SE_Daed=SoundManager::AddSound("Assets/03-Sound/02-Enemy/Enemy_Dead.wav");
-	//SE_Shot=SoundManager::AddSound("Assets/03-Sound/02-Enemy/Gun_Shot.wav");
-	//SE_Reload = SoundManager::AddSound("Assets/03-Sound/02-Enemy/Gun_Reload.wav");
+	SE_Dead = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/02-Enemy/Enemy_Dead.wav", false);
+	SE_Shot = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/02-Enemy/Gun_Shot.wav", false);
+	SE_Reload = SoundManager::GetInstance().AddSoundDirect("Assets/03-Sound/02-Enemy/Gun_Reload.wav", false);
 }
 
 //===============================================================================================
@@ -330,7 +330,7 @@ void GunEnemy::Shotting()
 	if (changeTrigger == true)
 	{
 		changeTrigger = false;
-		//SoundManager::GetInstance().Play(SE_Reload);
+		SoundManager::GetInstance().Play(SE_Reload);
 		GetComponent<SpriteAnimator>()->Stop(oldani);	// 再生していたアニメーションをストップ
 		GetComponent<SpriteAnimator>()->Play(anipos);	// 新しいアニメーションを再生
 	}
@@ -343,7 +343,7 @@ void GunEnemy::Shotting()
 	if (timer >= bulletcreateflame && bullet->GetBulletActive() == false)
 	{
 		timer = 0;
-		//SoundManager::GetInstance().Play(SE_Shot);
+		SoundManager::GetInstance().Play(SE_Shot);
 		GetComponent<SpriteRenderer>()->GetPolygonRef().material.diffuse = { 1, 1, 1, 1 };
 		bullet->SendPos(p_transform->position);			// 発射する直前の自身の位置を送る
 		bullet->SetBulletActive(true);					// 弾オブジェクトをアクティブにする
@@ -362,7 +362,7 @@ void GunEnemy::Dead()
 
 	if (changeTrigger == true)
 	{
-		// SoundManager::GetInstance().Play(SE_Dead);
+		SoundManager::GetInstance().Play(SE_Dead);
 		GameObjectManager::GetInstance().Stop(300);
 		Sleep(100);
 		changeTrigger = false;
