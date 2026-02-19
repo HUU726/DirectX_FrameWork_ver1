@@ -22,6 +22,7 @@ GameObject::~GameObject()
 #include "../07-Component/02-Renderer/02-MeshRenderer/MeshRenderer.h"
 
 void GameObject::SetIsActive(bool _is)
+
 {
 	for (auto& comp : li_comp)
 	{

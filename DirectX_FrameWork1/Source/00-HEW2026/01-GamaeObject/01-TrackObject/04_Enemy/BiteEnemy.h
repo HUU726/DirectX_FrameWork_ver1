@@ -69,7 +69,7 @@ private:
 	int SE_Bite = -1;							// Œø‰Ê‰¹(Šš‚İ‚Â‚«)
 	int SE_Dead = -1;							// Œø‰Ê‰¹(€–S)
 public:
-	BiteEnemy();					
+	BiteEnemy();
 	~BiteEnemy();
 	void Init() override {};		// ‰Šú‰»ˆ—
 	void Init(const int&);			// •ûŒü‚Å‰Šú‰»

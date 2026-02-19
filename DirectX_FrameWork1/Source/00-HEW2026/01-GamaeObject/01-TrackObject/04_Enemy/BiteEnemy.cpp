@@ -22,6 +22,7 @@ std::vector<AttackMass*> BiteEnemy::ptr_num;
 // コンストラクタ
 BiteEnemy::BiteEnemy()
 {
+	tag = "Enemy";
 	name = "Bite";
 }
 
@@ -496,14 +497,17 @@ void BiteEnemy::Spin()
 void BiteEnemy::Dead()
 {
 	CEnemy::DownEnemyCount();			// エネミー総数の減少
+
+
 	// 方向を取得
 	int dir = GetDirection();
 
 	if (changeTrigger == true)
 	{
 		SoundManager::GetInstance().Play(SE_Dead);
-		GameObjectManager::GetInstance().Stop(300);
-		Sleep(100);
+		//GameObjectManager::GetInstance().Stop(300);
+		GameObjectManager::GetInstance().Stop(100);
+		Sleep(10);
 		changeTrigger = false;
 		// 再生されていたアニメーションをストップ
 		if (dir == 0 || dir == 1)
@@ -527,6 +531,7 @@ void BiteEnemy::Dead()
 		GetComponent<SpriteRenderer>()->SetIsActive(false);					// 描写停止
 		GameObjectManager::GetInstance().RemoveGameObject(attackCollider);	// 攻撃マスの活動停止
 		GameObjectManager::GetInstance().RemoveGameObject(this);			// 活動停止
+		//GameObjectManager::GetInstance().DestroyGameObject(this);
 	}
 }
 

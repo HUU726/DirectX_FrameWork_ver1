@@ -3,6 +3,8 @@
 #include "../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 #include "../../00-HEW2026/01-GamaeObject/01-TrackObject/04-Player/PlayerObject.h"
 
+#include "../../00-HEW2026/01-GamaeObject/01-TrackObject/04_Enemy/Enemy.h"
+
 #include "../../99-Lib/01-MyLib/03-Sound/Fsound.h"
 
 #include "../../02-App/Application.h"
@@ -362,19 +364,19 @@ void StagePlayUIManager::StageClearMode()
 		}
 	}
 
-	// ボタン判定（CleanUp呼び出しは不要）
-	if (clearStageSelectButton.GetIsPressed())
-	{
-		isGoStageSelect = true;
-		isStageClear = false;
-		return;
-	}
-	if (clearTitleButton.GetIsPressed())
-	{
-		isGoTitle = true;
-		isStageClear = false;
-		return;
-	}
+// ボタン判定（CleanUp呼び出しは不要）
+if (clearStageSelectButton.GetIsPressed())
+{
+	isGoStageSelect = true;
+	isStageClear = false;
+	return;
+}
+if (clearTitleButton.GetIsPressed())
+{
+	isGoTitle = true;
+	isStageClear = false;
+	return;
+}
 }
 
 #include "../20-Scene/03_GameScene.h"
@@ -446,14 +448,43 @@ void StagePlayUIManager::PlayMode()
 		return;
 	}
 
-	std::vector<GameObject*> enemies = GameObjectManager::GetInstance().FindGameObject_Tag("Enemy");
-	enemyCount = (int)enemies.size();
+	//std::vector<GameObject*> enemies = GameObjectManager::GetInstance().FindGameObject_Tag("Enemy");
+	//enemyCount = (int)enemies.size();
 
+	//if (enemyCount <= 0)
+	//{
+	//	isStageClear = true;
+	//	return;
+	//}
+
+
+	//CEnemyクラスを探し、エネミーの総数が0以下の場合ステージクリア
+	std::vector<GameObject*> enemyTagObjects = GameObjectManager::GetInstance().FindGameObject_Tag("Enemy");
+	CEnemy* enemy = nullptr;
+	for (GameObject* obj : enemyTagObjects)
+	{
+		if (CEnemy* e = dynamic_cast<CEnemy*>(obj))
+		{
+			enemy = e;
+		}
+	}
+
+	if (enemy == nullptr)
+	{ 
+		return; 
+	}
+	else
+	{
+		enemyCount = enemy->GetEnemyCount();
+	}
+
+	
 	if (enemyCount <= 0)
 	{
 		isStageClear = true;
 		return;
 	}
+
 }
 
 void StagePlayUIManager::ScalePlayerHPBer()

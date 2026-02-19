@@ -99,7 +99,14 @@ void BaseMap::Slide()
 	//ズレる力が０になったらパイプラインから除外
 	for (auto& data : slideDatas)
 	{
-		if (data.power == 0)
+		//if (data.power == 0.f)
+		//{
+		//	auto it = std::find(slideDatas.begin(), slideDatas.end(), data);
+		//	if (it != slideDatas.end())
+		//		slideDatas.erase(it);
+		//}
+
+		if (data.power <= 0.15f)
 		{
 			auto it = std::find(slideDatas.begin(), slideDatas.end(), data);
 			if (it != slideDatas.end())
@@ -432,6 +439,9 @@ BaseMap::BaseMap()
 {
 	p_transform->position.x = MAP_CENTER_POSX;
 	p_transform->position.y = MAP_CENTER_POSY;
+
+	//powerDownFlame = 35;
+	//powerDownRatio = 0.8f;
 
 	powerDownFlame = 35;
 	powerDownRatio = 0.8f;
