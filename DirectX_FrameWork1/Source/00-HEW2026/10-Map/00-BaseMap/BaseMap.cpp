@@ -579,6 +579,8 @@ bool BaseMap::IsValidTarget(const hft::HFFLOAT2& _index)
 	hft::HFFLOAT2 objline;
 	for (const auto& obj : onMapTrackObjects)
 	{
+		if (obj->GetIsActive())
+			continue;
 		objline = obj->GetLineIndex();
 		if (_index == objline && obj->GetTag() != "TuningFork" && obj->GetTag() != "Player" && obj->GetTag() != "Connenct")
 		{

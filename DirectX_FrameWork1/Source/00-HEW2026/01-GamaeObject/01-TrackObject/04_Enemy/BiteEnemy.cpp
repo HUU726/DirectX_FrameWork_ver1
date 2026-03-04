@@ -525,7 +525,9 @@ void BiteEnemy::Dead()
 		timer = 0;
 		GetComponent<SpriteAnimator>()->Stop(anipos);
 		GetComponent<SpriteRenderer>()->SetIsActive(false);					// 描写停止
-		GameObjectManager::GetInstance().RemoveGameObject(attackCollider);	// 攻撃マスの活動停止
+		GameObjectManager::GetInstance().DestroyGameObject(attackCollider);
+		//GameObjectManager::GetInstance().DestroyGameObject(this);
+		//GameObjectManager::GetInstance().RemoveGameObject(attackCollider);	// 攻撃マスの活動停止
 		GameObjectManager::GetInstance().RemoveGameObject(this);			// 活動停止
 	}
 }
