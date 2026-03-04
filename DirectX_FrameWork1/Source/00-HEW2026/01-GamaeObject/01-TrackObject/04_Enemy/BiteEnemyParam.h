@@ -7,7 +7,8 @@
 // 噛みつく敵本体にパラメータ
 namespace BiteEnemyParam
 {
-	const std::string tag = "Bite";		// 本体のタグ:Bite
+	//const std::string tag = "Bite";		// 本体のタグ:Bite
+	const std::string tag = "Enemy";		// 本体のタグ:Bite
 	const bool startTrigger = true;		// 開始時に一度だけ実行される
 	const bool changeTrigger = false;	// シーン切り替え後に一度だけ実行される
 	const int attackCreate = 10;		// 攻撃判定を出すタイミング

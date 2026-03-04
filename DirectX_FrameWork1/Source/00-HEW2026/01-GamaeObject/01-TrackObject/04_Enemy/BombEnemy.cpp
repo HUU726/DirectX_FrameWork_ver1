@@ -12,14 +12,16 @@
 
 #include "../../../../99-Lib/01-MyLib/07-Component/06-Animator/01-SpriteAnimator/SpriteAnimator.h"
 
+#include "../../../../99-Lib/01-MyLib/06-GameObject/999-GameObjectManager/GameObjectManager.h"
 
 void BombEnemy::Init()
 {
 	//自身のタグ設定
-	tag = "Bom";
-
+	tag = "Enemy";
+	name = "Enemy";
+	
 	//サイズ設定
-	p_transform->scale = { 80.f, 80.f, 1.f };
+	p_transform->scale = { 120.f, 120.f, 1.f };
 
 	//本体部のコライダー設定
 	bodyColl = AddComponent<BoxCollider2D>();
@@ -96,11 +98,16 @@ void BombEnemy::Init()
 
 		//レンダラー設定
 		searchRenderer = new GameObject2D;
+		searchRenderer->Init();
 		searchRenderer->GetTransformPtr()->scale = { 280.f, 280.f, 1.f };
 		searchRenderer->GetTransformPtr()->position.z = -4;
 		searchRenderer->SetIsRender(false);
 
 		SpriteRenderer* renderer = searchRenderer->GetComponent<SpriteRenderer>();
+		if (!renderer)
+		{
+			renderer = searchRenderer->AddComponent<SpriteRenderer>();
+		}
 		renderer->LoadTexture("Assets/01-Texture/99-Test/daruma.jpg");
 
 		//コライダー設定
@@ -119,8 +126,10 @@ void BombEnemy::Init()
 		{
 			GameObject2D* bomAttack = new GameObject2D;
 			bomAttack->Init();
-			bomAttack->SetTag("Enemy");
-			bomAttack->GetTransformPtr()->scale = { 80.f, 80.f, 1.f };
+			//bomAttack->SetTag("Enemy");
+			bomAttack->SetTag("Bomb");
+			bomAttack->SetName("Bomb");
+			bomAttack->GetTransformPtr()->scale = { 120.f, 120.f, 1.f };
 			bomAttack->SetIsRender(false);
 
 			BoxCollider2D* coll = bomAttack->AddComponent<BoxCollider2D>();
@@ -173,15 +182,11 @@ void BombEnemy::Update()
 		break;
 
 	case BomState::blast:
-
 		Blast();
-
 		break;
 
 	case BomState::dead:
-
 		Dead();
-
 		break;
 
 	default:
@@ -266,14 +271,25 @@ void BombEnemy::Blast()
 
 void BombEnemy::Dead()
 {
-	bodyColl->SetIsActive(false);
+	//非アクティブな場合何もしない
+	if (!isActive)
+	{
+		return;
+	}
 
+	//自身と各コンポーネント、爆風部分を非アクティブ化
+	isActive = false;
+	bodyColl->SetIsActive(false);
 	ChangeBlastActiveState(false);
 
 
 	//自身のコンポーネントを消す
 	GetComponent<SpriteRenderer>()->SetIsActive(false);
 	SetIsRender(false);
+
+	CEnemy::DownEnemyCount();
+	//GameObjectManager::GetInstance().RemoveGameObject(attackCollider);	// 攻撃マスの活動停止
+	GameObjectManager::GetInstance().RemoveGameObject(this);			// 活動停止
 
 }
 
@@ -287,7 +303,7 @@ void BombEnemy::BlastAnimation()
 
 void BombEnemy::OffSetBlastPosition()
 {
-	float offSetValue = 80;
+	float offSetValue = 120;
 	hft::HFFLOAT3 offSetUp	  = {  0.f, offSetValue, 0.f};
 	hft::HFFLOAT3 offSetDown  = {  0.f, -offSetValue, 0.f};
 	hft::HFFLOAT3 offSetLeft  = { -offSetValue, 0.f, 0.f};
@@ -322,13 +338,14 @@ void BombEnemy::OnCollisionEnter(Collider* _p_col)
 	GameObject* obj = _p_col->GetGameObject();
 	if (!obj) { return; }
 
-	ConnectObject* connectPtr = dynamic_cast<ConnectObject*>(obj);
+	//ConnectObject* connectPtr = dynamic_cast<ConnectObject*>(obj);
 	BiteEnemy* bitePtr = dynamic_cast<BiteEnemy*>(obj);
 	PlayerObject* playerPtr = dynamic_cast<PlayerObject*>(obj);
 	GunEnemy* gunPtr = dynamic_cast<GunEnemy*>(obj);
 
 	//起爆する対象のobjectがあるか検査
-	bool isHitBlastObj = (connectPtr || bitePtr || playerPtr || gunPtr);
+	//bool isHitBlastObj = (connectPtr || bitePtr || playerPtr || gunPtr);
+	bool isHitBlastObj = (bitePtr || playerPtr || gunPtr);
 
 	if (isHitBlastObj && currentState == stand)
 	{

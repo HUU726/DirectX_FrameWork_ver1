@@ -363,8 +363,11 @@ void GunEnemy::Dead()
 	if (changeTrigger == true)
 	{
 		SoundManager::GetInstance().Play(SE_Dead);
-		GameObjectManager::GetInstance().Stop(300);
-		Sleep(100);
+		/*GameObjectManager::GetInstance().Stop(300);
+		Sleep(100);*/
+		GameObjectManager::GetInstance().Stop(100);
+		Sleep(10);
+
 		changeTrigger = false;
 		CEnemy::DownEnemyCount();							// エネミー総数の減少
 		GetComponent<SpriteAnimator>()->Stop(oldani);		// アニメーションの停止
@@ -383,7 +386,8 @@ void GunEnemy::Dead()
 
 	// アニメーションが終わり次第、オブジェクトの機能を停止する
 	if (timer >= deadtime)
-	{
+	{	
+		isActive = false;
 		GetComponent<SpriteAnimator>()->Stop(anipos);		
 		GetComponent<SpriteRenderer>()->SetIsActive(false);			// 描写の停止
 		GameObjectManager::GetInstance().RemoveGameObject(bullet);	// 弾の活動停止

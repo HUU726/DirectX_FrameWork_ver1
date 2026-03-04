@@ -17,5 +17,5 @@ public:
 	void DownEnemyCount() { if (fg == 0) { s_instanceCount--; fg++;} }
 	 
 	// エネミー総数を返す
-	int GetEnemyCount() { return s_instanceCount; }		
+	int GetEnemyCount() { return s_instanceCount; }	
 };
